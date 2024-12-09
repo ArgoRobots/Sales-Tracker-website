@@ -227,6 +227,15 @@ nav h1 {
     gap: 32px;
     max-width: 900px;
     margin: 0 auto;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.payment-btn .Square {
+    height: 25px;
+}
+
+.payment-btn .Stripe {
+    height: 35px;
 }
 
 @media (min-width: 768px) {

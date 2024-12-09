@@ -5,9 +5,15 @@ body {
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 1300px;
   margin: 0 auto;
   padding: 0 24px;
+}
+
+.system-req {
+  font-size: 16px;
+  color: #dbeafe;
+  margin-top: -16px;
 }
 
 /* Header/Hero styles */
@@ -186,21 +192,6 @@ nav {
   color: #4b5563;
 }
 
-.check-list {
-  list-style: none;
-}
-
-.check-list li {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 16px;
-}
-
-.check-icon {
-  color: #2563eb;
-}
-
 /* Pricing section */
 .pricing-card {
   max-width: 400px;
@@ -211,16 +202,25 @@ nav {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.pricing-content {
-  padding: 32px;
+.pricing-card .pricing-content {
+  padding: 24px 32px;
   text-align: center;
 }
 
-.price {
+.pricing-card .pricing-content h3 {
+  font-size: 20px;
+}
+
+.pricing-card .pricing-content .price {
   font-size: 48px;
   color: #2563eb;
   font-weight: bold;
-  margin: 16px 0;
+  margin: 24px 0 5px;
+}
+
+.pricing-card .pricing-content .description {
+  color: #666;
+  margin-bottom: 32px
 }
 
 /* Utility classes */
@@ -229,4 +229,27 @@ nav {
   height: auto;
   border-radius: 12px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.check-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.check-list li {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.check-icon {
+  color: #2563eb;
+  flex-shrink: 0;
+  margin-right: 12px;
+  margin-top: 3px;
+}
+
+.check-list li span {
+  flex: 1;
 }
