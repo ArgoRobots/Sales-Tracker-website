@@ -19,24 +19,6 @@ body {
     padding: 96px 0;
 }
 
-.btn {
-    padding: 12px 24px;
-    border-radius: 5px;
-    border: none;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.btn-white {
-    background: white;
-    color: #1e3a8a;
-}
-
-.btn-white:hover {
-    background: #f0f9ff;
-}
-
 nav {
     display: flex;
     justify-content: space-between;

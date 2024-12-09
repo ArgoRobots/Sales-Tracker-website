@@ -3,19 +3,23 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Latest updates and improvements to Argo Sales Tracker">
-    <meta name="keywords" content="sales tracker, business software, updates, changelog">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
     <meta name="author" content="Argo">
     <meta name="robots" content="noindex, nofollow">
+    <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
     <title>What's New - Argo Sales Tracker</title>
 
-    <script src=" ../resources/scripts/main.js"></script>
+    <script src="../resources/scripts/main.js"></script>
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
 
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="../resources/styles/customColors.css">
+    <link rel="stylesheet" href="../resources/styles/button.css">
+    <link rel="stylesheet" href="../resources/styles/icons.css">
     <link rel="stylesheet" href="../resources/header/style.css">
     <link rel="stylesheet" href="../resources/footer/style.css">
 </head>
@@ -34,7 +38,7 @@
 
     <section class="gradient-bg">
         <div class="container">
-            <div class="hero-content">
+            <div class="hero">
                 <h1>What's New in Argo Sales Tracker</h1>
                 <p>Discover the latest improvements and features we've added to make managing your business even easier
                 </p>
@@ -42,106 +46,120 @@
         </div>
     </section>
 
+    <div class="download-button-container">
+        <a href="#" class="btn btn-blue">Download latest release</a>
+    </div>
+
     <div class="container">
         <div class="version-grid">
+
+            <!-- Version 1.0.1 -->
             <div class="version-card">
                 <div class="version-header">
-                    <span class="version-tag">Version 2.1.0</span>
-                    <span class="date-tag">December 2024</span>
+                    <span class="version-tag">Version 1.0.1</span>
+                    <span class="date-tag">Febuary 2025</span>
                 </div>
 
                 <div class="feature-list">
                     <div class="feature-item">
                         <div class="feature-icon">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M12 4v16m8-8H4"></path>
-                            </svg>
+                            <div class="icon icon-plus"></div>
                         </div>
                         <div class="feature-content">
-                            <h3>Enhanced Data Visualization<span class="type-tag feature">New Feature</span></h3>
-                            <p>Interactive charts and graphs now support drill-down functionality for deeper insights
-                                into your sales data. Click on any data point to see detailed breakdowns and trends.</p>
+                            <h3>Enhanced Chart Interactivity<span class="type-tag feature">New Feature</span></h3>
+                            <p>Added an option to reset the zoom of charts in the charts right click menu.</p>
                         </div>
                     </div>
 
                     <div class="feature-item">
                         <div class="feature-icon">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                            </svg>
+                            <div class="icon icon-lightning"></div>
                         </div>
                         <div class="feature-content">
                             <h3>Performance Improvements<span class="type-tag enhancement">Enhancement</span></h3>
-                            <p>Significantly improved application startup time and reduced memory usage when handling
-                                large datasets. The app now loads 50% faster and uses 30% less memory.</p>
+                            <p>Optimized chart loading through multithreading, resulting in up to significantly faster
+                                dashboard rendering and smoother interactions with large datasets.</p>
                         </div>
                     </div>
 
                     <div class="feature-item">
                         <div class="feature-icon">
-                            <svg viewBox="0 0 24 24">
-                                <path
-                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
-                                </path>
-                            </svg>
+                            <div class="icon icon-lightning"></div>
                         </div>
                         <div class="feature-content">
-                            <h3>Bulk Operations<span class="type-tag feature">New Feature</span></h3>
-                            <p>New bulk editing capabilities allow you to update multiple products, sales, or purchase
-                                records simultaneously, saving you valuable time on data management tasks.</p>
+                            <h3>Improved Language Conversion<span class="type-tag enhancement">Enhancement</span></h3>
+                            <p>Language conversion now uses multithreading, and added a progress indicator, enabling
+                                seamless switching between languages without the
+                                application freezing.
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <!-- Version 1.0.0 -->
             <div class="version-card">
                 <div class="version-header">
-                    <span class="version-tag">Version 2.0.0</span>
-                    <span class="date-tag">November 2024</span>
+                    <span class="version-tag">Version 1.0.0</span>
+                    <span class="date-tag">January 2025</span>
                 </div>
 
                 <div class="feature-list">
                     <div class="feature-item">
                         <div class="feature-icon">
-                            <svg viewBox="0 0 24 24">
-                                <path
-                                    d="M12 15V3m0 12l-4-4m4 4l4-4M2 17l.621 2.485A2 2 0 004.561 21h14.878a2 2 0 001.94-1.515L22 17">
-                                </path>
-                            </svg>
+                            <div class="icon icon-plus"></div>
                         </div>
                         <div class="feature-content">
-                            <h3>Data Import/Export<span class="type-tag feature">New Feature</span></h3>
-                            <p>Seamlessly import and export data in multiple formats including Excel, CSV, and JSON.
-                                Perfect for backing up your data or migrating from other systems.</p>
+                            <h3>Initial Release<span class="type-tag feature">New Feature</span></h3>
+                            <p>First stable release of Argo Sales Tracker, featuring core functionality for tracking
+                                sales, managing
+                                products, and analyzing business performance.</p>
                         </div>
                     </div>
 
                     <div class="feature-item">
                         <div class="feature-icon">
-                            <svg viewBox="0 0 24 24">
-                                <path
-                                    d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z">
-                                </path>
-                            </svg>
+                            <div class="icon icon-plus"></div>
                         </div>
                         <div class="feature-content">
-                            <h3>Windows Hello Integration<span class="type-tag feature">New Feature</span></h3>
-                            <p>Use Windows Hello for quick and secure access to your data. Support for fingerprint,
-                                facial recognition, and PIN authentication methods.</p>
+                            <h3>Analytics Dashboard<span class="type-tag feature">New Feature</span></h3>
+                            <p>Comprehensive analytics dashboard with interactive charts showing expenses and revenue
+                                growth rates, total transactions, average transaction values, and much more.</p>
                         </div>
                     </div>
 
                     <div class="feature-item">
                         <div class="feature-icon">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
+                            <div class="icon icon-plus"></div>
                         </div>
                         <div class="feature-content">
-                            <h3>Bug Fixes<span class="type-tag fix">Fix</span></h3>
-                            <p>Fixed several issues including incorrect calculation of monthly totals, improved date
-                                handling across different timezones, and resolved memory leaks in the charting system.
-                            </p>
+                            <h3>Receipt Manager<span class="type-tag feature">New Feature</span></h3>
+                            <p>Receipt management system featuring flexible date range filtering, bulk
+                                selection capabilities, and separate tracking for purchases and sales.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <div class="icon icon-plus"></div>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Export and Import Spreadsheets<span class="type-tag feature">New Feature</span></h3>
+                            <p>Seamlessly manage your business data with our powerful spreadsheet tools. Export complete
+                                datasets including companies, accountants, products, and transaction records in
+                                organized worksheets using the standard .xlsx format. Compatible with Microsoft Excel,
+                                Google Sheets, and LibreOffice. Keep sales and purchase records organized in separate
+                                worksheets for better clarity.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <div class="icon icon-plus"></div>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Multi-language Support<span class="type-tag feature">New Feature</span></h3>
+                            <p>Support for multiple languages with easy switching.</p>
                         </div>
                     </div>
                 </div>

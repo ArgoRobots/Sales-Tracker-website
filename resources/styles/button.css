@@ -1,0 +1,39 @@
+.btn {
+    padding: 8px 24px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    font-weight: bold;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+}
+
+.btn-white {
+    background: white;
+    color: #1e3a8a;
+}
+
+.btn-white:hover {
+    background: #f0f9ff;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+}
+
+.btn-outline:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.btn-blue {
+    background: #2563eb;
+    color: white;
+}
+
+.btn-blue:hover {
+    background: #1d4ed8;
+}
