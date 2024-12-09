@@ -1,0 +1,20 @@
+header .menu-icon .nav-icon {
+  background: #000 !important;
+}
+
+header .menu-icon .nav-icon:before,
+header .menu-icon .nav-icon:after {
+  background: #000 !important;
+}
+
+header .header-inner .logo {
+  content: url(../../images/argo-logo/Argo-black.svg);
+}
+
+header .header-inner .menu-container ul li a {
+  color: #000 !important;
+}
+
+header .header-inner .menu-container ul li a:after {
+  background: #000 !important;
+}

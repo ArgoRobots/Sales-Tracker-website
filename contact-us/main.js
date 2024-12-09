@@ -1,11 +1,10 @@
 window.addEventListener("DOMContentLoaded", function () {
-
   var form = document.getElementById("my-form");
 
-  // Success and Error functions for after the form is submitted    
+  // Success and Error functions for after the form is submitted
   function success() {
     form.reset();
-    window.open("/message-sent-successfully/index.html", "_self")
+    window.open("message-sent-successfully/index.html", "_self");
   }
 
   function error() {

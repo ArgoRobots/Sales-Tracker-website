@@ -14,10 +14,12 @@
 
   <script src="../resources/scripts/main.js"></script>
   <script src="../resources/scripts/jquery-3.6.0.js"></script>
+  <script src="main.js"></script>
 
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="../resources/styles/customColors.css">
   <link rel="stylesheet" href="../resources/header/style.css">
+  <link rel="stylesheet" href="../resources/header/dark.css">
   <link rel="stylesheet" href="../resources/footer/style.css">
 </head>
 
@@ -37,7 +39,9 @@
     <div class="container">
       <p class="contact-us">Contact Us</p>
 
+      <!-- Contact form using Formspree for form submission handling -->
       <form action="https://formspree.io/f/mqkggyyd" method="POST" id="my-form">
+        <!-- Support and feedback information containers -->
         <div class="contact-us-container">
           <div class="support-container">
             <p class="title"><b>Support</b></p>
@@ -52,6 +56,7 @@
           </div>
         </div>
 
+        <!-- Additional information and links section -->
         <div class="contact-us-container">
           <div class="support-container-2">
             <p class="title"><b>Submit a question or comment</b></p>
@@ -63,7 +68,9 @@
           <div class="support-container-3"></div>
         </div>
 
+        <!-- Contact form input fields -->
         <div class="wrapper">
+          <!-- Personal information inputs -->
           <div class="input-container">
             <label for="firstName">First Name</label>
             <input type="text" id="firstName" name="firstName" maxlength="35" required>
@@ -75,6 +82,7 @@
             <input type="email" id="email" name="email" required>
           </div>
 
+          <!-- Message input and submit button -->
           <div class="question-container">
             <label for="message">Question/ Comment</label>
             <textarea class="input-message" name="message" id="message" maxlength="3000" required></textarea>
