@@ -1,14 +1,12 @@
 footer {
-  padding: 2rem 0;
-  color: white;
   text-align: center;
 }
 
-footer p {
-  margin: 0;
-}
-
-.gradient-bg {
+.footer-container {
   background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
   color: white;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
