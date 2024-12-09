@@ -1,0 +1,25 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+    <!-- Background shield -->
+    <path d="M200 50 L320 90 L320 180 C320 240 200 280 200 280 C200 280 80 240 80 180 L80 90 Z" 
+          fill="#EBF5FF" stroke="#2563eb" stroke-width="8"/>
+    
+    <!-- Lock body -->
+    <rect x="160" y="140" width="80" height="70" rx="10" fill="#2563eb"/>
+    
+    <!-- Lock shackle -->
+    <path d="M175 140 L175 110 C175 85 225 85 225 110 L225 140" 
+          fill="none" stroke="#2563eb" stroke-width="12" stroke-linecap="round"/>
+    
+    <!-- Binary data streams -->
+    <text x="120" y="160" fill="#94A3B8" font-family="monospace" font-size="8">
+        <tspan x="120" dy="0">10110101</tspan>
+        <tspan x="120" dy="10">01001010</tspan>
+        <tspan x="120" dy="10">11010101</tspan>
+    </text>
+    
+    <text x="250" y="160" fill="#94A3B8" font-family="monospace" font-size="8">
+        <tspan x="250" dy="0">10110101</tspan>
+        <tspan x="250" dy="10">01001010</tspan>
+        <tspan x="250" dy="10">11010101</tspan>
+    </text>
+</svg>

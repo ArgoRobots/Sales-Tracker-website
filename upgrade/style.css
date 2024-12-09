@@ -338,6 +338,16 @@ nav h1 {
     margin: 0;
 }
 
+/* Link */
+.link {
+    color: var(--button);
+    transition: 0.3s;
+}
+
+.link:hover {
+    text-decoration: none;
+}
+
 /* Desktop styles */
 @media (min-width: 768px) {
     .faq-card {

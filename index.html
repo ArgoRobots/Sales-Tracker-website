@@ -51,19 +51,34 @@
             <h2 class="section-title">Everything You Need</h2>
             <div class="features-grid">
                 <div class="feature-card">
-                    <img src="images/main.png" alt="Purchase Tracking">
-                    <h3>Purchases and Sales Tracking</h3>
-                    <p>Keep track of all your purchases and sales with detailed records and receipts.</p>
+                    <div class="image-container">
+                        <img src="images/main.png" alt="Purchase Tracking">
+                    </div>
+                    <div class="text-container">
+                        <h3>Purchases and Sales Tracking</h3>
+                        <p>Keep track of all your purchases and sales with detailed records and receipts.</p>
+                    </div>
                 </div>
                 <div class="feature-card">
-                    <img src="images/main.png" alt="Sales Analytics">
-                    <h3>Sales Analytics</h3>
-                    <p>Visualize your sales data with powerful charts and insights.</p>
+                    <div class="image-container">
+                        <img src="images/add-sale.png" alt="Sales Analytics">
+                    </div>
+                    <div class="text-container">
+                        <h3>Easily add new purchases and sales</h3>
+                        <p>Add new sales and purchases with fields for quantities, shipping costs, taxes, and fees
+                        </p>
+                    </div>
                 </div>
                 <div class="feature-card">
-                    <img src="images/products.png" alt="Multiple Categories">
-                    <h3>Category Management</h3>
-                    <p>Organize products and transactions with custom categories.</p>
+                    <div class="image-container">
+                        <img src="images/products.png" alt="Multiple Categories">
+                    </div>
+                    <div class="text-container">
+                        <h3>Product Management</h3>
+                        <p>Organize products with custom categories and track information like country/company of
+                            origin.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -75,7 +90,7 @@
 
             <!-- statistics screen -->
             <div class="showcase-item">
-                <img src="images/stats.png" alt="Analytics Dashboard">
+                <img src="images/analytics.png" alt="Analytics dashboard">
                 <div class="showcase-content">
                     <h3 class="showcase-title">Powerful Analytics Dashboard</h3>
                     <p class="showcase-description">Track your business performance with interactive charts and detailed
@@ -109,10 +124,8 @@
                 </div>
             </div>
 
-            <!-- export receipts -->
+            <!-- Receipt manager -->
             <div class="showcase-item">
-                <img src="images/export-receitps.png" alt="Analytics Dashboard">
-
                 <div class="showcase-content">
                     <h3 class="showcase-title">Manage your receipts</h3>
                     <p class="showcase-description">Manage and export receipts with an easy-to-use interface.</p>
@@ -143,11 +156,13 @@
                         </li>
                     </ul>
                 </div>
+
+                <img src="images/export-receitps.png" alt="Receipts manager">
             </div>
 
-            <!-- export to excel -->
+            <!-- Spreadsheet manager -->
             <div class="showcase-item">
-                <img src="images/Excel.png" alt="Speadsheet Manager">
+                <img src="images/speadsheet-manager.png" alt="Speadsheet manager">
 
                 <div class="showcase-content">
                     <h3 class="showcase-title">Export and import spreadsheets</h3>
@@ -190,13 +205,83 @@
         </div>
     </section>
 
-    <!-- add a section here to show that the data is optionally encrypted with AES-256 -->
-
-    <section class="section">
+    <section class="section security-section">
         <div class="container">
+            <img class="security-image" src="images/security.svg" alt="Security Features">
+            <div class="showcase-content">
+                <h3 class="showcase-title">Enterprise-Grade Security</h3>
+                <p class="showcase-description">Keep your business data protected with military-grade AES-256 encryption
+                    and modern authentication methods.</p>
+                <ul class="check-list">
+                    <li>
+                        <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        AES-256 encryption - The same standard used by banks and military organizations to protect
+                        sensitive data
+                    </li>
+                    <li>
+                        <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        Password protection - Secure your data with a strong password of your choice
+                    </li>
+                    <li>
+                        <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        Windows Hello integration - Use fingerprint, facial recognition, or PIN for quick and secure
+                        access
+                        (Full version only)
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="section bg-gray">
+        <div class=" container">
             <h2 class="section-title">Simple, Transparent Pricing</h2>
-            <div class="pricing-card">
-                <div class="pricing-content">
+            <!-- Free plan -->
+            <div class="flex-container">
+                <div class="pricing-card">
+                    <h3>Lifetime Access</h3>
+                    <p class="price">Free</p>
+                    <p class="description">Free forever</p>
+                    <ul class="check-list">
+                        <li>
+                            <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                            Limit of 10 products
+                        </li>
+                        <li>
+                            <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                            Most features
+                        </li>
+                        <li>
+                            <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                            Basic Support
+                        </li>
+                    </ul>
+                    <button class="btn btn-blue" style="width: 100%; margin-top: 32px;">Get Started</button>
+                </div>
+
+                <!-- paid plan -->
+                <div class="pricing-card">
                     <h3>Lifetime Access</h3>
                     <p class="price">$20 CAD</p>
                     <p class="description">One-time payment</p>
@@ -215,7 +300,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M5 13l4 4L19 7" />
                             </svg>
-                            Advanced Analytics
+                            Windows Hello
                         </li>
                         <li>
                             <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
