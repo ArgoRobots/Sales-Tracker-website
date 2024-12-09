@@ -1,0 +1,17 @@
+:root {
+    --title: #5C5E62;
+    --darkTitle: #373739;
+
+    --button: #0067b8;
+    --buttonHover: #015494;
+
+    --green: #1eb259;
+
+    --blueBackground: #006fc9;
+    --whiteBackground1: #f2f2f2;
+    --whiteBackground2: #f3f3f3;
+    --whiteBackground3: #f4f4f4;
+    --whiteBackground4: #eff2f7;
+
+    --textField: #f1f4f8;
+}

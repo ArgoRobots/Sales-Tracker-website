@@ -1,0 +1,212 @@
+  /* Reset and base styles */
+  * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+  }
+
+  body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background-color: #f9fafb;
+      line-height: 1.5;
+  }
+
+  .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+  }
+
+  /* Navigation */
+  .gradient-bg {
+      background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+      color: white;
+  }
+
+  nav {
+      padding: 16px 0;
+  }
+
+  nav .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+  }
+
+  .logo {
+      font-size: 24px;
+      font-weight: bold;
+  }
+
+  .nav-links a {
+      color: white;
+      text-decoration: none;
+      margin-left: 24px;
+      transition: color 0.3s;
+  }
+
+  .nav-links a:hover {
+      color: #bfdbfe;
+  }
+
+  /* Hero Section */
+  .hero {
+      padding: 96px 0;
+      text-align: center;
+  }
+
+  .hero h1 {
+      font-size: 48px;
+      margin-bottom: 24px;
+  }
+
+  .hero p {
+      font-size: 20px;
+      color: #bfdbfe;
+      max-width: 672px;
+      margin: 0 auto;
+  }
+
+  /* Mission Section */
+  .mission {
+      padding: 96px 0;
+  }
+
+  .mission-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+  }
+
+  .mission-content h2 {
+      font-size: 36px;
+      margin-bottom: 24px;
+  }
+
+  .mission-content p {
+      font-size: 20px;
+      color: #4b5563;
+      margin-bottom: 24px;
+  }
+
+  .mission-point {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 16px;
+  }
+
+  .check-icon {
+      color: #2563eb;
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+  }
+
+  .mission-image img {
+      width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Values Section */
+  .values {
+      background-color: #f3f4f6;
+      padding: 96px 0;
+  }
+
+  .values h2 {
+      font-size: 36px;
+      text-align: center;
+      margin-bottom: 64px;
+  }
+
+  .values-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+  }
+
+  .value-card {
+      background: white;
+      padding: 32px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+
+  .value-icon {
+      width: 64px;
+      height: 64px;
+      background: #dbeafe;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+  }
+
+  .value-icon svg {
+      width: 32px;
+      height: 32px;
+      color: #2563eb;
+  }
+
+  .value-card h3 {
+      font-size: 20px;
+      margin-bottom: 16px;
+  }
+
+  .value-card p {
+      color: #4b5563;
+  }
+
+  /* Contact Section */
+  .contact {
+      padding: 96px 0;
+      text-align: center;
+  }
+
+  .contact h2 {
+      font-size: 36px;
+      margin-bottom: 32px;
+  }
+
+  .contact p {
+      font-size: 20px;
+      color: #4b5563;
+      margin-bottom: 48px;
+      max-width: 672px;
+      margin-left: auto;
+      margin-right: auto;
+  }
+
+  .contact-button {
+      background: #2563eb;
+      color: white;
+      padding: 12px 32px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+  }
+
+  .contact-button:hover {
+      background: #1d4ed8;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+      .mission-grid {
+          grid-template-columns: 1fr;
+      }
+
+      .values-grid {
+          grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+          display: none;
+      }
+  }

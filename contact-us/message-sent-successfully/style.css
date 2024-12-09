@@ -1,0 +1,33 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+}
+
+.first {
+  height: 88vh;
+  background: #fff;
+}
+
+.first .container {
+  top: 50%;
+  transform: translateY(-50%);
+  position: relative;
+  padding: 30px;
+}
+
+.first .container p {
+  font-size: 2rem;
+  color: #000;
+  text-align: center;
+}
+
+.first .container p:nth-of-type(2) {
+  font-size: 1rem;
+  margin-top: s0px;
+  position: relative;
+}

@@ -1,0 +1,371 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+    line-height: 1.5;
+    background-color: #f9fafb;
+    color: #1f2937;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Utility Classes */
+.gradient-bg {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    color: white;
+    min-height: 100vh;
+    padding: 96px 0;
+}
+
+.btn {
+    padding: 8px 24px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-white {
+    background: white;
+    color: #1e3a8a;
+}
+
+.btn-white:hover {
+    background: #f0f9ff;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 64px;
+}
+
+nav h1 {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.hero-grid {
+    display: grid;
+    gap: 48px;
+    align-items: center;
+}
+
+@media (min-width: 768px) {
+    .hero-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.hero-content {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.hero-content h2 {
+    font-size: 48px;
+    line-height: 1.1;
+}
+
+.hero-content p {
+    font-size: 20px;
+    color: #dbeafe;
+}
+
+.price-tag {
+    background: white;
+    padding: 24px;
+    border-radius: 8px;
+    display: inline-block;
+    animation: float 3s ease-in-out infinite;
+}
+
+.price-tag p {
+    color: #1e3a8a;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.price-tag .price {
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.feature-list {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    padding: 32px;
+    border-radius: 16px;
+}
+
+.feature-list h3 {
+    font-size: 24px;
+    margin-bottom: 24px;
+}
+
+.feature-list ul {
+    list-style: none;
+}
+
+.feature-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.feature-list svg {
+    width: 24px;
+    height: 24px;
+    margin-right: 12px;
+    stroke: #4ade80;
+    stroke-width: 2;
+    fill: none;
+}
+
+/* Features Section */
+.features {
+    padding: 96px 0;
+}
+
+.features h2 {
+    font-size: 36px;
+    text-align: center;
+    margin-bottom: 64px;
+}
+
+.features-grid {
+    display: grid;
+    gap: 32px;
+}
+
+@media (min-width: 768px) {
+    .features-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.feature-card {
+    background: white;
+    padding: 32px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.icon-container {
+    width: 64px;
+    height: 64px;
+    background: #dbeafe;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+}
+
+.icon-container svg {
+    width: 32px;
+    height: 32px;
+    stroke: #2563eb;
+    stroke-width: 2;
+    fill: none;
+}
+
+.feature-card h3 {
+    font-size: 20px;
+    margin-bottom: 16px;
+}
+
+.feature-card p {
+    color: #6b7280;
+}
+
+/* Payment Section */
+.payment {
+    padding: 96px 0;
+    background: #f3f4f6;
+}
+
+.payment h2 {
+    font-size: 36px;
+    text-align: center;
+}
+
+.payment>.container>p {
+    text-align: center;
+    color: #6b7280;
+    font-size: 20px;
+    margin: 24px 0 48px;
+}
+
+.payment-grid {
+    display: grid;
+    gap: 32px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+    .payment-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.payment-btn {
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.payment-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.payment-btn img {
+    max-width: 120px;
+    height: auto;
+}
+
+.payment-btn span {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* FAQ Section */
+.faq {
+    padding: 96px 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.faq h2 {
+    font-size: 36px;
+    text-align: center;
+    margin-bottom: 64px;
+}
+
+.faq-grid {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.faq-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.faq-card summary {
+    padding: 24px;
+    cursor: pointer;
+    list-style: none;
+    position: relative;
+}
+
+.faq-card summary::-webkit-details-marker {
+    display: none;
+}
+
+.faq-card summary::after {
+    content: '';
+    position: absolute;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid #6b7280;
+    border-bottom: 2px solid #6b7280;
+    transition: transform 0.3s ease;
+}
+
+.faq-card[open] summary::after {
+    transform: translateY(-50%) rotate(-135deg);
+}
+
+.faq-card h3 {
+    font-size: 20px;
+    margin: 0;
+    padding-right: 40px;
+}
+
+.faq-card p {
+    color: #6b7280;
+    padding: 0 24px 24px 24px;
+    margin: 0;
+}
+
+/* Desktop styles */
+@media (min-width: 768px) {
+    .faq-card {
+        transition: box-shadow 0.3s ease;
+    }
+
+    .faq-card:hover {
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Force open on desktop */
+    .faq-card[open],
+    .faq-card {
+        display: block;
+    }
+
+    .faq-card>* {
+        display: block !important;
+    }
+}
+
+/* Mobile styles - close details by default */
+@media (max-width: 767px) {
+    .faq-card {
+        background: #fff;
+    }
+
+    .faq-card[open] {
+        background: #f9fafb;
+    }
+}
