@@ -50,8 +50,8 @@ nav {
 }
 
 .btn {
-  padding: 8px 24px;
-  border-radius: 8px;
+  padding: 12px 24px;
+  border-radius: 5px;
   cursor: pointer;
   transition: all 0.3s ease;
   border: none;

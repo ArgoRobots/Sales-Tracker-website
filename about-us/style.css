@@ -117,18 +117,18 @@
       margin-bottom: 24px;
   }
 
-  .values.value-icon svg {
+  .values .value-icon svg {
       width: 32px;
       height: 32px;
       color: #2563eb;
   }
 
-  .values.value-card h3 {
+  .values .value-card h3 {
       font-size: 20px;
       margin-bottom: 16px;
   }
 
-  .values.value-card p {
+  .values .value-card p {
       color: #4b5563;
   }
 
@@ -168,12 +168,14 @@
   }
 
   /* Responsive Design */
-  @media (max-width: 768px) {
+  @media (max-width: 1100px) {
       .mission-grid {
           grid-template-columns: 1fr;
       }
+  }
 
-      .values-grid {
+  @media (max-width: 800px) {
+      .values .values-grid {
           grid-template-columns: 1fr;
       }
   }
