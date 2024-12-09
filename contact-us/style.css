@@ -1,3 +1,17 @@
+/* Underline current page */
+header .header-inner .menu-container .menu .contact-us:after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  transform-origin: 50% 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 90%;
+  height: 2px;
+  transition: transform 0.2s;
+  transform: translateX(-50%) scaleX(1);
+}
+
 .first {
   height: 100%;
   min-height: 100vh;
