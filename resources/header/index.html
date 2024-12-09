@@ -4,26 +4,37 @@
 
 <div class="header-inner">
   <!-- LOGO -->
-  <a href="index.html">
-    <img class="logo" id="logo" alt="logo" src="images/argo-logo/argo-icon-white.png">
+  <a href="../../index.html">
+    <img class="logo" id="logo" alt="logo" src="../../images/argo-logo/argo-icon-white.png">
   </a>
 
   <div class="menu-container" id="menu-container">
     <!-- MENU -->
     <ul class="menu">
-      <li><a class="robots" href="upgrade/index.html">Upgrade now</a></li>
-      <li><a class="about-us" href="whats-new/index.html">Whats new</a></li>
-      <li><a class="about-us" href="about-us/index.html">About us</a></li>
-      <li><a class="contact" href="contact-us/index.html">Contact us</a></li>
+      <li><a class="robots" href="../upgrade/index.html">Upgrade now</a></li>
+      <li><a class="about-us" href="../whats-new/index.html">Whats new</a></li>
+      <li><a class="about-us" href="../about-us/index.html">About us</a></li>
+      <li><a class="contact" href="../contact-us/index.html">Contact us</a></li>
     </ul>
   </div>
 </div>
 
 <div id="menu" class="hamburger-nav-menu" style="width: 0;">
   <ul>
-    <li><a href="upgrade/index.html">Upgrade now</a></li>
-    <li><a href="whats-new/index.html">Whats new</a></li>
-    <li><a href="about-us/index.html">About us</a></li>
-    <li><a href="contact-us/index.html">Contact Us</a></li>
+    <li><a href="../upgrade/index.html">Upgrade now</a></li>
+    <li><a href="../whats-new/index.html">Whats new</a></li>
+    <li><a href="../about-us/index.html">About us</a></li>
+    <li><a href="../contact-us/index.html">Contact Us</a></li>
   </ul>
 </div>
+
+<script>
+  function headerToggleMenu() {
+    var menu = document.getElementById('menu')
+    if (menu.style.width == '0px') {
+      menu.style.width = '100%';
+    } else {
+      menu.style.width = '0';
+    }
+  }
+</script>

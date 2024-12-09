@@ -28,7 +28,7 @@ header .menu-icon {
 }
 
 header .menu-icon .nav-icon {
-  background: #000;
+  background: #fff;
   display: block;
   height: 1px;
   position: relative;
@@ -38,7 +38,7 @@ header .menu-icon .nav-icon {
 
 header .menu-icon .nav-icon:before,
 header .menu-icon .nav-icon:after {
-  background: #000;
+  background: #fff;
   content: "";
   display: block;
   height: 100%;

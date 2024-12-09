@@ -12,12 +12,27 @@
   <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/a-logo.ico">
   <title>Argo - Contact us</title>
 
-  <script src="../resources/scripts/component.js"></script>
+  <script src="../resources/scripts/main.js"></script>
+  <script src="../resources/scripts/jquery-3.6.0.js"></script>
+
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="../resources/resources/customColors.css">
+  <link rel="stylesheet" href="../resources/styles/customColors.css">
+  <link rel="stylesheet" href="../resources/header/style.css">
+  <link rel="stylesheet" href="../resources/footer/style.css">
 </head>
 
 <body>
+  <header>
+    <script>
+      $(function () {
+        $("#includeHeader").load("../resources/header/index.html", function () {
+          adjustLinksAndImages("#includeHeader");
+        });
+      });
+    </script>
+    <div id="includeHeader"></div>
+  </header>
+
   <section class="first">
     <div class="container">
       <p class="contact-us">Contact Us</p>
@@ -69,6 +84,17 @@
       </form>
     </div>
   </section>
+
+  <footer class="footer">
+    <script>
+      $(function () {
+        $("#includeFooter").load("../resources/footer/index.html", function () {
+          adjustLinksAndImages("#includeFooter");
+        });
+      });
+    </script>
+    <div id="includeFooter"></div>
+  </footer>
 </body>
 
 </html>

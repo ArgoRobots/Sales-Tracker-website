@@ -9,20 +9,47 @@
   <meta name="keywords" content="">
   <meta name="author" content="Argo">
   <meta name="robots" content="noindex, nofollow">
-  <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/a-logo.ico">
+  <link rel="shortcut icon" type="image/x-icon" href="../../images/argo-logo/a-logo.ico">
   <title>Argo - Message sent successfully</title>
 
+  <script src="../../resources/scripts/main.js"></script>
+  <script src="../../resources/scripts/jquery-3.6.0.js"></script>
+
   <link rel="stylesheet" href="style.css">
-  <!-- <script src="../resources/scripts/component.js"></script> -->
+  <link rel="stylesheet" href="../../resources/styles/customColors.css">
+  <link rel="stylesheet" href="../../resources/header/style.css">
+  <link rel="stylesheet" href="../../resources/footer/style.css">
 </head>
 
 <body>
+  <header>
+    <script>
+      $(function () {
+        $("#includeHeader").load("../resources/header/index.html", function () {
+          adjustLinksAndImages("#includeHeader");
+        });
+      });
+    </script>
+    <div id="includeHeader"></div>
+  </header>
+
   <section class="first">
     <div class="container">
       <p>Your message has been sent successfully</p>
       <p>You may safely close this page</p>
     </div>
   </section>
+
+  <footer class="footer">
+    <script>
+      $(function () {
+        $("#includeFooter").load("../resources/footer/index.html", function () {
+          adjustLinksAndImages("#includeFooter");
+        });
+      });
+    </script>
+    <div id="includeFooter"></div>
+  </footer>
 </body>
 
 </html>

@@ -12,12 +12,27 @@
     <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/a-logo.ico">
     <title>About Argo Sales Tracker</title>
 
-    <script src="../resources/scripts/component.js"></script>
+    <script src="../resources/scripts/main.js"></script>
+    <script src="../resources/scripts/jquery-3.6.0.js"></script>
+
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="../resources/resources/customColors.css">
+    <link rel="stylesheet" href="../resources/styles/customColors.css">
+    <link rel="stylesheet" href="../resources/header/style.css">
+    <link rel="stylesheet" href="../resources/footer/style.css">
 </head>
 
 <body>
+    <header>
+        <script>
+            $(function () {
+                $("#includeHeader").load("../resources/header/index.html", function () {
+                    adjustLinksAndImages("#includeHeader");
+                });
+            });
+        </script>
+        <div id="includeHeader"></div>
+    </header>
+
     <section class="hero gradient-bg">
         <div class="container">
             <h1>Our Story</h1>
@@ -109,13 +124,24 @@
         </div>
     </section>
 
-    <section class="contact">
+    <section class="contact-section">
         <div class="container">
             <h2>Let's Build Together</h2>
             <p>Have questions or suggestions? We'd love to hear from you and make Argo Sales Tracker even better.</p>
             <button class="contact-button">Contact Us</button>
         </div>
     </section>
+
+    <footer class="footer">
+        <script>
+            $(function () {
+                $("#includeFooter").load("../resources/footer/index.html", function () {
+                    adjustLinksAndImages("#includeFooter");
+                });
+            });
+        </script>
+        <div id="includeFooter"></div>
+    </footer>
 </body>
 
 </html>

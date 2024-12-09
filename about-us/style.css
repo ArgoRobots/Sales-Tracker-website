@@ -16,32 +16,6 @@
       color: white;
   }
 
-  nav {
-      padding: 16px 0;
-  }
-
-  nav .container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-  }
-
-  .logo {
-      font-size: 24px;
-      font-weight: bold;
-  }
-
-  .nav-links a {
-      color: white;
-      text-decoration: none;
-      margin-left: 24px;
-      transition: color 0.3s;
-  }
-
-  .nav-links a:hover {
-      color: #bfdbfe;
-  }
-
   /* Hero Section */
   .hero {
       padding: 96px 0;
@@ -115,13 +89,13 @@
       margin-bottom: 64px;
   }
 
-  .values-grid {
+  .values .values-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 32px;
   }
 
-  .value-card {
+  .values .value-card {
       background: white;
       padding: 32px;
       border-radius: 12px;
@@ -132,7 +106,7 @@
       align-items: center;
   }
 
-  .value-icon {
+  .values .value-icon {
       width: 64px;
       height: 64px;
       background: #dbeafe;
@@ -143,33 +117,33 @@
       margin-bottom: 24px;
   }
 
-  .value-icon svg {
+  .values.value-icon svg {
       width: 32px;
       height: 32px;
       color: #2563eb;
   }
 
-  .value-card h3 {
+  .values.value-card h3 {
       font-size: 20px;
       margin-bottom: 16px;
   }
 
-  .value-card p {
+  .values.value-card p {
       color: #4b5563;
   }
 
   /* Contact Section */
-  .contact {
+  .contact-section {
       padding: 96px 0;
       text-align: center;
   }
 
-  .contact h2 {
+  .contact-section h2 {
       font-size: 36px;
       margin-bottom: 32px;
   }
 
-  .contact p {
+  .contact-section p {
       font-size: 20px;
       color: #4b5563;
       margin-bottom: 48px;
@@ -178,7 +152,7 @@
       margin-right: auto;
   }
 
-  .contact-button {
+  .contact-section .contact-button {
       background: #2563eb;
       color: white;
       padding: 12px 32px;
@@ -189,7 +163,7 @@
       transition: background-color 0.3s;
   }
 
-  .contact-button:hover {
+  .contact-section .contact-button:hover {
       background: #1d4ed8;
   }
 
@@ -201,9 +175,5 @@
 
       .values-grid {
           grid-template-columns: 1fr;
-      }
-
-      .nav-links {
-          display: none;
       }
   }
