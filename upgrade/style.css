@@ -29,7 +29,6 @@ body {
 .gradient-bg {
     background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
     color: white;
-    min-height: 100vh;
     padding: 96px 0;
 }
 
@@ -48,40 +47,52 @@ nav h1 {
 .hero-grid {
     display: grid;
     gap: 48px;
-    align-items: center;
+    align-items: start;
+    grid-template-columns: 1fr 1fr;
 }
 
-@media (min-width: 768px) {
+@media (max-width: 780px) {
     .hero-grid {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
+    }
+
+    .hero-grid .feature-section .hero-illustration {
+        display: none;
     }
 }
 
-.hero-content {
+.hero-grid .hero-content {
     display: flex;
     flex-direction: column;
     gap: 32px;
 }
 
-.hero-content h2 {
+.hero-grid .hero-content h2 {
     font-size: 48px;
     line-height: 1.1;
 }
 
-.hero-content p {
+.hero-grid .hero-content p {
     font-size: 20px;
     color: #dbeafe;
 }
 
-.price-tag {
+.hero-grid .feature-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.hero-grid .price-tag {
     background: white;
-    padding: 24px;
+    padding: 10px 24px;
+    margin-top: 10px;
     border-radius: 8px;
     display: inline-block;
     animation: float 3s ease-in-out infinite;
+    text-align: center;
 }
 
-.price-tag p {
+.hero-grid .price-tag p {
     color: #1e3a8a;
 }
 
@@ -97,7 +108,7 @@ nav h1 {
     }
 }
 
-.price-tag .price {
+.hero-grid .price-tag .price {
     font-size: 36px;
     font-weight: bold;
 }

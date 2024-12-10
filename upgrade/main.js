@@ -1,18 +1,15 @@
-// Run once when the page loads
-window.addEventListener("DOMContentLoaded", () => {
-  const mediaQuery = window.matchMedia("(min-width: 768px)");
-  const details = document.querySelectorAll(".faq-card");
-
-  // Function to set initial state based on screen size
-  function setInitialState(e) {
-    details.forEach((detail) => {
-      detail.open = e.matches;
+document.addEventListener("DOMContentLoaded", () => {
+  const priceTag = document.querySelector(".price-tag");
+  if (priceTag) {
+    priceTag.style.cursor = "pointer";
+    priceTag.title = "Click to see payment options";
+    priceTag.addEventListener("click", () => {
+      const upgradeHeading = Array.from(document.querySelectorAll("h2")).find(
+        (h2) => h2.textContent.includes("Ready to Upgrade?")
+      );
+      upgradeHeading
+        ?.closest("section")
+        ?.scrollIntoView({ behavior: "smooth" });
     });
   }
-
-  // Set initial state
-  setInitialState(mediaQuery);
-
-  // Listen for window resize
-  mediaQuery.addListener(setInitialState);
 });
