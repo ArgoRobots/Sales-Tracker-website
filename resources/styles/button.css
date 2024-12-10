@@ -1,5 +1,5 @@
 .btn {
-    padding: 8px 24px;
+    padding: 8px 0;
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -8,6 +8,7 @@
     text-decoration: none;
     display: block;
     text-align: center;
+    width: 180px;
 }
 
 .btn-white {

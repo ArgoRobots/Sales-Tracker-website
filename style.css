@@ -12,7 +12,7 @@ body {
 .flex-container {
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   gap: 80px;
 }
 
@@ -34,7 +34,7 @@ body {
   background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
   color: white;
   min-height: 100vh;
-  padding: 96px 0;
+  padding: 90px 0;
 }
 
 nav {
@@ -149,12 +149,31 @@ nav {
   grid-template-columns: 1fr;
   gap: 48px;
   align-items: center;
-  margin-bottom: 96px;
+  margin-bottom: 90px;
+}
+
+.showcase-item:last-child {
+  margin-bottom: 0;
 }
 
 @media (min-width: 1000px) {
   .showcase-item {
     grid-template-columns: 1fr 1fr;
+  }
+}
+
+.showcase-item img {
+  order: -1;
+}
+
+@media (min-width: 1000px) {
+  .showcase-item img {
+    order: 0;
+  }
+
+  /* Restore original order for receipt manager section */
+  .showcase-item:nth-child(1) img {
+    order: 1;
   }
 }
 
@@ -201,6 +220,7 @@ nav {
 }
 
 .pricing-card .btn {
+  /* Push button to bottom of card */
   margin-top: auto !important;
 }
 

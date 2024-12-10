@@ -7,6 +7,11 @@ header .menu-icon .nav-icon:after {
   background: #000 !important;
 }
 
+/* Add transparent background only when menu is open */
+header .menu-btn:checked~.menu-icon .nav-icon {
+  background: transparent !important;
+}
+
 header .header-inner .logo {
   content: url(../../images/argo-logo/Argo-black.svg);
 }

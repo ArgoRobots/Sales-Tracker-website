@@ -22,6 +22,9 @@
       max-width: 1200px;
       margin: 0 auto;
       padding: 0 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
   }
 
   /* Navigation */
@@ -32,7 +35,7 @@
 
   /* Hero Section */
   .hero {
-      padding: 96px 0;
+      padding: 90px 0;
       text-align: center;
   }
 
@@ -50,7 +53,7 @@
 
   /* Mission Section */
   .mission {
-      padding: 96px 0;
+      padding: 90px 0;
   }
 
   .mission-grid {
@@ -94,7 +97,7 @@
   /* Values Section */
   .values {
       background-color: #f3f4f6;
-      padding: 96px 0;
+      padding: 90px 0;
   }
 
   .values h2 {
@@ -148,7 +151,7 @@
 
   /* Contact Section */
   .contact-section {
-      padding: 96px 0;
+      padding: 90px 0;
       text-align: center;
   }
 
@@ -164,21 +167,6 @@
       max-width: 672px;
       margin-left: auto;
       margin-right: auto;
-  }
-
-  .contact-section .contact-button {
-      background: #2563eb;
-      color: white;
-      padding: 12px 32px;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-  }
-
-  .contact-section .contact-button:hover {
-      background: #1d4ed8;
   }
 
   /* Responsive Design */
