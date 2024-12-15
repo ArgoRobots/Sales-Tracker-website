@@ -32,14 +32,7 @@ body {
     padding: 90px 0;
 }
 
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 64px;
-}
-
-nav h1 {
+title {
     font-size: 24px;
     font-weight: bold;
 }
@@ -49,6 +42,7 @@ nav h1 {
     gap: 48px;
     align-items: start;
     grid-template-columns: 1fr 1fr;
+    margin-top: 64px;
 }
 
 @media (max-width: 780px) {

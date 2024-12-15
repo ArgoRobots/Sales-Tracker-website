@@ -21,17 +21,16 @@ header .header-inner .menu-container .menu .contact-us:after {
   top: 50%;
   transform: translateY(-50%);
   position: relative;
-  padding: 30px;
-}
-
-.first .container p {
-  font-size: 2rem;
-  color: #000;
   text-align: center;
 }
 
-.first .container p:nth-of-type(2) {
+h1 {
+  font-size: 1.8rem;
+  font-weight: 500;
+}
+
+h2 {
   font-size: 1rem;
   margin-top: 30px;
-  position: relative;
+  font-weight: 500;
 }

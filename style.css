@@ -37,14 +37,7 @@ body {
   padding: 90px 0;
 }
 
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 64px;
-}
-
-.logo {
+.title {
   font-size: 36px;
   font-weight: bold;
 }
@@ -53,7 +46,9 @@ nav {
   display: grid;
   grid-template-columns: 1fr;
   gap: 48px;
+  margin-top: 50px;
   align-items: center;
+  margin-top: 64px;
 }
 
 @media (min-width: 768px) {

@@ -28,11 +28,12 @@ header .header-inner .menu-container .menu .contact-us:after {
   top: 120px;
 }
 
-.first .container .contact-us {
+h1 {
   position: relative;
   font-size: 2rem;
   color: #000;
   text-align: left;
+  font-weight: 500;
 }
 
 .first .container .contact-us-container {
@@ -59,7 +60,7 @@ header .header-inner .menu-container .menu .contact-us:after {
   position: relative;
 }
 
-.first .container .contact-us-container .title {
+h2 {
   position: relative;
   color: #000;
   font-size: 1.15rem;
