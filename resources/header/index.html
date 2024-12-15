@@ -2,7 +2,7 @@
 <input class="menu-btn" type="checkbox" id="menu-btn" onclick="headerToggleMenu()">
 <label class="menu-icon" id="menu-icon" for="menu-btn"><span class="nav-icon"></span></label>
 
-<div class="header-inner">
+<div class="header-inner" id="header">
   <!-- LOGO -->
   <a href="../../index.html">
     <img class="logo" id="logo" alt="logo" src="../../images/argo-logo/Argo-white.svg">
@@ -19,7 +19,7 @@
   </div>
 </div>
 
-<div id="menu" class="hamburger-nav-menu" style="width: 0;">
+<div id="menu" class="hamburger-nav-menu">
   <ul>
     <li><a href="../upgrade/index.html">Upgrade now</a></li>
     <li><a href="../whats-new/index.html">Whats new</a></li>
@@ -30,11 +30,54 @@
 
 <script>
   function headerToggleMenu() {
-    var menu = document.getElementById('menu')
-    if (menu.style.width == '0px') {
-      menu.style.width = '100%';
+    const menu = document.getElementById('menu');
+    const menuHeight = menu.scrollHeight;
+    const header = document.querySelector('header');
+
+    if (!menu.classList.contains('active')) {
+      // Opening the menu
+      menu.classList.add('active');
+      menu.style.height = menuHeight + 'px';
     } else {
-      menu.style.width = '0';
+      // Closing the menu
+      menu.classList.remove('active');
+      menu.style.height = '0';
     }
   }
+
+  // Sticky header functionality
+  const header = document.querySelector('header');
+  let lastScroll = 0;
+
+  window.addEventListener('scroll', () => {
+    const currentScroll = window.pageYOffset;
+
+    // Only handle the sticky class, don't affect the menu
+    if (currentScroll > 0) {
+      header.classList.add('sticky');
+    } else {
+      header.classList.remove('sticky');
+    }
+
+    lastScroll = currentScroll;
+  });
+
+  // Close menu when clicking outside
+  document.addEventListener('click', (e) => {
+    const menu = document.getElementById('menu');
+    const menuBtn = document.getElementById('menu-btn');
+    const menuIcon = document.getElementById('menu-icon');
+    const header = document.getElementById('header');
+
+    // Don't close if clicking the menu button or header
+    if (e.target === menuBtn || menuIcon.contains(e.target)) {
+      return;
+    }
+
+    // Close only if menu is active and click is outside
+    if (menu.classList.contains('active') && !header.contains(e.target)) {
+      menuBtn.checked = false;
+      headerToggleMenu();
+    }
+  });
 </script>
