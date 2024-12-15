@@ -1,19 +1,9 @@
 /* Underline current page */
 header .header-inner .menu-container .menu .upgrade-now:after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    bottom: 14px;
-    transform-origin: 50% 50%;
-    transform: translateX(-50%) scaleX(0);
-    width: 90%;
-    height: 2px;
-    transition: transform 0.2s;
     transform: translateX(-50%) scaleX(1);
 }
 
 body {
-    font-family: system-ui, -apple-system, sans-serif;
     line-height: 1.5;
     background-color: #f9fafb;
     color: #1f2937;
@@ -355,36 +345,4 @@ title {
 
 .link:hover {
     text-decoration: none;
-}
-
-/* Desktop styles */
-@media (min-width: 768px) {
-    .faq-card {
-        transition: box-shadow 0.3s ease;
-    }
-
-    .faq-card:hover {
-        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-    }
-
-    /* Force open on desktop */
-    .faq-card[open],
-    .faq-card {
-        display: block;
-    }
-
-    .faq-card>* {
-        display: block !important;
-    }
-}
-
-/* Mobile styles - close details by default */
-@media (max-width: 767px) {
-    .faq-card {
-        background: #fff;
-    }
-
-    .faq-card[open] {
-        background: #f9fafb;
-    }
 }

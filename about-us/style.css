@@ -1,183 +1,173 @@
-  /* Underline current page */
-  header .header-inner .menu-container .menu .about-us:after {
-      content: "";
-      position: absolute;
-      left: 50%;
-      bottom: 14px;
-      transform-origin: 50% 50%;
-      transform: translateX(-50%) scaleX(0);
-      width: 90%;
-      height: 2px;
-      transition: transform 0.2s;
-      transform: translateX(-50%) scaleX(1);
-  }
+/* Underline current page */
+header .header-inner .menu-container .menu .about-us:after {
+    transform: translateX(-50%) scaleX(1);
+}
 
-  body {
-      font-family: system-ui, -apple-system, sans-serif;
-      background-color: #f9fafb;
-      line-height: 1.5;
-  }
+body {
+    background-color: #f9fafb;
+    line-height: 1.5;
+}
 
-  .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 24px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-  }
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-  /* Navigation */
-  .gradient-bg {
-      background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-      color: white;
-  }
+/* Navigation */
+.gradient-bg {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    color: white;
+}
 
-  /* Hero Section */
-  .hero {
-      padding: 90px 0;
-      text-align: center;
-  }
+/* Hero Section */
+.hero {
+    padding: 90px 0;
+    text-align: center;
+}
 
-  .hero h1 {
-      font-size: 48px;
-      margin-bottom: 24px;
-  }
+.hero h1 {
+    font-size: 48px;
+    margin-bottom: 24px;
+}
 
-  .hero p {
-      font-size: 20px;
-      color: #bfdbfe;
-      max-width: 672px;
-      margin: 0 auto;
-  }
+.hero p {
+    font-size: 20px;
+    color: #bfdbfe;
+    max-width: 672px;
+    margin: 0 auto;
+}
 
-  /* Mission Section */
-  .mission {
-      padding: 90px 0;
-  }
+/* Mission Section */
+.mission {
+    padding: 90px 0;
+}
 
-  .mission-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 48px;
-      align-items: center;
-  }
+.mission-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+}
 
-  .mission-content h2 {
-      font-size: 36px;
-      margin-bottom: 24px;
-  }
+.mission-content h2 {
+    font-size: 36px;
+    margin-bottom: 24px;
+}
 
-  .mission-content p {
-      font-size: 20px;
-      color: #4b5563;
-      margin-bottom: 24px;
-  }
+.mission-content p {
+    font-size: 20px;
+    color: #4b5563;
+    margin-bottom: 24px;
+}
 
-  .mission-point {
-      display: flex;
-      align-items: flex-start;
-      gap: 16px;
-      margin-bottom: 16px;
-  }
+.mission-point {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 16px;
+}
 
-  .check-icon {
-      color: #2563eb;
-      width: 24px;
-      height: 24px;
-      flex-shrink: 0;
-  }
+.check-icon {
+    color: #2563eb;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
 
-  .mission-image img {
-      width: 100%;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  }
+.mission-image img {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
 
-  /* Values Section */
-  .values {
-      background-color: #f3f4f6;
-      padding: 90px 0;
-  }
+/* Values Section */
+.values {
+    background-color: #f3f4f6;
+    padding: 90px 0;
+}
 
-  .values h2 {
-      font-size: 36px;
-      text-align: center;
-      margin-bottom: 64px;
-  }
+.values h2 {
+    font-size: 36px;
+    text-align: center;
+    margin-bottom: 64px;
+}
 
-  .values .values-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 32px;
-  }
+.values .values-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+}
 
-  .values .value-card {
-      background: white;
-      padding: 32px;
-      border-radius: 12px;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-  }
+.values .value-card {
+    background: white;
+    padding: 32px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-  .values .value-icon {
-      width: 64px;
-      height: 64px;
-      background: #dbeafe;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 24px;
-  }
+.values .value-icon {
+    width: 64px;
+    height: 64px;
+    background: #dbeafe;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+}
 
-  .values .value-icon svg {
-      width: 32px;
-      height: 32px;
-      color: #2563eb;
-  }
+.values .value-icon svg {
+    width: 32px;
+    height: 32px;
+    color: #2563eb;
+}
 
-  .values .value-card h3 {
-      font-size: 20px;
-      margin-bottom: 16px;
-  }
+.values .value-card h3 {
+    font-size: 20px;
+    margin-bottom: 16px;
+}
 
-  .values .value-card p {
-      color: #4b5563;
-  }
+.values .value-card p {
+    color: #4b5563;
+}
 
-  /* Contact Section */
-  .contact-section {
-      padding: 90px 0;
-      text-align: center;
-  }
+/* Contact Section */
+.contact-section {
+    padding: 90px 0;
+    text-align: center;
+}
 
-  .contact-section h2 {
-      font-size: 36px;
-      margin-bottom: 32px;
-  }
+.contact-section h2 {
+    font-size: 36px;
+    margin-bottom: 32px;
+}
 
-  .contact-section p {
-      font-size: 20px;
-      color: #4b5563;
-      margin-bottom: 48px;
-      max-width: 672px;
-      margin-left: auto;
-      margin-right: auto;
-  }
+.contact-section p {
+    font-size: 20px;
+    color: #4b5563;
+    margin-bottom: 48px;
+    max-width: 672px;
+    margin-left: auto;
+    margin-right: auto;
+}
 
-  /* Responsive Design */
-  @media (max-width: 1100px) {
-      .mission-grid {
-          grid-template-columns: 1fr;
-      }
-  }
+/* Responsive Design */
+@media (max-width: 1100px) {
+    .mission-grid {
+        grid-template-columns: 1fr;
+    }
+}
 
-  @media (max-width: 800px) {
-      .values .values-grid {
-          grid-template-columns: 1fr;
-      }
-  }
+@media (max-width: 800px) {
+    .values .values-grid {
+        grid-template-columns: 1fr;
+    }
+}
