@@ -2,7 +2,7 @@
 <input class="menu-btn" type="checkbox" id="menu-btn" onclick="headerToggleMenu()">
 <label class="menu-icon" id="menu-icon" for="menu-btn"><span class="nav-icon"></span></label>
 
-<div class="header-inner" id="header">
+<div class="header-inner">
   <!-- LOGO -->
   <a href="../../index.html">
     <img class="logo" id="logo" alt="logo" src="../../images/argo-logo/Argo-white.svg">
@@ -29,11 +29,14 @@
 </div>
 
 <script>
-  function headerToggleMenu() {
-    const menu = document.getElementById('menu');
-    const menuHeight = menu.scrollHeight;
-    const header = document.querySelector('header');
+  const menu = document.getElementById('menu');
+  const menuHeight = menu.scrollHeight;
+  const header = document.querySelector('header');
+  const menuBtn = document.getElementById('menu-btn');
+  const menuIcon = document.getElementById('menu-icon');
+  let lastScroll = 0;
 
+  function headerToggleMenu() {
     if (!menu.classList.contains('active')) {
       // Opening the menu
       menu.classList.add('active');
@@ -46,9 +49,6 @@
   }
 
   // Sticky header functionality
-  const header = document.querySelector('header');
-  let lastScroll = 0;
-
   window.addEventListener('scroll', () => {
     const currentScroll = window.pageYOffset;
 
@@ -64,13 +64,8 @@
 
   // Close menu when clicking outside
   document.addEventListener('click', (e) => {
-    const menu = document.getElementById('menu');
-    const menuBtn = document.getElementById('menu-btn');
-    const menuIcon = document.getElementById('menu-icon');
-    const header = document.getElementById('header');
-
-    // Don't close if clicking the menu button or header
-    if (e.target === menuBtn || menuIcon.contains(e.target)) {
+    // Don't close if clicking header
+    if (menuIcon.contains(e.target)) {
       return;
     }
 
