@@ -52,11 +52,18 @@
   window.addEventListener('scroll', () => {
     const currentScroll = window.pageYOffset;
 
-    // Only handle the sticky class, don't affect the menu
-    if (currentScroll > 0) {
+    // Add sticky class only after scrolling past header height
+    if (currentScroll > header.offsetHeight) {
       header.classList.add('sticky');
+
+      // Show header when scrolling up, hide when scrolling down
+      if (currentScroll < lastScroll) {
+        header.classList.add('show');
+      } else {
+        header.classList.remove('show');
+      }
     } else {
-      header.classList.remove('sticky');
+      header.classList.remove('sticky', 'show');
     }
 
     lastScroll = currentScroll;
