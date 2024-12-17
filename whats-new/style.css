@@ -30,6 +30,12 @@ header .header-inner .menu-container .menu .whats-new:after {
     display: flex;
     justify-content: center;
     margin-top: 50px;
+    align-items: center;
+    flex-direction: column;
+}
+
+.download-button-container p {
+    margin-top: 10px;
 }
 
 .container {
@@ -40,7 +46,7 @@ header .header-inner .menu-container .menu .whats-new:after {
 .version-grid {
     display: grid;
     gap: 48px;
-    padding: 90px 0;
+    padding: 50px 0;
     margin: 0 50px;
 }
 

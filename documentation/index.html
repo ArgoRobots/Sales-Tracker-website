@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="Argo">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
+    <title>Argo Sales Tracker - Documentation</title>
+
+    <script src="../resources/scripts/main.js"></script>
+    <script src="../resources/scripts/jquery-3.6.0.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../resources/styles/customColors.css">
+    <link rel="stylesheet" href="../resources/styles/button.css">
+    <link rel="stylesheet" href="../resources/header/style.css">
+    <link rel="stylesheet" href="../resources/header/dark.css">
+    <link rel="stylesheet" href="../resources/footer/style.css">
+</head>
+
+<body>
+    <header>
+        <script>
+            $(function () {
+                $("#includeHeader").load("../resources/header/index.html", function () {
+                    adjustLinksAndImages("#includeHeader");
+                });
+            });
+        </script>
+        <div id="includeHeader"></div>
+    </header>
+
+    <div class="docs-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <h3>Getting Started</h3>
+                    <ul class="nav-links">
+                        <li><a href="#system-requirements">System Requirements</a></li>
+                        <li><a href="#installation">Installation Guide</a></li>
+                        <li><a href="#quick-start">Quick Start Tutorial</a></li>
+                        <li><a href="#version-comparison">Free vs Paid Version</a></li>
+                    </ul>
+                </div>
+
+                <div class="nav-section">
+                    <h3>Core Features</h3>
+                    <ul class="nav-links">
+                        <li><a href="#sales-tracking">Purchase/Sales Tracking</a></li>
+                        <li><a href="#product-management">Product Management</a></li>
+                        <li><a href="#analytics">Analytics Dashboard</a></li>
+                        <li><a href="#receipts">Receipt Management</a></li>
+                        <li><a href="#spreadsheets">Spreadsheet Import/Export</a></li>
+                    </ul>
+                </div>
+
+                <div class="nav-section">
+                    <h3>Security</h3>
+                    <ul class="nav-links">
+                        <li><a href="#encryption">Database Encryption</a></li>
+                        <li><a href="#password">Password Protection</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content">
+            <section class="article">
+                <h1>Argo Sales Tracker Documentation</h1>
+                <p>Welcome to the Argo Sales Tracker documentation. This guide will help you get started and make the
+                    most of our software.</p>
+            </section>
+
+            <!-- Getting Started Section -->
+            <section id="system-requirements" class="article">
+                <h2>System Requirements</h2>
+                <ul>
+                    <li>Windows 10 or newer</li>
+                    <li>4GB RAM minimum</li>
+                    <li>500MB free disk space</li>
+                    <li>1280x720 screen resolution or higher</li>
+                </ul>
+            </section>
+
+            <!-- Installation section -->
+            <section id="installation" class="article">
+                <h2>Installation Guide</h2>
+                <ol class="steps-list">
+                    <li>Download the installer from our website</li>
+                    <li>Run the installer file (ArgoSalesTracker-Setup.exe)</li>
+                    <li>Follow the installation wizard instructions</li>
+                    <li>Launch Argo Sales Tracker from your desktop or start menu</li>
+                </ol>
+
+                <div class="info-box">
+                    <strong>Note:</strong> Windows may display a security warning. This is normal for new applications.
+                    Click "More info" and then "Run anyway" to proceed.
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <footer class="footer">
+        <script>
+            $(function () {
+                $("#includeFooter").load("../resources/footer/index.html", function () {
+                    adjustLinksAndImages("#includeFooter");
+                });
+            });
+        </script>
+        <div id="includeFooter"></div>
+    </footer>
+</body>
+
+</html>
