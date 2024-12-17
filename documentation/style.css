@@ -74,6 +74,79 @@ body {
     font-weight: 500;
 }
 
+/* Mobile menu toggle button */
+.sidebar-toggle {
+    display: none;
+    position: fixed;
+    top: 60px;
+    left: 20px;
+    z-index: 99;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.sidebar-toggle:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+.sidebar-toggle:active {
+    transform: translateY(0);
+}
+
+.toggle-text {
+    font-size: 14px;
+    letter-spacing: 0.5px;
+}
+
+.menu-icon {
+    width: 20px;
+    height: 20px;
+}
+
+/* Active state styles */
+.sidebar-toggle.active {
+    background: #1d4ed8;
+}
+
+/* Update mobile sidebar styles */
+@media (max-width: 768px) {
+    .sidebar-toggle {
+        display: flex;
+    }
+
+    .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 999;
+        border: 2px solid #999b9f;
+        top: 100px;
+        height: calc(100vh - 100px);
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    .content {
+        margin-left: 0;
+        padding: 0 1rem;
+    }
+
+    .article:first-of-type {
+        margin-top: 4rem;
+    }
+}
+
 /* Main content styles */
 .content {
     margin-left: 300px;
