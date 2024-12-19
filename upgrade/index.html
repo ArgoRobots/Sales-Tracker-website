@@ -14,10 +14,11 @@
 
     <script src=" ../resources/scripts/main.js"></script>
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
-    <script src="main.js"></script>
+    <script src="../resources/scripts/ScrollToCenter.js"></script>
 
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="../resources/styles/customColors.css">
+    <link rel="stylesheet" href="../resources/styles/link.css">
     <link rel="stylesheet" href="../resources/header/style.css">
     <link rel="stylesheet" href="../resources/footer/style.css">
 </head>
@@ -43,7 +44,7 @@
                     <h2>Transform Your Business with Premium Features</h2>
                     <p>Upgrade now to unlock the full potential of Argo Sales Tracker and take your business to the next
                         level.</p>
-                    <div class="price-tag">
+                    <div data-scroll-to="payment" class="price-tag">
                         <p>Lifetime Access</p>
                         <p class="price">$20 CAD</p>
                     </div>
@@ -126,7 +127,7 @@
         </div>
     </section>
 
-    <section class="payment">
+    <section id="payment" class="payment">
         <div class="container">
             <h2>Ready to Upgrade?</h2>
             <p>Choose your preferred payment method</p>

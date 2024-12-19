@@ -14,10 +14,12 @@
 
     <script src="main.js"></script>
     <script src="../resources/scripts/main.js"></script>
+    <script src="../resources/scripts/ScrollToCenter.js"></script>
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
 
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="../resources/styles/customColors.css">
+    <link rel="stylesheet" href="../resources/styles/link.css">
     <link rel="stylesheet" href="../resources/styles/button.css">
     <link rel="stylesheet" href="../resources/header/style.css">
     <link rel="stylesheet" href="../resources/header/dark.css">
@@ -48,32 +50,40 @@
         <!-- Sidebar Navigation -->
         <aside class="sidebar">
             <nav class="sidebar-nav">
+                <!-- Getting Started section -->
                 <div class="nav-section">
                     <h3>Getting Started</h3>
                     <ul class="nav-links">
-                        <li><a href="#system-requirements">System Requirements</a></li>
-                        <li><a href="#installation">Installation Guide</a></li>
-                        <li><a href="#quick-start">Quick Start Tutorial</a></li>
-                        <li><a href="#version-comparison">Free vs Paid Version</a></li>
+                        <li data-scroll-to="system-requirements" title="View system requirements">System Requirements
+                        </li>
+                        <li data-scroll-to="installation" title="View installation guide">Installation Guide</li>
+                        <li data-scroll-to="quick-start" title="View quick start tutorial">Quick Start Tutorial</li>
+                        <li data-scroll-to="version-comparison" title="Compare versions">Free vs. Paid Version</li>
                     </ul>
                 </div>
 
+                <!-- Core Features section -->
                 <div class="nav-section">
                     <h3>Core Features</h3>
                     <ul class="nav-links">
-                        <li><a href="#sales-tracking">Purchase/Sales Tracking</a></li>
-                        <li><a href="#product-management">Product Management</a></li>
-                        <li><a href="#analytics">Analytics Dashboard</a></li>
-                        <li><a href="#receipts">Receipt Management</a></li>
-                        <li><a href="#spreadsheets">Spreadsheet Import/Export</a></li>
+                        <li data-scroll-to="product-management" title="Learn about product management">Product
+                            Management</li>
+                        <li data-scroll-to="sales-tracking" title="Learn about sales tracking">Purchase/Sales Tracking
+                        </li>
+                        <li data-scroll-to="analytics" title="View analytics features">Analytics Dashboard</li>
+                        <li data-scroll-to="receipts" title="Learn about receipt management">Receipt Management</li>
+                        <li data-scroll-to="spreadsheets" title="Learn about spreadsheet features">Spreadsheet
+                            Import/Export</li>
                     </ul>
                 </div>
 
+                <!-- Security section -->
                 <div class="nav-section">
                     <h3>Security</h3>
                     <ul class="nav-links">
-                        <li><a href="#encryption">Database Encryption</a></li>
-                        <li><a href="#password">Password Protection</a></li>
+                        <li data-scroll-to="encryption" title="Learn about encryption">Database Encryption</li>
+                        <li data-scroll-to="password" title="Learn about password protection">Password Protection</li>
+                        <li data-scroll-to="backups" title="Learn about backups">Regular Backups</li>
                     </ul>
                 </div>
             </nav>
@@ -87,14 +97,15 @@
                     most of our software.</p>
             </section>
 
-            <!-- Getting Started Section -->
+            <!-- Getting Started section -->
+            <!-- System Requirements Section -->
             <section id="system-requirements" class="article">
                 <h2>System Requirements</h2>
                 <ul>
-                    <li>Windows 10 or newer</li>
-                    <li>4GB RAM minimum</li>
-                    <li>500MB free disk space</li>
-                    <li>1280x720 screen resolution or higher</li>
+                    <li>Windows 10 or newer
+                    <li>4GB RAM minimum
+                    <li>1GB free disk space
+                    <li>1280*720 screen resolution or higher
                 </ul>
             </section>
 
@@ -102,18 +113,333 @@
             <section id="installation" class="article">
                 <h2>Installation Guide</h2>
                 <ol class="steps-list">
-                    <li>Download the installer from our website</li>
-                    <li>Run the installer file (ArgoSalesTracker-Setup.exe)</li>
-                    <li>Follow the installation wizard instructions</li>
-                    <li>Launch Argo Sales Tracker from your desktop or start menu</li>
+                    <li>Download the installer from our website <a class="link" href="../upgrade/index.html">here</a>
+                    <li>Run the installer file (ArgoSalesTracker-Setup.exe)
+                    <li>Follow the installation wizard instructions
+                    <li>Launch Argo Sales Tracker from your desktop or start menu
                 </ol>
 
                 <div class="info-box">
-                    <strong>Note:</strong> Windows may display a security warning. This is normal for new applications.
+                    <b>Note:</b> Windows may display a security warning. This is normal for new applications.
                     Click "More info" and then "Run anyway" to proceed.
                 </div>
             </section>
 
+            <!-- Quick Start Tutorial section -->
+            <section id="quick-start" class="article">
+                <h2>Quick Start Tutorial</h2>
+                <ol class="steps-list">
+                    <li>Choose your default currency and create your first company
+                    <li>Add accountants and companies you will be working with
+                    <li>Set up categories to organize your products
+                    <li>Add your initial products
+                    <li>Add purchases and sales
+                </ol>
+
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/5aCbWqKl-wU"
+                        title="Argo Sales Tracker Quick Start Tutorial" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </section>
+
+            <!-- Free vs. Paid Version section -->
+            <section id="version-comparison" class="article">
+                <h2>Free vs. Paid Version</h2>
+                <p>The free version is perfect for small businesses just starting out. Upgrade
+                    to the paid version <a class="link" href="../upgrade/index.html">here</a> when you need more
+                    advanced features or have more than 10 products to track.</p>
+                <table class="comparison-table">
+                    <tr>
+                        <th>Feature</th>
+                        <th>Free Version</th>
+                        <th>Paid Version</th>
+                    </tr>
+                    <tr>
+                        <td>Product Management</td>
+                        <td>Limited to 10 products</td>
+                        <td>Unlimited products</td>
+                    </tr>
+                    <tr>
+                        <td>Security</td>
+                        <td>Basic password protection</td>
+                        <td>Windows Hello integration</td>
+                    </tr>
+                    <tr>
+                        <td>Support</td>
+                        <td>Basic support</td>
+                        <td>Priority support</td>
+                    </tr>
+                </table>
+            </section>
+
+            <!-- Core Features section -->
+            <!-- Product Management section -->
+            <section id="product-management" class="article">
+                <h2>Product Management</h2>
+                <h3>Creating Categories to organize your products</h3>
+                <ol class="steps-list">
+                    <li>Go to "Manage Categories" in the top menu
+                    <li>Choose whether the category is for purchases or sales
+                    <li>Enter the category name
+                    <li>Click "Add Category"
+                </ol>
+
+                <h3>Adding Products</h3>
+                <ol class="steps-list">
+                    <li>Go to "Manage Products" in the top menu
+                    <li>Select whether the product is for purchases or sales
+                    <li>Enter the product ID and name
+                    <li>Select a category to keep things organized
+                    <li>Enter country and company of origin
+                    <li>Click "Add Product"
+                </ol>
+
+                <div class="info-box">
+                    <p>Let's say you run a t-shirt store. Here's how you might set up one category with three products:
+                    </p>
+
+                    <b>Category: Men's T-Shirts</b>
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Product ID</th>
+                            <th>Product Name</th>
+                            <th>Country</th>
+                            <th>Company</th>
+                        </tr>
+                        <tr>
+                            <td>TS001</td>
+                            <td>Black T-Shirt</td>
+                            <td>United States</td>
+                            <td>Cotton Mills Ltd</td>
+                        </tr>
+                        <tr>
+                            <td>TS002</td>
+                            <td>White Linen T-Shirt</td>
+                            <td>Italy</td>
+                            <td>FabricCo</td>
+                        </tr>
+                        <tr>
+                            <td>TS003</td>
+                            <td>Black T-Shirt</td>
+                            <td>China</td>
+                            <td>NotASweatShopCo</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="warning-box">
+                    <b>Important:</b> Free version users are limited to 10 products. Upgrade to the paid
+                    version <a class="link" href="../upgrade/index.html">here</a> for unlimited products.
+                </div>
+            </section>
+
+            <!-- Purchase/Sales Tracking section -->
+            <section id="sales-tracking" class="article">
+                <h2>Adding Purchases and Sales</h2>
+                <ol class="steps-list">
+                    <li>Click "Add Purchase" or "Add Sale" in the top menu
+                    <li>Enter the order number and select your name from the accountants list
+                    <li>Select the product from the dropdown (must be added in <a class="link"
+                            href="#product-management">Product Management</a> first)
+                    <li>Enter the quantity and price per unit
+                    <li>Add shipping costs, taxes, and any other fees
+                    <li>Optionally attach a receipt
+                    <li>Click "Add" to save
+                </ol>
+
+                <div class="info-box">
+                    <b>Tip:</b> Use the "Multiple items" checkbox when adding multiple products to a single
+                    purchase or sale.
+                </div>
+            </section>
+
+            <!-- Analytics Dashboard section -->
+            <section id="analytics" class="article">
+                <h2>Analytics Dashboard</h2>
+                <p>The Analytics Dashboard provides comprehensive insights into your business performance through
+                    interactive charts and visualizations. Each chart can be exported to Excel or Google Sheets for
+                    further analysis.</p>
+
+                <h3>Geographic Analysis</h3>
+                <ul>
+                    <li><b>Countries of Origin:</b> Shows where your purchased products come from.</li>
+                    <li><b>Countries of Destination:</b> Shows where your products are being sold to, helping track your
+                        market reach.</li>
+                    <li><b>Companies of Origin:</b> Visualizes your supplier distribution - for instance, showing what
+                        percentage of products come from vendors.</li>
+                </ul>
+
+                <h3>Transaction Analysis</h3>
+                <ul>
+                    <li><b>Total Transactions:</b> Compares the number of purchases vs. sales over time.</li>
+                    <li><b>Average Transaction Value:</b> Tracks the average value of your purchases and sales, helping
+                        identify trends in spending and revenue.</li>
+                    <li><b>Average Shipping Costs:</b> Monitors shipping expenses over time for both purchases and sales
+                        (excluding transactions with free shipping).</li>
+                </ul>
+
+                <h3>Financial Performance</h3>
+                <ul>
+                    <li><b>Total Expenses vs. Sales:</b> Compares your total expenses against sales revenue,
+                        providing a clear view of business volume.</li>
+                    <li><b>Distribution of Expenses:</b> Breaks down expenses by category (e.g., equipment,
+                        supplies, shipping, taxes).</li>
+                    <li><b>Distribution of Revenue:</b> Shows how your revenue is distributed across different product
+                        categories and services.</li>
+                </ul>
+
+                <h3>Growth Metrics</h3>
+                <ul>
+                    <li><b>Growth:</b> Shows the percentage growth of both expenses and revenue over
+                        time, helping identify trends and seasonal patterns.</li>
+                    <li><b>Total Profits:</b> Tracks your profit margins by comparing revenue against expenses.</li>
+                </ul>
+
+                <h3>Management Insights</h3>
+                <ul>
+                    <li><b>Transactions by Accountant:</b> Shows the distribution of transactions handled by each
+                        accountant, helping monitor workload distribution.</li>
+                </ul>
+
+                <div class="info-box">
+                    <b>Tip:</b> You can customize the time range for all charts using the date range selector. Click the
+                    line/bar
+                    toggle to switch between visualization styles for applicable charts.
+                </div>
+
+                <div class="info-box">
+                    <b>Note:</b> Right-click any chart to access additional options including exporting to Microsoft
+                    Excel or Google Sheets.
+                </div>
+            </section>
+
+            <!-- Receipt Management section -->
+            <section id="receipts" class="article">
+                <h2>Receipt Management</h2>
+                <p>Keep your records organized by attaching and managing digital receipts for all transactions.</p>
+
+                <h3>Adding Receipts</h3>
+                <ol class="steps-list">
+                    <li>When adding a purchase or sale, click the "Add Receipt" button
+                    <li>Select the receipt file from your computer
+                    <li>The receipt will be copied to your company's secure storage
+                </ol>
+                <p>To add receipts to existing transactions, right-click the transaction, select "Modify", and click the
+                    "Add receipt" button.</p>
+
+                <h3>Exporting Receipts from the main screen</h3>
+                <ol class="steps-list">
+                    <li>Select the transactions you want to export receipts for
+                    <li>Right-click and select "Export receipts"
+                    <li>Choose a destination folder
+                    <li>For multiple receipts, they will be organized in a dated folder
+                </ol>
+
+                <h3>Exporting Receipts from the Receipt Manager</h3>
+                <ol class="steps-list">
+                    <li>Click the file button on the top left, then click "Export Receipts"
+                    <li>Optionally filter the receipts you want to export
+                    <li>Click the "Select all" button or press "Ctrl+A"
+                    <li>Click the "Export" button and choose the destination
+                </ol>
+            </section>
+
+            <!-- Spreadsheet Import/Export section -->
+            <section id="spreadsheets" class="article">
+                <h2>Spreadsheet Import/Export</h2>
+                <p>Easily move your data in and out of Argo Sales Tracker using Excel spreadsheets.</p>
+
+                <h3>Exporting Data</h3>
+                <ol class="steps-list">
+                    <li>Click <i>File > Export</i>
+                    <li>Select "Excel spreadsheet (.xlsx) from the drop down menu"</li>
+                    <li>Choose a location for your export
+                    <li>The exported file will contain separate worksheets for: Purchases,
+                        Sales, Categories, Products, Companies, and Accountants
+                </ol>
+
+                <h3>Importing Data</h3>
+                <ol class="steps-list">
+                    <li>Prepare your spreadsheet following our template format
+                    <li>Click <i>File > Import > Excel spreadsheet</i>
+                    <li>Select your file and choose what to import
+                    <li>Review and confirm the import
+                </ol>
+
+                <div class="warning-box">
+                    <b>Important:</b> When importing data, ensure your spreadsheet follows the exact format of our
+                    template. Download our template <a class="link" href="#">here</a>.
+                </div>
+            </section>
+
+            <!-- Security section -->
+            <!-- Database Encryption -->
+            <section id="encryption" class="article">
+                <h2>Database Encryption</h2>
+                <p>Argo Sales Tracker uses AES-256 encryption to protect your business data.</p>
+
+                <h3>Security Features</h3>
+                <ul>
+                    <li><b>Military-grade Encryption:</b> All data is encrypted using AES-256, the same standard used by
+                        banks and military organizations</li>
+                    <li><b>Secure Storage:</b> Receipts and attachments are stored in an encrypted format</li>
+                    <li><b>Backup Encryption:</b> All backups are automatically encrypted</li>
+                </ul>
+
+                <div class="info-box">
+                    <b>Note:</b> Encryption is automatic and requires no additional setup from users.
+                </div>
+            </section>
+
+            <!-- Password Protection -->
+            <section id="password" class="article">
+                <h2>Password Protection</h2>
+                <p>Secure access to your business data with robust password protection and Windows Hello integration
+                    (paid version).
+                </p>
+
+                <h3>Setting Up Password Protection</h3>
+                <ol class="steps-list">
+                    <li>Go to <i>Account > Settings > Security</i></li>
+                    <li>Click "Enable Password Protection"</li>
+                    <li>Create a strong password</li>
+                </ol>
+
+                <h3>Windows Hello Integration (Paid Version)</h3>
+                <ul>
+                    <li>Use fingerprint, facial recognition, or a PIN for quick access</li>
+                    <li>Maintains security while improving convenience</li>
+                    <li>Works with any Windows Hello compatible device</li>
+                </ul>
+
+                <div class="warning-box">
+                    <b>Important:</b> Store your password securely. If you forget it, your data cannot be recovered and
+                    will be lost forever! (A long time)
+                </div>
+            </section>
+
+            <!-- Backup section -->
+            <section id="backups" class="article">
+                <h2>Regular Backups</h2>
+                <p>It's crucial to regularly back up your business data to prevent any potential loss. We recommend
+                    making backups at least weekly, or after entering significant amounts of new data.</p>
+
+                <h3>Creating a Backup</h3>
+                <ol class="steps-list">
+                    <li>Click <i>File > Export as...</i></li>
+                    <li>Select "ArgoSales (.zip)" from the drop-down menu</li>
+                    <li>Choose a location for your backup</li>
+                    <li>Store backups in a secure location, preferably on a different device</li>
+                </ol>
+
+                <div class="warning-box">
+                    <b>Important:</b> Regular backups are your safeguard against data loss due to hardware failure,
+                    accidents, or other unforeseen circumstances. Make it a habit to back up your data frequently!
+                </div>
+            </section>
         </main>
     </div>
 

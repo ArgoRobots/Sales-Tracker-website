@@ -336,13 +336,3 @@ title {
     padding: 0 24px 24px 24px;
     margin: 0;
 }
-
-/* Link */
-.link {
-    color: var(--button);
-    transition: 0.3s;
-}
-
-.link:hover {
-    text-decoration: none;
-}
