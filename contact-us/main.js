@@ -11,7 +11,7 @@ window.addEventListener("DOMContentLoaded", function () {
     alert("There was an error with your message");
   }
 
-  // handle the form submission event
+  // Handle the form submission event
   form.addEventListener("submit", function (ev) {
     ev.preventDefault();
     var data = new FormData(form);
@@ -19,7 +19,7 @@ window.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-// helper function for sending an AJAX request
+// Helper function for sending an AJAX request
 function ajax(method, url, data, success, error) {
   var xhr = new XMLHttpRequest();
   xhr.open(method, url);
