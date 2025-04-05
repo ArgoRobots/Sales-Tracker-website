@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<!--
+Argo Technology
+@url www.argorobots.ca
+-->
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="author" content="Argo">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="shortcut icon" type="image/x-icon" href="images/argo-logo/A-logo.ico">
+  <title>Argo - 403 Lost In Space</title>
+</head>
+
+<body>
+
+  <div id="large-header" class="large-header">
+    <canvas id="demo-canvas"></canvas>
+    <div class="text-container">
+      <p class="main-title">403</p>
+      <p class="sub-title">Looks like you're lost in space</p>
+      <a href="../../index.html" class="btn">Return To Earth</a>
+    </div>
+  </div>
+
+  <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/499416/TweenLite.min.js"></script>
+  <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/499416/EasePack.min.js"></script>
+  <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/499416/demo.js"></script>
+</body>
+
+</html>
+
+<style>
+  * {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Roboto', sans-serif;
+    overflow-x: hidden;
+  }
+
+  .large-header {
+    position: relative;
+    width: 100%;
+    background: #111;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center center;
+    z-index: 1;
+    background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/499416/demo-bg.jpg");
+  }
+
+  .text-container {
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    position: absolute;
+    text-align: center;
+  }
+
+  .text-container .main-title {
+    color: #f9f1e9;
+    font-size: 12rem;
+    font-weight: 500;
+    letter-spacing: .1em;
+  }
+
+  .text-container .sub-title {
+    color: #f9f1e9;
+    text-align: center;
+    font-size: 2.8rem;
+    font-weight: 500;
+  }
+
+  .text-container .btn {
+    position: relative;
+    display: block;
+    text-decoration: none;
+    width: 200px;
+    padding: 6px 0;
+    border-radius: 4px;
+    font-size: 1.2rem;
+    -webkit-transition: .33s all ease;
+    transition: .33s all ease;
+    cursor: pointer;
+    background: transparent;
+    border: 1px solid #fff;
+    color: #fff;
+    margin: 30px auto;
+  }
+
+  .text-container .btn:hover {
+    background: rgba(0, 0, 0, 0.4);
+    color: #fff;
+  }
+
+  @media (max-width: 1200px) {
+    .text-container .main-title {
+      font-size: 9rem;
+    }
+
+    .text-container .sub-title {
+      font-size: 2rem;
+    }
+  }
+
+  @media (max-width: 750px) {
+    .text-container .main-title {
+      font-size: 7.2rem;
+    }
+
+    .text-container .sub-title {
+      font-size: 1.8rem;
+    }
+  }
+</style>
