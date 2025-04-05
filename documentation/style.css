@@ -298,6 +298,10 @@ body {
     border-radius: 0.375rem;
 }
 
+.info-box p {
+    margin: 5px 0 5px;
+}
+
 .warning-box {
     background: #fef3c7;
     border-left: 4px solid #d97706;
