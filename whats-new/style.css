@@ -13,6 +13,7 @@ header .header-inner .menu-container .menu .whats-new:after {
     text-align: center;
     max-width: 800px;
     margin: 0 auto;
+    padding: 0 20px;
 }
 
 .hero h1 {
@@ -56,6 +57,16 @@ header .header-inner .menu-container .menu .whats-new:after {
     padding: 32px;
     line-height: 1.5;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 550px) {
+    .version-grid {
+        margin: 0 20px;
+    }
+
+    .version-card {
+        padding: 20px;
+    }
 }
 
 .version-header {

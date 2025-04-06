@@ -77,6 +77,13 @@ body {
   gap: 16px;
 }
 
+@media (max-width: 550px) {
+  .hero-buttons .btn {
+    font-size: .9rem;
+    width: 100%;
+  }
+}
+
 /* Features section */
 .features-grid {
   display: grid;
