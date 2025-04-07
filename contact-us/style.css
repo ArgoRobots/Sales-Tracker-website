@@ -122,9 +122,9 @@ h2 {
   border: none;
   min-height: 208px;
   max-height: 700px;
-  min-width: 500px;
   max-width: 500px;
   padding: 20px 25px;
+  resize: vertical;
 }
 
 .first .container .wrapper .question-container button {
@@ -165,7 +165,7 @@ h2 {
   }
 
   .first .container .wrapper .question-container .input-message {
-    min-width: 0;
+    min-width: 100%;
   }
 }
 
@@ -177,9 +177,8 @@ h2 {
     margin: 0;
   }
 
-  .first .container .wrapper .input-container .input-message,
   .first .container .wrapper .question-container .input-message {
     width: 100%;
-    max-width: none;
+    max-width: 100%;
   }
 }

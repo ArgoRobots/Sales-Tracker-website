@@ -50,9 +50,44 @@ body {
   margin-top: 64px;
 }
 
+@media (max-width: 1250px) {
+  .container {
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 1000px) {
+  .title {
+    font-size: 34px;
+  }
+
+  .hero-title {
+    font-size: 32px !important;
+    line-height: 1.2;
+  }
+}
+
 @media (min-width: 768px) {
   .hero-grid {
     grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 550px) {
+  .section {
+    padding: 40px 0 !important;
+  }
+
+  .section-title {
+    margin-bottom: 40px !important;
+  }
+
+  .title {
+    margin-top: 40px;
+  }
+
+  .hero-title {
+    margin-top: -40px;
   }
 }
 

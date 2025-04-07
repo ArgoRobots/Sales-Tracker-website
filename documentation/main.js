@@ -54,6 +54,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Function to set active nav item based on scroll position
   function setActiveNavItem() {
+    // Check if user is at the very top of the page
+    if (window.scrollY <= 10) {
+      // Remove active class from all nav links
+      navLinks.forEach((link) => link.classList.remove("active"));
+
+      document
+        .querySelector(".nav-links li:first-child")
+        ?.classList.add("active");
+
+      return;
+    }
+
     let currentSection = "";
 
     sections.forEach((section) => {

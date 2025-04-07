@@ -15,16 +15,10 @@ body {
     padding: 0 24px;
 }
 
-/* Utility Classes */
 .gradient-bg {
     background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
     color: white;
     padding: 90px 0;
-}
-
-title {
-    font-size: 24px;
-    font-weight: bold;
 }
 
 .hero-grid {
@@ -33,16 +27,6 @@ title {
     align-items: start;
     grid-template-columns: 1fr 1fr;
     margin-top: 64px;
-}
-
-@media (max-width: 780px) {
-    .hero-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .hero-grid .feature-section .hero-illustration {
-        display: none;
-    }
 }
 
 .hero-grid .hero-content {
@@ -80,6 +64,58 @@ title {
     color: #1e3a8a;
 }
 
+.hero-grid .price-tag .price {
+    font-size: 36px;
+    font-weight: bold;
+}
+
+@media (max-width: 780px) {
+    .hero-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .container h1 {
+        margin-top: -10px;
+    }
+
+    .hero-grid h2 {
+        font-size: 40px !important;
+        margin-top: -40px;
+    }
+
+    .hero-grid .feature-section .hero-illustration {
+        display: none;
+    }
+
+    .hero-grid .price-tag {
+        padding: 5px;
+    }
+
+    .hero-grid .price-tag .price {
+        font-size: 30px;
+    }
+
+    section:not(:first-of-type) {
+        padding-top: 50px !important;
+    }
+
+    .faq {
+        padding-bottom: 50px !important;
+    }
+
+    .faq h2 {
+        font-size: 28px !important;
+        margin-bottom: 30px !important;
+    }
+}
+
+@media (max-width: 550px) {
+    .hero-grid h2 {
+        font-size: 32px !important;
+    }
+
+}
+
 @keyframes float {
 
     0%,
@@ -90,11 +126,6 @@ title {
     50% {
         transform: translateY(-10px);
     }
-}
-
-.hero-grid .price-tag .price {
-    font-size: 36px;
-    font-weight: bold;
 }
 
 .feature-list {

@@ -27,6 +27,24 @@ header .header-inner .menu-container .menu .whats-new:after {
     margin-bottom: 48px;
 }
 
+@media (max-width: 550px) {
+    .gradient-bg {
+        padding-bottom: 50px;
+    }
+
+    .hero {
+        padding-bottom: 0;
+    }
+
+    .hero h1 {
+        font-size: 36px;
+    }
+
+    .hero p {
+        font-size: 18px;
+    }
+}
+
 .download-button-container {
     display: flex;
     justify-content: center;

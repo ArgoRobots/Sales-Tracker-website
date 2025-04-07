@@ -41,6 +41,28 @@ body {
     margin: 0 auto;
 }
 
+@media (max-width: 550px) {
+    .hero {
+        padding-bottom: 50px;
+    }
+
+    .hero .container h1 {
+        font-size: 36px;
+    }
+
+    .hero .container p {
+        font-size: 18px;
+    }
+
+    section:not(:first-of-type) {
+        padding-top: 50px !important;
+    }
+
+    section h2 {
+        font-size: 32px !important;
+    }
+}
+
 /* Mission Section */
 .mission {
     padding: 90px 0;
