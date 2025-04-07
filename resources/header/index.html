@@ -43,10 +43,12 @@
       // Opening the menu
       menu.classList.add('active');
       menu.style.height = menuHeight + 'px';
+      document.body.classList.add('menu-open');
     } else {
       // Closing the menu
       menu.classList.remove('active');
       menu.style.height = '0';
+      document.body.classList.remove('menu-open');
     }
   }
 
