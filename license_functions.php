@@ -32,7 +32,7 @@ if (!function_exists('generate_license_key')) {
      * @param string $key The license key to check
      * @return bool True if the key exists, false otherwise
      */
-    function license_key_exists($key) {  // Renamed this function to avoid conflicts
+    function license_key_exists($key) {
         $db = get_db_connection();
         $stmt = $db->prepare('SELECT COUNT(*) as count FROM license_keys WHERE license_key = :key');
         $stmt->bindValue(':key', $key, SQLITE3_TEXT);

@@ -283,6 +283,9 @@ $chart_data = get_chart_data();
         .btn-small {
             padding: 5px 10px;
             font-size: 12px;
+            min-width: 85px;
+            text-align: center;
+            display: block;
         }
         .btn-activate {
             background: #10b981;
@@ -298,6 +301,7 @@ $chart_data = get_chart_data();
         }
         .btn-delete {
             background: #ef4444;
+            min-width: 90px; /* Match the width of other action buttons */
         }
         .btn-delete:hover {
             background: #dc2626;
@@ -452,8 +456,8 @@ $chart_data = get_chart_data();
     </div>
     
     <script>
-    // Chart initialization
     document.addEventListener('DOMContentLoaded', function() {
+        // Chart initialization
         const chartData = <?php echo json_encode($chart_data); ?>;
         const labels = chartData.map(item => item.date);
         const counts = chartData.map(item => item.count);
@@ -505,6 +509,57 @@ $chart_data = get_chart_data();
                 }
             }
         });
+
+        // Restore scroll position if it exists in sessionStorage
+        if (sessionStorage.getItem('scrollPosition')) {
+            window.scrollTo(0, sessionStorage.getItem('scrollPosition'));
+            sessionStorage.removeItem('scrollPosition');
+        }
+        
+        // Save scroll position when submitting forms
+        const forms = document.querySelectorAll('form');
+        forms.forEach(form => {
+            form.addEventListener('submit', function() {
+                sessionStorage.setItem('scrollPosition', window.scrollY);
+            });
+        });
+        
+        // Also save position when clicking links (for the "Clear" button)
+        const links = document.querySelectorAll('a[href^="index.php"]');
+        links.forEach(link => {
+            link.addEventListener('click', function() {
+                sessionStorage.setItem('scrollPosition', window.scrollY);
+            });
+        });
+
+        // Auto-clear search when textbox is emptied, preserving scroll position
+        const searchInput = document.querySelector('input[name="search"]');
+        if (searchInput) {
+            let typingTimer;
+            const doneTypingInterval = 500; // wait for 500ms after user stops typing
+            
+            searchInput.addEventListener('input', function() {
+                clearTimeout(typingTimer);
+                
+                if (this.value.trim() === '') {
+                    typingTimer = setTimeout(() => {
+                        // Save current scroll position before redirecting
+                        sessionStorage.setItem('scrollPosition', window.scrollY);
+                        window.location.href = 'index.php';
+                    }, doneTypingInterval);
+                }
+            });
+            
+            // Add ability to press Escape key to clear search
+            searchInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    // Save current scroll position before redirecting
+                    sessionStorage.setItem('scrollPosition', window.scrollY);
+                    this.value = '';
+                    window.location.href = 'index.php';
+                }
+            });
+        }
     });
     </script>
 </body>
