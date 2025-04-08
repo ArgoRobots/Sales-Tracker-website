@@ -7,7 +7,7 @@
  * @return bool True if successful, false otherwise
  */
 function send_license_email($to_email, $license_key) {
-    $formspree_id = 'mqkggyyd';
+    $formspree_id = 'meoapjaq';
     $formspree_url = "https://formspree.io/f/{$formspree_id}";
     
     // Prepare email content
@@ -42,8 +42,7 @@ function send_license_email($to_email, $license_key) {
  * @return string HTML email content
  */
 function get_license_email_template($email, $license_key) {
-    // Base URL for images - update this to your actual domain
-    $base_url = 'https://yourdomain.com';
+    $base_url = 'https://argorobots.com';
     
     return <<<HTML
 <!DOCTYPE html>
