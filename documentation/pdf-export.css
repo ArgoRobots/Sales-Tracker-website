@@ -1,0 +1,58 @@
+/* PDF Export Button Styles */
+.pdf-export-btn {
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    z-index: 99;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.pdf-export-btn:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+}
+
+.pdf-export-btn:active {
+    transform: translateY(0);
+}
+
+.pdf-export-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .pdf-export-btn {
+        top: 60px;
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+
+    /* When sidebar is active, adjust position to avoid overlap */
+    .sidebar.active+.content .pdf-export-btn {
+        right: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .pdf-export-btn span {
+        display: none;
+        /* Hide text on very small screens */
+    }
+
+    .pdf-export-btn {
+        padding: 8px;
+    }
+}
