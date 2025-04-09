@@ -146,6 +146,17 @@ h2 {
   background: var(--buttonHover);
 }
 
+.error-message {
+  background-color: #fee2e2;
+  border: 1px solid #ef4444;
+  color: #b91c1c;
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin: 20px 0;
+  font-size: 0.95rem;
+  text-align: left;
+}
+
 @media (max-width: 1600px) {
   .first .container {
     width: 85%;

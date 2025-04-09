@@ -205,7 +205,7 @@ function get_license_email_template($email, $license_key) {
                 <a href="{$base_url}/documentation/index.html" class="button">View Documentation</a>
             </div>
             
-            <p>If you have any questions or need assistance, please don't hesitate to <a href="{$base_url}/contact-us/index.html" style="color: #2563eb;">contact our support team</a>.</p>
+            <p>If you have any questions or need assistance, please don't hesitate to <a href="{$base_url}/contact-us/index.php" style="color: #2563eb;">contact our support team</a>.</p>
             
             <p>Thank you for choosing Argo Sales Tracker!</p>
         </div>

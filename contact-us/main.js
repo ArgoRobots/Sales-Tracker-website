@@ -7,10 +7,11 @@ window.addEventListener("DOMContentLoaded", function () {
     window.open("message-sent-successfully/index.html", "_self");
   }
 
-  function error(status, response, type) {
-    console.error("Form submission error:", status, response, type);
+  function error(message) {
+    console.error("Form submission error:", message);
     alert(
-      "There was an error sending your message. Please try again or contact support directly at support@argorobots.com"
+      message ||
+        "There was an error sending your message. Please try again or contact support directly at support@argorobots.com"
     );
   }
 
@@ -25,34 +26,27 @@ window.addEventListener("DOMContentLoaded", function () {
       submitButton.textContent = "SENDING...";
     }
 
-    // Create a simple object with form data
+    // Create a FormData object with form data
     var formData = new FormData(form);
-    var data = {};
-
-    for (var pair of formData.entries()) {
-      data[pair[0]] = pair[1];
-    }
 
     fetch(form.action, {
       method: form.method,
       body: formData,
       headers: {
-        Accept: "application/json",
+        "X-Requested-With": "XMLHttpRequest",
       },
     })
-      .then((response) => {
-        if (response.ok) {
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
           success();
         } else {
-          // Parse error response
-          return response.json().then((data) => {
-            throw new Error(data.error || "Form submission failed");
-          });
+          error(data.message);
         }
       })
       .catch((err) => {
         console.error("Submission error:", err);
-        error(null, err.message, null);
+        error("Network error. Please try again later.");
       })
       .finally(() => {
         // Re-enable submit button

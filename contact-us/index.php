@@ -1,3 +1,14 @@
+<?php
+// Start session to handle error messages if they exist
+session_start();
+
+// Get error message if exists
+$error_message = '';
+if (isset($_SESSION['contact_error'])) {
+    $error_message = $_SESSION['contact_error'];
+    unset($_SESSION['contact_error']); // Clear the error after retrieving
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -39,8 +50,14 @@
     <div class="container">
       <h1 class="title">Contact Us</h1>
 
-      <!-- Contact form using Formspree for form submission handling -->
-      <form action="https://formspree.io/f/meoapjaq" method="POST" id="my-form">
+      <?php if (!empty($error_message)): ?>
+      <div class="error-message">
+        <?php echo htmlspecialchars($error_message); ?>
+      </div>
+      <?php endif; ?>
+
+      <!-- Contact form using PHP for form submission handling -->
+      <form action="contact_process.php" method="POST" id="my-form">
         <!-- Support container -->
         <div class="contact-us-container">
           <div class="support-container">
