@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once '../db_connect.php';
+require_once '../email_sender.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
@@ -46,6 +47,7 @@ function get_chart_data() {
 
 // Handle license key generation
 $generated_key = '';
+$email_status = null;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['generate_key'])) {
         require_once '../license_functions.php';
@@ -60,8 +62,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->bindValue(':key', $generated_key, SQLITE3_TEXT);
             $stmt->execute();
             
+            // Send the license key via email
+            $email_status = send_license_email($email, $generated_key);
+            
             // Store message in session and redirect to prevent form resubmission on refresh
             $_SESSION['generated_key'] = $generated_key;
+            $_SESSION['email_status'] = $email_status;
+            $_SESSION['customer_email'] = $email;
             header('Location: index.php');
             exit;
         }
@@ -98,6 +105,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         header('Location: index.php' . (isset($_GET['search']) ? '?search=' . urlencode($_GET['search']) : ''));
         exit;
+    } elseif (isset($_POST['resend_email'])) {
+        // Handle email resending
+        $key_id = $_POST['key_id'];
+        $email = $_POST['email'];
+        $license_key = $_POST['key'];
+        
+        // Send the license key via email
+        $email_status = send_license_email($email, $license_key);
+        
+        $_SESSION['email_status'] = $email_status;
+        $_SESSION['email_message'] = $email_status 
+            ? "Email successfully sent to {$email}" 
+            : "Failed to send email to {$email}";
+        
+        header('Location: index.php' . (isset($_GET['search']) ? '?search=' . urlencode($_GET['search']) : ''));
+        exit;
     }
 }
 
@@ -105,6 +128,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 if (isset($_SESSION['generated_key'])) {
     $generated_key = $_SESSION['generated_key'];
     unset($_SESSION['generated_key']); // Clear the message
+}
+
+// Check for email status from previous submission
+if (isset($_SESSION['email_status'])) {
+    $email_status = $_SESSION['email_status'];
+    unset($_SESSION['email_status']);
+}
+
+// Check for customer email from previous submission
+$customer_email = '';
+if (isset($_SESSION['customer_email'])) {
+    $customer_email = $_SESSION['customer_email'];
+    unset($_SESSION['customer_email']);
 }
 
 // Get search parameter
@@ -124,206 +160,8 @@ $chart_data = get_chart_data();
     <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
     <title>Argo Sales Tracker - Admin</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 20px;
-            background-color: #f5f7fa;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        h1 {
-            color: #1e3a8a;
-            margin: 0;
-        }
-        .btn {
-            background: #2563eb;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
-            text-decoration: none;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        .btn:hover {
-            background: #1d4ed8;
-        }
-        .form-container, .chart-container, .search-container, .table-container {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 30px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-        .chart-container {
-            position: relative;
-            height: 300px;
-        }
-        .chart-container h2 {
-            margin-top: 0;
-        }
-        .stats-row {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-        .stat-card {
-            flex: 1;
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        .stat-card h3 {
-            margin-top: 0;
-            color: #4b5563;
-            font-size: 16px;
-            font-weight: 500;
-        }
-        .stat-card .stat-value {
-            font-size: 32px;
-            font-weight: bold;
-            color: #1e3a8a;
-            margin: 10px 0;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
-        input[type="email"], input[type="text"] {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #d1d5db;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        .search-container {
-            display: flex;
-            gap: 10px;
-        }
-        .search-container input {
-            flex-grow: 1;
-        }
-        .search-container form {
-            display: flex;
-            width: 100%;
-            gap: 10px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        th {
-            background-color: #f8fafc;
-            font-weight: 600;
-        }
-        tr:hover {
-            background-color: #f9fafb;
-        }
-        .key-field {
-            font-family: monospace;
-        }
-        .badge {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-        .badge-success {
-            background-color: #d1fae5;
-            color: #065f46;
-        }
-        .badge-pending {
-            background-color: #fef3c7;
-            color: #92400e;
-        }
-        .generated-key {
-            background: #ecfdf5;
-            border: 1px solid #10b981;
-            border-radius: 4px;
-            padding: 15px;
-            margin-bottom: 20px;
-            font-family: monospace;
-            font-size: 16px;
-        }
-        .logout-btn {
-            background: #ef4444;
-        }
-        .logout-btn:hover {
-            background: #dc2626;
-        }
-        .action-buttons {
-            display: flex;
-            gap: 5px;
-        }
-        .btn-small {
-            padding: 5px 10px;
-            font-size: 12px;
-            min-width: 85px;
-            text-align: center;
-            display: block;
-        }
-        .btn-activate {
-            background: #10b981;
-        }
-        .btn-activate:hover {
-            background: #059669;
-        }
-        .btn-deactivate {
-            background: #f59e0b;
-        }
-        .btn-deactivate:hover {
-            background: #d97706;
-        }
-        .btn-delete {
-            background: #ef4444;
-            min-width: 90px; /* Match the width of other action buttons */
-        }
-        .btn-delete:hover {
-            background: #dc2626;
-        }
-        .search-results {
-            margin-bottom: 15px;
-            font-style: italic;
-        }
-        .table-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        .table-header h2 {
-            margin: 0;
-        }
-        .total-keys {
-            font-weight: bold;
-            color: #1e3a8a;
-        }
-    </style>
+ 
+    <link rel="stylesheet" href="index-style.css">
 </head>
 <body>
     <div class="container">
@@ -367,6 +205,22 @@ $chart_data = get_chart_data();
             <?php if ($generated_key): ?>
                 <div class="generated-key">
                     New key generated: <?php echo htmlspecialchars($generated_key); ?>
+                </div>
+                
+                <?php if ($email_status !== null): ?>
+                    <div class="email-status <?php echo $email_status ? 'email-success' : 'email-error'; ?>">
+                        <?php if ($email_status): ?>
+                            <span>Email with license key was successfully sent to <strong><?php echo htmlspecialchars($customer_email); ?></strong></span>
+                        <?php else: ?>
+                            <span>Failed to send email with license key. Please check your server configuration or try again.</span>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
+            <?php endif; ?>
+            
+            <?php if ($email_message): ?>
+                <div class="email-status <?php echo strpos($email_message, 'Failed') === false ? 'email-success' : 'email-error'; ?>">
+                    <span><?php echo htmlspecialchars($email_message); ?></span>
                 </div>
             <?php endif; ?>
             
@@ -430,6 +284,14 @@ $chart_data = get_chart_data();
                                 </td>
                                 <td><?php echo $license['activation_date'] ? htmlspecialchars($license['activation_date']) : 'N/A'; ?></td>
                                 <td class="action-buttons">
+                                    <!-- Resend Email Button -->
+                                    <form method="post" onsubmit="return confirm('Are you sure you want to resend the license key email?');">
+                                        <input type="hidden" name="key_id" value="<?php echo htmlspecialchars($license['id']); ?>">
+                                        <input type="hidden" name="email" value="<?php echo htmlspecialchars($license['email']); ?>">
+                                        <input type="hidden" name="key" value="<?php echo htmlspecialchars($license['license_key']); ?>">
+                                        <button type="submit" name="resend_email" class="btn btn-small btn-email">Send Email</button>
+                                    </form>
+                                    
                                     <?php if (!$license['activated']): ?>
                                         <form method="post" onsubmit="return confirm('Are you sure you want to activate this license key?');">
                                             <input type="hidden" name="key_id" value="<?php echo htmlspecialchars($license['id']); ?>">

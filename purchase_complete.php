@@ -7,6 +7,7 @@ require_once 'email_sender.php';
 
 $license_key = '';
 $error_message = '';
+$email_status = null;
 
 // Check if form was submitted (this is just for demo - in production would come from payment processor)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'])) {
@@ -18,7 +19,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'])) {
             $license_key = create_license_key($email);
             
             // Send email with license key
-            send_license_email($email, $license_key);
+            $email_status = send_license_email($email, $license_key);
+            
+            if (!$email_status) {
+                $error_message = 'License key was generated but there was an issue sending the email. Please contact support.';
+            }
         } catch (Exception $e) {
             $error_message = 'An error occurred: ' . $e->getMessage();
         }
@@ -99,6 +104,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'])) {
             margin-top: 30px;
             color: #4b5563;
         }
+        
+        .email-error {
+            margin-top: 20px;
+            color: #ef4444;
+            background: #fee2e2;
+            border: 1px solid #ef4444;
+            border-radius: 6px;
+            padding: 10px;
+        }
+        
+        .resend-form {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -125,7 +143,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'])) {
                     
                     <button class="copy-button" onclick="copyLicenseKey()">Copy License Key</button>
                     
-                    <p class="email-sent">We've also sent this license key to your email address.</p>
+                    <?php if ($email_status): ?>
+                        <p class="email-sent">We've also sent this license key to your email address.</p>
+                    <?php else: ?>
+                        <p class="email-error"><?php echo htmlspecialchars($error_message); ?></p>
+                        <form class="resend-form" method="post" action="resend_email.php">
+                            <input type="hidden" name="email" value="<?php echo htmlspecialchars($email); ?>">
+                            <input type="hidden" name="license_key" value="<?php echo htmlspecialchars($license_key); ?>">
+                            <button type="submit" class="copy-button">Resend Email</button>
+                        </form>
+                    <?php endif; ?>
                     
                     <h3>What's Next?</h3>
                     <ol style="text-align: left; max-width: 400px; margin: 0 auto;">
