@@ -432,6 +432,51 @@
                 <h2>Spreadsheet Import/Export</h2>
                 <p>Easily move your data in and out of Argo Sales Tracker using Excel spreadsheets.</p>
 
+                <h3>Importing Data</h3>
+                <ol class="steps-list">
+                    <li>Prepare your spreadsheet following our <a class="link"
+                            href="../resources/downloads/Argo Sales Tracker format.xlsx">template format</a>
+                    <li>Click "File > Import > Excel spreadsheet"
+                    <li>Select your file and choose what to import
+                    <li>Review and confirm the import
+                </ol>
+
+                <p>Your Excel file must contain the following sheets:</p>
+
+                <div class="info-box">
+                    <ul>
+                        <li><b>Accountants</b> - A simple list with accountant names</li>
+                        <li><b>Companies</b> - A simple list with company names</li>
+                        <li><b>Purchase products</b> - Products for purchasing</li>
+                        <li><b>Sale products</b> - Products for selling</li>
+                        <li><b>Purchases</b> - Purchase transaction records</li>
+                        <li><b>Sales</b> - Sales transaction records</li>
+                    </ul>
+                </div>
+
+                <p>Your Excel file must be in the following format:</p>
+                <div class="info-box">
+                    <ul>
+                        <li><b>Multi-item transactions:</b> Only the first row contains the transaction ID,
+                            date, currency, and totals. Additional items in the same transaction leave the ID cell
+                            empty.</li>
+                        <li><b>Empty cells:</b> Can be left blank or use '-'. </li>
+                        <li><b>Currency values:</b> Use decimal format with two decimal places (e.g., 250.00).
+                            All monetary values in transaction sheets need to be in USD.</li>
+                        <li><b>Country names:</b> Should match the system's country list or use recognized
+                            variants (e.g., "US", "USA", etc. are recognized as "United States").</li>
+                        <li><b>Company consistency:</b> Company names in products should match those in the
+                            Companies sheet.</li>
+                        <li><b>Date format:</b> Use YYYY-MM-DD format (e.g., 2025-01-15).</li>
+                    </ul>
+                </div>
+
+                <div class="warning-box">
+                    <b>Important:</b> When importing data, ensure your spreadsheet follows the exact format described
+                    above. Download our template <a class="link"
+                        href="../resources/downloads/Argo Sales Tracker format.xlsx">here</a>.
+                </div>
+
                 <h3>Exporting Data</h3>
                 <ol class="steps-list">
                     <li>Click "File > Export"
@@ -440,19 +485,6 @@
                     <li>The exported file will contain separate worksheets for: Purchases,
                         Sales, Categories, Products, Companies, and Accountants
                 </ol>
-
-                <h3>Importing Data</h3>
-                <ol class="steps-list">
-                    <li>Prepare your spreadsheet following our <a class="link" href="#">template format</a>
-                    <li>Click "File > Import > Excel spreadsheet"
-                    <li>Select your file and choose what to import
-                    <li>Review and confirm the import
-                </ol>
-
-                <div class="warning-box">
-                    <b>Important:</b> When importing data, ensure your spreadsheet follows the exact format of our
-                    template. Download our template <a class="link" href="#">here</a>.
-                </div>
             </section>
 
             <!-- Search Bar section -->
@@ -473,7 +505,7 @@
                 <h3>Search Operators</h3>
                 <div class="info-box">
                     <h4>Exact Phrase Matching with Double Quotes (" ")</h4>
-                    <p>Double quotes search for an <strong>exact sequence of words in that precise order</strong>:</p>
+                    <p>Double quotes search for an <b>exact sequence of words in that precise order</b>:</p>
                     <ul class="examples-list">
                         <li><code>"black t-shirt"</code> - Finds only transactions containing these exact words together
                             in this exact order
@@ -483,7 +515,7 @@
                     <br>
 
                     <h4>Required Terms with Plus Sign (+)</h4>
-                    <p>The plus sign marks words that <strong>must be present somewhere</strong> in the transaction, but
+                    <p>The plus sign marks words that <b>must be present somewhere</b> in the transaction, but
                         not necessarily together or in any specific order:</p>
                     <ul class="examples-list">
                         <li><code>+shirt +cotton</code> - Finds transactions that contain both "shirt" AND "cotton"
