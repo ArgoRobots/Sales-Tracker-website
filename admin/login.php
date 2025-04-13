@@ -1,5 +1,4 @@
 <?php
-// Keep existing PHP code unchanged
 session_start();
 require_once '../db_connect.php';
 require_once '2fa.php';
@@ -97,46 +96,7 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
     <title>Admin Login - Argo Sales Tracker</title>
     <link rel="stylesheet" href="login-style.css">
-    <style>
-        /* Remove up/down arrows from number inputs */
-        input[type="number"]::-webkit-outer-spin-button,
-        input[type="number"]::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        
-        /* For Firefox */
-        input[type="number"] {
-            -moz-appearance: textfield;
-        }
-        
-        /* Verification code input enhancements */
-        .verification-code {
-            letter-spacing: 0.5em;
-            font-weight: bold;
-            font-family: monospace;
-            text-align: center;
-        }
-        
-        /* Enhanced overall button styling */
-        .btn, button[type="submit"] {
-            background: #2563eb;
-            border: none;
-            border-radius: 4px;
-            font-weight: 500;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-            transition: all 0.2s ease;
-        }
-        
-        .btn:hover, button[type="submit"]:hover {
-            background: #1d4ed8;
-        }
-        
-        .btn:focus, button[type="submit"]:focus {
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
-        }
-    </style>
+    <link rel="stylesheet" href="2fa-styles.css">
 </head>
 <body>
     <div class="login-container">
@@ -159,7 +119,7 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
                 </div>
                 
                 <input type="hidden" name="verify_code" value="1">
-                <button type="button" onclick="manualSubmit()" id="submit-button" class="btn">Verify</button>
+                <button type="button" onclick="submitVerificationForm()" id="submit-button" class="btn">Verify</button>
                 
                 <div class="back-to-login">
                     <a href="logout.php">Cancel and return to login</a>
@@ -195,8 +155,8 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
 
     <?php if ($show_2fa_form): ?>
     <script>
-    // Auto-submit when 6 digits are entered
-    function manualSubmit() {
+    // Simple function to submit the verification form
+    function submitVerificationForm() {
         document.getElementById('verification-form').submit();
     }
     
@@ -208,10 +168,11 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
                 // Force numeric only
                 this.value = this.value.replace(/[^0-9]/g, '');
                 
+                // Auto-submit on 6 digits
                 if (this.value.length === 6) {
                     // Add a small delay so user sees the 6th digit
                     setTimeout(function() {
-                        manualSubmit();
+                        submitVerificationForm();
                     }, 300);
                 }
             });
@@ -224,7 +185,7 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
                 // Also submit on Enter key when 6 digits entered
                 if (e.key === 'Enter' && this.value.length === 6) {
                     e.preventDefault();
-                    manualSubmit();
+                    submitVerificationForm();
                 }
             });
         }
