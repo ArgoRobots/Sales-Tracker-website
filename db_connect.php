@@ -3,9 +3,6 @@ function get_db_connection() {
     $db_path = '/home/argorobots/public_html/database/license_db.sqlite';
     $schema_path = __DIR__ . '/database/schema.sql';
     
-    error_log("DB Path: $db_path");
-    error_log("DB Directory: " . dirname($db_path));
-    error_log("Schema Path: $schema_path");
     error_log("Database exists: " . (file_exists($db_path) ? "Yes" : "No"));
     error_log("Schema exists: " . (file_exists($schema_path) ? "Yes" : "No"));
     

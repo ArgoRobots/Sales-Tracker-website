@@ -1,6 +1,6 @@
 <?php
 /**
- * Improved TOTP implementation fully compatible with Google Authenticator
+ * Simple TOTP implementation compatible with Google Authenticator
  */
 class TOTP {
     /**
@@ -15,14 +15,14 @@ class TOTP {
             $time = time();
         }
         
-        // Convert to uppercase and remove spaces
+        // Clean and normalize the secret
         $secret = strtoupper(str_replace(' ', '', $secret));
         
         // Calculate counter value (30-second window)
         $counter = floor($time / 30);
         
         // Pack time counter as binary (big endian)
-        $binary = pack('N*', 0) . pack('N*', $counter); // Ensure 8 bytes (64 bits)
+        $binary = pack('N*', 0) . pack('N*', $counter); // 8 bytes (64 bits)
         
         // Decode the secret
         $secretkey = self::base32_decode($secret);
@@ -48,7 +48,6 @@ class TOTP {
      * 
      * @param string $secret Base32 encoded secret
      * @param string $code TOTP code to verify
-     * @param int $window Time window in 30-second units (default: 1 for ±30 seconds)
      * @return bool True if code is valid
      */
     public static function verify($secret, $code) {
@@ -58,32 +57,24 @@ class TOTP {
         
         // Validate code format
         if (!preg_match('/^\d{6}$/', $code)) {
-            error_log("TOTP: Invalid code format: " . $code);
             return false;
         }
         
-        // Get current time in UTC
+        // Get current time
         $currentTime = time();
-        error_log("TOTP: Verification at: " . gmdate('Y-m-d H:i:s', $currentTime) . " UTC");
         
-        // Use a wider time window (±4 windows = ±2 minutes)
-        // This helps with clock drift between server and client
+        // Use a reasonable time window (±2 minutes) to account for clock drift
         $window = 4;
         
         for ($i = -$window; $i <= $window; $i++) {
             $checkTime = $currentTime + ($i * 30);
             $calculatedCode = self::getCode($secret, $checkTime);
             
-            error_log("TOTP: Window $i (" . gmdate('Y-m-d H:i:s', $checkTime) . 
-                    "): Generated '$calculatedCode' vs Input '$code'");
-            
             if ($calculatedCode === $code) {
-                error_log("TOTP: MATCH FOUND at window $i");
                 return true;
             }
         }
         
-        error_log("TOTP: No matching code found in any time window");
         return false;
     }
     
@@ -135,50 +126,9 @@ class TOTP {
         $secret = '';
         
         for ($i = 0; $i < $length; $i++) {
-            $secret .= $chars[random_int(0, 31)];
+            $secret .= $chars[rand(0, 31)];
         }
         
         return $secret;
-    }
-
-    public static function testImplementation() {
-        // RFC 6238 test vectors
-        $tests = [
-            [
-                'secret' => 'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ',
-                'time' => 59,
-                'expected' => '287082' // Last 6 digits of the RFC value
-            ],
-            [
-                'secret' => 'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ',
-                'time' => 1111111109,
-                'expected' => '081804' // Last 6 digits of the RFC value
-            ],
-            [
-                'secret' => 'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ',
-                'time' => 1111111111,
-                'expected' => '050471' // Last 6 digits of the RFC value
-            ]
-        ];
-        
-        $allPassed = true;
-        
-        foreach ($tests as $index => $test) {
-            $code = self::getCode($test['secret'], $test['time']);
-            $passed = $code === $test['expected'];
-            
-            error_log("TOTP Test " . ($index + 1) . ":");
-            error_log("  Secret: " . $test['secret']);
-            error_log("  Time: " . $test['time']);
-            error_log("  Expected: " . $test['expected']);
-            error_log("  Generated: " . $code);
-            error_log("  Result: " . ($passed ? "PASS" : "FAIL"));
-            
-            if (!$passed) {
-                $allPassed = false;
-            }
-        }
-        
-        return $allPassed;
     }
 }

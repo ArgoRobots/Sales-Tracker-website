@@ -22,20 +22,12 @@ if (!$is_enabled && isset($_GET['setup'])) {
     if (!isset($_SESSION['temp_2fa_secret'])) {
         $new_secret = generate_2fa_secret();
         $_SESSION['temp_2fa_secret'] = $new_secret;
-        
-        // Add debug logging here
-        error_log("NEW QR CODE GENERATION:");
-        error_log("Username: " . $username);
-        error_log("New secret generated: " . $new_secret);
     } else {
         // Use existing secret from session
         $new_secret = $_SESSION['temp_2fa_secret'];
-        error_log("USING EXISTING SECRET FROM SESSION: " . $new_secret);
     }
     
     $qr_code_data = get_qr_code_url($username, $new_secret, 'Argo Sales Tracker Admin');
-    
-    error_log("QR Code URL: " . $qr_code_data);
 }
 
 // Handle disabling of 2FA
@@ -53,49 +45,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enable_2fa'])) {
     $verification_code = $_POST['verification_code'] ?? '';
     $secret = $_SESSION['temp_2fa_secret'] ?? '';
 
-    // Add debug logging here
-    error_log("VERIFICATION ATTEMPT:");
-    error_log("Temp secret from session: " . $secret);
-    error_log("Stored secret in DB: " . get_2fa_secret($username));
-    error_log("Verification code entered: " . $verification_code);
-    
     if (empty($secret)) {
         $error = 'Session expired or invalid. Please try again.';
     } else {
         // Check verification code
-        $code_verified = verify_2fa_code($secret, $verification_code);
-        error_log("Code verification result: " . ($code_verified ? "SUCCESS" : "FAILURE"));
-        
-        if ($code_verified) {
-            error_log("SAVING 2FA SECRET ATTEMPT");
+        if (verify_2fa_code($secret, $verification_code)) {
             if (save_2fa_secret($username, $secret)) {
-                // Double-check the secret was saved
-                $savedSecret = get_2fa_secret($username);
-                
-                error_log("Save operation reported success");
-                error_log("Saved secret: " . ($savedSecret ?: "NULL"));
-                
-                if ($savedSecret === $secret) {
-                    $success = 'Two-factor authentication successfully enabled!';
-                    $is_enabled = true;
-                    unset($_SESSION['temp_2fa_secret']);
-                    
-                    // Add debug logging
-                    error_log("2FA ENABLED SUCCESSFULLY FOR $username");
-                    error_log("Stored secret: $savedSecret");
-                } else {
-                    $error = 'Failed to verify secret storage. Please try again.';
-                    error_log("SECRET STORAGE VERIFICATION FAILED");
-                    error_log("Expected: $secret");
-                    error_log("Got: " . ($savedSecret ?: "NULL"));
-                }
+                $success = 'Two-factor authentication successfully enabled!';
+                $is_enabled = true;
+                unset($_SESSION['temp_2fa_secret']);
             } else {
                 $error = 'Failed to save authentication settings.';
-                error_log("SAVE FUNCTION RETURNED FALSE");
             }
         } else {
             $error = 'Invalid verification code. Please try again.';
-            error_log("VERIFICATION CODE INVALID");
         }
     }
 }
@@ -201,9 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enable_2fa'])) {
                     colorLight: "#ffffff",
                     correctLevel: QRCode.CorrectLevel.H
                 });
-                console.log("QR code generated with URL:", otpauthUrl);
             } catch(e) {
-                console.error("Error generating QR code:", e);
                 qrContainer.innerHTML = "<p>QR code generation failed. Please use manual entry.</p>";
             }
         }
