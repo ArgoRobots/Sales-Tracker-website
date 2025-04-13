@@ -70,8 +70,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enable_2fa'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
     <title>Argo Sales Tracker - 2FA</title>
-     <link rel="stylesheet" href="index-style.css">
+    <link rel="stylesheet" href="index-style.css">
     <link rel="stylesheet" href="2fa-setup-style.css">
+    <style>
+        /* Remove up/down arrows from number inputs */
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
+        /* For Firefox */
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+        
+        /* Verification code input enhancements */
+        .verification-input {
+            letter-spacing: 0.5em;
+            font-weight: bold;
+            font-family: monospace;
+            text-align: center;
+        }
+        
+        /* Enhanced overall button styling */
+        .btn, button[type="submit"], button[type="button"] {
+            border-radius: 4px;
+            font-weight: 500;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease;
+        }
+        
+        .btn:focus, button[type="submit"]:focus, button[type="button"]:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+        }
+        
+        .btn-red {
+            background: #ef4444;
+            border: none;
+            transition: background 0.3s;
+        }
+        
+        .btn-red:hover {
+            background: #dc2626;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -125,14 +169,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enable_2fa'])) {
                     </div>
                 </div>
                 
-                <form method="post" class="verification-form">
+                <form method="post" class="verification-form" id="verification-form">
                     <div class="verification-heading">Enter the 6-digit code from your authenticator app</div>
                     
                     <input type="number" id="verification_code" name="verification_code" class="verification-input" required autofocus placeholder="000000" min="0" max="999999">
                     
                     <div class="nav-buttons">
                         <a href="2fa-setup.php" class="btn">Cancel</a>
-                        <button type="submit" name="enable_2fa" class="btn">Verify and Enable</button>
+                        <button type="button" onclick="submitVerificationForm()" id="verify-button" class="btn">Verify and Enable</button>
+                        <input type="hidden" name="enable_2fa" value="1">
                     </div>
                 </form>
             <?php else: ?>
@@ -146,7 +191,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enable_2fa'])) {
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script>
+    function submitVerificationForm() {
+        document.getElementById('verification-form').submit();
+    }
+    
     document.addEventListener('DOMContentLoaded', function() {
+        // QR Code generation
         const qrContainer = document.getElementById('qr-code-container');
         <?php if (!empty($qr_code_data)): ?>
         const otpauthUrl = <?php echo json_encode($qr_code_data); ?>;
@@ -167,6 +217,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enable_2fa'])) {
             } catch(e) {
                 qrContainer.innerHTML = "<p>QR code generation failed. Please use manual entry.</p>";
             }
+        }
+        
+        // Auto-submit when 6 digits are entered
+        const verificationInput = document.getElementById('verification_code');
+        if (verificationInput) {
+            verificationInput.addEventListener('input', function() {
+                // Force numeric only
+                this.value = this.value.replace(/[^0-9]/g, '');
+                
+                // Auto-submit on 6 digits
+                if (this.value.length === 6) {
+                    // Add a small delay so user sees the 6th digit
+                    setTimeout(function() {
+                        submitVerificationForm();
+                    }, 300);
+                }
+            });
+            
+            // Prevent arrow keys
+            verificationInput.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+                    e.preventDefault();
+                }
+                // Also submit on Enter key when 6 digits entered
+                if (e.key === 'Enter' && this.value.length === 6) {
+                    e.preventDefault();
+                    submitVerificationForm();
+                }
+            });
         }
     });
     </script>
