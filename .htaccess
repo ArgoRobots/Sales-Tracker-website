@@ -1,52 +1,36 @@
 # Deny access to database directory
-
 <Files ~ "\.sqlite$">
 Order allow,deny
 Deny from all
 </Files>
 
 # Deny access to the schema.sql file
-
 <Files ~ "schema\.sql$">
 Order allow,deny
 Deny from all
 </Files>
 
 # Protect database directory
-
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteRule ^database/ - [F,L]
 </IfModule>
 
 # Prevent directory listing
-
 Options -Indexes
 
 # Set default character set
-
 AddDefaultCharset UTF-8
 
-# Protect against XSS attacks
-
+# Protect against XSS attacks and set security policy
 <IfModule mod_headers.c>
     Header set X-XSS-Protection "1; mode=block"
     Header set X-Content-Type-Options "nosniff"
     Header set X-Frame-Options "SAMEORIGIN"
-    Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://s3-us-west-2.amazonaws.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://s3-us-west-2.amazonaws.com; frame-src https://www.youtube.com https://www.youtube-nocookie.com;"
+    Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://s3-us-west-2.amazonaws.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://s3-us-west-2.amazonaws.com https://chart.googleapis.com; frame-src https://www.youtube.com https://www.youtube-nocookie.com; connect-src 'self' https://formspree.io;"
 </IfModule>
 
-# Fix error with formspree submission
-
-<IfModule mod_headers.c>
-    Header set X-XSS-Protection "1; mode=block"
-    Header set X-Content-Type-Options "nosniff"
-    Header set X-Frame-Options "SAMEORIGIN"
-    Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://s3-us-west-2.amazonaws.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://s3-us-west-2.amazonaws.com; frame-src https://www.youtube.com https://www.youtube-nocookie.com; connect-src 'self' https://formspree.io;"
-</IfModule>
-
-# Error pages
-
+# Redirect to error pages
 ErrorDocument 400 /error-pages/400.html
 ErrorDocument 401 /error-pages/401.html
 ErrorDocument 403 /error-pages/403.html
@@ -55,5 +39,4 @@ ErrorDocument 500 /error-pages/500.html
 ErrorDocument 503 /error-pages/503.html
 
 # PHP error handling
-
 php_flag display_errors

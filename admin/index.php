@@ -3,6 +3,11 @@ session_start();
 require_once '../db_connect.php';
 require_once '../email_sender.php';
 
+$email_message = isset($_SESSION['email_message']) ? $_SESSION['email_message'] : '';
+if (isset($_SESSION['email_message'])) {
+    unset($_SESSION['email_message']); // Clear it after use
+}
+
 // Check if user is logged in
 if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
     header('Location: login.php');
@@ -165,9 +170,12 @@ $chart_data = get_chart_data();
 </head>
 <body>
     <div class="container">
-        <div class="header">
+       <div class="header">
             <h1>License Key Administration</h1>
-            <a href="logout.php" class="btn logout-btn">Logout</a>
+            <div class="header-buttons">
+                <a href="2fa-setup.php" class="btn btn-secondary">2FA Settings</a>
+                <a href="logout.php" class="btn logout-btn">Logout</a>
+            </div>
         </div>
         
         <!-- Statistics Cards -->

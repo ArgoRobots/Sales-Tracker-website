@@ -63,7 +63,7 @@ if (isset($_SESSION['contact_error'])) {
           <div class="support-container">
             <h2 class="sub-title">Support</h2>
             <p class="description">Contact us at <a href="mailto:support@argorobots.com">support@argorobots.com</a> for
-              any support. We usually respond within 1-8 hours.</p>
+              any support. We usually respond within 1-8 business hours.</p>
           </div>
 
           <!-- Feedback containers -->
