@@ -15,7 +15,7 @@ This is the website for Argo Sales Tracker, a WinForms application designed to t
 
 Backend administration system for managing license keys:
 
-- Protected by username/password authentication
+- Protected by password and two factor authentication
 - License key generation and management
 - Email system for sending license keys to customers
 - License validation API endpoint
