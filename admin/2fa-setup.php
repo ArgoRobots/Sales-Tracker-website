@@ -9,56 +9,64 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
     exit;
 }
 
-if(verify_db_schema()) {
-    error_log("DATABSE IS OK");
-}
-check_db_permissions();
-
 $username = $_SESSION['admin_username'];
 $error = '';
 $success = '';
 $is_enabled = is_2fa_enabled($username);
 $new_secret = '';
-$qr_code_data = [];
+$qr_code_data = '';
 
 // Check if 2FA is already enabled or we're setting it up
 if (!$is_enabled && isset($_GET['setup'])) {
-    $new_secret = generate_2fa_secret();
-    $qr_code_data = get_qr_code_url($username, $new_secret, 'Argo Sales Tracker Admin');
-    $_SESSION['temp_2fa_secret'] = $new_secret;
+    // Only generate a new secret if one doesn't already exist in session
+    if (!isset($_SESSION['temp_2fa_secret'])) {
+        $new_secret = generate_2fa_secret();
+        $_SESSION['temp_2fa_secret'] = $new_secret;
+        
+        // Add debug logging here
+        error_log("NEW QR CODE GENERATION:");
+        error_log("Username: " . $username);
+        error_log("New secret generated: " . $new_secret);
+    } else {
+        // Use existing secret from session
+        $new_secret = $_SESSION['temp_2fa_secret'];
+        error_log("USING EXISTING SECRET FROM SESSION: " . $new_secret);
+    }
     
-    // Add debug logging here
-    error_log("QR CODE GENERATION:");
-    error_log("Username: " . $username);
-    error_log("New secret generated: " . $new_secret);
+    $qr_code_data = get_qr_code_url($username, $new_secret, 'Argo Sales Tracker Admin');
+    
     error_log("QR Code URL: " . $qr_code_data);
 }
 
-// Handle activation of 2FA
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['enable_2fa'])) {
-        $verification_code = $_POST['verification_code'] ?? '';
-        $secret = $_SESSION['temp_2fa_secret'];
+// Handle disabling of 2FA
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['disable_2fa'])) {
+    if (disable_2fa($username)) {
+        $success = 'Two-factor authentication has been disabled.';
+        $is_enabled = false;
+    } else {
+        $error = 'Failed to disable two-factor authentication.';
+    }
+}
 
-        // Add debug logging here
-        error_log("VERIFICATION ATTEMPT:");
-        error_log("Temp secret from session: " . $secret);
-        error_log("Stored secret in DB: " . get_2fa_secret($username));
-        error_log("Verification code entered: " . $verification_code);
-        
-        // Debug test - remove this in production
-        // Try to forcibly save the secret regardless of verification
-        error_log("ATTEMPTING FORCE SAVE (DEBUG)");
-        $force_save = save_2fa_secret($username, $secret);
-        error_log("Force save result: " . ($force_save ? "SUCCESS" : "FAILURE"));
-        
+// Handle activation of 2FA
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enable_2fa'])) {
+    $verification_code = $_POST['verification_code'] ?? '';
+    $secret = $_SESSION['temp_2fa_secret'] ?? '';
+
+    // Add debug logging here
+    error_log("VERIFICATION ATTEMPT:");
+    error_log("Temp secret from session: " . $secret);
+    error_log("Stored secret in DB: " . get_2fa_secret($username));
+    error_log("Verification code entered: " . $verification_code);
+    
+    if (empty($secret)) {
+        $error = 'Session expired or invalid. Please try again.';
+    } else {
         // Check verification code
         $code_verified = verify_2fa_code($secret, $verification_code);
         error_log("Code verification result: " . ($code_verified ? "SUCCESS" : "FAILURE"));
         
-        // For testing, proceed even if verification fails
-        // In production you would use: if ($code_verified) {
-        if (true) {
+        if ($code_verified) {
             error_log("SAVING 2FA SECRET ATTEMPT");
             if (save_2fa_secret($username, $secret)) {
                 // Double-check the secret was saved
@@ -177,9 +185,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         const qrContainer = document.getElementById('qr-code-container');
-        const otpauthUrl = "otpauth://totp/<?php echo urlencode($username); ?>?secret=<?php echo $new_secret; ?>&issuer=<?php echo urlencode('Argo Sales Tracker Admin'); ?>";
+        <?php if (!empty($qr_code_data)): ?>
+        const otpauthUrl = <?php echo json_encode($qr_code_data); ?>;
+        <?php else: ?>
+        const otpauthUrl = "";
+        <?php endif; ?>
         
-        if (qrContainer) {
+        if (qrContainer && otpauthUrl) {
             try {
                 new QRCode(qrContainer, {
                     text: otpauthUrl,

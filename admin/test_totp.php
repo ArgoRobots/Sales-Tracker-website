@@ -2,7 +2,7 @@
 require_once 'totp.php';
 
 // Run the test
-$testResult = BasicTOTP::testImplementation();
+$testResult = TOTP::testImplementation();
 
 echo "<h1>TOTP Implementation Test</h1>";
 echo "<p>Test " . ($testResult ? "PASSED" : "FAILED") . "</p>";

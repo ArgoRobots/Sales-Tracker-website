@@ -1,10 +1,13 @@
 <?php
 function get_db_connection() {
     $db_path = '/home/argorobots/public_html/database/license_db.sqlite';
+    $schema_path = __DIR__ . '/database/schema.sql';
     
     error_log("DB Path: $db_path");
     error_log("DB Directory: " . dirname($db_path));
+    error_log("Schema Path: $schema_path");
     error_log("Database exists: " . (file_exists($db_path) ? "Yes" : "No"));
+    error_log("Schema exists: " . (file_exists($schema_path) ? "Yes" : "No"));
     
     // Check directory permissions
     $db_dir = dirname($db_path);
@@ -15,36 +18,26 @@ function get_db_connection() {
         $db = new SQLite3($db_path);
         $db->exec('PRAGMA foreign_keys = ON;');
         
-        // Set more permissive permissions
+        // Set permissions
         if (file_exists($db_path)) {
             chmod($db_path, 0666);
         }
         
-        error_log("Checking if tables exist");
+        // Read schema from file and execute it
+        if (!file_exists($schema_path)) {
+            error_log("Schema file not found: $schema_path");
+            die("Schema file not found: $schema_path");
+        }
         
-        // Create tables if they don't exist
-        $db->exec('
-            CREATE TABLE IF NOT EXISTS license_keys (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                license_key TEXT NOT NULL UNIQUE,
-                email TEXT NOT NULL,
-                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                activated INTEGER DEFAULT 0,
-                activation_date DATETIME DEFAULT NULL,
-                ip_address TEXT DEFAULT NULL
-            );
-            
-            CREATE TABLE IF NOT EXISTS admin_users (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                username TEXT NOT NULL UNIQUE,
-                password_hash TEXT NOT NULL,
-                email TEXT,
-                two_factor_secret TEXT,
-                two_factor_enabled INTEGER DEFAULT 0,
-                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                last_login DATETIME
-            );
-        ');
+        $schema_sql = file_get_contents($schema_path);
+        if ($schema_sql === false) {
+            error_log("Failed to read schema file: $schema_path");
+            die("Failed to read schema file: $schema_path");
+        }
+        
+        // Execute schema SQL
+        $db->exec($schema_sql);
+        error_log("Schema successfully imported from file");
         
         return $db;
     } catch (Exception $e) {

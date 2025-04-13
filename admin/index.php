@@ -406,17 +406,14 @@ $chart_data = get_chart_data();
         const searchInput = document.querySelector('input[name="search"]');
         if (searchInput) {
             let typingTimer;
-            const doneTypingInterval = 500; // wait for 500ms after user stops typing
             
             searchInput.addEventListener('input', function() {
                 clearTimeout(typingTimer);
                 
                 if (this.value.trim() === '') {
-                    typingTimer = setTimeout(() => {
-                        // Save current scroll position before redirecting
-                        sessionStorage.setItem('scrollPosition', window.scrollY);
-                        window.location.href = 'index.php';
-                    }, doneTypingInterval);
+                    // Save current scroll position before redirecting
+                    sessionStorage.setItem('scrollPosition', window.scrollY);
+                    window.location.href = 'index.php';
                 }
             });
             
