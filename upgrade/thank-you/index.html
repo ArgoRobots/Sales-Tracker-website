@@ -12,6 +12,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="../../images/argo-logo/A-logo.ico">
     <title>Thank You - Argo Sales Tracker</title>
 
+    <script src="main.js"></script>
     <script src="../../resources/scripts/main.js"></script>
     <script src="../../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../../resources/scripts/ScrollToCenter.js"></script>
@@ -65,30 +66,33 @@
                     <div class="step-number">1</div>
                     <div class="step-content">
                         <h4>Open Argo Sales Tracker</h4>
-                        <p>Launch the application on your computer.</p>
                     </div>
                 </div>
 
                 <div class="step">
                     <div class="step-number">2</div>
                     <div class="step-content">
-                        <h4>Enter Your License Key</h4>
-                        <p>When prompted, enter the license key shown above to activate the full version.</p>
+                        <h4>Click the blue upgrade button on the top right</h4>
                     </div>
                 </div>
 
                 <div class="step">
                     <div class="step-number">3</div>
                     <div class="step-content">
-                        <h4>Enjoy Unlimited Access</h4>
-                        <p>You now have access to all premium features including unlimited products and Windows
-                            Hello authentication.</p>
+                        <h4>Enter your license key</h4>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>Enjoy unlimited access to all premium features!</h4>
                     </div>
                 </div>
             </div>
         </div>
 
-        <a href="../../index.html" class="btn">Return to Home</a>
+        <a href="../../index.html" class="btn btn-blue">Return to Home</a>
     </section>
 
     <footer class="footer">
@@ -101,55 +105,6 @@
         </script>
         <div id="includeFooter"></div>
     </footer>
-
-    <script>
-        // Get license key from URL or load from server (placeholder for now)
-        document.addEventListener('DOMContentLoaded', function () {
-            // This would typically come from your server after processing payment
-            // For now we're using a placeholder
-            const licensePlaceholder = generatePlaceholderLicense();
-            document.getElementById('license-key').textContent = licensePlaceholder;
-
-            // Add the copy button back after setting content
-            const copyBtn = document.createElement('button');
-            copyBtn.className = 'copy-btn';
-            copyBtn.textContent = 'Copy';
-            copyBtn.onclick = copyLicenseKey;
-            document.getElementById('license-key').appendChild(copyBtn);
-        });
-
-        // Function to generate a random license key for demonstration
-        function generatePlaceholderLicense() {
-            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-            let license = '';
-
-            // Generate 4 groups of 4 characters
-            for (let group = 0; group < 4; group++) {
-                for (let i = 0; i < 4; i++) {
-                    license += chars.charAt(Math.floor(Math.random() * chars.length));
-                }
-                if (group < 3) license += '-';
-            }
-
-            return license;
-        }
-
-        // Function to copy license key to clipboard
-        function copyLicenseKey() {
-            const licenseText = document.getElementById('license-key').textContent.trim();
-            navigator.clipboard.writeText(licenseText)
-                .then(() => {
-                    const copyBtn = document.querySelector('.copy-btn');
-                    copyBtn.textContent = 'Copied!';
-                    setTimeout(() => {
-                        copyBtn.textContent = 'Copy';
-                    }, 2000);
-                })
-                .catch(err => {
-                    console.error('Failed to copy: ', err);
-                });
-        }
-    </script>
 </body>
 
 </html>

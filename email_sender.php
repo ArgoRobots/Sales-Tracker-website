@@ -197,7 +197,7 @@ function get_license_email_template($email, $license_key) {
                     <li>Open Argo Sales Tracker on your computer</li>
                     <li>Click the blue upgrade button on the top right</li>
                     <li>Enter your license key</li>
-                    <li>Enjoy all premium features!</li>
+                    <li>Enjoy unlimited access to all premium features!</li>
                 </ol>
             </div>
             

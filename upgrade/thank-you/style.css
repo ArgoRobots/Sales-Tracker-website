@@ -135,7 +135,6 @@ h1 {
     font-size: 18px;
 }
 
-.step-content p {
-    font-size: 16px;
-    color: #4b5563;
+.btn {
+    margin: 0 auto;
 }
