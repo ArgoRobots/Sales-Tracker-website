@@ -1,0 +1,141 @@
+.thank-you-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    text-align: center;
+    min-height: 100vh;
+}
+
+h1 {
+    margin-top: 50px;
+}
+
+.thank-you-card {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin: 50px 0;
+}
+
+.thank-you-card h2 {
+    margin-top: 0;
+    font-size: 32px;
+    color: #1e3a8a;
+}
+
+.thank-you-card p {
+    font-size: 18px;
+    color: #4b5563;
+    margin: 10px 0 30px;
+}
+
+.check-icon {
+    width: 80px;
+    height: 80px;
+    background: #ecfdf5;
+    border-radius: 50%;
+    margin: 0 auto 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.check-icon svg {
+    width: 40px;
+    height: 40px;
+    stroke: var(--green);
+    stroke-width: 2;
+}
+
+.license-container {
+    background: #f8fafc;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 30px auto;
+    max-width: 500px;
+    text-align: left;
+}
+
+.license-container h3 {
+    margin-top: 0;
+    font-size: 20px;
+    color: #1e3a8a;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.license-key {
+    font-family: monospace;
+    background: #fff;
+    padding: 15px;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    font-size: 16px;
+    text-align: center;
+    letter-spacing: 2px;
+    position: relative;
+}
+
+.copy-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #e5e7eb;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.copy-btn:hover {
+    background: #d1d5db;
+}
+
+.next-steps {
+    margin-top: 40px;
+}
+
+.next-steps h3 {
+    font-size: 22px;
+    color: #1e3a8a;
+    margin-bottom: 20px;
+}
+
+.step {
+    display: flex;
+    align-items: flex-start;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.step-number {
+    width: 30px;
+    height: 30px;
+    background: #dbeafe;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    font-weight: bold;
+    color: #1e3a8a;
+    flex-shrink: 0;
+}
+
+.step-content {
+    flex: 1;
+}
+
+.step-content h4 {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.step-content p {
+    font-size: 16px;
+    color: #4b5563;
+}

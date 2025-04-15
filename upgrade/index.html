@@ -10,14 +10,14 @@
     <meta name="author" content="Argo">
     <meta name="robots" content="noindex, nofollow">
     <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
-    <title>Argo Sales Tracker - Upgrade</title>
+    <title>Upgrade - Argo Sales Tracker</title>
 
     <script src=" ../resources/scripts/main.js"></script>
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../resources/scripts/ScrollToCenter.js"></script>
 
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="../resources/styles/customColors.css">
+    <link rel="stylesheet" href="../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../resources/styles/link.css">
     <link rel="stylesheet" href="../resources/header/style.css">
     <link rel="stylesheet" href="../resources/footer/style.css">
@@ -152,17 +152,17 @@
             <p>Choose your preferred payment method</p>
 
             <div class="payment-grid">
-                <button class="payment-btn">
+                <button class="payment-btn" onclick="window.location.href='checkout/index.html?method=paypal'">
                     <img src="../images/PayPal-logo.svg" alt="PayPal">
                     <span>Pay with PayPal</span>
                 </button>
 
-                <button class="payment-btn">
+                <button class="payment-btn" onclick="window.location.href='checkout/index.html?method=stripe'">
                     <img class="Stripe" src="../images/Stripe-logo.svg" alt="Stripe">
                     <span>Pay with Stripe</span>
                 </button>
 
-                <button class="payment-btn">
+                <button class="payment-btn" onclick="window.location.href='checkout/index.html?method=square'">
                     <img class="Square" src="../images/Square-logo.svg" alt="Square">
                     <span>Pay with Square</span>
                 </button>
@@ -208,8 +208,9 @@
                     <summary>
                         <h3>What if I need help?</h3>
                     </summary>
-                    <p>You can contact us <a class="link" href="../contact-us/index.php">here</a>. Premium users get
-                        priority support. We typically respond within 24 hours or less.</p>
+                    <p>You can contact us <a class="link" href="../contact-us/index.php">here</a>. Customers who have
+                        paid for the full version get priority support. We typically respond within 8 business hours or
+                        less.</p>
                 </details>
             </div>
         </div>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Checkout - Argo Sales Tracker">
+    <meta name="keywords" content="sales tracker, business software, analytics">
+    <meta name="author" content="Argo">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="shortcut icon" type="image/x-icon" href="../../images/argo-logo/A-logo.ico">
+    <title>Checkout - Argo Sales Tracker</title>
+
+    <script src="main.js"></script>
+    <script src="../../resources/scripts/main.js"></script>
+    <script src="../../resources/scripts/jquery-3.6.0.js"></script>
+    <script src="../../resources/scripts/ScrollToCenter.js"></script>
+    <script
+        src="https://www.paypal.com/sdk/js?client-id=AUZphGZ_MVJhEAVVKiO8D7_lvyGKB1PTBS4ml4o8I9HImD82UW7BUXXEjx8ptrnZDWY6dmTwtzUNBFbG&currency=CAD"></script>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../resources/styles/custom-colors.css">
+    <link rel="stylesheet" href="../../resources/styles/link.css">
+    <link rel="stylesheet" href="../../resources/header/style.css">
+    <link rel="stylesheet" href="../../resources/header/dark.css">
+    <link rel="stylesheet" href="../../resources/footer/style.css">
+</head>
+
+<body>
+    <header>
+        <script>
+            $(function () {
+                $("#includeHeader").load("../../resources/header/index.html", function () {
+                    adjustLinksAndImages("#includeHeader");
+                });
+            });
+        </script>
+        <div id="includeHeader"></div>
+    </header>
+
+    <section class="checkout-container">
+        <h1>Complete Your Purchase For Argo Sales Tracker</h1>
+
+        <div class="checkout-form">
+            <h2>Payment Details</h2>
+
+            <div class="order-summary">
+                <h3>Order Summary</h3>
+                <div class="order-item">
+                    <span>Argo Sales Tracker - Lifetime Access</span>
+                    <span>$20.00 CAD</span>
+                </div>
+                <div class="order-total">
+                    <span>Total</span>
+                    <span>$20.00 CAD</span>
+                </div>
+            </div>
+
+            <form id="payment-form" action="process-payment.php" method="POST">
+                <div class="form-group">
+                    <label for="card-holder">Cardholder Name</label>
+                    <input type="text" id="card-holder" name="card-holder" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="card-number">Card Number</label>
+                    <input type="text" id="card-number" name="card-number" class="form-control"
+                        placeholder="1234 5678 9012 3456" required>
+                </div>
+
+                <div style="display: flex; gap: 15px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label for="expiry">Expiry Date</label>
+                        <input type="text" id="expiry" name="expiry" class="form-control" placeholder="MM/YY" required>
+                    </div>
+
+                    <div class="form-group" style="flex: 1;">
+                        <label for="cvv">CVV</label>
+                        <input type="text" id="cvv" name="cvv" class="form-control" placeholder="123" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" class="form-control" required>
+                </div>
+
+                <button type="submit" class="checkout-btn">Pay $20.00 CAD</button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <script>
+            $(function () {
+                $("#includeFooter").load("../../resources/footer/index.html", function () {
+                    adjustLinksAndImages("#includeFooter");
+                });
+            });
+        </script>
+        <div id="includeFooter"></div>
+    </footer>
+</body>
+
+</html>

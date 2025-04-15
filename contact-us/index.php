@@ -21,14 +21,14 @@ if (isset($_SESSION['contact_error'])) {
   <meta name="author" content="Argo">
   <meta name="robots" content="noindex, nofollow">
   <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
-  <title>Argo Sales Tracker - Contact Us</title>
+  <title>Contact Us - Argo Sales Tracker</title>
 
   <script src="../resources/scripts/main.js"></script>
   <script src="../resources/scripts/jquery-3.6.0.js"></script>
   <script src="main.js"></script>
 
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="../resources/styles/customColors.css">
+  <link rel="stylesheet" href="../resources/styles/custom-colors.css">
   <link rel="stylesheet" href="../resources/header/style.css">
   <link rel="stylesheet" href="../resources/header/dark.css">
   <link rel="stylesheet" href="../resources/footer/style.css">
