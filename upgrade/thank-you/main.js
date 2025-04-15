@@ -1,3 +1,5 @@
+// Updated script for thank you page with test mode support
+
 document.addEventListener("DOMContentLoaded", function () {
   // Get parameters from URL
   const urlParams = new URLSearchParams(window.location.search);
@@ -5,6 +7,31 @@ document.addEventListener("DOMContentLoaded", function () {
   const transactionID = urlParams.get("transaction_id");
   const paymentMethod = urlParams.get("method");
   const licenseKey = urlParams.get("license");
+  const customerEmail = urlParams.get("email");
+  const hasError = urlParams.get("error");
+  const isTestMode = urlParams.get("test") === "true";
+
+  // Add test mode indicator if applicable
+  if (isTestMode) {
+    const container = document.querySelector(".thank-you-container");
+    const testBanner = document.createElement("div");
+    testBanner.className = "test-mode-banner";
+    testBanner.innerHTML = "TEST MODE";
+    testBanner.style.backgroundColor = "#fdfdea";
+    testBanner.style.color = "#92400e";
+    testBanner.style.padding = "10px";
+    testBanner.style.textAlign = "center";
+    testBanner.style.fontWeight = "bold";
+    testBanner.style.borderRadius = "4px";
+    testBanner.style.marginBottom = "20px";
+    testBanner.style.border = "1px solid #fbd38d";
+
+    if (container.firstChild) {
+      container.insertBefore(testBanner, container.firstChild);
+    } else {
+      container.appendChild(testBanner);
+    }
+  }
 
   // Get license key element
   const licenseKeyElement = document.getElementById("license-key");
@@ -12,6 +39,34 @@ document.addEventListener("DOMContentLoaded", function () {
   if (licenseKey) {
     // User has a license key from URL, display it
     licenseKeyElement.textContent = licenseKey;
+  } else if (hasError) {
+    // Handle error cases
+    const thankYouHeading = document.querySelector("h2");
+    if (thankYouHeading) {
+      thankYouHeading.textContent = "We've received your payment!";
+    }
+
+    licenseKeyElement.innerHTML = `
+            <div style="color: #B91C1C; text-align: center;">
+                <p>We're generating your license key.</p>
+                <p>It will be emailed to you shortly.</p>
+            </div>
+        `;
+
+    // Hide the copy button if there's an error
+    const copyBtn = document.querySelector(".copy-btn");
+    if (copyBtn) {
+      copyBtn.style.display = "none";
+    }
+
+    // Add a note about contacting support
+    const licenseContainer = document.querySelector(".license-container");
+    if (licenseContainer) {
+      const supportNote = document.createElement("p");
+      supportNote.innerHTML =
+        'If you don\'t receive your license key within 15 minutes, please <a href="../../contact-us/index.php" class="link">contact our support team</a>';
+      licenseContainer.appendChild(supportNote);
+    }
   } else {
     // Generate a license key based on available data
     let generatedKey;
@@ -30,23 +85,38 @@ document.addEventListener("DOMContentLoaded", function () {
     licenseKeyElement.textContent = generatedKey;
   }
 
-  // Add the copy button back
-  const copyBtn = document.createElement("button");
-  copyBtn.className = "copy-btn";
-  copyBtn.textContent = "Copy";
-  copyBtn.onclick = copyLicenseKey;
-  licenseKeyElement.appendChild(copyBtn);
+  // Add the copy button back (unless we're showing an error)
+  if (!hasError) {
+    const copyBtn = document.createElement("button");
+    copyBtn.className = "copy-btn";
+    copyBtn.textContent = "Copy";
+    copyBtn.onclick = copyLicenseKey;
+    licenseKeyElement.appendChild(copyBtn);
+  }
 
   // Add transaction details to the page if available
-  if (orderID || transactionID) {
+  if (orderID || transactionID || customerEmail) {
     const thankYouCard = document.querySelector(".thank-you-card");
     const transactionDetails = document.createElement("div");
     transactionDetails.className = "transaction-details";
+
+    let paymentMethodDisplay =
+      paymentMethod ||
+      (transactionID && transactionID.indexOf("CARD_") === 0
+        ? "Credit Card"
+        : "PayPal");
+
+    // Mark as test transaction if in test mode
+    if (isTestMode) {
+      paymentMethodDisplay += " (Test)";
+    }
+
     transactionDetails.innerHTML = `
             <p class="transaction-info">
+                ${customerEmail ? `Email: ${customerEmail}<br>` : ""}
                 ${orderID ? `Order ID: ${orderID}<br>` : ""}
                 ${transactionID ? `Transaction ID: ${transactionID}<br>` : ""}
-                Payment Method: ${paymentMethod || "Credit Card"}
+                Payment Method: ${paymentMethodDisplay}
             </p>
         `;
 
@@ -56,6 +126,25 @@ document.addEventListener("DOMContentLoaded", function () {
       thankYouCard.insertBefore(transactionDetails, nextSteps);
     } else {
       thankYouCard.appendChild(transactionDetails);
+    }
+  }
+
+  // If we have customer email but error generating license, offer manual contact
+  if (hasError && customerEmail) {
+    const supportMsg = document.createElement("div");
+    supportMsg.className = "support-message";
+    supportMsg.innerHTML = `
+            <p>A confirmation of your purchase has been sent to <strong>${customerEmail}</strong>.</p>
+            <p>Our team has been notified and will contact you shortly with your license key.</p>
+        `;
+
+    // Find where to insert this message
+    const licenseContainer = document.querySelector(".license-container");
+    if (licenseContainer && licenseContainer.nextElementSibling) {
+      licenseContainer.parentNode.insertBefore(
+        supportMsg,
+        licenseContainer.nextElementSibling
+      );
     }
   }
 });

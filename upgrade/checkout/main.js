@@ -1,11 +1,16 @@
 document.addEventListener("DOMContentLoaded", function () {
   // Get payment method from URL
   const urlParams = new URLSearchParams(window.location.search);
-  const paymentMethod = urlParams.get("method") || "credit";
+  const paymentMethod = urlParams.get("method") || "paypal"; // Default to PayPal
 
   // Update the form based on payment method
   const formTitle = document.querySelector(".checkout-form h2");
   const paymentForm = document.getElementById("payment-form");
+
+  // Hide the credit card form by default (since we're focusing on PayPal)
+  if (paymentForm) {
+    paymentForm.style.display = "none";
+  }
 
   // Customize checkout form based on payment method
   switch (paymentMethod) {
@@ -14,23 +19,46 @@ document.addEventListener("DOMContentLoaded", function () {
       setupPayPalCheckout();
       break;
     case "stripe":
-      formTitle.textContent = "Stripe Checkout";
+      formTitle.textContent = "Coming Soon - Stripe Checkout";
+      showComingSoon("Stripe payments will be available soon!");
       break;
     case "square":
-      formTitle.textContent = "Square Checkout";
+      formTitle.textContent = "Coming Soon - Square Checkout";
+      showComingSoon("Square payments will be available soon!");
       break;
     default:
-      formTitle.textContent = "Credit Card Checkout";
+      formTitle.textContent = "PayPal Checkout";
+      setupPayPalCheckout();
+  }
+
+  // Show "coming soon" message for payment methods not yet implemented
+  function showComingSoon(message) {
+    const container = document.querySelector(".checkout-form");
+    // Remove order summary and payment form
+    const orderSummary = container.querySelector(".order-summary");
+    if (orderSummary) {
+      orderSummary.insertAdjacentHTML(
+        "afterend",
+        `
+        <div style="text-align: center; padding: 40px 20px;">
+          <p style="font-size: 18px; color: #4b5563; margin-bottom: 20px;">${message}</p>
+          <p>For now, please use PayPal for your purchase.</p>
+          <button class="checkout-btn" onclick="window.location.href='index.html?method=paypal'" style="margin-top: 20px; max-width: 200px;">
+            Switch to PayPal
+          </button>
+        </div>
+      `
+      );
+
+      // Hide the payment form if it exists
+      if (paymentForm) {
+        paymentForm.style.display = "none";
+      }
+    }
   }
 
   // PayPal checkout setup
-  // Update your setupPayPalCheckout function
   function setupPayPalCheckout() {
-    // Hide the credit card form for PayPal
-    if (paymentForm) {
-      paymentForm.style.display = "none";
-    }
-
     // Create PayPal button container if it doesn't exist
     let paypalContainer = document.getElementById("paypal-button-container");
     if (!paypalContainer) {
@@ -68,179 +96,119 @@ document.addEventListener("DOMContentLoaded", function () {
             });
           },
 
+          // Handle cancellation
+          onCancel: function (data) {
+            console.log("Payment cancelled by user");
+          },
+
           // Finalize the transaction
           onApprove: function (data, actions) {
             // Show loading indication
             document.querySelector(".checkout-form").innerHTML = `
-            <div style="text-align: center;">
-              <h2>Processing your payment...</h2>
-              <p>Please do not close this window.</p>
-              <div class="loading-spinner"></div>
-            </div>
-          `;
-
-            return actions.order
-              .capture()
-              .then(function (orderData) {
-                // Successful capture
-                console.log(
-                  "Capture result",
-                  orderData,
-                  JSON.stringify(orderData, null, 2)
-                );
-                const transaction =
-                  orderData.purchase_units[0].payments.captures[0];
-
-                // Generate a license key based on transaction ID
-                const licenseKey = generateLicenseKey(transaction.id);
-
-                // Redirect to thank you page
-                window.location.href =
-                  "thank-you/index.html?order_id=" +
-                  orderData.id +
-                  "&transaction_id=" +
-                  transaction.id +
-                  "&license=" +
-                  encodeURIComponent(licenseKey);
-              })
-              .catch(function (err) {
-                // Handle errors during capture
-                document.querySelector(".checkout-form").innerHTML = `
-              <h2>PayPal Checkout</h2>
-              <div class="order-summary">
-                <h3>Order Summary</h3>
-                <div class="order-item">
-                  <span>Argo Sales Tracker - Lifetime Access</span>
-                  <span>$20.00 CAD</span>
-                </div>
-                <div class="order-total">
-                  <span>Total</span>
-                  <span>$20.00 CAD</span>
-                </div>
+              <div style="text-align: center;">
+                <h2>Processing your payment...</h2>
+                <p>Please do not close this window.</p>
+                <div class="loading-spinner"></div>
               </div>
-              <div style="color: red; text-align: center; margin: 20px 0;">
-                <p>There was an error processing your payment.</p>
-                <p>Please try again or contact support.</p>
-              </div>
-              <div id="paypal-button-container"></div>
             `;
 
-                // Re-render the PayPal buttons
-                setupPayPalCheckout();
-              });
-          },
+            return actions.order.capture().then(function (orderData) {
+              // Successful capture! For demo purposes:
+              console.log(
+                "Capture result",
+                orderData,
+                JSON.stringify(orderData, null, 2)
+              );
 
-          // Handle cancellation
-          onCancel: function (data) {
-            console.log("PayPal payment cancelled", data);
-            // Do nothing - user will remain on the checkout page
+              // Get the transaction details
+              const transaction =
+                orderData.purchase_units[0].payments.captures[0];
+              const payerEmail = orderData.payer.email_address;
+              const transactionId = transaction.id;
+
+              // Send transaction data to our server to generate and store a license key
+              fetch("process-paypal-payment.php", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  transaction_id: transactionId,
+                  order_id: orderData.id,
+                  email: payerEmail,
+                  amount: transaction.amount.value,
+                  currency: transaction.amount.currency_code,
+                  status: transaction.status,
+                }),
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                  // Check if license key was generated successfully
+                  if (data.success && data.license_key) {
+                    // Redirect to thank you page with the license key
+                    window.location.href =
+                      "../thank-you/index.html?order_id=" +
+                      orderData.id +
+                      "&transaction_id=" +
+                      transaction.id +
+                      "&license=" +
+                      encodeURIComponent(data.license_key) +
+                      "&email=" +
+                      encodeURIComponent(payerEmail);
+                  } else {
+                    // Show error and redirect to thank you page with error flag
+                    console.error(
+                      "License key generation failed:",
+                      data.message
+                    );
+                    window.location.href =
+                      "../thank-you/index.html?order_id=" +
+                      orderData.id +
+                      "&transaction_id=" +
+                      transaction.id +
+                      "&error=license_failed" +
+                      "&email=" +
+                      encodeURIComponent(payerEmail);
+                  }
+                })
+                .catch((error) => {
+                  console.error("Error processing payment:", error);
+                  window.location.href =
+                    "../thank-you/index.html?order_id=" +
+                    orderData.id +
+                    "&transaction_id=" +
+                    transaction.id +
+                    "&error=server_error" +
+                    "&email=" +
+                    encodeURIComponent(payerEmail);
+                });
+            });
           },
 
           // Handle errors
           onError: function (err) {
             console.error("PayPal error", err);
-
-            // Show a more user-friendly error
-            const checkoutForm = document.querySelector(".checkout-form");
-
-            // Only modify the content if it hasn't already been changed
-            if (
-              checkoutForm &&
-              !checkoutForm.querySelector(".paypal-error-message")
-            ) {
-              checkoutForm.innerHTML = `
-              <h2>PayPal Checkout</h2>
-              <div class="order-summary">
-                <h3>Order Summary</h3>
-                <div class="order-item">
-                  <span>Argo Sales Tracker - Lifetime Access</span>
-                  <span>$20.00 CAD</span>
-                </div>
-                <div class="order-total">
-                  <span>Total</span>
-                  <span>$20.00 CAD</span>
-                </div>
-              </div>
-              <div class="paypal-error-message" style="color: red; text-align: center; margin: 20px 0;">
+            const paypalContainer = document.getElementById(
+              "paypal-button-container"
+            );
+            paypalContainer.innerHTML = `
+              <div style="color: red; text-align: center; padding: 20px;">
                 <p>There was an error processing your payment.</p>
                 <p>Please try again or contact support.</p>
-              </div>
-              <div class="payment-buttons">
                 <button class="checkout-btn" onclick="window.location.reload()">Try Again</button>
-                <button class="checkout-btn" onclick="window.location.href='index.html?method=credit'" style="background-color: #6b7280; margin-top: 10px;">
-                  Use Credit Card Instead
-                </button>
               </div>
             `;
-            }
           },
         })
         .render("#paypal-button-container");
     } else {
       document.getElementById("paypal-button-container").innerHTML = `
-      <div style="color: red; text-align: center; padding: 20px;">
-        <p>PayPal checkout is currently unavailable.</p>
-        <p>Please try another payment method or try again later.</p>
-        <button class="checkout-btn" onclick="window.location.href='index.html?method=credit'">
-          Use Credit Card Instead
-        </button>
-      </div>
-    `;
+        <div style="color: red; text-align: center; padding: 20px;">
+          <p>PayPal checkout is currently unavailable.</p>
+          <p>Please try again later or contact support.</p>
+          <button class="checkout-btn" onclick="window.location.reload()">Refresh Page</button>
+        </div>
+      `;
     }
-  }
-
-  // Helper function to generate a license key
-  function generateLicenseKey(seed) {
-    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-    let hash = 0;
-
-    // Create a numeric hash from the seed string
-    for (let i = 0; i < seed.length; i++) {
-      hash = (hash << 5) - hash + seed.charCodeAt(i);
-      hash |= 0; // Convert to 32bit integer
-    }
-
-    // Use the hash to generate a deterministic but random-looking key
-    let license = "";
-    for (let group = 0; group < 4; group++) {
-      for (let i = 0; i < 4; i++) {
-        // Use different parts of the hash for each character
-        const index = Math.abs((hash >> (i * 5 + group * 4)) % chars.length);
-        license += chars[index % chars.length];
-      }
-      if (group < 3) license += "-";
-    }
-
-    return license;
-  }
-
-  // Form submission handling for credit card payments
-  if (paymentForm) {
-    paymentForm.addEventListener("submit", function (event) {
-      event.preventDefault();
-
-      // Show processing message
-      const form = this;
-      const submitBtn = form.querySelector('button[type="submit"]');
-      const originalBtnText = submitBtn.textContent;
-      submitBtn.disabled = true;
-      submitBtn.textContent = "Processing...";
-
-      // Simulate payment processing (in real implementation, you'd call your payment API)
-      setTimeout(function () {
-        // Generate mock transaction ID and license key
-        const mockTransactionId = "TR" + Date.now();
-        const licenseKey = generateLicenseKey(mockTransactionId);
-
-        // Redirect to thank you page
-        window.location.href =
-          "thank-you/index.html?method=" +
-          paymentMethod +
-          "&email=" +
-          encodeURIComponent(document.getElementById("email").value) +
-          "&license=" +
-          encodeURIComponent(licenseKey);
-      }, 1500);
-    });
   }
 });
