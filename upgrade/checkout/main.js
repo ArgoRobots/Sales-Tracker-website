@@ -5,12 +5,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Update the form based on payment method
   const formTitle = document.querySelector(".checkout-form h2");
-  const paymentForm = document.getElementById("paypal-payment-form");
+  const stripeContainer = document.getElementById("stripe-container");
 
-  // Hide the credit card form by default
-  if (paymentForm) {
-    paymentForm.style.display = "none";
-  }
+  // Store original form HTML for potential reset
+  const originalFormHTML = document.querySelector(".checkout-form").innerHTML;
 
   // Customize checkout form based on payment method
   switch (paymentMethod) {
@@ -26,6 +24,10 @@ document.addEventListener("DOMContentLoaded", function () {
       formTitle.textContent = "Coming Soon - Square Checkout";
       showComingSoon("Square payments will be available soon!");
       break;
+    default:
+      // Default to PayPal if no method specified
+      formTitle.textContent = "PayPal Checkout";
+      setupPayPalCheckout();
   }
 
   // Show "coming soon" message for payment methods not yet implemented
@@ -47,10 +49,42 @@ document.addEventListener("DOMContentLoaded", function () {
       `
       );
 
-      // Hide the payment form if it exists
-      if (paymentForm) {
-        paymentForm.style.display = "none";
+      // Hide the payment forms
+      if (stripeContainer) {
+        stripeContainer.style.display = "none";
       }
+    }
+  }
+
+  // Show error message to the user
+  function showErrorMessage(message) {
+    // Reset the form first
+    document.querySelector(".checkout-form").innerHTML = originalFormHTML;
+
+    // Re-initialize the form based on payment method
+    const formTitle = document.querySelector(".checkout-form h2");
+    formTitle.textContent =
+      paymentMethod === "stripe" ? "Stripe Checkout" : "PayPal Checkout";
+
+    // Add error message
+    const orderSummary = document.querySelector(".order-summary");
+    if (orderSummary) {
+      const errorDiv = document.createElement("div");
+      errorDiv.className = "payment-error";
+      errorDiv.innerHTML = `
+        <p style="color: #b91c1c; background: #fee2e2; padding: 12px; border-radius: 6px; margin: 15px 0;">
+          <strong>Error:</strong> ${message}
+        </p>
+        <p>Please try again or contact support if the problem persists.</p>
+      `;
+      orderSummary.after(errorDiv);
+    }
+
+    // Re-initialize the appropriate payment method
+    if (paymentMethod === "stripe") {
+      setupStripeCheckout();
+    } else {
+      setupPayPalCheckout();
     }
   }
 
@@ -64,8 +98,37 @@ document.addEventListener("DOMContentLoaded", function () {
       document.querySelector(".checkout-form").appendChild(paypalContainer);
     }
 
-    // Initialize PayPal button
-    if (typeof paypal !== "undefined") {
+    // Check if PayPal script is loaded
+    if (typeof paypal === "undefined") {
+      // PayPal script not loaded, add loading indicator and retry
+      paypalContainer.innerHTML = `
+        <div style="text-align: center; padding: 40px 0;">
+          <p>Loading PayPal...</p>
+          <div class="loading-spinner"></div>
+        </div>
+      `;
+
+      // Check again in 2 seconds
+      setTimeout(() => {
+        if (typeof paypal === "undefined") {
+          // Still not loaded, show error
+          paypalContainer.innerHTML = `
+            <div style="color: red; text-align: center; padding: 20px;">
+              <p>PayPal checkout could not be loaded.</p>
+              <button class="checkout-btn" onclick="window.location.reload()">Try Again</button>
+            </div>
+          `;
+        } else {
+          // Now loaded, initialize
+          initPayPalButton();
+        }
+      }, 2000);
+    } else {
+      // PayPal already loaded, initialize
+      initPayPalButton();
+    }
+
+    function initPayPalButton() {
       paypal
         .Buttons({
           style: {
@@ -96,6 +159,9 @@ document.addEventListener("DOMContentLoaded", function () {
           // Handle cancellation
           onCancel: function (data) {
             console.log("Payment cancelled by user");
+            showErrorMessage(
+              "Payment was cancelled. Please try again when you're ready."
+            );
           },
 
           // Finalize the transaction
@@ -110,12 +176,7 @@ document.addEventListener("DOMContentLoaded", function () {
             `;
 
             return actions.order.capture().then(function (orderData) {
-              // Successful capture! For demo purposes:
-              console.log(
-                "Capture result",
-                orderData,
-                JSON.stringify(orderData, null, 2)
-              );
+              console.log("Capture result", orderData);
 
               // Get the transaction details
               const transaction =
@@ -138,7 +199,14 @@ document.addEventListener("DOMContentLoaded", function () {
                   status: transaction.status,
                 }),
               })
-                .then((response) => response.json())
+                .then((response) => {
+                  if (!response.ok) {
+                    throw new Error(
+                      `Server responded with status: ${response.status}`
+                    );
+                  }
+                  return response.json();
+                })
                 .then((data) => {
                   // Check if license key was generated successfully
                   if (data.success && data.license_key) {
@@ -170,14 +238,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 })
                 .catch((error) => {
                   console.error("Error processing payment:", error);
-                  window.location.href =
-                    "../thank-you/index.html?order_id=" +
-                    orderData.id +
-                    "&transaction_id=" +
-                    transaction.id +
-                    "&error=server_error" +
-                    "&email=" +
-                    encodeURIComponent(payerEmail);
+                  showErrorMessage(
+                    "Your payment was successful, but we couldn't generate your license key. Our team has been notified and will contact you shortly."
+                  );
                 });
             });
           },
@@ -185,39 +248,34 @@ document.addEventListener("DOMContentLoaded", function () {
           // Handle errors
           onError: function (err) {
             console.error("PayPal error", err);
-            const paypalContainer = document.getElementById(
-              "paypal-button-container"
+            showErrorMessage(
+              "There was an error processing your PayPal payment. Please try again."
             );
-            paypalContainer.innerHTML = `
-              <div style="color: red; text-align: center; padding: 20px;">
-                <p>There was an error processing your payment.</p>
-                <p>Please try again or contact support.</p>
-                <button class="checkout-btn" onclick="window.location.reload()">Try Again</button>
-              </div>
-            `;
           },
         })
         .render("#paypal-button-container");
-    } else {
-      document.getElementById("paypal-button-container").innerHTML = `
-        <div style="color: red; text-align: center; padding: 20px;">
-          <p>PayPal checkout is currently unavailable.</p>
-          <p>Please try again later or contact support.</p>
-          <button class="checkout-btn" onclick="window.location.reload()">Refresh Page</button>
-        </div>
-      `;
     }
   }
 
   // Stripe integration
   function setupStripeCheckout() {
-    const stripeContainer = document.getElementById("stripe-container");
     if (stripeContainer) {
       stripeContainer.style.display = "block";
     }
 
-    // Check if Stripe is defined before using it
+    // Check if Stripe is defined
     if (typeof Stripe === "undefined") {
+      // Show loading message
+      const stripeForm = document.getElementById("stripe-payment-form");
+      if (stripeForm) {
+        stripeForm.innerHTML = `
+          <div style="text-align: center; padding: 40px 0;">
+            <p>Loading payment form...</p>
+            <div class="loading-spinner"></div>
+          </div>
+        `;
+      }
+
       // Load Stripe dynamically if not available
       const stripeScript = document.createElement("script");
       stripeScript.src = "https://js.stripe.com/v3/";
@@ -228,9 +286,20 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function initializeStripe() {
-      // Initialize Stripe
+      // Restore the original form if it was replaced with a loading indicator
+      if (!document.getElementById("stripe-payment-form")) {
+        document.querySelector(".checkout-form").innerHTML = originalFormHTML;
+        if (stripeContainer) {
+          stripeContainer.style.display = "block";
+        }
+      }
+
+      // Initialize Stripe with your publishable key
+      // const stripe = Stripe(
+      //   "pk_live_51PKOfZFxK6AutkEZGGKjiTTL8EdPCOcbAp9ozLxCXi9UxeiUSSqA4SERUCIpRJDDs48wXeNjxmC1qIMZ437eVYlW00ZgneHz6C"
+      // );
       const stripe = Stripe(
-        "pk_live_51PKOfZFxK6AutkEZGGKjiTTL8EdPCOcbAp9ozLxCXi9UxeiUSSqA4SERUCIpRJDDs48wXeNjxmC1qIMZ437eVYlW00ZgneHz6C"
+        "pk_test_51PKOfZFxK6AutkEZC2fK8RReBMOOD1WnxVDDG6MSBH10pM3NAxAbfYDbTqvcJS1EA4AarWhmx1aqMysGGnLKoKYe00IszbwVLj"
       );
       const elements = stripe.elements();
 
@@ -254,145 +323,75 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       // Add an instance of the card Element into the `card-element` div
-      cardElement.mount("#card-element");
+      const cardElementContainer = document.getElementById("card-element");
+      if (cardElementContainer) {
+        cardElement.mount("#card-element");
+      } else {
+        console.error("Card element container not found");
+        return;
+      }
 
       // Handle real-time validation errors from the card Element
       cardElement.on("change", function (event) {
         const displayError = document.getElementById("card-errors");
-        if (event.error) {
-          displayError.textContent = event.error.message;
-        } else {
-          displayError.textContent = "";
+        if (displayError) {
+          if (event.error) {
+            displayError.textContent = event.error.message;
+          } else {
+            displayError.textContent = "";
+          }
         }
       });
 
       // Handle form submission
       const form = document.getElementById("stripe-payment-form");
+      if (!form) {
+        console.error("Stripe payment form not found");
+        return;
+      }
+
       form.addEventListener("submit", function (event) {
         event.preventDefault();
 
+        // Get email input
+        const emailInput = document.getElementById("email");
+        if (!emailInput || !emailInput.value) {
+          const errorElement = document.getElementById("card-errors");
+          if (errorElement) {
+            errorElement.textContent = "Please enter your email address.";
+          }
+          return;
+        }
+
+        // Get card holder
+        const cardHolder = document.getElementById("card-holder");
+        if (!cardHolder || !cardHolder.value) {
+          const errorElement = document.getElementById("card-errors");
+          if (errorElement) {
+            errorElement.textContent = "Please enter the cardholder name.";
+          }
+          return;
+        }
+
+        // Create and display processing overlay
+        const processingOverlay = document.createElement("div");
+        processingOverlay.className = "processing-overlay";
+        processingOverlay.innerHTML = `
+          <div class="spinner"></div>
+          <h2>Processing Your Payment</h2>
+          <p>Please do not close this window or refresh the page.</p>
+        `;
+        document.body.appendChild(processingOverlay);
+
         // Disable the submit button to prevent repeated clicks
-        document.getElementById("stripe-submit-btn").disabled = true;
+        const submitButton = document.getElementById("stripe-submit-btn");
+        if (submitButton) {
+          submitButton.disabled = true;
+          submitButton.textContent = "Processing...";
+        }
 
-        // Show processing message
-        document.querySelector(".checkout-form").innerHTML = `
-      <div class="processing-payment">
-        <h2>Processing your payment...</h2>
-        <p>Please do not close this window.</p>
-        <div class="loading-spinner"></div>
-      </div>
-    `;
-
-        // Create a payment method and confirm payment intent
-        createPaymentIntent()
-          .then(function (response) {
-            if (response.error) {
-              throw new Error(response.error);
-            }
-            return response.json();
-          })
-          .then(function (paymentIntent) {
-            return stripe.confirmCardPayment(paymentIntent.client_secret, {
-              payment_method: {
-                card: cardElement,
-                billing_details: {
-                  name: document.getElementById("card-holder").value,
-                  email: document.getElementById("email").value,
-                },
-              },
-            });
-          })
-          .then(function (result) {
-            if (result.error) {
-              // Show error message
-              const errorElement = document.getElementById("card-errors");
-              errorElement.textContent = result.error.message;
-
-              // Re-enable the submit button
-              document.getElementById("stripe-submit-btn").disabled = false;
-
-              // Reset form display
-              document.querySelector(".checkout-form").innerHTML =
-                originalFormHTML;
-              setupStripeCheckout();
-            } else {
-              // Payment succeeded, process on server
-              fetch("process-stripe-payment.php", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  payment_intent_id: result.paymentIntent.id,
-                  payment_method_id: result.paymentIntent.payment_method,
-                  email: document.getElementById("email").value,
-                  amount: result.paymentIntent.amount / 100,
-                  currency: result.paymentIntent.currency.toUpperCase(),
-                  status: result.paymentIntent.status,
-                }),
-              })
-                .then((response) => response.json())
-                .then((data) => {
-                  if (data.success && data.license_key) {
-                    // Redirect to thank you page with license key
-                    window.location.href =
-                      "../thank-you/index.html?order_id=" +
-                      result.paymentIntent.id +
-                      "&transaction_id=CARD_" +
-                      result.paymentIntent.payment_method +
-                      "&license=" +
-                      encodeURIComponent(data.license_key) +
-                      "&email=" +
-                      encodeURIComponent(
-                        document.getElementById("email").value
-                      ) +
-                      "&method=stripe";
-                  } else {
-                    // Show error and redirect to thank you page with error flag
-                    console.error(
-                      "License key generation failed:",
-                      data.message
-                    );
-                    window.location.href =
-                      "../thank-you/index.html?order_id=" +
-                      result.paymentIntent.id +
-                      "&transaction_id=CARD_" +
-                      result.paymentIntent.payment_method +
-                      "&error=license_failed" +
-                      "&email=" +
-                      encodeURIComponent(
-                        document.getElementById("email").value
-                      ) +
-                      "&method=stripe";
-                  }
-                })
-                .catch((error) => {
-                  console.error("Error processing payment:", error);
-                  window.location.href =
-                    "../thank-you/index.html?order_id=" +
-                    result.paymentIntent.id +
-                    "&transaction_id=CARD_" +
-                    result.paymentIntent.payment_method +
-                    "&error=server_error" +
-                    "&email=" +
-                    encodeURIComponent(document.getElementById("email").value) +
-                    "&method=stripe";
-                });
-            }
-          })
-          .catch(function (error) {
-            console.error("Payment processing error:", error);
-            // Display error and re-enable form
-            const errorElement = document.getElementById("card-errors");
-            errorElement.textContent =
-              "An error occurred while processing your payment. Please try again.";
-            document.getElementById("stripe-submit-btn").disabled = false;
-          });
-      });
-
-      // Function to create a payment intent on the server
-      function createPaymentIntent() {
-        return fetch("create-payment-intent.php", {
+        // First create the payment intent on the server
+        fetch("create-payment-intent.php", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -400,14 +399,97 @@ document.addEventListener("DOMContentLoaded", function () {
           body: JSON.stringify({
             amount: 2000, // $20.00 in cents
             currency: "CAD",
-            email: document.getElementById("email").value,
+            email: emailInput.value,
           }),
-        });
-      }
+        })
+          .then(async (response) => {
+            // Read the raw response text first
+            const text = await response.text();
+            // Try to parse it as JSON
+            try {
+              return JSON.parse(text);
+            } catch (e) {
+              // If it's not valid JSON, throw an error with the raw response
+              throw new Error(
+                `Server returned invalid JSON. Raw response: ${text.substring(
+                  0,
+                  100
+                )}...`
+              );
+            }
+          })
+          .then((paymentIntent) => {
+            if (paymentIntent.error) {
+              throw new Error(paymentIntent.error);
+            }
 
-      // Store the original form HTML for reset if needed
-      const originalFormHTML =
-        document.querySelector(".checkout-form").innerHTML;
+            // Continue with Stripe confirmation
+            return stripe.confirmCardPayment(paymentIntent.client_secret, {
+              payment_method: {
+                card: cardElement,
+                billing_details: {
+                  name: cardHolder.value,
+                  email: emailInput.value,
+                },
+              },
+            });
+          })
+          .then((result) => {
+            if (result.error) {
+              throw new Error(result.error.message);
+            }
+
+            // Payment success - redirect to thank you page
+            window.location.href =
+              "../thank-you/index.html?order_id=" +
+              result.paymentIntent.id +
+              "&transaction_id=" +
+              result.paymentIntent.payment_method +
+              "&email=" +
+              encodeURIComponent(emailInput.value) +
+              "&method=stripe";
+          })
+          .catch((error) => {
+            console.error("Payment processing error:", error);
+
+            // Show error message and restore form
+            document.querySelector(".checkout-form").innerHTML =
+              originalFormHTML;
+
+            // Re-initialize necessary elements
+            if (typeof initializeStripe === "function") {
+              initializeStripe();
+            }
+
+            // Display the error message
+            const orderSummary = document.querySelector(".order-summary");
+            if (orderSummary) {
+              const errorDiv = document.createElement("div");
+              errorDiv.className = "payment-error";
+              errorDiv.style.backgroundColor = "#fee2e2";
+              errorDiv.style.color = "#b91c1c";
+              errorDiv.style.padding = "12px";
+              errorDiv.style.borderRadius = "6px";
+              errorDiv.style.marginTop = "15px";
+              errorDiv.style.marginBottom = "15px";
+              errorDiv.innerHTML = `
+                <strong>Error:</strong> ${
+                  error.message ||
+                  "An error occurred while processing your payment."
+                }
+                <p>Please try again or contact support if the problem persists.</p>
+              `;
+              orderSummary.after(errorDiv);
+            }
+
+            // Re-enable the submit button
+            const submitButton = document.getElementById("stripe-submit-btn");
+            if (submitButton) {
+              submitButton.disabled = false;
+              submitButton.textContent = "Pay $20.00 CAD";
+            }
+          });
+      });
     }
   }
 });
