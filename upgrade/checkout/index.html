@@ -12,12 +12,15 @@
     <link rel="shortcut icon" type="image/x-icon" href="../../images/argo-logo/A-logo.ico">
     <title>Checkout - Argo Sales Tracker</title>
 
+    <!-- Load Stripe.js library early -->
+    <script src="https://js.stripe.com/v3/"></script>
+
     <script src="main.js"></script>
     <script src="../../resources/scripts/main.js"></script>
     <script src="../../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../../resources/scripts/ScrollToCenter.js"></script>
     <script
-        src="https://www.paypal.com/sdk/js?client-id=AUZphGZ_MVJhEAVVKiO8D7_lvyGKB1PTBS4ml4o8l9HlmD82UW7BUXXEjx8ptrnZDWY6dmTwtzUNBFbG&currency=CAD"
+        src="https://www.paypal.com/sdk/js?client-id=AaXh6OUCT8DLYES-I_sVj24PeifEmN207ufVjZOavXOufkhMOzTGNB2Tk1YBQ4nYv4CNJDcjqn8fxLln&currency=CAD"
         defer></script>
 
     <link rel="stylesheet" href="style.css">
@@ -58,37 +61,31 @@
                 </div>
             </div>
 
-            <form id="payment-form" action="process-payment.php" method="POST">
-                <div class="form-group">
-                    <label for="card-holder">Cardholder Name</label>
-                    <input type="text" id="card-holder" name="card-holder" class="form-control" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="card-number">Card Number</label>
-                    <input type="text" id="card-number" name="card-number" class="form-control"
-                        placeholder="1234 5678 9012 3456" required>
-                </div>
-
-                <div style="display: flex; gap: 15px;">
-                    <div class="form-group" style="flex: 1;">
-                        <label for="expiry">Expiry Date</label>
-                        <input type="text" id="expiry" name="expiry" class="form-control" placeholder="MM/YY" required>
+            <div id="stripe-container" style="display: none;">
+                <form id="stripe-payment-form">
+                    <div class="form-group">
+                        <label for="card-holder">Cardholder Name</label>
+                        <input type="text" id="card-holder" name="card-holder" class="form-control" required>
                     </div>
 
-                    <div class="form-group" style="flex: 1;">
-                        <label for="cvv">CVV</label>
-                        <input type="text" id="cvv" name="cvv" class="form-control" placeholder="123" required>
+                    <div class="form-group">
+                        <label for="card-element">Card Details</label>
+                        <div id="card-element" class="form-control">
+                            <!-- Stripe Elements Placeholder -->
+                        </div>
+                        <div id="card-errors" role="alert" class="stripe-error"></div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" class="form-control" required>
-                </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" class="form-control" required>
+                    </div>
 
-                <button type="submit" class="checkout-btn">Pay $20.00 CAD</button>
-            </form>
+                    <button type="submit" id="stripe-submit-btn" class="checkout-btn">
+                        Pay $20.00 CAD
+                    </button>
+                </form>
+            </div>
         </div>
     </section>
 
