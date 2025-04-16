@@ -2,7 +2,6 @@
 // Set headers for API response
 header('Content-Type: application/json');
 
-// Include the license functions
 require_once 'license_functions.php';
 
 // Initialize response array

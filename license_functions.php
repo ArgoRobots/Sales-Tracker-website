@@ -1,9 +1,6 @@
 <?php
-// Include the database connection
 require_once 'db_connect.php';
 
-// Only define these functions if they haven't been defined already
-// Check for one of our custom functions, not get_db_connection
 if (!function_exists('generate_license_key')) {
     /**
      * Generate a random license key

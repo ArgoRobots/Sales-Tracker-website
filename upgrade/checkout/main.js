@@ -88,7 +88,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // PayPal checkout setup
   function setupPayPalCheckout() {
     // Create PayPal button container if it doesn't exist
     let paypalContainer = document.getElementById("paypal-button-container");
@@ -257,7 +256,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Stripe integration
   function setupStripeCheckout() {
     if (stripeContainer) {
       stripeContainer.style.display = "block";

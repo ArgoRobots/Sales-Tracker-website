@@ -1,9 +1,4 @@
 <?php
-/**
- * Process Stripe payments and generate license keys
- * This script receives Stripe payment intent data and creates a license key
- */
-
 // Set headers for JSON response
 header('Content-Type: application/json');
 
@@ -21,8 +16,8 @@ if (!$data || !isset($data['payment_intent_id']) || !isset($data['email'])) {
 }
 
 // Load database connection and license functions
-require_once '../db_connect.php';
-require_once '../license_functions.php';
+require_once '../../db_connect.php';
+require_once '../../license_functions.php';
 
 // Initialize response
 $response = [
@@ -82,7 +77,7 @@ try {
                 $stmt->execute();
                 
                 // Send license key via email
-                require_once '../email_sender.php';
+                require_once '../../email_sender.php';
                 $email_sent = send_license_email($data['email'], $license_key);
                 
                 $response = [
