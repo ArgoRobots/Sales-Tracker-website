@@ -25,13 +25,6 @@ function send_license_email($to_email, $license_key) {
     // Send the email
     $mail_result = mail($to_email, $subject, $email_html, implode("\r\n", $headers));
     
-    // Log the result for debugging
-    $log_message = date('Y-m-d H:i:s') . " - Email to {$to_email}: " . ($mail_result ? 'Success' : 'Failed') . "\n";
-    
-    // Create a simple log file - comment out if not needed
-    $log_file = __DIR__ . '/email_simple_log.txt';
-    file_put_contents($log_file, $log_message, FILE_APPEND);
-    
     return $mail_result;
 }
 
