@@ -2,6 +2,11 @@
 // Set headers for JSON response
 header('Content-Type: application/json');
 
+// Load database connection and license functions
+require_once '../../db_connect.php';
+require_once '../../license_functions.php';
+require_once '../../email_sender.php';
+
 // Get raw POST data
 $json_data = file_get_contents('php://input');
 $data = json_decode($json_data, true);
@@ -14,10 +19,6 @@ if (!$data || !isset($data['payment_intent_id']) || !isset($data['email'])) {
     ]);
     exit;
 }
-
-// Load database connection and license functions
-require_once '../../db_connect.php';
-require_once '../../license_functions.php';
 
 // Initialize response
 $response = [
@@ -55,10 +56,21 @@ try {
                 'message' => 'Invalid payment amount'
             ];
         } 
-        // Process the payment and generate license key
+        // Process the payment and get/update license key
         else {
-            // Create a license key
-            $license_key = create_license_key($data['email']);
+            // Check if we already created a license key for this payment intent
+            $stmt = $db->prepare('SELECT license_key FROM license_keys 
+                                 WHERE payment_intent = :payment_intent
+                                 LIMIT 1');
+            $stmt->bindValue(':payment_intent', $data['payment_intent_id'], SQLITE3_TEXT);
+            $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+            
+            if ($result) {
+                $license_key = $result['license_key'];
+            } else {
+                // Create a new license key if we didn't pre-generate one
+                $license_key = create_license_key($data['email']);
+            }
             
             if ($license_key) {
                 // Update the license key with transaction details
@@ -71,13 +83,12 @@ try {
                     WHERE license_key = :license_key');
                 
                 $stmt->bindValue(':transaction_id', $data['payment_intent_id'], SQLITE3_TEXT);
-                $stmt->bindValue(':order_id', $data['payment_method_id'], SQLITE3_TEXT);
+                $stmt->bindValue(':order_id', $data['payment_method_id'] ?? '', SQLITE3_TEXT);
                 $stmt->bindValue(':payment_method', 'Stripe', SQLITE3_TEXT);
                 $stmt->bindValue(':license_key', $license_key, SQLITE3_TEXT);
                 $stmt->execute();
                 
                 // Send license key via email
-                require_once '../../email_sender.php';
                 $email_sent = send_license_email($data['email'], $license_key);
                 
                 $response = [

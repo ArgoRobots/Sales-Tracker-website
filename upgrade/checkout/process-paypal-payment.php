@@ -1,13 +1,20 @@
 <?php
+// Set error reporting for debugging
+ini_set('display_errors', 0);
+error_log('PayPal payment processing started');
+
 // Set headers for JSON response
 header('Content-Type: application/json');
 
 // Get raw POST data
 $json_data = file_get_contents('php://input');
+error_log('Received data: ' . $json_data);
+
 $data = json_decode($json_data, true);
 
 // Check for required data
 if (!$data || !isset($data['transaction_id']) || !isset($data['email'])) {
+    error_log('Missing required payment information');
     echo json_encode([
         'success' => false,
         'message' => 'Missing required payment information'
@@ -18,6 +25,7 @@ if (!$data || !isset($data['transaction_id']) || !isset($data['email'])) {
 // Load database connection and license functions
 require_once '../../db_connect.php';
 require_once '../../license_functions.php';
+require_once '../../email_sender.php';
 
 // Initialize response
 $response = [
@@ -26,6 +34,7 @@ $response = [
 ];
 
 try {
+    error_log('Connecting to database');
     $db = get_db_connection();
     
     // Check if this transaction has already been processed
@@ -35,6 +44,7 @@ try {
     
     if ($result) {
         // Transaction already processed, return existing license key
+        error_log('Transaction already processed, returning existing license key');
         $response = [
             'success' => true,
             'license_key' => $result['license_key'],
@@ -43,6 +53,7 @@ try {
     } else {
         // Validate payment status
         if (!isset($data['status']) || $data['status'] !== 'COMPLETED') {
+            error_log('Payment status is not completed: ' . ($data['status'] ?? 'undefined'));
             $response = [
                 'success' => false,
                 'message' => 'Payment status is not completed'
@@ -50,6 +61,7 @@ try {
         } 
         // Validate payment amount
         else if (!isset($data['amount']) || floatval($data['amount']) < 20.00) {
+            error_log('Invalid payment amount: ' . ($data['amount'] ?? 'undefined'));
             $response = [
                 'success' => false,
                 'message' => 'Invalid payment amount'
@@ -57,10 +69,12 @@ try {
         } 
         // Process the payment and generate license key
         else {
+            error_log('Creating new license key for ' . $data['email']);
             // Create a license key
             $license_key = create_license_key($data['email']);
             
             if ($license_key) {
+                error_log('License key created successfully: ' . $license_key);
                 // Update the license key with transaction details
                 $stmt = $db->prepare('UPDATE license_keys SET 
                     transaction_id = :transaction_id, 
@@ -77,7 +91,7 @@ try {
                 $stmt->execute();
                 
                 // Send license key via email
-                require_once '../../email_sender.php';
+                error_log('Sending license email to ' . $data['email']);
                 $email_sent = send_license_email($data['email'], $license_key);
                 
                 $response = [
@@ -88,6 +102,7 @@ try {
                 ];
                 
                 // Log the transaction in a separate table for audit purposes
+                error_log('Logging transaction details');
                 $stmt = $db->prepare('INSERT INTO payment_transactions 
                     (transaction_id, order_id, email, amount, currency, payment_method, status, license_key, created_at) 
                     VALUES 
@@ -103,6 +118,7 @@ try {
                 $stmt->bindValue(':license_key', $license_key, SQLITE3_TEXT);
                 $stmt->execute();
             } else {
+                error_log('Failed to generate license key');
                 $response = [
                     'success' => false,
                     'message' => 'Failed to generate license key'
@@ -111,14 +127,13 @@ try {
         }
     }
 } catch (Exception $e) {
+    error_log('PayPal payment processing error: ' . $e->getMessage());
     $response = [
         'success' => false,
         'message' => 'Server error: ' . $e->getMessage()
     ];
-    
-    // Log the error
-    error_log('PayPal payment processing error: ' . $e->getMessage());
 }
 
 // Send JSON response
+error_log('Sending response: ' . json_encode($response));
 echo json_encode($response);

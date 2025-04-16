@@ -9,7 +9,8 @@ CREATE TABLE IF NOT EXISTS license_keys (
     ip_address TEXT DEFAULT NULL,
     transaction_id TEXT,
     order_id TEXT,
-    payment_method TEXT
+    payment_method TEXT,
+    payment_intent TEXT
 );
 
 -- Admin users table
@@ -46,3 +47,4 @@ CREATE INDEX IF NOT EXISTS idx_payment_transactions_email ON payment_transaction
 CREATE INDEX IF NOT EXISTS idx_payment_transactions_license_key ON payment_transactions(license_key);
 CREATE INDEX IF NOT EXISTS idx_license_keys_transaction_id ON license_keys(transaction_id);
 CREATE INDEX IF NOT EXISTS idx_license_keys_email ON license_keys(email);
+CREATE INDEX IF NOT EXISTS idx_license_keys_payment_intent ON license_keys(payment_intent);
