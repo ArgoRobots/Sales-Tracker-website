@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS payment_transactions (
     license_key TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     
-    FOREIGN KEY (license_key) REFERENCES license_keys(license_key)
+    FOREIGN KEY (license_key) REFERENCES license_keys(license_key) ON DELETE CASCADE
 );
 
 -- Add indexes for faster queries

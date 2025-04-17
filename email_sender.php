@@ -174,7 +174,7 @@ function get_license_email_template($email, $license_key) {
 <body>
     <div class="container">
         <div class="header">
-            <img src="{$base_url}/images/argo-logo/Argo-black.svg" alt="Argo Sales Tracker Logo">
+            <img src="{$base_url}/images/argo-logo/Argo-white.svg" alt="Argo Sales Tracker Logo">
         </div>
         
         <div class="content">
