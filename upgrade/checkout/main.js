@@ -61,88 +61,58 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function setupPayPalCheckout() {
-    // Create PayPal button container if it doesn't exist
+    // Create or clear PayPal button container
     let paypalContainer = document.getElementById("paypal-button-container");
     if (!paypalContainer) {
       paypalContainer = document.createElement("div");
       paypalContainer.id = "paypal-button-container";
       document.querySelector(".checkout-form").appendChild(paypalContainer);
-    }
-
-    // Check if PayPal script is loaded
-    if (typeof paypal === "undefined") {
-      // PayPal script not loaded, add loading indicator and retry
-      paypalContainer.innerHTML = `
-      <div style="text-align: center; padding: 40px 0;">
-        <p>Loading PayPal...</p>
-        <div class="loading-spinner"></div>
-      </div>
-    `;
-
-      // Check again in 2 seconds
-      setTimeout(() => {
-        if (typeof paypal === "undefined") {
-          // Still not loaded, show error
-          paypalContainer.innerHTML = `
-          <div style="color: red; text-align: center; padding: 20px;">
-            <p>PayPal checkout could not be loaded.</p>
-            <button class="checkout-btn" onclick="window.location.reload()">Try Again</button>
-          </div>
-        `;
-        } else {
-          // Now loaded, initialize
-          initPayPalButton();
-        }
-      }, 2000);
     } else {
-      // PayPal already loaded, initialize
-      initPayPalButton();
+      paypalContainer.innerHTML = "";
     }
 
-    function initPayPalButton() {
-      // Clear any existing content
-      paypalContainer.innerHTML = "";
+    // Initialize PayPal buttons
+    paypal
+      .Buttons({
+        style: {
+          layout: "vertical",
+          color: "blue",
+          shape: "rect",
+          label: "pay",
+        },
 
-      paypal
-        .Buttons({
-          style: {
-            layout: "vertical",
-            color: "blue",
-            shape: "rect",
-            label: "pay",
-          },
-
-          // Set up the transaction
-          createOrder: function (data, actions) {
-            console.log("Creating PayPal order");
-            return actions.order.create({
-              purchase_units: [
-                {
-                  description: "Argo Sales Tracker - Lifetime Access",
-                  amount: {
-                    currency_code: "CAD",
-                    value: "20.00",
-                  },
+        // Create order
+        createOrder: function (data, actions) {
+          console.log("Creating PayPal order");
+          return actions.order.create({
+            purchase_units: [
+              {
+                description: "Argo Sales Tracker - Lifetime Access",
+                amount: {
+                  currency_code: "CAD",
+                  value: "20.00",
                 },
-              ],
-              application_context: {
-                shipping_preference: "NO_SHIPPING",
               },
-            });
-          },
+            ],
+            application_context: {
+              shipping_preference: "NO_SHIPPING",
+              user_action: "CONTINUE", // Don't close the window automatically
+            },
+          });
+        },
 
-          // Handle cancellation
-          onCancel: function (data) {
-            console.log("Payment cancelled by user");
-            showErrorMessage(
-              "Payment was cancelled. Please try again when you're ready."
-            );
-          },
+        // Handle cancellation
+        onCancel: function (data) {
+          console.log("Payment cancelled by user");
+          showErrorMessage(
+            "Payment was cancelled. Please try again when you're ready."
+          );
+        },
 
-          // Finalize the transaction
-          onApprove: function (data, actions) {
-            // Show loading indication
-            document.querySelector(".checkout-form").innerHTML = `
+        // Process approval - avoid using actions.order.capture()
+        onApprove: function (data, actions) {
+          // Show loading indication
+          document.querySelector(".checkout-form").innerHTML = `
             <div style="text-align: center;">
               <h2>Processing your payment...</h2>
               <p>Please do not close this window.</p>
@@ -150,118 +120,24 @@ document.addEventListener("DOMContentLoaded", function () {
             </div>
           `;
 
-            console.log("Payment approved, capturing funds", data);
+          console.log("Payment approved, order ID:", data.orderID);
 
-            return actions.order.capture().then(function (orderData) {
-              console.log("Capture result", orderData);
+          // Redirect to server-side processing
+          window.location.href =
+            "process-paypal-payments.php?order_id=" +
+            encodeURIComponent(data.orderID);
+          return true;
+        },
 
-              // Get the transaction details
-              const transaction =
-                orderData.purchase_units[0].payments.captures[0];
-              const payerEmail = orderData.payer.email_address;
-              const transactionId = transaction.id;
-
-              console.log("Processing transaction", transactionId);
-
-              // Send transaction data to our server to generate and store a license key
-              return fetch("process-paypal-payment.php", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  transaction_id: transactionId,
-                  order_id: orderData.id,
-                  email: payerEmail,
-                  amount: transaction.amount.value,
-                  currency: transaction.amount.currency_code,
-                  status: transaction.status,
-                }),
-              })
-                .then((response) => {
-                  console.log("Server response status:", response.status);
-                  if (!response.ok) {
-                    throw new Error(
-                      `Server responded with status: ${response.status}`
-                    );
-                  }
-                  return response.json();
-                })
-                .then((data) => {
-                  console.log("License key response:", data);
-
-                  // Check if license key was generated successfully
-                  if (data.success && data.license_key) {
-                    // Redirect to thank you page with the license key
-                    window.location.href =
-                      "../thank-you/index.html?order_id=" +
-                      encodeURIComponent(orderData.id) +
-                      "&transaction_id=" +
-                      encodeURIComponent(transaction.id) +
-                      "&license=" +
-                      encodeURIComponent(data.license_key) +
-                      "&email=" +
-                      encodeURIComponent(payerEmail);
-                  } else {
-                    // Show error and redirect to thank you page with error flag
-                    console.error(
-                      "License key generation failed:",
-                      data.message
-                    );
-                    window.location.href =
-                      "../thank-you/index.html?order_id=" +
-                      encodeURIComponent(orderData.id) +
-                      "&transaction_id=" +
-                      encodeURIComponent(transaction.id) +
-                      "&error=license_failed" +
-                      "&email=" +
-                      encodeURIComponent(payerEmail);
-                  }
-                })
-                .catch((error) => {
-                  console.error("Error processing payment:", error);
-
-                  // If there's an error during server processing
-                  document.querySelector(".checkout-form").innerHTML =
-                    originalFormHTML;
-
-                  const formTitle = document.querySelector(".checkout-form h2");
-                  formTitle.textContent = "PayPal Checkout";
-
-                  // Add error message
-                  const orderSummary = document.querySelector(".order-summary");
-                  if (orderSummary) {
-                    const errorDiv = document.createElement("div");
-                    errorDiv.className = "payment-error";
-                    errorDiv.style.backgroundColor = "#fee2e2";
-                    errorDiv.style.color = "#b91c1c";
-                    errorDiv.style.padding = "12px";
-                    errorDiv.style.borderRadius = "6px";
-                    errorDiv.style.marginTop = "15px";
-                    errorDiv.style.marginBottom = "15px";
-                    errorDiv.innerHTML = `
-                    <strong>Error:</strong> Your payment was successful, but we couldn't generate your license key. 
-                    <p>Our team has been notified and will contact you shortly.</p>
-                  `;
-                    orderSummary.after(errorDiv);
-                  }
-
-                  // Reinitialize PayPal
-                  setupPayPalCheckout();
-                });
-            });
-          },
-
-          // Handle errors
-          onError: function (err) {
-            console.error("PayPal error", err);
-            showErrorMessage(
-              "There was an error processing your PayPal payment. Please try again."
-            );
-          },
-        })
-        .render("#paypal-button-container");
-    }
+        // Handle errors
+        onError: function (err) {
+          console.error("PayPal error", err);
+          showErrorMessage(
+            "There was an error processing your PayPal payment. Please try again."
+          );
+        },
+      })
+      .render("#paypal-button-container");
   }
 
   function setupStripeCheckout() {
