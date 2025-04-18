@@ -65,7 +65,7 @@ body {
 
 /* Mission Section */
 .mission {
-    padding: 90px 0;
+    padding: 70px 0;
 }
 
 .mission-grid {
@@ -106,9 +106,38 @@ body {
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
+/* New Story Section */
+.our-story {
+    padding: 70px 0;
+    background-color: #ffffff;
+}
+
+.story-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+}
+
+.story-image img {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.story-content h2 {
+    font-size: 36px;
+    margin-bottom: 24px;
+}
+
+.story-content p {
+    font-size: 18px;
+    margin-bottom: 16px;
+}
+
 /* Values Section */
 .values {
-    background-color: #f3f4f6;
+    background-color: #f9fafb;
     padding: 90px 0;
 }
 
@@ -161,9 +190,34 @@ body {
     color: #4b5563;
 }
 
+/* Future Section */
+.future {
+    padding: 50px 0;
+    background-color: #ffffff;
+    text-align: center;
+}
+
+.future h2 {
+    font-size: 36px;
+    margin-bottom: 24px;
+}
+
+.future p {
+    font-size: 18px;
+    margin-bottom: 16px;
+    max-width: 800px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1100px) {
+    .story-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* Contact Section */
 .contact-section {
-    padding: 90px 0;
+    padding: 50px 0;
     text-align: center;
 }
 
