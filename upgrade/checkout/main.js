@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Update the form based on payment method
   const formTitle = document.querySelector(".checkout-form h2");
   const stripeContainer = document.getElementById("stripe-container");
+  const squareContainer = document.getElementById("square-container");
 
   // Store original form HTML for potential reset
   const originalFormHTML = document.querySelector(".checkout-form").innerHTML;
@@ -21,7 +22,8 @@ document.addEventListener("DOMContentLoaded", function () {
       setupStripeCheckout();
       break;
     case "square":
-      formTitle.textContent = "Coming Soon - Square Checkout";
+      formTitle.textContent = "Square Checkout";
+      setupSquareCheckout();
       break;
     default:
       formTitle.textContent = "PayPal Checkout";
@@ -35,8 +37,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Re-initialize the form based on payment method
     const formTitle = document.querySelector(".checkout-form h2");
-    formTitle.textContent =
-      paymentMethod === "stripe" ? "Stripe Checkout" : "PayPal Checkout";
+
+    switch (paymentMethod) {
+      case "stripe":
+        formTitle.textContent = "Stripe Checkout";
+        break;
+      case "square":
+        formTitle.textContent = "Square Checkout";
+        break;
+      default:
+        formTitle.textContent = "PayPal Checkout";
+    }
 
     // Add error message
     const orderSummary = document.querySelector(".order-summary");
@@ -55,6 +66,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // Re-initialize the appropriate payment method
     if (paymentMethod === "stripe") {
       setupStripeCheckout();
+    } else if (paymentMethod === "square") {
+      setupSquareCheckout();
     } else {
       setupPayPalCheckout();
     }
@@ -399,5 +412,230 @@ document.addEventListener("DOMContentLoaded", function () {
           });
       });
     }
+  }
+
+  function setupSquareCheckout() {
+    // Create Square container if it doesn't exist or clear existing content
+    let squareContainer = document.getElementById("square-container");
+    if (!squareContainer) {
+      squareContainer = document.createElement("div");
+      squareContainer.id = "square-container";
+      document.querySelector(".checkout-form").appendChild(squareContainer);
+    } else {
+      squareContainer.innerHTML = "";
+      squareContainer.style.display = "block";
+    }
+
+    // Create the Square payment form HTML structure
+    squareContainer.innerHTML = `
+      <form id="square-payment-form">
+        <div class="form-group">
+          <label for="square-card-holder">Cardholder Name</label>
+          <input type="text" id="square-card-holder" name="square-card-holder" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label for="square-email">Email Address</label>
+          <input type="email" id="square-email" name="square-email" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label for="square-card">Card Details</label>
+          <div id="card-container" class="form-control square-field"></div>
+          <div id="square-errors" role="alert" class="payment-error"></div>
+        </div>
+
+        <button type="submit" id="square-submit-btn" class="checkout-btn">
+          Pay $20.00 CAD
+        </button>
+      </form>
+    `;
+
+    // Show loading indicator while we load the Square JS SDK
+    const cardContainer = document.getElementById("card-container");
+    if (cardContainer) {
+      cardContainer.innerHTML =
+        '<div class="loading-square"><div class="spinner"></div><p>Loading payment form...</p></div>';
+    }
+
+    // Load Square SDK if not already loaded
+    function loadSquareSDK() {
+      return new Promise((resolve, reject) => {
+        if (window.Square) {
+          resolve(window.Square);
+          return;
+        }
+
+        const script = document.createElement("script");
+        script.src = "https://web.squarecdn.com/v1/square.js";
+        script.onload = () => {
+          if (window.Square) {
+            resolve(window.Square);
+          } else {
+            reject(new Error("Failed to load Square SDK"));
+          }
+        };
+        script.onerror = () => reject(new Error("Failed to load Square SDK"));
+        document.head.appendChild(script);
+      });
+    }
+
+    // Initialize Square payment form
+    loadSquareSDK()
+      .then((Square) => {
+        const appId = "sq0idp-3njfUbN00L39E79k62fTCg"; // Your Square application ID
+        const locationId = "LBR20K6QEPC4H"; // Your Square location ID
+
+        // Initialize payments
+        const payments = Square.payments(appId, locationId);
+
+        // Create and attach the card payment method
+        return payments.card().then((card) => {
+          const cardContainer = document.getElementById("card-container");
+          if (cardContainer) {
+            // Clear loading indicator
+            cardContainer.innerHTML = "";
+
+            // Mount the card
+            card.attach("#card-container");
+
+            // Return the card instance for use in the form submit handler
+            return card;
+          } else {
+            throw new Error("Card container element not found");
+          }
+        });
+      })
+      .then((card) => {
+        // Setup the form submit handler
+        const form = document.getElementById("square-payment-form");
+        if (!form) {
+          throw new Error("Payment form not found");
+        }
+
+        form.addEventListener("submit", async (event) => {
+          event.preventDefault();
+
+          // Validate form fields
+          const emailInput = document.getElementById("square-email");
+          const cardHolderInput = document.getElementById("square-card-holder");
+          const errorContainer = document.getElementById("square-errors");
+
+          if (!emailInput || !emailInput.value) {
+            errorContainer.textContent = "Please enter your email address.";
+            return;
+          }
+
+          if (!cardHolderInput || !cardHolderInput.value) {
+            errorContainer.textContent = "Please enter the cardholder name.";
+            return;
+          }
+
+          // Show processing overlay
+          const processingOverlay = document.createElement("div");
+          processingOverlay.className = "processing-overlay";
+          processingOverlay.innerHTML = `
+            <div class="spinner"></div>
+            <h2>Processing Your Payment</h2>
+            <p>Please do not close this window or refresh the page.</p>
+          `;
+          document.body.appendChild(processingOverlay);
+
+          // Disable form submission while processing
+          const submitButton = document.getElementById("square-submit-btn");
+          if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = "Processing...";
+          }
+
+          try {
+            // Generate a unique ID for this payment
+            const idempotencyKey =
+              Date.now().toString() + Math.random().toString(36).substring(2);
+
+            // Tokenize the card
+            const tokenResult = await card.tokenize();
+
+            if (tokenResult.status === "OK") {
+              // Send payment token to server
+              const response = await fetch("process-square-payment.php", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  source_id: tokenResult.token,
+                  idempotency_key: idempotencyKey,
+                  email: emailInput.value,
+                  reference_id: `ARGO-${Date.now()}`,
+                  customer_name: cardHolderInput.value,
+                }),
+              });
+
+              const data = await response.json();
+
+              if (data.success) {
+                // Redirect to thank you page
+                window.location.href = `../thank-you/index.html?order_id=${encodeURIComponent(
+                  data.order_id || ""
+                )}&transaction_id=${encodeURIComponent(
+                  data.transaction_id || ""
+                )}&license=${encodeURIComponent(
+                  data.license_key
+                )}&email=${encodeURIComponent(emailInput.value)}&method=square`;
+              } else {
+                throw new Error(data.message || "Payment processing failed");
+              }
+            } else {
+              throw new Error(
+                tokenResult.errors[0]?.message || "Card tokenization failed"
+              );
+            }
+          } catch (error) {
+            console.error("Payment error:", error);
+
+            // Remove processing overlay
+            const overlay = document.querySelector(".processing-overlay");
+            if (overlay) {
+              overlay.remove();
+            }
+
+            // Show error message
+            if (errorContainer) {
+              errorContainer.innerHTML = `
+                <div style="background-color: #fee2e2; color: #b91c1c; padding: 12px; border-radius: 6px; margin-top: 15px;">
+                  <strong>Error:</strong> ${
+                    error.message ||
+                    "An error occurred while processing your payment."
+                  }
+                  <p>Please try again or contact support if the problem persists.</p>
+                </div>
+              `;
+            }
+
+            // Re-enable submit button
+            if (submitButton) {
+              submitButton.disabled = false;
+              submitButton.textContent = "Pay $20.00 CAD";
+            }
+          }
+        });
+      })
+      .catch((error) => {
+        console.error("Square initialization error:", error);
+
+        // Show initialization error
+        const errorMessage = `
+          <div class="payment-error" style="background-color: #fee2e2; color: #b91c1c; padding: 15px; border-radius: 6px; margin: 20px 0;">
+            <strong>Error initializing payment form:</strong> ${error.message}
+            <p>Please refresh the page or try a different payment method.</p>
+          </div>
+        `;
+
+        const squareContainer = document.getElementById("square-container");
+        if (squareContainer) {
+          squareContainer.innerHTML = errorMessage;
+        }
+      });
   }
 });
