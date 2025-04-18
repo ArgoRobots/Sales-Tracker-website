@@ -23,6 +23,39 @@ document.addEventListener("DOMContentLoaded", function () {
   // Add click event to toggle button
   sidebarToggle.addEventListener("click", toggleSidebar);
 
+  // Check for hash in URL on page load and scroll to that section
+  function handleHashOnLoad() {
+    if (window.location.hash) {
+      const targetId = window.location.hash.substring(1); // Remove the # character
+      const targetElement = document.getElementById(targetId);
+
+      if (targetElement) {
+        // Remove active class from all nav links
+        navLinks.forEach((link) => link.classList.remove("active"));
+
+        // Add active class to corresponding nav link
+        const activeLink = document.querySelector(
+          `.nav-links li[data-scroll-to="${targetId}"]`
+        );
+        if (activeLink) {
+          activeLink.classList.add("active");
+        }
+
+        // Scroll to the section (with a slight delay to ensure proper positioning)
+        setTimeout(() => {
+          const targetPosition = targetElement.offsetTop - 50; // 50px offset
+          window.scrollTo({
+            top: targetPosition,
+            behavior: "smooth",
+          });
+        }, 100);
+      }
+    }
+  }
+
+  // Call the function on page load
+  handleHashOnLoad();
+
   // Make nav items clickable and highlight active section
   navLinks.forEach((link) => {
     link.addEventListener("click", function (e) {
@@ -39,6 +72,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
           // Add active class to clicked link
           this.classList.add("active");
+
+          // Update URL hash without jumping (using history API)
+          history.pushState(null, null, `#${targetId}`);
 
           // Scroll to the section
           const targetPosition = targetElement.offsetTop - 50; // 50px offset
@@ -91,6 +127,11 @@ document.addEventListener("DOMContentLoaded", function () {
       );
       if (activeLink) {
         activeLink.classList.add("active");
+
+        // Update URL hash as user scrolls (without affecting scroll position)
+        if (history.replaceState) {
+          history.replaceState(null, null, `#${currentSection}`);
+        }
       }
     }
   }
@@ -100,6 +141,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Initial call to set the active section on page load
   setActiveNavItem();
+
+  // Support for back/forward browser navigation
+  window.addEventListener("popstate", function () {
+    handleHashOnLoad();
+  });
 
   // Close sidebar when clicking outside on mobile
   document.addEventListener("click", (e) => {
