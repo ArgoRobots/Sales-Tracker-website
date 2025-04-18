@@ -60,13 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
         if ($email) {
             $generated_key = create_license_key($email);
-            
-            // Auto-activate the key
-            $db = get_db_connection();
-            $stmt = $db->prepare('UPDATE license_keys SET activated = 1, activation_date = CURRENT_TIMESTAMP WHERE license_key = :key');
-            $stmt->bindValue(':key', $generated_key, SQLITE3_TEXT);
-            $stmt->execute();
-            
+                        
             // Send the license key via email
             $email_status = send_license_email($email, $generated_key);
             
