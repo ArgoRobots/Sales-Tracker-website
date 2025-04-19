@@ -175,10 +175,7 @@ document.addEventListener("DOMContentLoaded", function () {
   bugForm.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    // Get form data
     const formData = new FormData(bugForm);
-
-    // Submit the form data
     submitFeedback(formData, "bug");
   });
 
@@ -188,10 +185,7 @@ document.addEventListener("DOMContentLoaded", function () {
   featureForm.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    // Get form data
     const formData = new FormData(featureForm);
-
-    // Submit the form data
     submitFeedback(formData, "feature");
   });
 
@@ -231,15 +225,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       })
       .catch((error) => {
-        // For demonstration purposes, we'll show success anyway
         // In a real app, you'd show the error
         console.error("Error submitting form:", error);
-
-        // Uncomment to show success for demo purposes
-        showSuccess();
-
-        // Uncomment to show error in a real application
-        // showError(error.message || "An error occurred while submitting your feedback. Please try again.");
+        showError(
+          error.message ||
+            "An error occurred while submitting your feedback. Please try again."
+        );
       })
       .finally(() => {
         // Re-enable submit button

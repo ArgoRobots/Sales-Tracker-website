@@ -26,10 +26,7 @@ $response = [
 ];
 
 try {
-    // Load database connection
     require_once '../db_connect.php';
-    
-    // Get the database connection
     $db = get_db_connection();
     
     // Create feedback table if it doesn't exist
@@ -274,15 +271,11 @@ function process_file_uploads($file_input_name, $directory) {
  * @param string $report_type The type of report (bug or feature)
  */
 function send_notification_email($report_type) {
-    // In a real application, you would send an email to administrators
-    // For this example, we'll just log the notification
-    
     $report_description = $report_type === 'bug' ? 'Bug Report' : 'Feature Request';
     $report_title = $_POST['title'] ?? 'Untitled Report';
     
     error_log("New {$report_description} received: {$report_title}");
     
-    // In a real implementation, you would use something like:
-    // mail('admin@argorobots.com', "New {$report_description}: {$report_title}", $email_body, $headers);
+    mail('admin@argorobots.com', "New {$report_description}: {$report_title}", $email_body, $headers);
 }
 ?>
