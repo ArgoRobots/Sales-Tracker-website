@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Report bugs and suggest features for Argo Sales Tracker">
+    <meta name="keywords" content="bug report, feature request, feedback, sales tracker">
+    <meta name="author" content="Argo">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
+    <title>Bug Reports & Feature Requests - Argo Sales Tracker</title>
+
+    <script src="../resources/scripts/main.js"></script>
+    <script src="../resources/scripts/jquery-3.6.0.js"></script>
+    <script src="main.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../resources/styles/custom-colors.css">
+    <link rel="stylesheet" href="../resources/styles/button.css">
+    <link rel="stylesheet" href="../resources/header/style.css">
+    <link rel="stylesheet" href="../resources/footer/style.css">
+</head>
+
+<body>
+    <header>
+        <script>
+            $(function () {
+                $("#includeHeader").load("../resources/header/index.html", function () {
+                    adjustLinksAndImages("#includeHeader");
+                });
+            });
+        </script>
+        <div id="includeHeader"></div>
+    </header>
+
+    <section class="gradient-bg">
+        <div class="container hero">
+            <h1>Bug Reports & Feature Requests</h1>
+            <p>Help us improve Argo Sales Tracker by reporting bugs or suggesting new features</p>
+        </div>
+    </section>
+
+    <div class="container feedback-container">
+        <div class="report-types">
+            <button id="bug-button" class="tab-button active">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path
+                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                Report a Bug
+            </button>
+            <button id="feature-button" class="tab-button">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path
+                        d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                </svg>
+                Suggest a Feature
+            </button>
+        </div>
+
+        <div id="success-message" class="success-message" style="display: none;">
+            <div class="success-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+            <h2>Thank You for Your Feedback!</h2>
+            <p>Your submission has been received. We appreciate your help in making Argo Sales Tracker better.</p>
+            <button id="submit-another" class="btn btn-blue">Submit Another Report</button>
+        </div>
+
+        <div id="error-message" class="error-message" style="display: none;">
+            <div class="error-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="15" y1="9" x2="9" y2="15"></line>
+                    <line x1="9" y1="9" x2="15" y2="15"></line>
+                </svg>
+            </div>
+            <h2>Something Went Wrong</h2>
+            <p>We couldn't process your submission. Please try again or contact support directly.</p>
+            <p class="error-details"></p>
+            <button id="try-again" class="btn btn-blue">Try Again</button>
+        </div>
+
+        <div id="bug-form-container" class="form-container">
+            <form id="bug-form" class="feedback-form">
+                <input type="hidden" name="report_type" value="bug">
+
+                <div class="form-group">
+                    <label for="bug-title">Bug Title <span class="required">*</span></label>
+                    <input type="text" id="bug-title" name="title" required
+                        placeholder="E.g., 'Application crashes when exporting large files'">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="bug-severity">Severity <span class="required">*</span></label>
+                        <select id="bug-severity" name="severity" required>
+                            <option value="">Select severity</option>
+                            <option value="critical">Critical - Application unusable</option>
+                            <option value="major">Major - Functionality broken</option>
+                            <option value="minor">Minor - Functionality works with issues</option>
+                            <option value="cosmetic">Cosmetic - UI/display problems only</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bug-version">Software Version <span class="required">*</span></label>
+                        <input type="text" id="bug-version" name="version" required placeholder="E.g., '1.0.0'">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="bug-os">Operating System <span class="required">*</span></label>
+                        <select id="bug-os" name="operating_system" required>
+                            <option value="">Select operating system</option>
+                            <option value="windows11">Windows 11</option>
+                            <option value="windows10">Windows 10</option>
+                            <option value="windows8">Windows 8/8.1</option>
+                            <option value="windows7">Windows 7</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bug-browser">Browser (if applicable)</label>
+                        <input type="text" id="bug-browser" name="browser"
+                            placeholder="E.g., 'Chrome 123', 'N/A for desktop app'">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="bug-steps">Steps to Reproduce <span class="required">*</span></label>
+                    <textarea id="bug-steps" name="steps_to_reproduce" rows="4" required
+                        placeholder="1. Open the application&#10;2. Go to Analytics tab&#10;3. Click on 'Export to Excel'&#10;4. Select a date range larger than 6 months"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="bug-actual">Actual Result <span class="required">*</span></label>
+                    <textarea id="bug-actual" name="actual_result" rows="3" required
+                        placeholder="Application freezes and displays an error message"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="bug-expected">Expected Result <span class="required">*</span></label>
+                    <textarea id="bug-expected" name="expected_result" rows="3" required
+                        placeholder="Application should successfully export the data to Excel"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="bug-screenshot">Screenshots (Optional)</label>
+                    <div class="file-upload">
+                        <input type="file" id="bug-screenshot" name="screenshot" accept="image/*" multiple>
+                        <div class="file-upload-info">Drag files here or click to upload (Max 3 files, 5MB each)</div>
+                        <div class="file-preview" id="bug-file-preview"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="bug-email">Your Email (Optional)</label>
+                    <input type="email" id="bug-email" name="email"
+                        placeholder="So we can contact you if we need more information">
+                </div>
+
+                <div class="form-footer">
+                    <p class="required-note"><span class="required">*</span> Required fields</p>
+                    <button type="submit" class="btn btn-blue">Submit Bug Report</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="feature-form-container" class="form-container" style="display: none;">
+            <form id="feature-form" class="feedback-form">
+                <input type="hidden" name="report_type" value="feature">
+
+                <div class="form-group">
+                    <label for="feature-title">Feature Title <span class="required">*</span></label>
+                    <input type="text" id="feature-title" name="title" required
+                        placeholder="E.g., 'Add dark mode support'">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="feature-category">Category <span class="required">*</span></label>
+                        <select id="feature-category" name="category" required>
+                            <option value="">Select category</option>
+                            <option value="ui">User Interface</option>
+                            <option value="reporting">Reporting & Analytics</option>
+                            <option value="data">Data Management</option>
+                            <option value="export">Import/Export</option>
+                            <option value="security">Security</option>
+                            <option value="performance">Performance</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="feature-priority">Priority</label>
+                        <select id="feature-priority" name="priority">
+                            <option value="">Select priority</option>
+                            <option value="high">High - Critical for my workflow</option>
+                            <option value="medium">Medium - Would significantly improve usage</option>
+                            <option value="low">Low - Nice to have</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="feature-description">Feature Description <span class="required">*</span></label>
+                    <textarea id="feature-description" name="description" rows="5" required
+                        placeholder="Describe the feature in detail. What problem would it solve? How would it work?"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="feature-benefit">Business Benefit <span class="required">*</span></label>
+                    <textarea id="feature-benefit" name="benefit" rows="3" required
+                        placeholder="How would this feature benefit users? Why is it important?"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="feature-examples">Examples or References (Optional)</label>
+                    <textarea id="feature-examples" name="examples" rows="3"
+                        placeholder="Are there examples of this feature in other software? Please share links or descriptions."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="feature-mockup">Visual Mockup (Optional)</label>
+                    <div class="file-upload">
+                        <input type="file" id="feature-mockup" name="mockup" accept="image/*" multiple>
+                        <div class="file-upload-info">Drag files here or click to upload (Max 3 files, 5MB each)</div>
+                        <div class="file-preview" id="feature-file-preview"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="feature-email">Your Email (Optional)</label>
+                    <input type="email" id="feature-email" name="email"
+                        placeholder="So we can contact you if we need more information">
+                </div>
+
+                <div class="form-footer">
+                    <p class="required-note"><span class="required">*</span> Required fields</p>
+                    <button type="submit" class="btn btn-blue">Submit Feature Request</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <section class="faq-section">
+        <div class="container">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-grid">
+                <details class="faq-item">
+                    <summary>How do I know if something is a bug?</summary>
+                    <p>A bug is when the software doesn't work as expected or described in the documentation. This
+                        includes crashes, errors, incorrect calculations, or any unexpected behavior that prevents you
+                        from using a feature properly.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>What information should I include in a bug report?</summary>
+                    <p>The most helpful bug reports include: clear steps to reproduce the issue, what you expected to
+                        happen, what actually happened, your software version, operating system, and screenshots if
+                        applicable. The more details you provide, the faster we can fix the issue.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>How are feature requests prioritized?</summary>
+                    <p>We evaluate feature requests based on several factors: how many users would benefit, technical
+                        complexity, alignment with our product roadmap, and potential business value. While we can't
+                        implement every suggestion, we read and consider all feedback.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Will I receive updates about my bug report or feature request?</summary>
+                    <p>If you provide your email address, we'll notify you of significant updates related to your
+                        submission. For bugs, we'll let you know when they're fixed. For feature requests, we'll inform
+                        you if we decide to implement them in a future release.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>I found a security vulnerability. Should I report it here?</summary>
+                    <p>No. For security vulnerabilities, please email us directly at <a
+                            href="mailto:security@argorobots.com">security@argorobots.com</a> instead of using this
+                        form. This helps us address sensitive security issues appropriately.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>How can I check if my bug or feature request has already been reported?</summary>
+                    <p>We're working on a public issue tracker that will allow users to see existing reports. In the
+                        meantime, you can contact our support team at <a
+                            href="mailto:support@argorobots.com">support@argorobots.com</a> to check if your issue has
+                        already been reported.</p>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <script>
+            $(function () {
+                $("#includeFooter").load("../resources/footer/index.html", function () {
+                    adjustLinksAndImages("#includeFooter");
+                });
+            });
+        </script>
+        <div id="includeFooter"></div>
+    </footer>
+</body>
+
+</html>
