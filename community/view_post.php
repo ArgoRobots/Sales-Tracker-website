@@ -78,12 +78,12 @@ $current_user_email = '';
         <div id="includeHeader"></div>
     </header>
 
-    <div class="community-container">
-        <div class="community-header ">
-            <h1>Argo Sales Tracker Community</h1>
-            <p>Report bugs and suggest features to help us improve</p>
-        </div>
+    <div class="community-header ">
+        <h1>Argo Sales Tracker Community</h1>
+        <p>Report bugs and suggest features to help us improve</p>
+    </div>
 
+    <div class="community-container">
         <div class="main-content">
             <a href="index.php" class="btn btn-secondary back-button">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -169,26 +169,22 @@ $current_user_email = '';
                     <h3><?php echo count($comments); ?> Comments</h3>
                     
                     <div class="comments-container">
-                        <?php if (empty($comments)): ?>
-                            <p class="no-comments">No comments yet. Be the first to comment!</p>
-                        <?php else: ?>
-                            <?php foreach ($comments as $comment): ?>
-                                <div class="comment" data-comment-id="<?php echo $comment['id']; ?>">
-                                    <div class="comment-header">
-                                        <span class="comment-author"><?php echo htmlspecialchars($comment['user_name']); ?></span>
-                                        <span class="comment-date"><?php echo date('M j, Y g:i a', strtotime($comment['created_at'])); ?></span>
-                                    </div>
-                                    <div class="comment-content">
-                                        <?php echo nl2br(htmlspecialchars($comment['content'])); ?>
-                                    </div>
-                                    <?php if ($is_admin): ?>
-                                    <div class="comment-actions">
-                                        <button class="delete-comment-btn" data-comment-id="<?php echo $comment['id']; ?>">Delete</button>
-                                    </div>
-                                    <?php endif; ?>
+                        <?php foreach ($comments as $comment): ?>
+                            <div class="comment" data-comment-id="<?php echo $comment['id']; ?>">
+                                <div class="comment-header">
+                                    <span class="comment-author"><?php echo htmlspecialchars($comment['user_name']); ?></span>
+                                    <span class="comment-date"><?php echo date('M j, Y g:i a', strtotime($comment['created_at'])); ?></span>
                                 </div>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
+                                <div class="comment-content">
+                                    <?php echo nl2br(htmlspecialchars($comment['content'])); ?>
+                                </div>
+                                <?php if ($is_admin): ?>
+                                <div class="comment-actions">
+                                    <button class="delete-comment-btn" data-comment-id="<?php echo $comment['id']; ?>">Delete</button>
+                                </div>
+                                <?php endif; ?>
+                            </div>
+                        <?php endforeach; ?>
                     </div>
                     
                     <div class="comment-form">
@@ -196,7 +192,6 @@ $current_user_email = '';
                         <form id="add-comment-form" data-post-id="<?php echo $post['id']; ?>">
                             <input type="hidden" name="post_id" value="<?php echo $post['id']; ?>">
                             <div class="form-group">
-                                <label for="comment_content">Comment</label>
                                 <textarea id="comment_content" name="comment_content" rows="4" required></textarea>
                             </div>
                             <button type="submit" class="btn btn-primary">Submit Comment</button>

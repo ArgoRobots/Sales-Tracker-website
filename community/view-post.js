@@ -201,15 +201,6 @@ document.addEventListener("DOMContentLoaded", function () {
               const currentCount = parseInt(commentsHeading.textContent);
               const newCount = currentCount - 1;
               commentsHeading.textContent = `${newCount} Comments`;
-
-              // Show "no comments" message if needed
-              if (newCount === 0) {
-                const commentsContainer = document.querySelector(
-                  ".comments-container"
-                );
-                commentsContainer.innerHTML =
-                  '<p class="no-comments">No comments yet. Be the first to comment!</p>';
-              }
             } else {
               alert("Error deleting comment: " + data.message);
             }
