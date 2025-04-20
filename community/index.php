@@ -9,8 +9,8 @@ $posts = get_all_posts();
 // Check if user is an admin
 $is_admin = isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true;
 
-// Get current user email if available (for voting)
-$current_user_email = isset($_SESSION['user_email']) ? $_SESSION['user_email'] : '';
+// Current user settings - no longer using email for voting
+$current_user_email = '';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -53,7 +53,7 @@ $current_user_email = isset($_SESSION['user_email']) ? $_SESSION['user_email'] :
                 <div class="action-left">
                     <a href="create_post.php" class="btn btn-blue">Create New Post</a>
                     
-                    <!-- New Category Filter -->
+                    <!-- Category Filter -->
                     <div class="filter-dropdown">
                         <select id="category-filter" class="filter-select">
                             <option value="all">All Categories</option>
@@ -65,8 +65,8 @@ $current_user_email = isset($_SESSION['user_email']) ? $_SESSION['user_email'] :
                 
                 <div class="search-box">
                     <input type="text" id="search-posts" placeholder="Search...">
-                    <button id="search-btn" class="btn search-icon-btn" aria-label="Search">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <button id="search-btn" class="search-icon-button" aria-label="Search">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="11" cy="11" r="8"></circle>
                             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                         </svg>
@@ -92,11 +92,6 @@ $current_user_email = isset($_SESSION['user_email']) ? $_SESSION['user_email'] :
                 <p>Loading more posts...</p>
             </div>
 
-            <!-- Template for post selection checkbox -->
-            <div class="post-select">
-                <input type="checkbox" class="post-checkbox">
-            </div>
-
             <div id="posts-container" class="posts-container">
                 <?php if (empty($posts)): ?>
                 <div class="empty-state">
@@ -106,19 +101,21 @@ $current_user_email = isset($_SESSION['user_email']) ? $_SESSION['user_email'] :
                 <?php else: ?>
                     <?php foreach ($posts as $post): ?>
                     <div class="post-card" data-post-id="<?php echo $post['id']; ?>" data-post-type="<?php echo $post['post_type']; ?>">
+                        <!-- Moved post-votes to the left -->
                         <div class="post-votes">
-                            <button class="vote-btn upvote" data-post-id="<?php echo $post['id']; ?>" data-vote="up" <?php echo empty($current_user_email) ? 'disabled' : ''; ?>>
+                            <button class="vote-btn upvote" data-post-id="<?php echo $post['id']; ?>" data-vote="up">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                     <path stroke-width="2" d="M12 19V5M5 12l7-7 7 7"/>
                                 </svg>
                             </button>
                             <span class="vote-count"><?php echo $post['votes']; ?></span>
-                            <button class="vote-btn downvote" data-post-id="<?php echo $post['id']; ?>" data-vote="down" <?php echo empty($current_user_email) ? 'disabled' : ''; ?>>
+                            <button class="vote-btn downvote" data-post-id="<?php echo $post['id']; ?>" data-vote="down">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                     <path stroke-width="2" d="M12 5v14M5 12l7 7 7-7"/>
                                 </svg>
                             </button>
                         </div>
+                        <!-- Post content remains the same -->
                         <div class="post-content">
                             <a href="view_post.php?id=<?php echo $post['id']; ?>" class="post-link">
                                 <div class="post-header">
@@ -155,6 +152,13 @@ $current_user_email = isset($_SESSION['user_email']) ? $_SESSION['user_email'] :
                                 <div class="post-info">
                                     <span class="post-author">Posted by <?php echo htmlspecialchars($post['user_name']); ?></span>
                                     <span class="post-date"><?php echo date('M j, Y', strtotime($post['created_at'])); ?></span>
+                                    <span class="post-views">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                            <circle cx="12" cy="12" r="3"></circle>
+                                        </svg>
+                                        <?php echo (isset($post['views']) && (int)$post['views'] > 0) ? (int)$post['views'] : 0; ?> <?php echo ((isset($post['views']) && (int)$post['views'] == 1) ? 'view' : 'views'); ?>
+                                    </span>
                                 </div>
                                 <div class="post-actions">
                                     <a href="view_post.php?id=<?php echo $post['id']; ?>" class="view-comments-btn">

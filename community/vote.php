@@ -16,14 +16,11 @@ $response = [
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validate and sanitize inputs
     $post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
-    $user_email = isset($_POST['user_email']) ? trim($_POST['user_email']) : '';
     $vote_type = isset($_POST['vote_type']) ? intval($_POST['vote_type']) : 0;
     
     // Basic validation
-    if (empty($post_id) || empty($user_email)) {
+    if (empty($post_id)) {
         $response['message'] = 'Missing required parameters';
-    } elseif (!filter_var($user_email, FILTER_VALIDATE_EMAIL)) {
-        $response['message'] = 'Invalid email format';
     } elseif ($vote_type !== 1 && $vote_type !== -1) {
         $response['message'] = 'Invalid vote type';
     } else {
@@ -33,8 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$post) {
             $response['message'] = 'Post not found';
         } else {
-            // Store user's email in session
-            $_SESSION['user_email'] = $user_email;
+            // Use a fixed "anonymous" user for voting
+            $user_email = 'anonymous@example.com';
             
             // Process the vote
             $result = vote_post($post_id, $user_email, $vote_type);

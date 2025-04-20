@@ -21,14 +21,31 @@ if (!$post) {
     exit;
 }
 
+// Increment view count (only once per session to count unique views)
+$viewed_posts = isset($_SESSION['viewed_posts']) ? $_SESSION['viewed_posts'] : array();
+if (!in_array($post_id, $viewed_posts)) {
+    // Update view count in database
+    $db = get_db_connection();
+    $stmt = $db->prepare('UPDATE community_posts SET views = views + 1 WHERE id = :id');
+    $stmt->bindValue(':id', $post_id, SQLITE3_INTEGER);
+    $stmt->execute();
+    
+    // Add post to viewed posts in session
+    $viewed_posts[] = $post_id;
+    $_SESSION['viewed_posts'] = $viewed_posts;
+    
+    // Update the post data with new view count
+    $post = get_post($post_id);
+}
+
 // Get comments for this post
 $comments = get_post_comments($post_id);
 
 // Check if user is an admin
 $is_admin = isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true;
 
-// Get current user email if available (for voting)
-$current_user_email = isset($_SESSION['user_email']) ? $_SESSION['user_email'] : '';
+// Current user settings - no longer using email for voting
+$current_user_email = '';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -77,14 +94,15 @@ $current_user_email = isset($_SESSION['user_email']) ? $_SESSION['user_email'] :
             
             <div class="post-detail">
                 <div class="post-card" data-post-id="<?php echo $post['id']; ?>" data-post-type="<?php echo $post['post_type']; ?>">
+                    <!-- Move votes to the left side -->
                     <div class="post-votes">
-                        <button class="vote-btn upvote" data-post-id="<?php echo $post['id']; ?>" data-vote="up" <?php echo empty($current_user_email) ? 'disabled' : ''; ?>>
+                        <button class="vote-btn upvote" data-post-id="<?php echo $post['id']; ?>" data-vote="up">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                 <path stroke-width="2" d="M12 19V5M5 12l7-7 7 7"/>
                             </svg>
                         </button>
                         <span class="vote-count"><?php echo $post['votes']; ?></span>
-                        <button class="vote-btn downvote" data-post-id="<?php echo $post['id']; ?>" data-vote="down" <?php echo empty($current_user_email) ? 'disabled' : ''; ?>>
+                        <button class="vote-btn downvote" data-post-id="<?php echo $post['id']; ?>" data-vote="down">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                 <path stroke-width="2" d="M12 5v14M5 12l7 7 7-7"/>
                             </svg>
@@ -124,6 +142,13 @@ $current_user_email = isset($_SESSION['user_email']) ? $_SESSION['user_email'] :
                             <div class="post-info">
                                 <span class="post-author">Posted by <?php echo htmlspecialchars($post['user_name']); ?></span>
                                 <span class="post-date"><?php echo date('M j, Y', strtotime($post['created_at'])); ?></span>
+                                <span class="post-views">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    <?php echo (isset($post['views']) && (int)$post['views'] > 0) ? (int)$post['views'] : 0; ?> <?php echo ((isset($post['views']) && (int)$post['views'] == 1) ? 'view' : 'views'); ?>
+                                </span>
                             </div>
                             <?php if ($is_admin): ?>
                             <div class="admin-actions">
@@ -170,14 +195,6 @@ $current_user_email = isset($_SESSION['user_email']) ? $_SESSION['user_email'] :
                         <h4>Add a Comment</h4>
                         <form id="add-comment-form" data-post-id="<?php echo $post['id']; ?>">
                             <input type="hidden" name="post_id" value="<?php echo $post['id']; ?>">
-                            <div class="form-group">
-                                <label for="comment_name">Your Name</label>
-                                <input type="text" id="comment_name" name="user_name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="comment_email">Your Email</label>
-                                <input type="email" id="comment_email" name="user_email" required>
-                            </div>
                             <div class="form-group">
                                 <label for="comment_content">Comment</label>
                                 <textarea id="comment_content" name="comment_content" rows="4" required></textarea>

@@ -1,59 +1,18 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Fill form fields from localStorage
-  const savedName = localStorage.getItem("community_user_name");
-  const savedEmail = localStorage.getItem("community_user_email");
-
-  if (savedName) {
-    document.querySelector("#comment_name").value = savedName;
-  }
-
-  if (savedEmail) {
-    document.querySelector("#comment_email").value = savedEmail;
-
-    // Enable voting buttons
-    document.querySelectorAll(".vote-btn").forEach((btn) => {
-      btn.disabled = false;
-    });
-  }
-
   // Handle voting
   const voteButtons = document.querySelectorAll(".vote-btn");
 
   voteButtons.forEach((btn) => {
     btn.addEventListener("click", function () {
-      if (this.disabled) {
-        alert("Please provide your email in a comment before voting.");
-        return;
-      }
-
       const postId = this.getAttribute("data-post-id");
       const voteType = this.getAttribute("data-vote") === "up" ? 1 : -1;
-
-      // Get user email from localStorage or ask for it
-      let userEmail = localStorage.getItem("community_user_email");
-
-      if (!userEmail) {
-        userEmail = prompt("Please enter your email to vote:");
-        if (!userEmail) return;
-
-        // Validate email format
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(userEmail)) {
-          alert("Please enter a valid email address.");
-          return;
-        }
-
-        localStorage.setItem("community_user_email", userEmail);
-      }
 
       fetch("vote.php", {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: `post_id=${postId}&user_email=${encodeURIComponent(
-          userEmail
-        )}&vote_type=${voteType}`,
+        body: `post_id=${postId}&vote_type=${voteType}`,
       })
         .then((response) => response.json())
         .then((data) => {
@@ -93,23 +52,17 @@ document.addEventListener("DOMContentLoaded", function () {
       e.preventDefault();
 
       const postId = this.getAttribute("data-post-id");
-      const nameInput = document.getElementById("comment_name");
-      const emailInput = document.getElementById("comment_email");
       const contentInput = document.getElementById("comment_content");
 
-      if (
-        !nameInput.value.trim() ||
-        !emailInput.value.trim() ||
-        !contentInput.value.trim()
-      ) {
-        alert("Please fill in all fields");
+      if (!contentInput.value.trim()) {
+        alert("Please fill in the comment field");
         return;
       }
 
       const formData = new FormData();
       formData.append("post_id", postId);
-      formData.append("user_name", nameInput.value);
-      formData.append("user_email", emailInput.value);
+      formData.append("user_name", "Anonymous"); // Default username
+      formData.append("user_email", "anonymous@example.com"); // Default email
       formData.append("comment_content", contentInput.value);
 
       fetch("add_comment.php", {
@@ -119,10 +72,6 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((response) => response.json())
         .then((data) => {
           if (data.success) {
-            // Store name and email in localStorage for convenience
-            localStorage.setItem("community_user_name", nameInput.value);
-            localStorage.setItem("community_user_email", emailInput.value);
-
             // Reload the page to show the new comment
             window.location.reload();
           } else {

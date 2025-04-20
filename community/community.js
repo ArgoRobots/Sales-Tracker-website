@@ -385,9 +385,26 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   if (searchInput) {
+    // Handle Enter key press
     searchInput.addEventListener("keyup", function (e) {
       if (e.key === "Enter") {
         applyFilters();
+      }
+    });
+
+    // Handle input changes - auto search when emptied
+    let typingTimer;
+    searchInput.addEventListener("input", function () {
+      clearTimeout(typingTimer);
+
+      // If the search field is empty, apply filters immediately
+      if (this.value.trim() === "") {
+        applyFilters();
+      } else {
+        // Otherwise, add a small delay for typing
+        typingTimer = setTimeout(function () {
+          applyFilters();
+        }, 500);
       }
     });
   }

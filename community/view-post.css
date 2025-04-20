@@ -74,8 +74,10 @@ header .header-inner .menu-container .menu .community:after {
     margin-bottom: 0;
     border-radius: 8px 8px 0 0;
     border-bottom: 1px solid #e5e7eb;
+    display: flex;
 }
 
+/* Vote buttons on the left */
 .post-votes {
     background-color: #f9fafb;
     padding: 15px 10px;
@@ -84,6 +86,7 @@ header .header-inner .menu-container .menu .community:after {
     align-items: center;
     border-right: 1px solid #e5e7eb;
     min-width: 60px;
+    order: -1;
 }
 
 .vote-btn {
@@ -202,8 +205,17 @@ header .header-inner .menu-container .menu .community:after {
 }
 
 .post-author,
-.post-date {
-    margin-right: 10px;
+.post-date,
+.post-views {
+    margin-right: 15px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.post-views svg {
+    vertical-align: middle;
+    color: #94a3b8;
 }
 
 .admin-actions {

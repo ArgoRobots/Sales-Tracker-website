@@ -9,17 +9,13 @@ $error_message = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validate and sanitize inputs
-    $user_name = isset($_POST['user_name']) ? trim($_POST['user_name']) : '';
-    $user_email = isset($_POST['user_email']) ? trim($_POST['user_email']) : '';
     $title = isset($_POST['post_title']) ? trim($_POST['post_title']) : '';
     $content = isset($_POST['post_content']) ? trim($_POST['post_content']) : '';
     $post_type = isset($_POST['post_type']) ? trim($_POST['post_type']) : '';
     
     // Basic validation
-    if (empty($user_name) || empty($user_email) || empty($title) || empty($content) || empty($post_type)) {
+    if (empty($title) || empty($content) || empty($post_type)) {
         $error_message = 'All fields are required';
-    } elseif (!filter_var($user_email, FILTER_VALIDATE_EMAIL)) {
-        $error_message = 'Please enter a valid email address';
     } elseif (!in_array($post_type, ['bug', 'feature'])) {
         $error_message = 'Invalid post type';
     } elseif (strlen($title) > 255) {
@@ -27,11 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (strlen($content) > 10000) {
         $error_message = 'Content is too long (maximum 10,000 characters)';
     } else {
-        // Store user's email in session
-        $_SESSION['user_email'] = $user_email;
-        
-        // Add the post
-        $post_id = add_post($user_name, $user_email, $title, $content, $post_type);
+        // Add the post - using Anonymous as default user name
+        $post_id = add_post('Anonymous', 'anonymous@example.com', $title, $content, $post_type);
         
         if ($post_id) {
             $success_message = 'Your post has been submitted successfully. Redirecting to post...';
@@ -131,35 +124,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </script>
         <div id="includeFooter"></div>
     </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Fill form fields from localStorage if available
-            const savedName = localStorage.getItem('community_user_name');
-            const savedEmail = localStorage.getItem('community_user_email');
-            
-            const userNameInput = document.getElementById('user_name');
-            const userEmailInput = document.getElementById('user_email');
-            
-            if (savedName && userNameInput) {
-                userNameInput.value = savedName;
-            }
-            
-            if (savedEmail && userEmailInput) {
-                userEmailInput.value = savedEmail;
-            }
-            
-            // Store user info when form is submitted
-            const form = document.getElementById('community-post-form');
-            if (form) {
-                form.addEventListener('submit', function() {
-                    if (userNameInput && userEmailInput) {
-                        localStorage.setItem('community_user_name', userNameInput.value);
-                        localStorage.setItem('community_user_email', userEmailInput.value);
-                    }
-                });
-            }
-        });
-    </script>
 </body>
 </html>
