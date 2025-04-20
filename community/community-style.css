@@ -1,0 +1,521 @@
+/* Underline current page */
+header .header-inner .menu-container .menu .community:after {
+    transform: translateX(-50%) scaleX(1);
+}
+
+/* Community styles */
+.community-header {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    text-align: center;
+    padding: 90px 0;
+    color: white;
+}
+
+.community-wrapper {
+    max-width: 80%;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.community-header h1 {
+    font-size: 36px;
+    margin: 0;
+    padding: 10px 0;
+}
+
+.community-header p {
+    font-size: 20px;
+    max-width: 672px;
+    margin: 0 auto;
+}
+
+.community-content {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin: 20px 20px 40px 20px;
+}
+
+.community-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.search-box {
+    display: flex;
+    gap: 10px;
+}
+
+.search-box input {
+    padding: 8px 15px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    min-width: 250px;
+}
+
+/* Post listings */
+.posts-container {
+    margin-top: 20px;
+}
+
+.post-card {
+    display: flex;
+    background-color: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    overflow: hidden;
+}
+
+.post-votes {
+    background-color: #f9fafb;
+    padding: 15px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-right: 1px solid #e5e7eb;
+    min-width: 60px;
+}
+
+.vote-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #94a3b8;
+    padding: 5px;
+    transition: all 0.2s ease;
+}
+
+.vote-btn:hover {
+    color: #1e40af;
+}
+
+.vote-count {
+    font-weight: bold;
+    font-size: 18px;
+    margin: 8px 0;
+    color: #1e3a8a;
+}
+
+.post-content {
+    flex: 1;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.post-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.post-link:hover .post-title {
+    color: #2563eb;
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.post-title {
+    margin: 0;
+    font-size: 18px;
+    color: #1e3a8a;
+    flex: 1;
+}
+
+.post-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.post-type,
+.post-status {
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.post-type.bug {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
+
+.post-type.feature {
+    background-color: #e0f2fe;
+    color: #0369a1;
+}
+
+.post-status.open {
+    background-color: #f0fdf4;
+    color: #16a34a;
+}
+
+.post-status.in_progress {
+    background-color: #fef3c7;
+    color: #d97706;
+}
+
+.post-status.completed {
+    background-color: #dbeafe;
+    color: #2563eb;
+}
+
+.post-status.declined {
+    background-color: #fef2f2;
+    color: #dc2626;
+}
+
+.post-body {
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.post-body p {
+    margin: 0;
+}
+
+.post-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.post-info {
+    font-size: 14px;
+    color: #64748b;
+}
+
+.post-author,
+.post-date {
+    margin-right: 10px;
+}
+
+.post-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.view-comments-btn {
+    color: #1e3a8a;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.view-comments-btn:hover {
+    text-decoration: underline;
+}
+
+.admin-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.status-update {
+    padding: 5px 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    background-color: white;
+}
+
+.delete-post-btn {
+    background-color: #fee2e2;
+    color: #dc2626;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* Empty state */
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    background-color: #f9fafb;
+    border-radius: 8px;
+    border: 1px dashed #d1d5db;
+}
+
+.empty-state h3 {
+    color: #1e3a8a;
+    font-size: 24px;
+}
+
+.empty-state p {
+    margin-top: 10px;
+    color: #64748b;
+    font-size: 16px;
+}
+
+/* Highlighted post */
+@keyframes highlight-pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(37, 99, 235, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
+    }
+}
+
+.highlighted-post {
+    border: 2px solid #2563eb;
+    animation: highlight-pulse 2s infinite;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .community-actions {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .search-box {
+        width: 100%;
+    }
+
+    .search-box input {
+        flex-grow: 1;
+        min-width: 0;
+    }
+
+    .post-header {
+        flex-direction: column;
+    }
+
+    .post-footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+
+
+
+
+
+
+/* Enhanced community-style.css */
+
+/* Action Bar Improvements */
+.community-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+}
+
+.action-left {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* Filter dropdown styling */
+.filter-dropdown {
+    position: relative;
+}
+
+.filter-select {
+    padding: 8px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    background-color: white;
+    font-size: 14px;
+    min-width: 140px;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 16px;
+    cursor: pointer;
+}
+
+.filter-select:hover {
+    border-color: #9ca3af;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.2);
+}
+
+/* Improved search box */
+.search-box {
+    display: flex;
+    align-items: center;
+    max-width: 300px;
+    flex-grow: 1;
+}
+
+.search-box input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #d1d5db;
+    border-right: none;
+    border-radius: 4px 0 0 4px;
+    font-size: 14px;
+    min-width: 0;
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+.search-icon-btn {
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    padding: 8px 10px;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.search-icon-btn:hover {
+    background-color: #1d4ed8;
+}
+
+/* Bulk actions styling */
+.bulk-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #f3f4f6;
+    border-radius: 6px;
+    margin-bottom: 15px;
+}
+
+.selection-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.select-all-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.checkbox-label {
+    font-size: 14px;
+    color: #4b5563;
+}
+
+.selected-count {
+    font-size: 14px;
+    color: #1e3a8a;
+    font-weight: 500;
+}
+
+.btn-danger {
+    background-color: #ef4444;
+    color: white;
+    transition: background-color 0.2s;
+}
+
+.btn-danger:hover {
+    background-color: #dc2626;
+}
+
+.btn-danger:disabled {
+    background-color: #f87171;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Post checkbox styling */
+.post-card {
+    position: relative;
+}
+
+.post-select {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 10;
+    display: none;
+}
+
+.post-card.selectable .post-select {
+    display: block;
+}
+
+/* Loading indicator */
+#loading-indicator {
+    text-align: center;
+    padding: 20px;
+    color: #6b7280;
+}
+
+.spinner {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border: 3px solid rgba(37, 99, 235, 0.3);
+    border-radius: 50%;
+    border-top-color: #2563eb;
+    animation: spin 1s linear infinite;
+    margin-bottom: 10px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .community-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .action-left {
+        width: 100%;
+    }
+
+    .search-box {
+        max-width: none;
+        width: 100%;
+    }
+
+    .bulk-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+}

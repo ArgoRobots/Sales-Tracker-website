@@ -38,3 +38,13 @@
 .btn-blue:hover {
     background: #1d4ed8;
 }
+
+.btn-black {
+    background: transparent;
+    border: 3px solid black;
+    color: black;
+}
+
+.btn-black:hover {
+    background: rgba(0, 0, 0, 0.05);
+}

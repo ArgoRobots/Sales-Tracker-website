@@ -1,9 +1,3 @@
-/**
- * Admin Feedback Management JavaScript
- *
- * This file contains the JavaScript functionality for the admin feedback management page.
- */
-
 document.addEventListener("DOMContentLoaded", function () {
   // Add fullscreen image viewing CSS
   const style = document.createElement("style");

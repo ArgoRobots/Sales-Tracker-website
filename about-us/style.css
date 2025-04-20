@@ -17,16 +17,12 @@ body {
     align-items: center;
 }
 
-/* Navigation */
-.gradient-bg {
-    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-    color: white;
-}
-
 /* Hero Section */
 .hero {
     padding: 90px 0;
     text-align: center;
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    color: white;
 }
 
 .hero h1 {
@@ -36,7 +32,6 @@ body {
 
 .hero p {
     font-size: 20px;
-    color: #bfdbfe;
     max-width: 672px;
     margin: 0 auto;
 }
@@ -46,11 +41,11 @@ body {
         padding-bottom: 50px;
     }
 
-    .hero .container h1 {
+    .hero h1 {
         font-size: 36px;
     }
 
-    .hero .container p {
+    .hero p {
         font-size: 18px;
     }
 

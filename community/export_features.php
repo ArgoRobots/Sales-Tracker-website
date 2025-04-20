@@ -1,7 +1,5 @@
 <?php
 /**
- * Export Feature Requests
- * 
  * This script exports feature requests to CSV format for admin use.
  */
 

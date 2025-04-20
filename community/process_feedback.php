@@ -1,7 +1,5 @@
 <?php
 /**
- * Process Bug Reports and Feature Requests
- * 
  * This script handles form submissions from the bug report and feature request pages.
  * It validates the data, stores it in the database, and sends email notifications.
  */

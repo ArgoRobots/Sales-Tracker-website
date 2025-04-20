@@ -1,7 +1,5 @@
 <?php
 /**
- * Export Bug Reports
- * 
  * This script exports bug reports to CSV format for admin use.
  */
 
