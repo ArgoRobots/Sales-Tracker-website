@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Helper functions for the community forum
  */
@@ -8,19 +9,20 @@
  * 
  * @return array Array of posts
  */
-function get_all_posts() {
+function get_all_posts()
+{
     $db = get_db_connection();
-    
+
     // Check if views column exists, add it if not
     ensure_views_column_exists($db);
-    
+
     $result = $db->query('SELECT * FROM community_posts ORDER BY created_at DESC');
-    
+
     $posts = [];
     while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
         $posts[] = $row;
     }
-    
+
     return $posts;
 }
 
@@ -30,16 +32,17 @@ function get_all_posts() {
  * @param int $post_id Post ID
  * @return array|false Post data or false if not found
  */
-function get_post($post_id) {
+function get_post($post_id)
+{
     $db = get_db_connection();
-    
+
     // Check if views column exists, add it if not
     ensure_views_column_exists($db);
-    
+
     $stmt = $db->prepare('SELECT * FROM community_posts WHERE id = :id');
     $stmt->bindValue(':id', $post_id, SQLITE3_INTEGER);
     $result = $stmt->execute();
-    
+
     return $result->fetchArray(SQLITE3_ASSOC);
 }
 
@@ -48,18 +51,19 @@ function get_post($post_id) {
  * 
  * @param SQLite3 $db Database connection
  */
-function ensure_views_column_exists($db) {
+function ensure_views_column_exists($db)
+{
     // Check if the column exists
     $result = $db->query("PRAGMA table_info(community_posts)");
     $columnExists = false;
-    
+
     while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
         if ($row['name'] === 'views') {
             $columnExists = true;
             break;
         }
     }
-    
+
     // Add the views column if it doesn't exist
     if (!$columnExists) {
         $db->exec('ALTER TABLE community_posts ADD COLUMN views INTEGER DEFAULT 0');
@@ -76,12 +80,13 @@ function ensure_views_column_exists($db) {
  * @param string $post_type Post type ('bug' or 'feature')
  * @return int|false New post ID or false on failure
  */
-function add_post($user_name, $user_email, $title, $content, $post_type) {
+function add_post($user_name, $user_email, $title, $content, $post_type)
+{
     $db = get_db_connection();
-    
+
     // Check if views column exists, add it if not
     ensure_views_column_exists($db);
-    
+
     $stmt = $db->prepare('INSERT INTO community_posts (user_name, user_email, title, content, post_type, views) 
                          VALUES (:user_name, :user_email, :title, :content, :post_type, 0)');
     $stmt->bindValue(':user_name', $user_name, SQLITE3_TEXT);
@@ -89,10 +94,10 @@ function add_post($user_name, $user_email, $title, $content, $post_type) {
     $stmt->bindValue(':title', $title, SQLITE3_TEXT);
     $stmt->bindValue(':content', $content, SQLITE3_TEXT);
     $stmt->bindValue(':post_type', $post_type, SQLITE3_TEXT);
-    
+
     if ($stmt->execute()) {
         $post_id = $db->lastInsertRowID();
-        
+
         // Send notification email
         send_notification_email('new_post', [
             'id' => $post_id,
@@ -101,10 +106,10 @@ function add_post($user_name, $user_email, $title, $content, $post_type) {
             'title' => $title,
             'post_type' => $post_type
         ]);
-        
+
         return $post_id;
     }
-    
+
     return false;
 }
 
@@ -115,13 +120,14 @@ function add_post($user_name, $user_email, $title, $content, $post_type) {
  * @param string $status New status ('open', 'in_progress', 'completed', 'declined')
  * @return bool Success status
  */
-function update_post_status($post_id, $status) {
+function update_post_status($post_id, $status)
+{
     $db = get_db_connection();
-    
+
     $stmt = $db->prepare('UPDATE community_posts SET status = :status, updated_at = CURRENT_TIMESTAMP WHERE id = :id');
     $stmt->bindValue(':id', $post_id, SQLITE3_INTEGER);
     $stmt->bindValue(':status', $status, SQLITE3_TEXT);
-    
+
     return $stmt->execute() !== false;
 }
 
@@ -131,12 +137,13 @@ function update_post_status($post_id, $status) {
  * @param int $post_id Post ID
  * @return bool Success status
  */
-function delete_post($post_id) {
+function delete_post($post_id)
+{
     $db = get_db_connection();
-    
+
     $stmt = $db->prepare('DELETE FROM community_posts WHERE id = :id');
     $stmt->bindValue(':id', $post_id, SQLITE3_INTEGER);
-    
+
     return $stmt->execute() !== false;
 }
 
@@ -146,19 +153,58 @@ function delete_post($post_id) {
  * @param int $post_id Post ID
  * @return array Array of comments
  */
-function get_post_comments($post_id) {
+function get_post_comments($post_id)
+{
     $db = get_db_connection();
-    
+
+    // Ensure votes column exists in community_comments
+    ensure_comment_votes_column_exists($db);
+
     $stmt = $db->prepare('SELECT * FROM community_comments WHERE post_id = :post_id ORDER BY created_at ASC');
     $stmt->bindValue(':post_id', $post_id, SQLITE3_INTEGER);
     $result = $stmt->execute();
-    
+
     $comments = [];
     while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
         $comments[] = $row;
     }
-    
+
     return $comments;
+}
+
+/**
+ * Ensure the votes column exists in the community_comments table
+ * 
+ * @param SQLite3 $db Database connection
+ */
+function ensure_comment_votes_column_exists($db)
+{
+    // Check if the column exists
+    $result = $db->query("PRAGMA table_info(community_comments)");
+    $columnExists = false;
+
+    while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+        if ($row['name'] === 'votes') {
+            $columnExists = true;
+            break;
+        }
+    }
+
+    // Add the votes column if it doesn't exist
+    if (!$columnExists) {
+        $db->exec('ALTER TABLE community_comments ADD COLUMN votes INTEGER DEFAULT 0');
+    }
+
+    // Also create comment_votes table if needed
+    $db->exec("CREATE TABLE IF NOT EXISTS comment_votes (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        comment_id INTEGER NOT NULL,
+        user_id INTEGER DEFAULT NULL,
+        user_email TEXT NOT NULL,
+        vote_type INTEGER NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (comment_id) REFERENCES community_comments (id) ON DELETE CASCADE
+    )");
 }
 
 /**
@@ -167,13 +213,14 @@ function get_post_comments($post_id) {
  * @param int $post_id Post ID
  * @return int Comment count
  */
-function get_comment_count($post_id) {
+function get_comment_count($post_id)
+{
     $db = get_db_connection();
-    
+
     $stmt = $db->prepare('SELECT COUNT(*) as count FROM community_comments WHERE post_id = :post_id');
     $stmt->bindValue(':post_id', $post_id, SQLITE3_INTEGER);
     $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
-    
+
     return $result['count'];
 }
 
@@ -186,27 +233,31 @@ function get_comment_count($post_id) {
  * @param string $content Comment content
  * @return array|false New comment data or false on failure
  */
-function add_comment($post_id, $user_name, $user_email, $content) {
+function add_comment($post_id, $user_name, $user_email, $content)
+{
     $db = get_db_connection();
-    
-    $stmt = $db->prepare('INSERT INTO community_comments (post_id, user_name, user_email, content) 
-                         VALUES (:post_id, :user_name, :user_email, :content)');
+
+    // Ensure votes column exists
+    ensure_comment_votes_column_exists($db);
+
+    $stmt = $db->prepare('INSERT INTO community_comments (post_id, user_name, user_email, content, votes) 
+                         VALUES (:post_id, :user_name, :user_email, :content, 0)');
     $stmt->bindValue(':post_id', $post_id, SQLITE3_INTEGER);
     $stmt->bindValue(':user_name', $user_name, SQLITE3_TEXT);
     $stmt->bindValue(':user_email', $user_email, SQLITE3_TEXT);
     $stmt->bindValue(':content', $content, SQLITE3_TEXT);
-    
+
     if ($stmt->execute()) {
         $comment_id = $db->lastInsertRowID();
-        
+
         // Get the post data
         $post = get_post($post_id);
-        
+
         // Get the new comment
         $stmt = $db->prepare('SELECT * FROM community_comments WHERE id = :id');
         $stmt->bindValue(':id', $comment_id, SQLITE3_INTEGER);
         $new_comment = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
-        
+
         // Send notification email
         send_notification_email('new_comment', [
             'id' => $comment_id,
@@ -215,10 +266,10 @@ function add_comment($post_id, $user_name, $user_email, $content) {
             'user_name' => $user_name,
             'user_email' => $user_email
         ]);
-        
+
         return $new_comment;
     }
-    
+
     return false;
 }
 
@@ -228,31 +279,32 @@ function add_comment($post_id, $user_name, $user_email, $content) {
  * @param int $comment_id Comment ID
  * @return array|false Post ID and success status or false on failure
  */
-function delete_comment($comment_id) {
+function delete_comment($comment_id)
+{
     $db = get_db_connection();
-    
+
     // Get the post_id before deleting
     $stmt = $db->prepare('SELECT post_id FROM community_comments WHERE id = :id');
     $stmt->bindValue(':id', $comment_id, SQLITE3_INTEGER);
     $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
-    
+
     if (!$result) {
         return false;
     }
-    
+
     $post_id = $result['post_id'];
-    
+
     // Delete the comment
     $stmt = $db->prepare('DELETE FROM community_comments WHERE id = :id');
     $stmt->bindValue(':id', $comment_id, SQLITE3_INTEGER);
-    
+
     if ($stmt->execute()) {
         return [
             'post_id' => $post_id,
             'success' => true
         ];
     }
-    
+
     return false;
 }
 
@@ -264,15 +316,16 @@ function delete_comment($comment_id) {
  * @param int $vote_type Vote type (1 for upvote, -1 for downvote)
  * @return array|false New vote count and user's vote or false on failure
  */
-function vote_post($post_id, $user_email, $vote_type) {
+function vote_post($post_id, $user_email, $vote_type)
+{
     $db = get_db_connection();
-    
+
     // Check if user has already voted
     $stmt = $db->prepare('SELECT vote_type FROM community_votes WHERE post_id = :post_id AND user_email = :user_email');
     $stmt->bindValue(':post_id', $post_id, SQLITE3_INTEGER);
     $stmt->bindValue(':user_email', $user_email, SQLITE3_TEXT);
     $existing_vote = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
-    
+
     if ($existing_vote) {
         // User already voted, check if they're changing their vote
         if ($existing_vote['vote_type'] == $vote_type) {
@@ -281,7 +334,7 @@ function vote_post($post_id, $user_email, $vote_type) {
             $stmt->bindValue(':post_id', $post_id, SQLITE3_INTEGER);
             $stmt->bindValue(':user_email', $user_email, SQLITE3_TEXT);
             $stmt->execute();
-            
+
             $user_vote = 0;
         } else {
             // Update the vote
@@ -291,7 +344,7 @@ function vote_post($post_id, $user_email, $vote_type) {
             $stmt->bindValue(':user_email', $user_email, SQLITE3_TEXT);
             $stmt->bindValue(':vote_type', $vote_type, SQLITE3_INTEGER);
             $stmt->execute();
-            
+
             $user_vote = $vote_type;
         }
     } else {
@@ -302,23 +355,23 @@ function vote_post($post_id, $user_email, $vote_type) {
         $stmt->bindValue(':user_email', $user_email, SQLITE3_TEXT);
         $stmt->bindValue(':vote_type', $vote_type, SQLITE3_INTEGER);
         $stmt->execute();
-        
+
         $user_vote = $vote_type;
     }
-    
+
     // Update vote count in posts table
     $stmt = $db->prepare('SELECT SUM(vote_type) as total_votes FROM community_votes WHERE post_id = :post_id');
     $stmt->bindValue(':post_id', $post_id, SQLITE3_INTEGER);
     $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
-    
+
     $total_votes = $result['total_votes'] ?? 0;
-    
+
     // Update the post's vote count
     $stmt = $db->prepare('UPDATE community_posts SET votes = :votes WHERE id = :id');
     $stmt->bindValue(':id', $post_id, SQLITE3_INTEGER);
     $stmt->bindValue(':votes', $total_votes, SQLITE3_INTEGER);
     $stmt->execute();
-    
+
     return [
         'new_vote_count' => $total_votes,
         'user_vote' => $user_vote
@@ -332,14 +385,110 @@ function vote_post($post_id, $user_email, $vote_type) {
  * @param string $user_email User's email
  * @return int|false Vote type (1, -1) or 0 if no vote, or false on failure
  */
-function get_user_vote($post_id, $user_email) {
+function get_user_vote($post_id, $user_email)
+{
     $db = get_db_connection();
-    
+
     $stmt = $db->prepare('SELECT vote_type FROM community_votes WHERE post_id = :post_id AND user_email = :user_email');
     $stmt->bindValue(':post_id', $post_id, SQLITE3_INTEGER);
     $stmt->bindValue(':user_email', $user_email, SQLITE3_TEXT);
     $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
-    
+
+    return $result ? $result['vote_type'] : 0;
+}
+
+/**
+ * Add or update a vote on a comment
+ * 
+ * @param int $comment_id Comment ID
+ * @param string $user_email User's email
+ * @param int $vote_type Vote type (1 for upvote, -1 for downvote)
+ * @return array|false New vote count and user's vote or false on failure
+ */
+function vote_comment($comment_id, $user_email, $vote_type)
+{
+    $db = get_db_connection();
+
+    // Ensure comment_votes table exists
+    ensure_comment_votes_column_exists($db);
+
+    // Check if user has already voted
+    $stmt = $db->prepare('SELECT vote_type FROM comment_votes WHERE comment_id = :comment_id AND user_email = :user_email');
+    $stmt->bindValue(':comment_id', $comment_id, SQLITE3_INTEGER);
+    $stmt->bindValue(':user_email', $user_email, SQLITE3_TEXT);
+    $existing_vote = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+
+    if ($existing_vote) {
+        // User already voted, check if they're changing their vote
+        if ($existing_vote['vote_type'] == $vote_type) {
+            // Remove the vote (cancel)
+            $stmt = $db->prepare('DELETE FROM comment_votes WHERE comment_id = :comment_id AND user_email = :user_email');
+            $stmt->bindValue(':comment_id', $comment_id, SQLITE3_INTEGER);
+            $stmt->bindValue(':user_email', $user_email, SQLITE3_TEXT);
+            $stmt->execute();
+
+            $user_vote = 0;
+        } else {
+            // Update the vote
+            $stmt = $db->prepare('UPDATE comment_votes SET vote_type = :vote_type, created_at = CURRENT_TIMESTAMP 
+                                 WHERE comment_id = :comment_id AND user_email = :user_email');
+            $stmt->bindValue(':comment_id', $comment_id, SQLITE3_INTEGER);
+            $stmt->bindValue(':user_email', $user_email, SQLITE3_TEXT);
+            $stmt->bindValue(':vote_type', $vote_type, SQLITE3_INTEGER);
+            $stmt->execute();
+
+            $user_vote = $vote_type;
+        }
+    } else {
+        // Add new vote
+        $stmt = $db->prepare('INSERT INTO comment_votes (comment_id, user_email, vote_type) 
+                             VALUES (:comment_id, :user_email, :vote_type)');
+        $stmt->bindValue(':comment_id', $comment_id, SQLITE3_INTEGER);
+        $stmt->bindValue(':user_email', $user_email, SQLITE3_TEXT);
+        $stmt->bindValue(':vote_type', $vote_type, SQLITE3_INTEGER);
+        $stmt->execute();
+
+        $user_vote = $vote_type;
+    }
+
+    // Update vote count in comments table
+    $stmt = $db->prepare('SELECT SUM(vote_type) as total_votes FROM comment_votes WHERE comment_id = :comment_id');
+    $stmt->bindValue(':comment_id', $comment_id, SQLITE3_INTEGER);
+    $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+
+    $total_votes = $result['total_votes'] ?? 0;
+
+    // Update the comment's vote count
+    $stmt = $db->prepare('UPDATE community_comments SET votes = :votes WHERE id = :id');
+    $stmt->bindValue(':id', $comment_id, SQLITE3_INTEGER);
+    $stmt->bindValue(':votes', $total_votes, SQLITE3_INTEGER);
+    $stmt->execute();
+
+    return [
+        'new_vote_count' => $total_votes,
+        'user_vote' => $user_vote
+    ];
+}
+
+/**
+ * Get user's vote for a comment
+ * 
+ * @param int $comment_id Comment ID
+ * @param string $user_email User's email
+ * @return int Vote type (1, -1) or 0 if no vote
+ */
+function get_user_comment_vote($comment_id, $user_email)
+{
+    $db = get_db_connection();
+
+    // Ensure the table exists
+    ensure_comment_votes_column_exists($db);
+
+    $stmt = $db->prepare('SELECT vote_type FROM comment_votes WHERE comment_id = :comment_id AND user_email = :user_email');
+    $stmt->bindValue(':comment_id', $comment_id, SQLITE3_INTEGER);
+    $stmt->bindValue(':user_email', $user_email, SQLITE3_TEXT);
+    $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+
     return $result ? $result['vote_type'] : 0;
 }
 
@@ -350,21 +499,22 @@ function get_user_vote($post_id, $user_email) {
  * @param array $data Notification data
  * @return bool Success status
  */
-function send_notification_email($type, $data) {
+function send_notification_email($type, $data)
+{
     // Hardcoded notification email
     $admin_email = 'contact@argorobots.com';
-    
+
     // Prepare email content
     $subject = '';
     $message = '';
-    
+
     if ($type === 'new_post') {
         $post_type_text = $data['post_type'] === 'bug' ? 'Bug Report' : 'Feature Request';
         $subject = "[Argo Community] New $post_type_text: " . $data['title'];
-        
+
         $site_url = get_site_url();
         $post_url = "$site_url/community/view_post.php?id=" . $data['id'];
-        
+
         $message = "
         <html>
         <head>
@@ -387,10 +537,10 @@ function send_notification_email($type, $data) {
         </html>";
     } elseif ($type === 'new_comment') {
         $subject = "[Argo Community] New Comment on: " . $data['post_title'];
-        
+
         $site_url = get_site_url();
         $post_url = "$site_url/community/view_post.php?id=" . $data['post_id'];
-        
+
         $message = "
         <html>
         <head>
@@ -413,7 +563,7 @@ function send_notification_email($type, $data) {
     } else {
         return false; // Unknown notification type
     }
-    
+
     // Send the email
     $headers = [
         'MIME-Version: 1.0',
@@ -422,7 +572,7 @@ function send_notification_email($type, $data) {
         'Reply-To: no-reply@argorobots.com',
         'X-Mailer: PHP/' . phpversion()
     ];
-    
+
     return mail($admin_email, $subject, $message, implode("\r\n", $headers));
 }
 
@@ -431,15 +581,16 @@ function send_notification_email($type, $data) {
  * 
  * @return string Site URL
  */
-function get_site_url() {
+function get_site_url()
+{
     $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
     $host = $_SERVER['HTTP_HOST'];
     $script_dir = dirname(dirname($_SERVER['SCRIPT_NAME']));
-    
+
     // Remove trailing slash if needed
     if ($script_dir !== '/' && substr($script_dir, -1) === '/') {
         $script_dir = rtrim($script_dir, '/');
     }
-    
+
     return $protocol . $host . $script_dir;
 }

@@ -4,7 +4,6 @@ require_once '../db_connect.php';
 require_once 'community_functions.php';
 require_once 'users/user_functions.php';
 
-// Set the content type to JSON
 header('Content-Type: application/json');
 
 // Initialize response array
@@ -20,7 +19,7 @@ if (!is_user_logged_in()) {
     exit;
 }
 
-$current_user = get_current_user();
+$current_user = get_current_user_ID();
 
 // Make sure current_user is an array with the expected structure
 if (!is_array($current_user)) {

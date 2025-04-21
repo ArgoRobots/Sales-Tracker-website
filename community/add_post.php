@@ -3,7 +3,6 @@ session_start();
 require_once '../db_connect.php';
 require_once 'community_functions.php';
 
-// Set the content type to JSON
 header('Content-Type: application/json');
 
 // Initialize response array
@@ -20,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = isset($_POST['title']) ? trim($_POST['title']) : '';
     $content = isset($_POST['content']) ? trim($_POST['content']) : '';
     $post_type = isset($_POST['post_type']) ? trim($_POST['post_type']) : '';
-    
+
     // Basic validation
     if (empty($user_name) || empty($user_email) || empty($title) || empty($content) || empty($post_type)) {
         $response['message'] = 'All fields are required';
@@ -35,10 +34,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         // Store user's email in session
         $_SESSION['user_email'] = $user_email;
-        
+
         // Add the post
         $post_id = add_post($user_name, $user_email, $title, $content, $post_type);
-        
+
         if ($post_id) {
             $response = [
                 'success' => true,

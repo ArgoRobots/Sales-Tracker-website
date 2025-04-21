@@ -2,7 +2,6 @@
 session_start();
 require_once '../db_connect.php';
 require_once 'community_functions.php';
-require_once 'users/user_functions.php';
 
 // Set the content type to JSON
 header('Content-Type: application/json');
@@ -14,61 +13,96 @@ $response = [
 ];
 
 // Check if user is logged in
-if (!is_user_logged_in()) {
+if (!isset($_SESSION['user_id'])) {
     $response['message'] = 'You must be logged in to vote';
     echo json_encode($response);
     exit;
 }
 
-$current_user = get_current_user();
+// Get user information from session
+$user_id = $_SESSION['user_id'];
+$email = $_SESSION['email'] ?? '';
 
 // Only accept POST requests
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validate and sanitize inputs
     $post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
+    $comment_id = isset($_POST['comment_id']) ? intval($_POST['comment_id']) : 0;
     $vote_type = isset($_POST['vote_type']) ? intval($_POST['vote_type']) : 0;
 
     // Basic validation
-    if (empty($post_id)) {
+    if (empty($post_id) && empty($comment_id)) {
         $response['message'] = 'Missing required parameters';
     } elseif ($vote_type !== 1 && $vote_type !== -1) {
         $response['message'] = 'Invalid vote type';
     } else {
-        // Verify post exists
-        $post = get_post($post_id);
+        $db = get_db_connection();
 
-        if (!$post) {
-            $response['message'] = 'Post not found';
-        } else {
-            // Process the vote
-            $result = vote_post($post_id, $current_user['email'], $vote_type);
+        if ($post_id > 0) {
+            // Voting on a post
+            // Verify post exists
+            $post = get_post($post_id);
 
-            if ($result !== false) {
-                // Connect vote to user account
-                $db = get_db_connection();
-
-                // Check if user already has a vote for this post
-                $stmt = $db->prepare('SELECT id FROM community_votes WHERE post_id = :post_id AND user_email = :user_email');
-                $stmt->bindValue(':post_id', $post_id, SQLITE3_INTEGER);
-                $stmt->bindValue(':user_email', $current_user['email'], SQLITE3_TEXT);
-                $vote_record = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
-
-                // If vote record exists, update it
-                if ($vote_record) {
-                    $stmt = $db->prepare('UPDATE community_votes SET user_id = :user_id WHERE id = :vote_id');
-                    $stmt->bindValue(':user_id', $current_user['id'], SQLITE3_INTEGER);
-                    $stmt->bindValue(':vote_id', $vote_record['id'], SQLITE3_INTEGER);
-                    $stmt->execute();
-                }
-
-                $response = [
-                    'success' => true,
-                    'message' => 'Vote recorded successfully',
-                    'new_vote_count' => $result['new_vote_count'],
-                    'user_vote' => $result['user_vote']
-                ];
+            if (!$post) {
+                $response['message'] = 'Post not found';
             } else {
-                $response['message'] = 'Error recording vote';
+                // Process the vote
+                $result = vote_post($post_id, $email, $vote_type);
+
+                if ($result !== false) {
+                    // Connect vote to user account
+                    if ($user_id > 0) {
+                        // Update the vote record with user_id
+                        $stmt = $db->prepare('UPDATE community_votes SET user_id = :user_id WHERE post_id = :post_id AND user_email = :user_email');
+                        $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
+                        $stmt->bindValue(':post_id', $post_id, SQLITE3_INTEGER);
+                        $stmt->bindValue(':user_email', $email, SQLITE3_TEXT);
+                        $stmt->execute();
+                    }
+
+                    $response = [
+                        'success' => true,
+                        'message' => 'Vote recorded successfully',
+                        'new_vote_count' => $result['new_vote_count'],
+                        'user_vote' => $result['user_vote']
+                    ];
+                } else {
+                    $response['message'] = 'Error recording vote';
+                }
+            }
+        } elseif ($comment_id > 0) {
+            // Voting on a comment
+            // Verify comment exists
+            $stmt = $db->prepare('SELECT id FROM community_comments WHERE id = :id');
+            $stmt->bindValue(':id', $comment_id, SQLITE3_INTEGER);
+            $comment = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+
+            if (!$comment) {
+                $response['message'] = 'Comment not found';
+            } else {
+                // Process the comment vote
+                $result = vote_comment($comment_id, $email, $vote_type);
+
+                if ($result !== false) {
+                    // Connect vote to user account
+                    if ($user_id > 0) {
+                        // Update the vote record with user_id
+                        $stmt = $db->prepare('UPDATE comment_votes SET user_id = :user_id WHERE comment_id = :comment_id AND user_email = :user_email');
+                        $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
+                        $stmt->bindValue(':comment_id', $comment_id, SQLITE3_INTEGER);
+                        $stmt->bindValue(':user_email', $email, SQLITE3_TEXT);
+                        $stmt->execute();
+                    }
+
+                    $response = [
+                        'success' => true,
+                        'message' => 'Comment vote recorded successfully',
+                        'new_vote_count' => $result['new_vote_count'],
+                        'user_vote' => $result['user_vote']
+                    ];
+                } else {
+                    $response['message'] = 'Error recording comment vote';
+                }
             }
         }
     }

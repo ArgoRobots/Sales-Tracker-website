@@ -2,22 +2,13 @@
 session_start();
 require_once '../db_connect.php';
 require_once 'community_functions.php';
-require_once 'users/user_functions.php';
 
-require_login();
-$current_user = get_current_user();
-
-// Make sure current_user is an array with the expected structure
-if (!is_array($current_user)) {
-    $current_user = array(
-        'id' => $_SESSION['user_id'] ?? 0,
-        'username' => $_SESSION['username'] ?? 'Unknown',
-        'email' => $_SESSION['email'] ?? '',
-        'email_verified' => $_SESSION['email_verified'] ?? 0,
-        'role' => $_SESSION['role'] ?? 'user',
-        'avatar' => ''
-    );
-}
+// Check if user is logged in
+$is_logged_in = isset($_SESSION['user_id']);
+$user_id = $is_logged_in ? $_SESSION['user_id'] : 0;
+$username = $is_logged_in ? ($_SESSION['username'] ?? 'Unknown') : '';
+$email = $is_logged_in ? ($_SESSION['email'] ?? '') : '';
+$role = $is_logged_in ? ($_SESSION['role'] ?? 'user') : '';
 
 // Get post ID from URL parameter
 $post_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
@@ -56,13 +47,12 @@ if (!in_array($post_id, $viewed_posts)) {
 // Get comments for this post
 $comments = get_post_comments($post_id);
 
-// Check if user can edit this post (using isset checks)
-$can_edit_post = (isset($current_user['role']) && $current_user['role'] === 'admin') ||
-    (isset($post['user_id']) && !empty($post['user_id']) &&
-        isset($current_user['id']) && $post['user_id'] == $current_user['id']);
+// Check if user can edit this post
+$can_edit_post = ($role === 'admin') ||
+    (isset($post['user_id']) && !empty($post['user_id']) && $post['user_id'] == $user_id);
 
 // Get user's vote for this post
-$user_vote = isset($current_user['email']) ? get_user_vote($post_id, $current_user['email']) : 0;
+$user_vote = $is_logged_in ? get_user_vote($post_id, $email) : 0;
 
 ?>
 <!DOCTYPE html>
@@ -104,7 +94,7 @@ $user_vote = isset($current_user['email']) ? get_user_vote($post_id, $current_us
         <p>Report bugs and suggest features to help us improve</p>
 
         <!-- Email verification reminder if needed -->
-        <?php if (isset($current_user['email_verified']) && !$current_user['email_verified']): ?>
+        <?php if ($is_logged_in && isset($_SESSION['email_verified']) && !$_SESSION['email_verified']): ?>
             <div class="verification-alert">
                 Please verify your email address. <a href="resend_verification.php?auto=1">Resend verification email</a>
             </div>
@@ -204,9 +194,14 @@ $user_vote = isset($current_user['email']) ? get_user_vote($post_id, $current_us
                     <?php foreach ($comments as $comment): ?>
                         <?php
                         // Check if current user can delete this comment
-                        $can_delete_comment = (isset($current_user['role']) && $current_user['role'] === 'admin') ||
-                            (isset($comment['user_id']) && !empty($comment['user_id']) &&
-                                isset($current_user['id']) && $comment['user_id'] == $current_user['id']);
+                        $can_delete_comment = ($role === 'admin') ||
+                            (isset($comment['user_id']) && !empty($comment['user_id']) && $comment['user_id'] == $user_id);
+
+                        // Get user's vote for this comment
+                        $comment_vote = $is_logged_in ? get_user_comment_vote($comment['id'], $email) : 0;
+
+                        // Ensure votes value exists
+                        $comment_votes = isset($comment['votes']) ? (int)$comment['votes'] : 0;
                         ?>
                         <div class="comment" data-comment-id="<?php echo $comment['id']; ?>">
                             <div class="comment-header">
@@ -216,11 +211,34 @@ $user_vote = isset($current_user['email']) ? get_user_vote($post_id, $current_us
                                     </a>
                                     <span class="comment-date"><?php echo date('M j, Y g:i a', strtotime($comment['created_at'])); ?></span>
                                 </div>
-                                <?php if ($can_delete_comment): ?>
-                                    <div class="comment-actions">
-                                        <button class="delete-comment-btn" data-comment-id="<?php echo $comment['id']; ?>">Delete</button>
+                                <div class="comment-controls">
+                                    <!-- Small voting controls for comment -->
+                                    <div class="comment-votes">
+                                        <button class="comment-vote-btn upvote <?php echo $comment_vote === 1 ? 'voted' : ''; ?>"
+                                            data-comment-id="<?php echo $comment['id']; ?>"
+                                            data-vote="up"
+                                            <?php echo !$is_logged_in ? 'disabled title="Please log in to vote"' : ''; ?>>
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                                <path stroke-width="2" d="M12 19V5M5 12l7-7 7 7" />
+                                            </svg>
+                                        </button>
+                                        <span class="comment-vote-count"><?php echo $comment_votes; ?></span>
+                                        <button class="comment-vote-btn downvote <?php echo $comment_vote === -1 ? 'voted' : ''; ?>"
+                                            data-comment-id="<?php echo $comment['id']; ?>"
+                                            data-vote="down"
+                                            <?php echo !$is_logged_in ? 'disabled title="Please log in to vote"' : ''; ?>>
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                                <path stroke-width="2" d="M12 5v14M5 12l7 7 7-7" />
+                                            </svg>
+                                        </button>
                                     </div>
-                                <?php endif; ?>
+
+                                    <?php if ($can_delete_comment): ?>
+                                        <div class="comment-actions">
+                                            <button class="delete-comment-btn" data-comment-id="<?php echo $comment['id']; ?>">Delete</button>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
                             </div>
                             <div class="comment-content">
                                 <?php echo nl2br(htmlspecialchars($comment['content'])); ?>
@@ -274,6 +292,15 @@ $user_vote = isset($current_user['email']) ? get_user_vote($post_id, $current_us
                     downvoteBtn.style.color = "#dc2626";
                 }
             }
+
+            // Set color for comment vote buttons that are active
+            document.querySelectorAll('.comment-vote-btn.voted').forEach(btn => {
+                if (btn.classList.contains('upvote')) {
+                    btn.style.color = "#2563eb";
+                } else if (btn.classList.contains('downvote')) {
+                    btn.style.color = "#dc2626";
+                }
+            });
         });
     </script>
 </body>

@@ -28,9 +28,6 @@ try {
     require_once '../db_connect.php';
     $db = get_db_connection();
 
-    // Create feedback table if it doesn't exist
-    create_feedback_table($db);
-
     // Get form data
     $report_type = $_POST['report_type'] ?? '';
 
@@ -65,50 +62,6 @@ try {
 // Return JSON response
 echo json_encode($response);
 exit;
-
-/**
- * Create feedback table if it doesn't exist
- * 
- * @param SQLite3 $db Database connection
- */
-function create_feedback_table($db)
-{
-    // Create table for bug reports
-    $db->exec("CREATE TABLE IF NOT EXISTS bug_reports (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT NOT NULL,
-        severity TEXT NOT NULL,
-        version TEXT NOT NULL,
-        operating_system TEXT NOT NULL,
-        browser TEXT,
-        steps_to_reproduce TEXT NOT NULL,
-        actual_result TEXT NOT NULL,
-        expected_result TEXT NOT NULL,
-        email TEXT,
-        screenshot_paths TEXT,
-        ip_address TEXT,
-        user_agent TEXT,
-        status TEXT DEFAULT 'new',
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )");
-
-    // Create table for feature requests
-    $db->exec("CREATE TABLE IF NOT EXISTS feature_requests (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT NOT NULL,
-        category TEXT NOT NULL,
-        priority TEXT,
-        description TEXT NOT NULL,
-        benefit TEXT NOT NULL,
-        examples TEXT,
-        email TEXT,
-        mockup_paths TEXT,
-        ip_address TEXT,
-        user_agent TEXT,
-        status TEXT DEFAULT 'new',
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )");
-}
 
 /**
  * Process bug report submission

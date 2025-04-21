@@ -277,7 +277,7 @@ a:hover {
 .comment-form {
     background-color: white;
     border-radius: 6px;
-    padding: 20px;
+    padding: 20px 20px 10px 20px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
@@ -288,7 +288,7 @@ a:hover {
 }
 
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 5px;
 }
 
 .form-group label {
@@ -311,7 +311,7 @@ a:hover {
 
 .form-group textarea {
     resize: vertical;
-    min-height: 100px;
+    min-height: 50px;
 }
 
 /* Responsive styles */
@@ -349,4 +349,66 @@ a:hover {
 
 .comment-new {
     animation: fadeIn 0.3s ease-out;
+}
+
+/* Comment controls layout */
+.comment-controls {
+    display: flex;
+    align-items: center;
+}
+
+/* Comment voting buttons container */
+.comment-votes {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-right: 15px;
+}
+
+/* Individual vote buttons */
+.comment-vote-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #94a3b8;
+    padding: 2px;
+    transition: all 0.2s ease;
+}
+
+.comment-vote-btn:hover {
+    color: #1e40af;
+}
+
+.comment-vote-btn.voted.upvote {
+    color: #2563eb;
+}
+
+.comment-vote-btn.voted.downvote {
+    color: #dc2626;
+}
+
+/* Vote count display */
+.comment-vote-count {
+    font-size: 14px;
+    font-weight: 600;
+    color: #64748b;
+    min-width: 20px;
+    text-align: center;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 14px;
+    align-items: center;
+}
+
+.comment-vote-btn[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.comment-actions {
+    margin-left: 5px;
 }

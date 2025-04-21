@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return voteBtn && !voteBtn.hasAttribute("disabled");
   }
 
-  // Handle voting
+  // Handle post voting
   const voteButtons = document.querySelectorAll(".vote-btn");
 
   voteButtons.forEach((btn) => {
@@ -21,6 +21,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const postId = this.getAttribute("data-post-id");
       const voteType = this.getAttribute("data-vote") === "up" ? 1 : -1;
+
+      // Disable button temporarily to prevent double-clicks
+      voteButtons.forEach((button) => (button.disabled = true));
 
       fetch("vote.php", {
         method: "POST",
@@ -42,11 +45,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
             upvoteBtn.style.color = "";
             downvoteBtn.style.color = "";
+            upvoteBtn.classList.remove("voted");
+            downvoteBtn.classList.remove("voted");
 
             if (data.user_vote === 1) {
               upvoteBtn.style.color = "#2563eb";
+              upvoteBtn.classList.add("voted");
             } else if (data.user_vote === -1) {
               downvoteBtn.style.color = "#dc2626";
+              downvoteBtn.classList.add("voted");
             }
           } else {
             if (data.message === "You must be logged in to vote") {
@@ -59,6 +66,88 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch((error) => {
           console.error("Error:", error);
           alert("An error occurred while voting");
+        })
+        .finally(() => {
+          // Re-enable buttons after operation is complete
+          voteButtons.forEach((button) => (button.disabled = false));
+        });
+    });
+  });
+
+  // Handle comment voting
+  const commentVoteButtons = document.querySelectorAll(".comment-vote-btn");
+
+  commentVoteButtons.forEach((btn) => {
+    btn.addEventListener("click", function (e) {
+      // If user is not logged in, redirect to login page
+      if (!isUserLoggedIn()) {
+        e.preventDefault();
+        e.stopPropagation();
+        window.location.href = "users/login.php";
+        return;
+      }
+
+      const commentId = this.getAttribute("data-comment-id");
+      const voteType = this.getAttribute("data-vote") === "up" ? 1 : -1;
+
+      // Find the parent comment element
+      const commentElement = this.closest(".comment");
+
+      // Disable all vote buttons for this comment to prevent double-clicks
+      const commentBtns = commentElement.querySelectorAll(".comment-vote-btn");
+      commentBtns.forEach((button) => (button.disabled = true));
+
+      fetch("vote.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: `comment_id=${commentId}&vote_type=${voteType}`,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            // Update the vote count
+            const voteCountElement = commentElement.querySelector(
+              ".comment-vote-count"
+            );
+            voteCountElement.textContent = data.new_vote_count;
+
+            // Change button colors based on user's vote
+            const upvoteBtn = commentElement.querySelector(
+              ".comment-vote-btn.upvote"
+            );
+            const downvoteBtn = commentElement.querySelector(
+              ".comment-vote-btn.downvote"
+            );
+
+            upvoteBtn.style.color = "";
+            downvoteBtn.style.color = "";
+            upvoteBtn.classList.remove("voted");
+            downvoteBtn.classList.remove("voted");
+
+            if (data.user_vote === 1) {
+              upvoteBtn.style.color = "#2563eb";
+              upvoteBtn.classList.add("voted");
+            } else if (data.user_vote === -1) {
+              downvoteBtn.style.color = "#dc2626";
+              downvoteBtn.classList.add("voted");
+            }
+          } else {
+            if (data.message === "You must be logged in to vote") {
+              window.location.href = "users/login.php";
+            } else {
+              alert("Error voting: " + data.message);
+            }
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          alert("An error occurred while voting");
+        })
+        .finally(() => {
+          // Re-enable buttons after operation is complete
+          commentBtns.forEach((button) => (button.disabled = false));
         });
     });
   });

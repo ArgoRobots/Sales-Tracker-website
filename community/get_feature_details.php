@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This script retrieves the details of a specific feature request for display in a modal.
  */
@@ -31,13 +32,13 @@ try {
     // Load database connection
     require_once '../db_connect.php';
     $db = get_db_connection();
-    
+
     // Get feature details
     $stmt = $db->prepare("SELECT * FROM feature_requests WHERE id = :id");
     $stmt->bindValue(':id', $feature_id, SQLITE3_INTEGER);
     $result = $stmt->execute();
     $feature = $result->fetchArray(SQLITE3_ASSOC);
-    
+
     if (!$feature) {
         echo json_encode([
             'success' => false,
@@ -45,17 +46,12 @@ try {
         ]);
         exit;
     }
-    
-    // Format status for display
+
     $status_display = ucwords(str_replace('_', ' ', $feature['status']));
-    
-    // Format category for display
     $category_display = ucwords(str_replace('_', ' ', $feature['category']));
-    
-    // Get priority class
     $priority_class = !empty($feature['priority']) ? strtolower($feature['priority']) : 'none';
     $priority_display = !empty($feature['priority']) ? ucfirst($feature['priority']) : 'Not set';
-    
+
     // Format mockups
     $mockups = [];
     if (!empty($feature['mockup_paths'])) {
@@ -64,7 +60,7 @@ try {
             $mockups[] = "../uploads/feature_mockups/" . $path;
         }
     }
-    
+
     // Build HTML for feature details
     $html = <<<HTML
     <div class="detail-section">
@@ -141,11 +137,11 @@ HTML;
     // Mockups
     if (!empty($mockups)) {
         $html .= "<h3>Visual Mockups</h3><div class=\"screenshots-container\">";
-        
+
         foreach ($mockups as $mockup) {
             $html .= "<img src=\"{$mockup}\" alt=\"Feature Mockup\" class=\"screenshot\" onclick=\"openImageFullscreen(this.src)\">";
         }
-        
+
         $html .= "</div>";
     }
 
@@ -201,11 +197,9 @@ HTML;
         'success' => true,
         'html' => $html
     ]);
-    
 } catch (Exception $e) {
     echo json_encode([
         'success' => false,
         'message' => 'Error: ' . $e->getMessage()
     ]);
 }
-?>

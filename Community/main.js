@@ -83,7 +83,6 @@ document.addEventListener("DOMContentLoaded", function () {
       previewElement.innerHTML = "";
     }
 
-    // Maximum number of files (3)
     const maxFiles = 3;
     let currentFiles = previewElement.querySelectorAll(".file-item").length;
 
@@ -201,8 +200,6 @@ document.addEventListener("DOMContentLoaded", function () {
     submitButton.disabled = true;
     submitButton.textContent = "Submitting...";
 
-    // In a real application, you would send the data to a server
-    // For this example, we'll simulate a server request
     fetch("process_feedback.php", {
       method: "POST",
       body: formData,

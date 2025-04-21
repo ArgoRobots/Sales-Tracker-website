@@ -648,3 +648,38 @@ function connect_content_to_user($user_id, $email)
 
     return true;
 }
+
+/**
+ * Get current logged in user data
+ * 
+ * @return array|null User data or null if not logged in
+ */
+function get_current_user_ID()
+{
+    if (!isset($_SESSION['user_id'])) {
+        return null;
+    }
+
+    $user_id = $_SESSION['user_id'];
+    $db = get_db_connection();
+
+    $stmt = $db->prepare('SELECT id, username, email, bio, avatar, role, email_verified, created_at, last_login 
+                         FROM community_users WHERE id = :id');
+    $stmt->bindValue(':id', $user_id, SQLITE3_INTEGER);
+    $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+
+    if (!$result) {
+        // User ID in session but not found in database
+        // Return basic info from session
+        return [
+            'id' => $user_id,
+            'username' => $_SESSION['username'] ?? 'Unknown',
+            'email' => $_SESSION['email'] ?? '',
+            'email_verified' => $_SESSION['email_verified'] ?? 0,
+            'role' => $_SESSION['role'] ?? 'user',
+            'avatar' => ''
+        ];
+    }
+
+    return $result;
+}

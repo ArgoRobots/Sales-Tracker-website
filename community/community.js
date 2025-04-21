@@ -16,6 +16,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const deleteSelectedBtn = document.getElementById("delete-selected");
   const selectedCountSpan = document.querySelector(".selected-count");
 
+  setupVoting();
+  setupDeletePost();
+  setupUpdatePostStatus();
+
   // Check if user is logged in
   function isUserLoggedIn() {
     // We'll check this by looking for disabled vote buttons
@@ -92,54 +96,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     updateSelectedCount();
     updateDeleteButtonState();
-  }
-
-  // Event listener for Ctrl+A (select all posts)
-  document.addEventListener("keydown", function (e) {
-    if (!isUserLoggedIn()) {
-      return; // Non-logged users can't select posts
-    }
-
-    // Check if Ctrl+A is pressed
-    if (e.ctrlKey && e.key === "a" && document.activeElement !== searchInput) {
-      e.preventDefault(); // Prevent default select all behavior
-
-      // Enable selection mode if not already enabled
-      if (bulkActionsDiv && bulkActionsDiv.style.display === "none") {
-        toggleSelectionMode(true);
-      }
-
-      // Check all visible checkboxes
-      if (selectAllCheckbox) {
-        selectAllCheckbox.checked = true;
-      }
-      const visiblePosts = allPosts.filter(
-        (post) => post.style.display !== "none"
-      );
-      visiblePosts.forEach((post) => {
-        const checkbox = post.querySelector(".post-checkbox");
-        if (checkbox) checkbox.checked = true;
-      });
-
-      updateSelectedCount();
-      updateDeleteButtonState();
-    }
-  });
-
-  // Event listener for "Select All" checkbox
-  if (selectAllCheckbox) {
-    selectAllCheckbox.addEventListener("change", function () {
-      const visiblePosts = allPosts.filter(
-        (post) => post.style.display !== "none"
-      );
-      visiblePosts.forEach((post) => {
-        const checkbox = post.querySelector(".post-checkbox");
-        if (checkbox) checkbox.checked = this.checked;
-      });
-
-      updateSelectedCount();
-      updateDeleteButtonState();
-    });
   }
 
   // Update selected count
@@ -490,6 +446,189 @@ document.addEventListener("DOMContentLoaded", function () {
         e.preventDefault();
         e.stopPropagation();
         window.location.href = "users/login.php";
+      });
+    });
+  }
+
+  function setupVoting() {
+    const voteButtons = document.querySelectorAll(".vote-btn");
+
+    voteButtons.forEach((btn) => {
+      btn.addEventListener("click", function (e) {
+        // If user is not logged in, redirect is already handled via index.php script
+        // This is just for users who are logged in
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (btn.hasAttribute("disabled")) {
+          return; // Skip if disabled
+        }
+
+        const postId = this.getAttribute("data-post-id");
+        const voteType = this.getAttribute("data-vote") === "up" ? 1 : -1;
+
+        // Find the parent post card
+        const postCard = this.closest(".post-card");
+
+        // Disable all vote buttons to prevent double-clicks
+        const postVoteButtons = postCard.querySelectorAll(".vote-btn");
+        postVoteButtons.forEach((button) => (button.disabled = true));
+
+        fetch("vote.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: `post_id=${postId}&vote_type=${voteType}`,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              // Update the vote count
+              const voteCountElement = postCard.querySelector(".vote-count");
+              voteCountElement.textContent = data.new_vote_count;
+
+              // Change button colors based on user's vote
+              const upvoteBtn = postCard.querySelector(".upvote");
+              const downvoteBtn = postCard.querySelector(".downvote");
+
+              upvoteBtn.style.color = "";
+              downvoteBtn.style.color = "";
+
+              if (data.user_vote === 1) {
+                upvoteBtn.style.color = "#2563eb";
+              } else if (data.user_vote === -1) {
+                downvoteBtn.style.color = "#dc2626";
+              }
+            } else {
+              if (data.message === "You must be logged in to vote") {
+                window.location.href = "users/login.php";
+              } else {
+                alert("Error voting: " + data.message);
+              }
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert("An error occurred while voting");
+          })
+          .finally(() => {
+            // Re-enable buttons after operation is complete
+            postVoteButtons.forEach((button) => (button.disabled = false));
+          });
+      });
+    });
+  }
+
+  function setupDeletePost() {
+    const deletePostButtons = document.querySelectorAll(".delete-post-btn");
+
+    deletePostButtons.forEach((btn) => {
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (
+          confirm(
+            "Are you sure you want to delete this post? This cannot be undone."
+          )
+        ) {
+          const postId = this.getAttribute("data-post-id");
+          const postCard = this.closest(".post-card");
+
+          fetch("delete_post.php", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: `post_id=${postId}`,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                // Remove the post from the DOM
+                postCard.remove();
+
+                // Update allPosts array to match DOM
+                allPosts = Array.from(document.querySelectorAll(".post-card"));
+
+                // Check if we need to load more posts
+                if (allPosts.length === 0) {
+                  const postsContainer =
+                    document.getElementById("posts-container");
+                  postsContainer.innerHTML = `
+                  <div class="empty-state">
+                    <h3>No posts yet!</h3>
+                    <p>Be the first to create a post in our community.</p>
+                  </div>
+                `;
+                } else {
+                  checkAndLoadMorePosts();
+                }
+              } else {
+                alert("Error deleting post: " + data.message);
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              alert("An error occurred while deleting the post");
+            });
+        }
+      });
+    });
+  }
+
+  function setupUpdatePostStatus() {
+    const statusDropdowns = document.querySelectorAll(".status-update");
+
+    statusDropdowns.forEach((dropdown) => {
+      dropdown.addEventListener("change", function () {
+        const postId = this.getAttribute("data-post-id");
+        const newStatus = this.value;
+        const postCard = this.closest(".post-card");
+
+        fetch("update_status.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: `post_id=${postId}&status=${newStatus}`,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              // Update the status label
+              const statusLabel = postCard.querySelector(".post-status");
+
+              // Remove old status class and add new one
+              statusLabel.className = "post-status " + newStatus;
+
+              // Update text content
+              let statusText = "";
+              switch (newStatus) {
+                case "open":
+                  statusText = "Open";
+                  break;
+                case "in_progress":
+                  statusText = "In Progress";
+                  break;
+                case "completed":
+                  statusText = "Completed";
+                  break;
+                case "declined":
+                  statusText = "Declined";
+                  break;
+              }
+
+              statusLabel.textContent = statusText;
+            } else {
+              alert("Error updating status: " + data.message);
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert("An error occurred while updating the status");
+          });
       });
     });
   }

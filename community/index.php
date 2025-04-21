@@ -6,7 +6,7 @@ require_once 'users/user_functions.php';
 
 $posts = get_all_posts();
 $is_logged_in = is_user_logged_in();
-$current_user = $is_logged_in ? get_current_user() : null;
+$current_user = $is_logged_in ? get_current_user_ID() : null;
 
 // Make sure current_user is an array and has the expected structure if logged in
 if ($is_logged_in && !is_array($current_user)) {
@@ -28,7 +28,7 @@ if ($is_logged_in && !is_array($current_user)) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
-    <title>Argo Sales Tracker - Community</title>
+    <title>Argo Sales Tracker Community</title>
 
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../resources/scripts/main.js"></script>
@@ -129,7 +129,7 @@ if ($is_logged_in && !is_array($current_user)) {
             <?php else: ?>
                 <?php foreach ($posts as $post): ?>
                     <div class="post-card" data-post-id="<?php echo $post['id']; ?>" data-post-type="<?php echo $post['post_type']; ?>">
-                        <!-- Moved post-votes to the left -->
+                        <!-- Post votes -->
                         <div class="post-votes">
                             <button class="vote-btn upvote" data-post-id="<?php echo $post['id']; ?>" data-vote="up" <?php echo !$is_logged_in ? 'disabled title="Please log in to vote"' : ''; ?>>
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">

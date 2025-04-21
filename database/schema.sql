@@ -96,6 +96,42 @@ CREATE INDEX IF NOT EXISTS idx_posts_post_type ON community_posts(post_type);
 CREATE INDEX IF NOT EXISTS idx_posts_status ON community_posts(status);
 CREATE INDEX IF NOT EXISTS idx_posts_created_at ON community_posts(created_at);
 
+-- Table for bug reports
+CREATE TABLE IF NOT EXISTS bug_reports (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    severity TEXT NOT NULL,
+    version TEXT NOT NULL,
+    operating_system TEXT NOT NULL,
+    browser TEXT,
+    steps_to_reproduce TEXT NOT NULL,
+    actual_result TEXT NOT NULL,
+    expected_result TEXT NOT NULL,
+    email TEXT,
+    screenshot_paths TEXT,
+    ip_address TEXT,
+    user_agent TEXT,
+    status TEXT DEFAULT 'new',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Table for feature requests
+CREATE TABLE IF NOT EXISTS feature_requests (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    category TEXT NOT NULL,
+    priority TEXT,
+    description TEXT NOT NULL,
+    benefit TEXT NOT NULL,
+    examples TEXT,
+    email TEXT,
+    mockup_paths TEXT,
+    ip_address TEXT,
+    user_agent TEXT,
+    status TEXT DEFAULT 'new',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Create comments table
 CREATE TABLE IF NOT EXISTS community_comments (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -153,10 +189,3 @@ LEFT JOIN
     community_comments c ON u.id = c.user_id
 GROUP BY 
     u.id;
-
--- Insert default admin user
-INSERT OR IGNORE INTO community_users 
-    (username, email, password_hash, role, email_verified) 
-VALUES 
-    ('admin', 'admin@argorobots.com', '$2y$10$8QLEr4QVu1KmOVkBHZq97.bN9Nt5sUwdvxdxhUl5wMdcpIVih5WH2', 'admin', 1);
--- Note: The password hash above is for 'admin123' - change this in production!

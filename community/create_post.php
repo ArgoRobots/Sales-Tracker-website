@@ -5,7 +5,7 @@ require_once 'community_functions.php';
 require_once 'users/user_functions.php';
 
 require_login('', true);
-$current_user = get_current_user();
+$current_user = get_current_user_ID();
 
 // Make sure current_user is an array and has the expected structure
 if (!is_array($current_user)) {
