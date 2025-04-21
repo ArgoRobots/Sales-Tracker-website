@@ -3,6 +3,15 @@ header .header-inner .menu-container .menu .community:after {
     transform: translateX(-50%) scaleX(1);
 }
 
+a {
+    color: var(--button);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
 /* Community container */
 .community-container {
     width: 80%;
@@ -135,7 +144,7 @@ header .header-inner .menu-container .menu .community:after {
 
 .post-status.completed {
     background-color: #dbeafe;
-    color: #2563eb;
+    color: var(--button);
 }
 
 .post-status.declined {

@@ -138,8 +138,6 @@
           const avatar = accountBtn.querySelector('.account-avatar');
           if (data.avatar) {
             avatar.innerHTML = `<img src="${data.avatar}" alt="Profile">`;
-          } else {
-            avatar.innerHTML = data.display_name.charAt(0);
           }
 
           // Update mobile menu link

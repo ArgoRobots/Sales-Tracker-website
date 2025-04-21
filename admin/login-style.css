@@ -52,7 +52,7 @@ input[type="number"] {
     display: block;
     width: 100%;
     padding: 12px;
-    background: #2563eb;
+    background: var(--button);
     color: white;
     border: none;
     border-radius: 4px;
@@ -85,7 +85,7 @@ input[type="number"] {
 }
 
 .back-to-login a {
-    color: #2563eb;
+    color: var(--button);
     text-decoration: none;
 }
 

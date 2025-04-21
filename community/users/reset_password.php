@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = isset($_POST['password']) ? $_POST['password'] : '';
     $password_confirm = isset($_POST['password_confirm']) ? $_POST['password_confirm'] : '';
     $token = isset($_POST['token']) ? trim($_POST['token']) : '';
-    
+
     // Basic validation
     if (empty($password) || empty($password_confirm) || empty($token)) {
         $error = 'All fields are required';
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         // Attempt to reset password
         $result = reset_password($token, $password);
-        
+
         if ($result) {
             $success = 'Your password has been reset successfully.';
         } else {
@@ -56,25 +56,27 @@ $valid_token = ($result !== false);
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="../../images/argo-logo/A-logo.ico">
     <title>Reset Password - Argo Community</title>
 
     <script src="../../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../../resources/scripts/main.js"></script>
-    
+
     <link rel="stylesheet" href="../../resources/styles/button.css">
     <link rel="stylesheet" href="../../resources/header/style.css">
     <link rel="stylesheet" href="../../resources/footer/style.css">
     <link rel="stylesheet" href="auth-style.css">
 </head>
+
 <body>
     <header>
         <script>
-            $(function () {
-                $("#includeHeader").load("../../resources/header/index.html", function () {
+            $(function() {
+                $("#includeHeader").load("../../resources/header/index.html", function() {
                     adjustLinksAndImages("#includeHeader");
                 });
             });
@@ -86,13 +88,13 @@ $valid_token = ($result !== false);
         <div class="auth-card">
             <h1>Reset Password</h1>
             <p class="auth-subtitle">Enter your new password</p>
-            
+
             <?php if ($error): ?>
                 <div class="error-message">
                     <?php echo htmlspecialchars($error); ?>
                 </div>
             <?php endif; ?>
-            
+
             <?php if ($success): ?>
                 <div class="success-message">
                     <?php echo htmlspecialchars($success); ?>
@@ -101,18 +103,18 @@ $valid_token = ($result !== false);
             <?php elseif ($valid_token): ?>
                 <form method="post" class="auth-form">
                     <input type="hidden" name="token" value="<?php echo htmlspecialchars($token); ?>">
-                    
+
                     <div class="form-group">
                         <label for="password">New Password</label>
                         <input type="password" id="password" name="password" required>
                         <small>At least 8 characters</small>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="password_confirm">Confirm New Password</label>
                         <input type="password" id="password_confirm" name="password_confirm" required>
                     </div>
-                    
+
                     <div class="form-actions">
                         <button type="submit" class="btn btn-blue btn-block">Reset Password</button>
                     </div>
@@ -130,8 +132,8 @@ $valid_token = ($result !== false);
 
     <footer class="footer">
         <script>
-            $(function () {
-                $("#includeFooter").load("../../resources/footer/index.html", function () {
+            $(function() {
+                $("#includeFooter").load("../../resources/footer/index.html", function() {
                     adjustLinksAndImages("#includeFooter");
                 });
             });
@@ -139,4 +141,5 @@ $valid_token = ($result !== false);
         <div id="includeFooter"></div>
     </footer>
 </body>
+
 </html>

@@ -47,7 +47,6 @@ if ($is_own_profile && $_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Handle profile info update
     $update_data = [
-        'display_name' => isset($_POST['display_name']) ? trim($_POST['display_name']) : $user['display_name'],
         'bio' => isset($_POST['bio']) ? trim($_POST['bio']) : ($user['bio'] ?? '')
     ];
 
@@ -55,9 +54,6 @@ if ($is_own_profile && $_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($update_result) {
         $success_message = 'Profile updated successfully.';
-
-        // Update session data
-        $_SESSION['display_name'] = $update_data['display_name'];
 
         // Refresh user data
         $user = get_user($user['id']);
@@ -73,7 +69,7 @@ if ($is_own_profile && $_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="image/x-icon" href="../../images/argo-logo/A-logo.ico">
-    <title><?php echo htmlspecialchars($user['display_name']); ?>'s Profile - Argo Community</title>
+    <title><?php echo htmlspecialchars($user['username']); ?>'s Profile - Argo Community</title>
 
     <script src="../../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../../resources/scripts/main.js"></script>
@@ -107,7 +103,7 @@ if ($is_own_profile && $_SERVER['REQUEST_METHOD'] === 'POST') {
             </a>
 
             <h1>
-                <?php echo htmlspecialchars($user['display_name']); ?>
+                <?php echo htmlspecialchars($user['username']); ?>
                 <?php if ($user['role'] === 'admin'): ?>
                     <span class="admin-badge">Admin</span>
                 <?php endif; ?>
@@ -131,16 +127,16 @@ if ($is_own_profile && $_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="profile-card">
                     <div class="profile-avatar">
                         <?php if (!empty($user['avatar'])): ?>
-                            <img src="<?php echo htmlspecialchars($user['avatar']); ?>" alt="<?php echo htmlspecialchars($user['display_name']); ?>'s avatar">
+                            <img src="<?php echo htmlspecialchars($user['avatar']); ?>" alt="<?php echo htmlspecialchars($user['username']); ?>'s avatar">
                         <?php else: ?>
                             <div class="profile-avatar-placeholder">
-                                <?php echo strtoupper(substr($user['display_name'], 0, 1)); ?>
+                                <?php echo strtoupper(substr($user['username'], 0, 1)); ?>
                             </div>
                         <?php endif; ?>
                     </div>
 
                     <div class="profile-info">
-                        <h2><?php echo htmlspecialchars($user['display_name']); ?></h2>
+                        <h2><?php echo htmlspecialchars($user['username']); ?></h2>
                         <div class="profile-meta">
                             <p class="profile-username">@<?php echo htmlspecialchars($user['username']); ?></p>
                             <p class="profile-joined">
@@ -155,10 +151,6 @@ if ($is_own_profile && $_SERVER['REQUEST_METHOD'] === 'POST') {
                         <?php endif; ?>
 
                         <div class="profile-stats">
-                            <div class="stat-item">
-                                <span class="stat-value"><?php echo $profile['']; ?></span>
-                                <span class="stat-label">Reputation</span>
-                            </div>
                             <div class="stat-item">
                                 <span class="stat-value"><?php echo $profile['post_count']; ?></span>
                                 <span class="stat-label">Posts</span>
@@ -188,14 +180,14 @@ if ($is_own_profile && $_SERVER['REQUEST_METHOD'] === 'POST') {
                         <h2>Edit Profile</h2>
                         <form method="post" enctype="multipart/form-data">
                             <div class="form-group">
-                                <label for="display_name">Display Name</label>
-                                <input type="text" id="display_name" name="display_name" value="<?php echo htmlspecialchars($user['display_name']); ?>" required>
-                            </div>
-
-                            <div class="form-group">
                                 <label for="avatar">Profile Picture</label>
                                 <input type="file" id="avatar" name="avatar" accept="image/jpeg,image/png,image/gif">
                                 <small>Maximum file size: 2MB. Supported formats: JPG, PNG, GIF</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="bio">Bio</label>
+                                <textarea id="bio" name="bio" rows="4"><?php echo isset($user['bio']) ? htmlspecialchars($user['bio']) : ''; ?></textarea>
                             </div>
 
                             <div class="form-actions">
@@ -233,12 +225,12 @@ if ($is_own_profile && $_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <div class="activity-header">
                                             <?php if ($item['activity_type'] === 'post'): ?>
                                                 <span class="activity-type">Created a post</span>
-                                                <a href="view_post.php?id=<?php echo $item['id']; ?>" class="activity-title">
+                                                <a href="../view_post.php?id=<?php echo $item['id']; ?>" class="activity-title">
                                                     <?php echo htmlspecialchars($item['title']); ?>
                                                 </a>
                                             <?php else: ?>
                                                 <span class="activity-type">Commented on</span>
-                                                <a href="view_post.php?id=<?php echo $item['post_id']; ?>" class="activity-title">
+                                                <a href="../view_post.php?id=<?php echo $item['post_id']; ?>" class="activity-title">
                                                     <?php echo htmlspecialchars($item['post_title']); ?>
                                                 </a>
                                             <?php endif; ?>

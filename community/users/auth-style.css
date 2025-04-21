@@ -100,24 +100,19 @@ header .header-inner .menu-container .menu .community:after {
     padding: 12px 0 !important;
 }
 
-/* Additional link styling */
+/* Link styling */
 .auth-links {
-    margin-top: 25px;
     text-align: center;
-    color: #6b7280;
+    margin-top: 10px;
 }
 
-.auth-links a {
-    color: #2563eb;
+a {
+    color: var(--button);
     text-decoration: none;
 }
 
-.auth-links a:hover {
+a:hover {
     text-decoration: underline;
-}
-
-.auth-links p {
-    margin: 8px 0;
 }
 
 /* Message boxes */

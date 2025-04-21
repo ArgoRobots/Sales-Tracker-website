@@ -61,12 +61,12 @@ body {
 
 .nav-links a:hover {
     background: #f3f4f6;
-    color: #2563eb;
+    color: var(--button);
 }
 
 .nav-links a.active {
     background: #dbeafe;
-    color: #2563eb;
+    color: var(--button);
     font-weight: 500;
 }
 
@@ -83,13 +83,13 @@ body {
 
 .nav-links li:hover {
     background: #f3f4f6;
-    color: #2563eb;
+    color: var(--button);
 }
 
 /* Style for active (current) nav item */
 .nav-links li.active {
     background: #dbeafe;
-    color: #2563eb;
+    color: var(--button);
     font-weight: 500;
 }
 
@@ -100,7 +100,7 @@ body {
     top: 60px;
     left: 20px;
     z-index: 99;
-    background: #2563eb;
+    background: var(--button);
     color: white;
     border: none;
     border-radius: 8px;
@@ -336,7 +336,7 @@ body {
 /* Info boxes */
 .info-box {
     background: #dbeafe;
-    border-left: 4px solid #2563eb;
+    border-left: 4px solid var(--button);
     padding: 1rem;
     margin: 1rem 0;
     border-radius: 0.375rem;
@@ -373,7 +373,7 @@ body {
     position: absolute;
     left: 0;
     top: 0;
-    background: #2563eb;
+    background: var(--button);
     color: white;
     width: 1.5rem;
     height: 1.5rem;

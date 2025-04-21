@@ -31,7 +31,7 @@
 }
 
 .btn-blue {
-    background: #2563eb;
+    background: var(--button);
     color: white;
 }
 

@@ -56,7 +56,6 @@ CREATE TABLE IF NOT EXISTS community_users (
     username TEXT NOT NULL UNIQUE,
     email TEXT NOT NULL UNIQUE,
     password_hash TEXT NOT NULL,
-    display_name TEXT,
     bio TEXT,
     avatar TEXT,
     role TEXT DEFAULT 'user',
@@ -139,7 +138,6 @@ CREATE VIEW IF NOT EXISTS community_user_profiles AS
 SELECT 
     u.id,
     u.username,
-    u.display_name,
     u.email,
     u.bio,
     u.avatar,
@@ -158,7 +156,7 @@ GROUP BY
 
 -- Insert default admin user
 INSERT OR IGNORE INTO community_users 
-    (username, email, password_hash, display_name, role, email_verified) 
+    (username, email, password_hash, role, email_verified) 
 VALUES 
-    ('admin', 'admin@argorobots.com', '$2y$10$8QLEr4QVu1KmOVkBHZq97.bN9Nt5sUwdvxdxhUl5wMdcpIVih5WH2', 'Administrator', 'admin', 1);
+    ('admin', 'admin@argorobots.com', '$2y$10$8QLEr4QVu1KmOVkBHZq97.bN9Nt5sUwdvxdxhUl5wMdcpIVih5WH2', 'admin', 1);
 -- Note: The password hash above is for 'admin123' - change this in production!

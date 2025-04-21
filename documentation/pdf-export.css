@@ -4,7 +4,7 @@
     top: 60px;
     right: 20px;
     z-index: 99;
-    background: #2563eb;
+    background: var(--button);
     color: white;
     border: none;
     border-radius: 8px;

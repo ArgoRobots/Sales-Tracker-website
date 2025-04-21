@@ -8,14 +8,14 @@ if (session_status() == PHP_SESSION_NONE) {
 header('Content-Type: application/json');
 
 // Function to check if user is logged in
-function is_user_logged_in() {
+function is_user_logged_in()
+{
     return isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
 }
 
 // Initialize response array
 $response = [
     'logged_in' => false,
-    'display_name' => '',
     'username' => '',
     'avatar' => '',
     'is_admin' => false
@@ -25,10 +25,9 @@ $response = [
 if (is_user_logged_in()) {
     // User is logged in, populate response with session data
     $response['logged_in'] = true;
-    $response['display_name'] = $_SESSION['display_name'] ?? 'User';
     $response['username'] = $_SESSION['username'] ?? '';
     $response['is_admin'] = isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
-    
+
     // Check if we have user avatar in session
     if (isset($_SESSION['avatar']) && !empty($_SESSION['avatar'])) {
         $response['avatar'] = $_SESSION['avatar'];

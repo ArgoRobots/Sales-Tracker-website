@@ -1,0 +1,78 @@
+/* Password validation styles */
+.password-field-wrapper {
+    position: relative;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #666;
+    z-index: 10;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toggle-password:hover {
+    color: #2563eb;
+}
+
+.toggle-password.active i.fa-eye {
+    display: none;
+}
+
+.toggle-password.active i.fa-eye-slash {
+    display: inline;
+}
+
+.toggle-password i.fa-eye-slash {
+    display: none;
+}
+
+.password-policies {
+    margin-top: 8px;
+    padding: 0;
+    height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: all 0.3s ease;
+    background: #f9fafb;
+    border-radius: 6px;
+}
+
+.password-policies.active {
+    opacity: 1;
+    padding: 15px;
+    height: auto;
+    border: 1px solid #e5e7eb;
+}
+
+.password-policies>div {
+    margin: 8px 0;
+    color: #9ca3af;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s ease;
+}
+
+.password-policies>div::before {
+    content: "✕";
+    color: #ef4444;
+    margin-right: 8px;
+    font-weight: bold;
+}
+
+.password-policies>div.active {
+    color: #10b981;
+}
+
+.password-policies>div.active::before {
+    content: "✓";
+    color: #10b981;
+}

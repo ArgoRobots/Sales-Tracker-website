@@ -105,7 +105,7 @@ h1 {
 
 #stripe-submit-btn,
 #square-submit-btn {
-    background-color: #2563eb;
+    background-color: var(--button);
     color: white;
     font-weight: 600;
 }
@@ -148,7 +148,7 @@ h1 {
     width: 50px;
     height: 50px;
     border: 5px solid #e5e7eb;
-    border-top-color: #2563eb;
+    border-top-color: var(--button);
     border-radius: 50%;
     animation: spin 1s linear infinite;
     margin-bottom: 30px;

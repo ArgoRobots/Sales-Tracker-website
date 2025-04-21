@@ -89,7 +89,7 @@ body {
 }
 
 .check-icon {
-    color: #2563eb;
+    color: var(--button);
     width: 24px;
     height: 24px;
     flex-shrink: 0;
@@ -173,7 +173,7 @@ body {
 .values .value-icon svg {
     width: 32px;
     height: 32px;
-    color: #2563eb;
+    color: var(--button);
 }
 
 .values .value-card h3 {

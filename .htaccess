@@ -29,7 +29,7 @@ AddDefaultCharset UTF-8
     Header set X-Frame-Options "SAMEORIGIN"
     Header set Referrer-Policy "strict-origin-when-cross-origin"
     
-    # Updated Content Security Policy with expanded permissions for payment processors
+    # Content Security Policy
     Header set Content-Security-Policy "default-src 'self'; \
         script-src 'self' 'unsafe-inline' 'unsafe-eval' \
             https://cdnjs.cloudflare.com \
@@ -46,12 +46,14 @@ AddDefaultCharset UTF-8
             https://*.squareup.com; \
         style-src 'self' 'unsafe-inline' \
             https://fonts.googleapis.com \
+            https://cdnjs.cloudflare.com \
             https://*.paypalobjects.com \
             https://*.stripe.com \
             https://*.squarecdn.com \
             https://*.squareup.com; \
         font-src 'self' \
             https://fonts.gstatic.com \
+            https://cdnjs.cloudflare.com \
             https://*.paypalobjects.com \
             https://*.stripe.com \
             https://*.squarecdn.com; \

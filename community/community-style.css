@@ -124,12 +124,12 @@ header .header-inner .menu-container .menu .community:after {
 
 .search-box input:focus {
     outline: none;
-    border-color: #2563eb;
+    border-color: var(--button);
 }
 
 /* Search icon button */
 .search-icon-button {
-    background-color: #2563eb;
+    background-color: var(--button);
     color: white;
     border: none;
     width: 40px;
@@ -230,7 +230,7 @@ header .header-inner .menu-container .menu .community:after {
 }
 
 .post-link:hover .post-title {
-    color: #2563eb;
+    color: var(--button);
 }
 
 .post-header {
@@ -285,7 +285,7 @@ header .header-inner .menu-container .menu .community:after {
 
 .post-status.completed {
     background-color: #dbeafe;
-    color: #2563eb;
+    color: var(--button);
 }
 
 .post-status.declined {
@@ -372,7 +372,7 @@ header .header-inner .menu-container .menu .community:after {
 }
 
 .highlighted-post {
-    border: 2px solid #2563eb;
+    border: 2px solid var(--button);
     animation: highlight-pulse 2s infinite;
 }
 
@@ -421,7 +421,7 @@ header .header-inner .menu-container .menu .community:after {
 
 .filter-select:focus {
     outline: none;
-    border-color: #2563eb;
+    border-color: var(--button);
     box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.2);
 }
 
@@ -489,7 +489,7 @@ header .header-inner .menu-container .menu .community:after {
     height: 30px;
     border: 3px solid rgba(37, 99, 235, 0.3);
     border-radius: 50%;
-    border-top-color: #2563eb;
+    border-top-color: var(--button);
     animation: spin 1s linear infinite;
     margin-bottom: 10px;
 }

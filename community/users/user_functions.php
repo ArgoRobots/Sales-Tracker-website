@@ -6,10 +6,9 @@
  * @param string $username Username
  * @param string $email Email address
  * @param string $password Plain text password
- * @param string $display_name Display name (optional)
  * @return array|bool User data on success, false on failure
  */
-function register_user($username, $email, $password, $display_name = '')
+function register_user($username, $email, $password)
 {
     $db = get_db_connection();
 
@@ -37,25 +36,19 @@ function register_user($username, $email, $password, $display_name = '')
     // Generate password hash
     $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
-    // If no display name provided, use username
-    if (empty($display_name)) {
-        $display_name = $username;
-    }
-
     // Insert new user
-    $stmt = $db->prepare('INSERT INTO community_users (username, email, password_hash, display_name, verification_token) 
-                         VALUES (:username, :email, :password_hash, :display_name, :verification_token)');
+    $stmt = $db->prepare('INSERT INTO community_users (username, email, password_hash, verification_token) 
+                         VALUES (:username, :email, :password_hash, :verification_token)');
     $stmt->bindValue(':username', $username, SQLITE3_TEXT);
     $stmt->bindValue(':email', $email, SQLITE3_TEXT);
     $stmt->bindValue(':password_hash', $password_hash, SQLITE3_TEXT);
-    $stmt->bindValue(':display_name', $display_name, SQLITE3_TEXT);
     $stmt->bindValue(':verification_token', $verification_token, SQLITE3_TEXT);
 
     if ($stmt->execute()) {
         $user_id = $db->lastInsertRowID();
 
         // Get the user data
-        $stmt = $db->prepare('SELECT id, username, email, display_name, email_verified, role, created_at FROM community_users WHERE id = :id');
+        $stmt = $db->prepare('SELECT id, username, email, email_verified, role, created_at FROM community_users WHERE id = :id');
         $stmt->bindValue(':id', $user_id, SQLITE3_INTEGER);
         $user = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
 
@@ -197,7 +190,7 @@ function get_user($user_id)
 {
     $db = get_db_connection();
 
-    $stmt = $db->prepare('SELECT id, username, email, display_name, bio, avatar, role, email_verified, created_at, last_login 
+    $stmt = $db->prepare('SELECT id, username, email, bio, avatar, role, email_verified, created_at, last_login 
                          FROM community_users WHERE id = :id');
     $stmt->bindValue(':id', $user_id, SQLITE3_INTEGER);
 
@@ -216,7 +209,7 @@ function get_user_by_username($username)
 {
     $db = get_db_connection();
 
-    $stmt = $db->prepare('SELECT id, username, email, display_name, bio, avatar, role, email_verified, created_at, last_login 
+    $stmt = $db->prepare('SELECT id, username, email, bio, avatar, role, email_verified, created_at, last_login 
                          FROM community_users WHERE username = :username');
     $stmt->bindValue(':username', $username, SQLITE3_TEXT);
 
@@ -241,7 +234,7 @@ function update_profile($user_id, $data)
     $params = [];
 
     // Allowable fields to update
-    $allowedFields = ['display_name', 'bio', 'avatar'];
+    $allowedFields = ['bio', 'avatar'];
 
     foreach ($allowedFields as $field) {
         if (isset($data[$field])) {

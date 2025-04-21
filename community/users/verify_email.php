@@ -9,10 +9,10 @@ $message = '';
 
 if (!empty($token)) {
     $success = verify_email($token);
-    
+
     if ($success) {
         $message = 'Your email has been verified successfully. You can now log in to your account.';
-        
+
         // If user is already logged in, update their session
         if (isset($_SESSION['user_id'])) {
             $_SESSION['email_verified'] = 1;
@@ -26,25 +26,27 @@ if (!empty($token)) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="../../images/argo-logo/A-logo.ico">
     <title>Email Verification - Argo Community</title>
 
     <script src="../../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../../resources/scripts/main.js"></script>
-    
+
     <link rel="stylesheet" href="../../resources/styles/button.css">
     <link rel="stylesheet" href="../../resources/header/style.css">
     <link rel="stylesheet" href="../../resources/footer/style.css">
     <link rel="stylesheet" href="auth-style.css">
 </head>
+
 <body>
     <header>
         <script>
-            $(function () {
-                $("#includeHeader").load("../../resources/header/index.html", function () {
+            $(function() {
+                $("#includeHeader").load("../../resources/header/index.html", function() {
                     adjustLinksAndImages("#includeHeader");
                 });
             });
@@ -55,11 +57,11 @@ if (!empty($token)) {
     <div class="auth-container">
         <div class="auth-card">
             <h1>Email Verification</h1>
-            
+
             <div class="<?php echo $success ? 'success-message' : 'error-message'; ?>">
                 <?php echo htmlspecialchars($message); ?>
             </div>
-            
+
             <div class="auth-links centered">
                 <?php if ($success): ?>
                     <a href="login.php" class="btn btn-blue">Log In</a>
@@ -83,8 +85,8 @@ if (!empty($token)) {
 
     <footer class="footer">
         <script>
-            $(function () {
-                $("#includeFooter").load("../../resources/footer/index.html", function () {
+            $(function() {
+                $("#includeFooter").load("../../resources/footer/index.html", function() {
                     adjustLinksAndImages("#includeFooter");
                 });
             });
@@ -92,4 +94,5 @@ if (!empty($token)) {
         <div id="includeFooter"></div>
     </footer>
 </body>
+
 </html>

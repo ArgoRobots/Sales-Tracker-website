@@ -6,7 +6,6 @@ if (isset($_SESSION['user_id'])) {
     // Clear user-specific session data
     unset($_SESSION['user_id']);
     unset($_SESSION['username']);
-    unset($_SESSION['display_name']);
     unset($_SESSION['email']);
     unset($_SESSION['role']);
     unset($_SESSION['email_verified']);

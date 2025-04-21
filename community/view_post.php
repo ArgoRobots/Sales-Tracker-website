@@ -12,7 +12,6 @@ if (!is_array($current_user)) {
     $current_user = array(
         'id' => $_SESSION['user_id'] ?? 0,
         'username' => $_SESSION['username'] ?? 'Unknown',
-        'display_name' => $_SESSION['display_name'] ?? 'User',
         'email' => $_SESSION['email'] ?? '',
         'email_verified' => $_SESSION['email_verified'] ?? 0,
         'role' => $_SESSION['role'] ?? 'user',
@@ -232,13 +231,19 @@ $user_vote = isset($current_user['email']) ? get_user_vote($post_id, $current_us
 
                 <div class="comment-form">
                     <h4>Add a Comment</h4>
-                    <form id="add-comment-form" data-post-id="<?php echo $post['id']; ?>">
-                        <input type="hidden" name="post_id" value="<?php echo $post['id']; ?>">
-                        <div class="form-group">
-                            <textarea id="comment_content" name="comment_content" rows="4" required></textarea>
+                    <?php if ($is_logged_in): ?>
+                        <form id="add-comment-form" data-post-id="<?php echo $post['id']; ?>">
+                            <input type="hidden" name="post_id" value="<?php echo $post['id']; ?>">
+                            <div class="form-group">
+                                <textarea id="comment_content" name="comment_content" rows="4" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit Comment</button>
+                        </form>
+                    <?php else: ?>
+                        <div class="login-required">
+                            <p>Please <a href="users/login.php">log in</a> or <a href="users/register.php">create an account</a> to comment on this post.</p>
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit Comment</button>
-                    </form>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

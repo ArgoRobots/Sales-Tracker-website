@@ -463,7 +463,7 @@ body {
 
 .pricing-card .price {
   font-size: 48px;
-  color: #2563eb;
+  color: var(--button);
   font-weight: bold;
   margin: 8px 0 5px;
 }
@@ -502,7 +502,7 @@ body {
 }
 
 .check-icon {
-  color: #2563eb;
+  color: var(--button);
   flex-shrink: 0;
   margin-right: 12px;
   margin-top: 3px;

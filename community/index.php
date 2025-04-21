@@ -13,7 +13,6 @@ if ($is_logged_in && !is_array($current_user)) {
     $current_user = array(
         'id' => $_SESSION['user_id'] ?? 0,
         'username' => $_SESSION['username'] ?? 'Unknown',
-        'display_name' => $_SESSION['display_name'] ?? 'User',
         'email' => $_SESSION['email'] ?? '',
         'email_verified' => $_SESSION['email_verified'] ?? 0,
         'role' => $_SESSION['role'] ?? 'user',

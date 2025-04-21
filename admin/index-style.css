@@ -37,7 +37,7 @@ h1 {
 }
 
 .btn {
-    background: #2563eb;
+    background: var(--button);
     color: white;
     border: none;
     padding: 10px 15px;

@@ -12,7 +12,6 @@ if (!is_array($current_user)) {
     $current_user = array(
         'id' => $_SESSION['user_id'] ?? 0,
         'username' => $_SESSION['username'] ?? 'Unknown',
-        'display_name' => $_SESSION['display_name'] ?? 'User',
         'email' => $_SESSION['email'] ?? '',
         'email_verified' => $_SESSION['email_verified'] ?? 0,
         'role' => $_SESSION['role'] ?? 'user',
@@ -41,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error_message = 'Content is too long (maximum 10,000 characters)';
     } else {
         // Add the post with user info
-        $post_id = add_post($current_user['display_name'], $current_user['email'], $title, $content, $post_type);
+        $post_id = add_post($current_user['username'], $current_user['email'], $title, $content, $post_type);
 
         if ($post_id) {
             // Connect post to user account

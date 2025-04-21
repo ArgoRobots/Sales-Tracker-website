@@ -16,7 +16,7 @@ $success = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get form data
     $email = isset($_POST['email']) ? trim($_POST['email']) : '';
-    
+
     // Basic validation
     if (empty($email)) {
         $error = 'Please enter your email address';
@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         // Attempt to send password reset link
         $result = request_password_reset($email);
-        
+
         if ($result) {
             $success = 'A password reset link has been sent to your email address.';
         } else {
@@ -37,6 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -45,18 +46,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <script src="../../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../../resources/scripts/main.js"></script>
-    
+
     <link rel="stylesheet" href="auth-style.css">
+    <link rel="stylesheet" href="../../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../../resources/styles/button.css">
     <link rel="stylesheet" href="../../resources/header/style.css">
     <link rel="stylesheet" href="../../resources/footer/style.css">
     <link rel="stylesheet" href="../../resources/header/dark.css">
 </head>
+
 <body>
     <header>
         <script>
-            $(function () {
-                $("#includeHeader").load("../../resources/header/index.html", function () {
+            $(function() {
+                $("#includeHeader").load("../../resources/header/index.html", function() {
                     adjustLinksAndImages("#includeHeader");
                 });
             });
@@ -68,13 +71,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="auth-card">
             <h1>Reset Password</h1>
             <p class="auth-subtitle">Enter your email to receive a password reset link</p>
-            
+
             <?php if ($error): ?>
                 <div class="error-message">
                     <?php echo htmlspecialchars($error); ?>
                 </div>
             <?php endif; ?>
-            
+
             <?php if ($success): ?>
                 <div class="success-message">
                     <?php echo htmlspecialchars($success); ?>
@@ -86,13 +89,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <label for="email">Email</label>
                         <input type="email" id="email" name="email" value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>" required>
                     </div>
-                    
+
                     <div class="form-actions">
                         <button type="submit" class="btn btn-blue btn-block">Send Reset Link</button>
                     </div>
-                    
+
                     <div class="auth-links">
-                        <p><a href="login.php">Back to Login</a></p>
+                        <a href="login.php">Back to Login</a>
                     </div>
                 </form>
             <?php endif; ?>
@@ -101,8 +104,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <footer class="footer">
         <script>
-            $(function () {
-                $("#includeFooter").load("../../resources/footer/index.html", function () {
+            $(function() {
+                $("#includeFooter").load("../../resources/footer/index.html", function() {
                     adjustLinksAndImages("#includeFooter");
                 });
             });
@@ -110,4 +113,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div id="includeFooter"></div>
     </footer>
 </body>
+
 </html>

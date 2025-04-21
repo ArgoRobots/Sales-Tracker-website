@@ -28,7 +28,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Set session data
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $user['username'];
-            $_SESSION['display_name'] = $user['display_name'];
             $_SESSION['email'] = $user['email'];
             $_SESSION['role'] = $user['role'];
             $_SESSION['email_verified'] = $user['email_verified'];
@@ -61,6 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script src="../../resources/scripts/main.js"></script>
 
     <link rel="stylesheet" href="auth-style.css">
+    <link rel="stylesheet" href="../../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../../resources/styles/button.css">
     <link rel="stylesheet" href="../../resources/header/style.css">
     <link rel="stylesheet" href="../../resources/footer/style.css">
@@ -106,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="auth-links">
-                    <p><a href="forgot_password.php">Forgot password?</a></p>
+                    <a href="forgot_password.php">Forgot password?</a>
                     <p>Don't have an account? <a href="register.php">Register</a></p>
                 </div>
             </form>

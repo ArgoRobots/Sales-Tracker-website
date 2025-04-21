@@ -213,7 +213,7 @@ body {
 .feature-card .icon-container svg {
     width: 32px;
     height: 32px;
-    stroke: #2563eb;
+    stroke: var(--button);
     stroke-width: 2;
     fill: none;
 }

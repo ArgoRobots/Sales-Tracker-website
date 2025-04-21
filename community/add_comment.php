@@ -27,7 +27,6 @@ if (!is_array($current_user)) {
     $current_user = array(
         'id' => $_SESSION['user_id'] ?? 0,
         'username' => $_SESSION['username'] ?? 'Unknown',
-        'display_name' => $_SESSION['display_name'] ?? 'User',
         'email' => $_SESSION['email'] ?? '',
         'email_verified' => $_SESSION['email_verified'] ?? 0,
         'role' => $_SESSION['role'] ?? 'user',
@@ -41,9 +40,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
     $content = isset($_POST['comment_content']) ? trim($_POST['comment_content']) : '';
 
-    // Get user display name and email with fallbacks
-    $display_name = isset($current_user['display_name']) ? $current_user['display_name'] : 'Anonymous';
+    // Get user email
     $email = isset($current_user['email']) ? $current_user['email'] : 'anonymous@example.com';
+
+    // Get username
+    $username = isset($current_user['username']) ? $current_user['username'] : 'Anonymous';
 
     // Basic validation
     if (empty($post_id) || empty($content)) {
@@ -58,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $response['message'] = 'Post not found';
         } else {
             // Add the comment
-            $comment = add_comment($post_id, $display_name, $email, $content);
+            $comment = add_comment($post_id, $username, $email, $content);
 
             if ($comment) {
                 // Connect comment to user account
