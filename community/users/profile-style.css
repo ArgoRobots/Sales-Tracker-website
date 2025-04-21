@@ -6,8 +6,13 @@ header .header-inner .menu-container .menu .community:after {
 /* Profile container */
 .profile-container {
     max-width: 1200px;
+    min-height: 100vh;
     margin: 0 auto;
     padding: 40px 20px;
+}
+
+.back-button {
+    margin-top: 50px !important;
 }
 
 .profile-header {
@@ -317,11 +322,6 @@ header .header-inner .menu-container .menu .community:after {
     background-color: #f9fafb;
     border-radius: 8px;
     border: 1px dashed #e5e7eb;
-}
-
-.view-all {
-    margin-top: 25px;
-    text-align: center;
 }
 
 /* Message boxes */

@@ -48,21 +48,21 @@ if ($is_own_profile && $_SERVER['REQUEST_METHOD'] === 'POST') {
             $error_message = 'Failed to upload profile picture. Please ensure it is a valid image (JPG, PNG, GIF) under 2MB.';
         }
     }
-    
+
     // Handle profile info update
     $update_data = [
         'display_name' => isset($_POST['display_name']) ? trim($_POST['display_name']) : $user['display_name'],
         'bio' => isset($_POST['bio']) ? trim($_POST['bio']) : ($user['bio'] ?? '')
     ];
-    
+
     $update_result = update_profile($user['id'], $update_data);
-    
+
     if ($update_result) {
         $success_message = 'Profile updated successfully.';
-        
+
         // Update session data
         $_SESSION['display_name'] = $update_data['display_name'];
-        
+
         // Refresh user data
         $user = get_user($user['id']);
     } else {
@@ -72,25 +72,28 @@ if ($is_own_profile && $_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="../../images/argo-logo/A-logo.ico">
     <title><?php echo htmlspecialchars($user['display_name']); ?>'s Profile - Argo Community</title>
 
     <script src="../../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../../resources/scripts/main.js"></script>
-    
+
     <link rel="stylesheet" href="profile-style.css">
     <link rel="stylesheet" href="../../resources/styles/button.css">
     <link rel="stylesheet" href="../../resources/header/style.css">
+    <link rel="stylesheet" href="../../resources/header/dark.css">
     <link rel="stylesheet" href="../../resources/footer/style.css">
 </head>
+
 <body>
     <header>
         <script>
-            $(function () {
-                $("#includeHeader").load("../../resources/header/index.html", function () {
+            $(function() {
+                $("#includeHeader").load("../../resources/header/index.html", function() {
                     adjustLinksAndImages("#includeHeader");
                 });
             });
@@ -100,9 +103,13 @@ if ($is_own_profile && $_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div class="profile-container">
         <div class="profile-header">
-            <div class="profile-nav">
-                <a href="../index.php" class="btn btn-secondary">Back to Community</a>
-            </div>
+            <a href="../index.php" class="btn back-button">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-width="2" d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+                Back to All Posts
+            </a>
+
             <h1>
                 <?php echo htmlspecialchars($user['display_name']); ?>
                 <?php if ($user['role'] === 'admin'): ?>
@@ -110,19 +117,19 @@ if ($is_own_profile && $_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php endif; ?>
             </h1>
         </div>
-        
+
         <?php if (!empty($success_message)): ?>
             <div class="success-message">
                 <?php echo htmlspecialchars($success_message); ?>
             </div>
         <?php endif; ?>
-        
+
         <?php if (!empty($error_message)): ?>
             <div class="error-message">
                 <?php echo htmlspecialchars($error_message); ?>
             </div>
         <?php endif; ?>
-        
+
         <div class="profile-grid">
             <div class="profile-sidebar">
                 <div class="profile-card">
@@ -135,7 +142,7 @@ if ($is_own_profile && $_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div>
                         <?php endif; ?>
                     </div>
-                    
+
                     <div class="profile-info">
                         <h2><?php echo htmlspecialchars($user['display_name']); ?></h2>
                         <div class="profile-meta">
@@ -144,14 +151,18 @@ if ($is_own_profile && $_SERVER['REQUEST_METHOD'] === 'POST') {
                                 Joined <?php echo date('F Y', strtotime($user['created_at'])); ?>
                             </p>
                         </div>
-                        
+
                         <?php if (!empty($user['bio'])): ?>
                             <div class="profile-bio">
                                 <p><?php echo nl2br(htmlspecialchars($user['bio'])); ?></p>
                             </div>
                         <?php endif; ?>
-                        
+
                         <div class="profile-stats">
+                            <div class="stat-item">
+                                <span class="stat-value"><?php echo $profile['']; ?></span>
+                                <span class="stat-label">Reputation</span>
+                            </div>
                             <div class="stat-item">
                                 <span class="stat-value"><?php echo $profile['post_count']; ?></span>
                                 <span class="stat-label">Posts</span>
@@ -162,11 +173,11 @@ if ($is_own_profile && $_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div>
                         </div>
                     </div>
-                    
+
                     <?php if ($is_own_profile): ?>
                         <div class="profile-actions">
                             <button class="btn btn-blue" id="edit-profile-btn">Edit Profile</button>
-                            
+
                             <?php if (!$_SESSION['email_verified']): ?>
                                 <a href="resend_verification.php" class="btn btn-secondary">Verify Email</a>
                             <?php endif; ?>
@@ -174,7 +185,7 @@ if ($is_own_profile && $_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php endif; ?>
                 </div>
             </div>
-            
+
             <div class="profile-content">
                 <?php if ($is_own_profile): ?>
                     <div class="edit-profile-form" id="edit-profile-form" style="display: none;">
@@ -184,19 +195,13 @@ if ($is_own_profile && $_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <label for="display_name">Display Name</label>
                                 <input type="text" id="display_name" name="display_name" value="<?php echo htmlspecialchars($user['display_name']); ?>" required>
                             </div>
-                            
-                            <div class="form-group">
-                                <label for="bio">Bio</label>
-                                <textarea id="bio" name="bio" rows="4"><?php echo htmlspecialchars($user['bio'] ?? ''); ?></textarea>
-                                <small>Tell the community about yourself (optional)</small>
-                            </div>
-                            
+
                             <div class="form-group">
                                 <label for="avatar">Profile Picture</label>
                                 <input type="file" id="avatar" name="avatar" accept="image/jpeg,image/png,image/gif">
                                 <small>Maximum file size: 2MB. Supported formats: JPG, PNG, GIF</small>
                             </div>
-                            
+
                             <div class="form-actions">
                                 <button type="button" class="btn btn-secondary" id="cancel-edit-btn">Cancel</button>
                                 <button type="submit" class="btn btn-blue">Save Changes</button>
@@ -204,10 +209,10 @@ if ($is_own_profile && $_SERVER['REQUEST_METHOD'] === 'POST') {
                         </form>
                     </div>
                 <?php endif; ?>
-                
+
                 <div class="activity-section">
                     <h2>Recent Activity</h2>
-                    
+
                     <?php if (empty($activity)): ?>
                         <div class="empty-state">
                             <p>No activity yet</p>
@@ -227,7 +232,7 @@ if ($is_own_profile && $_SERVER['REQUEST_METHOD'] === 'POST') {
                                             </svg>
                                         <?php endif; ?>
                                     </div>
-                                    
+
                                     <div class="activity-content">
                                         <div class="activity-header">
                                             <?php if ($item['activity_type'] === 'post'): ?>
@@ -242,14 +247,14 @@ if ($is_own_profile && $_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 </a>
                                             <?php endif; ?>
                                         </div>
-                                        
+
                                         <div class="activity-excerpt">
-                                            <?php 
-                                                $content = htmlspecialchars($item['content']);
-                                                echo strlen($content) > 150 ? substr($content, 0, 150) . '...' : $content;
+                                            <?php
+                                            $content = htmlspecialchars($item['content']);
+                                            echo strlen($content) > 150 ? substr($content, 0, 150) . '...' : $content;
                                             ?>
                                         </div>
-                                        
+
                                         <div class="activity-meta">
                                             <span class="activity-date">
                                                 <?php echo date('M j, Y g:i a', strtotime($item['created_at'])); ?>
@@ -259,10 +264,6 @@ if ($is_own_profile && $_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </div>
                             <?php endforeach; ?>
                         </div>
-                        
-                        <div class="view-all">
-                            <a href="activity.php?username=<?php echo htmlspecialchars($user['username']); ?>" class="btn btn-secondary">View All Activity</a>
-                        </div>
                     <?php endif; ?>
                 </div>
             </div>
@@ -271,28 +272,28 @@ if ($is_own_profile && $_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <footer class="footer">
         <script>
-            $(function () {
-                $("#includeFooter").load("../../resources/footer/index.html", function () {
+            $(function() {
+                $("#includeFooter").load("../../resources/footer/index.html", function() {
                     adjustLinksAndImages("#includeFooter");
                 });
             });
         </script>
         <div id="includeFooter"></div>
     </footer>
-    
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Edit profile form toggle
             const editProfileBtn = document.getElementById('edit-profile-btn');
             const cancelEditBtn = document.getElementById('cancel-edit-btn');
             const editProfileForm = document.getElementById('edit-profile-form');
-            
+
             if (editProfileBtn && cancelEditBtn && editProfileForm) {
                 editProfileBtn.addEventListener('click', function() {
                     editProfileForm.style.display = 'block';
                     editProfileBtn.style.display = 'none';
                 });
-                
+
                 cancelEditBtn.addEventListener('click', function() {
                     editProfileForm.style.display = 'none';
                     editProfileBtn.style.display = 'block';
@@ -301,4 +302,5 @@ if ($is_own_profile && $_SERVER['REQUEST_METHOD'] === 'POST') {
         });
     </script>
 </body>
+
 </html>

@@ -5,7 +5,7 @@ header .header-inner .menu-container .menu .community:after {
 
 /* Community container */
 .community-container {
-    max-width: 1200px;
+    width: 80%;
     margin: 0 auto;
 }
 
@@ -25,38 +25,6 @@ header .header-inner .menu-container .menu .community:after {
     font-size: 20px;
     max-width: 672px;
     margin: 0 auto;
-}
-
-.main-content {
-    width: 85%;
-    margin: 0 auto;
-    padding: 30px 0;
-}
-
-/* Back button */
-.back-button {
-    display: inline-flex;
-    align-items: center;
-    margin-bottom: 20px;
-    padding: 8px 16px;
-    color: #4b5563;
-    background-color: #f9fafb;
-    border: 1px solid #e5e7eb;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 500;
-    text-decoration: none;
-    transition: all 0.2s ease;
-}
-
-.back-button:hover {
-    background-color: #f3f4f6;
-    color: #1e3a8a;
-    border-color: #d1d5db;
-}
-
-.back-button svg {
-    margin-right: 6px;
 }
 
 /* Post detail */
@@ -204,6 +172,7 @@ header .header-inner .menu-container .menu .community:after {
     display: inline-flex;
     align-items: center;
     gap: 4px;
+    color: #000;
 }
 
 .post-views svg {
@@ -339,10 +308,6 @@ header .header-inner .menu-container .menu .community:after {
 
 /* Responsive styles */
 @media (max-width: 640px) {
-    .main-content {
-        width: 95%;
-    }
-
     .post-header {
         flex-direction: column;
     }

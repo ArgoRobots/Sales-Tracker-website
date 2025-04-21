@@ -1,9 +1,24 @@
 document.addEventListener("DOMContentLoaded", function () {
+  // Check if user is logged in
+  function isUserLoggedIn() {
+    // We'll check this by looking for disabled vote buttons
+    const voteBtn = document.querySelector(".vote-btn");
+    return voteBtn && !voteBtn.hasAttribute("disabled");
+  }
+
   // Handle voting
   const voteButtons = document.querySelectorAll(".vote-btn");
 
   voteButtons.forEach((btn) => {
-    btn.addEventListener("click", function () {
+    btn.addEventListener("click", function (e) {
+      // If user is not logged in, redirect to login page
+      if (!isUserLoggedIn()) {
+        e.preventDefault();
+        e.stopPropagation();
+        window.location.href = "users/login.php";
+        return;
+      }
+
       const postId = this.getAttribute("data-post-id");
       const voteType = this.getAttribute("data-vote") === "up" ? 1 : -1;
 
@@ -34,7 +49,11 @@ document.addEventListener("DOMContentLoaded", function () {
               downvoteBtn.style.color = "#dc2626";
             }
           } else {
-            alert("Error voting: " + data.message);
+            if (data.message === "You must be logged in to vote") {
+              window.location.href = "users/login.php";
+            } else {
+              alert("Error voting: " + data.message);
+            }
           }
         })
         .catch((error) => {
@@ -51,6 +70,12 @@ document.addEventListener("DOMContentLoaded", function () {
     commentForm.addEventListener("submit", function (e) {
       e.preventDefault();
 
+      // If user is not logged in, redirect to login page
+      if (!isUserLoggedIn()) {
+        window.location.href = "users/login.php";
+        return;
+      }
+
       const postId = this.getAttribute("data-post-id");
       const contentInput = document.getElementById("comment_content");
 
@@ -61,8 +86,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const formData = new FormData();
       formData.append("post_id", postId);
-      formData.append("user_name", "Anonymous"); // Default username
-      formData.append("user_email", "anonymous@example.com"); // Default email
       formData.append("comment_content", contentInput.value);
 
       fetch("add_comment.php", {
@@ -75,7 +98,11 @@ document.addEventListener("DOMContentLoaded", function () {
             // Reload the page to show the new comment
             window.location.reload();
           } else {
-            alert("Error adding comment: " + data.message);
+            if (data.message === "You must be logged in to comment") {
+              window.location.href = "users/login.php";
+            } else {
+              alert("Error adding comment: " + data.message);
+            }
           }
         })
         .catch((error) => {

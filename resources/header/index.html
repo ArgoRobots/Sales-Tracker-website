@@ -19,6 +19,19 @@
       <li><a class="contact-us" href="../contact-us/index.php">Contact us</a></li>
     </ul>
   </div>
+
+  <!-- Account Button -->
+  <div class="right-container">
+    <a id="account-button" class="account-button" href="../community/users/profile.php">
+      <div class="account-avatar">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </div>
+    </a>
+  </div>
 </div>
 
 <div id="menu" class="hamburger-nav-menu">
@@ -29,6 +42,7 @@
     <li><a href="../documentation/index.html">Documentation</a></li>
     <li><a href="../community/index.php">Community</a></li>
     <li><a href="../contact-us/index.php">Contact Us</a></li>
+    <li><a href="../community/users/login.php" id="mobile-account-link">My Account</a></li>
   </ul>
 </div>
 
@@ -87,5 +101,56 @@
       menuBtn.checked = false;
       headerToggleMenu();
     }
+  });
+
+  // Check if there's a PHP session and update the account button accordingly
+  document.addEventListener('DOMContentLoaded', function () {
+    // Try to detect if we're in the community section
+    let isInCommunity = window.location.pathname.includes('/community/');
+
+    // Determine the proper path to check_login_status.php
+    let loginCheckPath;
+    if (isInCommunity) {
+      loginCheckPath = 'check_login_status.php';
+    } else {
+      loginCheckPath = '../community/check_login_status.php';
+    }
+
+    // Try to fetch login status
+    fetch(loginCheckPath)
+      .then(response => {
+        if (!response.ok) throw new Error('Not logged in or invalid endpoint');
+        return response.json();
+      })
+      .then(data => {
+        if (data.logged_in) {
+          const accountBtn = document.getElementById('account-button');
+          const mobileAccountLink = document.getElementById('mobile-account-link');
+
+          // Update account button link
+          if (isInCommunity) {
+            accountBtn.href = 'users/profile.php';
+          } else {
+            accountBtn.href = '../community/users/profile.php';
+          }
+
+          // Update avatar display
+          const avatar = accountBtn.querySelector('.account-avatar');
+          if (data.avatar) {
+            avatar.innerHTML = `<img src="${data.avatar}" alt="Profile">`;
+          } else {
+            avatar.innerHTML = data.display_name.charAt(0);
+          }
+
+          // Update mobile menu link
+          if (mobileAccountLink) {
+            mobileAccountLink.href = accountBtn.href;
+            mobileAccountLink.textContent = 'My Profile';
+          }
+        }
+      })
+      .catch(error => {
+        console.log('User not logged in or not on a page with PHP access');
+      });
   });
 </script>

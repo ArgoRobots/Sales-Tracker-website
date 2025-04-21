@@ -1,4 +1,5 @@
 <?php
+
 /**
  * User account management functions
  */
@@ -12,38 +13,39 @@
  * @param string $display_name Display name (optional)
  * @return array|bool User data on success, false on failure
  */
-function register_user($username, $email, $password, $display_name = '') {
+function register_user($username, $email, $password, $display_name = '')
+{
     $db = get_db_connection();
-    
+
     // Check if username exists
     $stmt = $db->prepare('SELECT id FROM community_users WHERE username = :username');
     $stmt->bindValue(':username', $username, SQLITE3_TEXT);
     $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
-    
+
     if ($result) {
         return ['success' => false, 'message' => 'Username already exists'];
     }
-    
+
     // Check if email exists
     $stmt = $db->prepare('SELECT id FROM community_users WHERE email = :email');
     $stmt->bindValue(':email', $email, SQLITE3_TEXT);
     $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
-    
+
     if ($result) {
         return ['success' => false, 'message' => 'Email already exists'];
     }
-    
+
     // Generate verification token
     $verification_token = md5(uniqid(rand(), true));
-    
+
     // Generate password hash
     $password_hash = password_hash($password, PASSWORD_DEFAULT);
-    
+
     // If no display name provided, use username
     if (empty($display_name)) {
         $display_name = $username;
     }
-    
+
     // Insert new user
     $stmt = $db->prepare('INSERT INTO community_users (username, email, password_hash, display_name, verification_token) 
                          VALUES (:username, :email, :password_hash, :display_name, :verification_token)');
@@ -52,21 +54,21 @@ function register_user($username, $email, $password, $display_name = '') {
     $stmt->bindValue(':password_hash', $password_hash, SQLITE3_TEXT);
     $stmt->bindValue(':display_name', $display_name, SQLITE3_TEXT);
     $stmt->bindValue(':verification_token', $verification_token, SQLITE3_TEXT);
-    
+
     if ($stmt->execute()) {
         $user_id = $db->lastInsertRowID();
-        
+
         // Get the user data
         $stmt = $db->prepare('SELECT id, username, email, display_name, email_verified, role, created_at FROM community_users WHERE id = :id');
         $stmt->bindValue(':id', $user_id, SQLITE3_INTEGER);
         $user = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
-        
+
         // Send verification email
         send_verification_email($email, $verification_token, $username);
-        
+
         return ['success' => true, 'user' => $user, 'message' => 'Registration successful! Please check your email to verify your account.'];
     }
-    
+
     return ['success' => false, 'message' => 'Registration failed'];
 }
 
@@ -78,16 +80,17 @@ function register_user($username, $email, $password, $display_name = '') {
  * @param string $username Username
  * @return bool Success status
  */
-function send_verification_email($email, $token, $username) {
+function send_verification_email($email, $token, $username)
+{
     $subject = 'Verify Your Account - Argo Community';
-    
+
     // Get the base URL
     $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
     $host = $_SERVER['HTTP_HOST'];
     $base_url = $protocol . $host;
-    
+
     $verification_link = $base_url . "/community/verify_email.php?token=" . $token;
-    
+
     $message = "
     <html>
     <head>
@@ -107,7 +110,7 @@ function send_verification_email($email, $token, $username) {
     </body>
     </html>
     ";
-    
+
     // Email headers
     $headers = [
         'MIME-Version: 1.0',
@@ -115,7 +118,7 @@ function send_verification_email($email, $token, $username) {
         'From: Argo Community <noreply@argorobots.com>',
         'Reply-To: no-reply@argorobots.com'
     ];
-    
+
     // Send email
     return mail($email, $subject, $message, implode("\r\n", $headers));
 }
@@ -126,22 +129,23 @@ function send_verification_email($email, $token, $username) {
  * @param string $token Verification token
  * @return bool Success status
  */
-function verify_email($token) {
+function verify_email($token)
+{
     $db = get_db_connection();
-    
+
     // Find user by verification token
     $stmt = $db->prepare('SELECT id FROM community_users WHERE verification_token = :token');
     $stmt->bindValue(':token', $token, SQLITE3_TEXT);
     $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
-    
+
     if (!$result) {
         return false;
     }
-    
+
     // Update user as verified
     $stmt = $db->prepare('UPDATE community_users SET email_verified = 1, verification_token = NULL WHERE id = :id');
     $stmt->bindValue(':id', $result['id'], SQLITE3_INTEGER);
-    
+
     return $stmt->execute() !== false;
 }
 
@@ -152,37 +156,38 @@ function verify_email($token) {
  * @param string $password Plain text password
  * @return array|bool User data on success or false on failure
  */
-function login_user($login, $password) {
+function login_user($login, $password)
+{
     $db = get_db_connection();
-    
+
     // Check if login is email or username
     $field = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
-    
+
     // Find user by login
     $stmt = $db->prepare("SELECT * FROM community_users WHERE $field = :login");
     $stmt->bindValue(':login', $login, SQLITE3_TEXT);
     $user = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
-    
+
     if (!$user) {
         return false;
     }
-    
+
     // Verify password
     if (password_verify($password, $user['password_hash'])) {
         // Update last login time
         $stmt = $db->prepare('UPDATE community_users SET last_login = CURRENT_TIMESTAMP WHERE id = :id');
         $stmt->bindValue(':id', $user['id'], SQLITE3_INTEGER);
         $stmt->execute();
-        
+
         // Don't return password hash
         unset($user['password_hash']);
         unset($user['verification_token']);
         unset($user['reset_token']);
         unset($user['reset_token_expiry']);
-        
+
         return $user;
     }
-    
+
     return false;
 }
 
@@ -192,15 +197,16 @@ function login_user($login, $password) {
  * @param int $user_id User ID
  * @return array|bool User data or false if not found
  */
-function get_user($user_id) {
+function get_user($user_id)
+{
     $db = get_db_connection();
-    
+
     $stmt = $db->prepare('SELECT id, username, email, display_name, bio, avatar, role, email_verified, created_at, last_login 
                          FROM community_users WHERE id = :id');
     $stmt->bindValue(':id', $user_id, SQLITE3_INTEGER);
-    
+
     $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
-    
+
     return $result ? $result : false;
 }
 
@@ -210,15 +216,16 @@ function get_user($user_id) {
  * @param string $username Username
  * @return array|bool User data or false if not found
  */
-function get_user_by_username($username) {
+function get_user_by_username($username)
+{
     $db = get_db_connection();
-    
+
     $stmt = $db->prepare('SELECT id, username, email, display_name, bio, avatar, role, email_verified, created_at, last_login 
                          FROM community_users WHERE username = :username');
     $stmt->bindValue(':username', $username, SQLITE3_TEXT);
-    
+
     $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
-    
+
     return $result ? $result : false;
 }
 
@@ -229,47 +236,48 @@ function get_user_by_username($username) {
  * @param array $data Profile data to update
  * @return bool Success status
  */
-function update_profile($user_id, $data) {
+function update_profile($user_id, $data)
+{
     $db = get_db_connection();
-    
+
     // Determine which fields to update
     $updateFields = [];
     $params = [];
-    
+
     // Allowable fields to update
     $allowedFields = ['display_name', 'bio', 'avatar'];
-    
+
     foreach ($allowedFields as $field) {
         if (isset($data[$field])) {
             $updateFields[] = "$field = :$field";
             $params[":$field"] = $data[$field];
         }
     }
-    
+
     // Password update requires special handling
     if (isset($data['password']) && !empty($data['password'])) {
         $updateFields[] = "password_hash = :password_hash";
         $params[':password_hash'] = password_hash($data['password'], PASSWORD_DEFAULT);
     }
-    
+
     // Add updated_at timestamp
     $updateFields[] = "updated_at = CURRENT_TIMESTAMP";
-    
+
     // If no fields to update, return true (nothing to do)
     if (empty($updateFields)) {
         return true;
     }
-    
+
     // Build and prepare query
     $query = "UPDATE community_users SET " . implode(', ', $updateFields) . " WHERE id = :user_id";
     $stmt = $db->prepare($query);
     $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
-    
+
     // Bind all parameter values
     foreach ($params as $param => $value) {
         $stmt->bindValue($param, $value, SQLITE3_TEXT);
     }
-    
+
     // Execute update
     return $stmt->execute() !== false;
 }
@@ -280,35 +288,36 @@ function update_profile($user_id, $data) {
  * @param string $email User's email address
  * @return bool Success status
  */
-function request_password_reset($email) {
+function request_password_reset($email)
+{
     $db = get_db_connection();
-    
+
     // Find user by email
     $stmt = $db->prepare('SELECT id, username FROM community_users WHERE email = :email');
     $stmt->bindValue(':email', $email, SQLITE3_TEXT);
     $user = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
-    
+
     if (!$user) {
         return false;
     }
-    
+
     // Generate reset token
     $reset_token = md5(uniqid(rand(), true));
-    
+
     // Set token expiry (24 hours from now)
     $expiry = date('Y-m-d H:i:s', strtotime('+24 hours'));
-    
+
     // Update user with reset token
     $stmt = $db->prepare('UPDATE community_users SET reset_token = :reset_token, reset_token_expiry = :expiry WHERE id = :id');
     $stmt->bindValue(':reset_token', $reset_token, SQLITE3_TEXT);
     $stmt->bindValue(':expiry', $expiry, SQLITE3_TEXT);
     $stmt->bindValue(':id', $user['id'], SQLITE3_INTEGER);
-    
+
     if ($stmt->execute()) {
         // Send password reset email
         return send_password_reset_email($email, $reset_token, $user['username']);
     }
-    
+
     return false;
 }
 
@@ -320,16 +329,17 @@ function request_password_reset($email) {
  * @param string $username Username
  * @return bool Success status
  */
-function send_password_reset_email($email, $token, $username) {
+function send_password_reset_email($email, $token, $username)
+{
     $subject = 'Password Reset - Argo Community';
-    
+
     // Get the base URL
     $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
     $host = $_SERVER['HTTP_HOST'];
     $base_url = $protocol . $host;
-    
+
     $reset_link = $base_url . "/community/reset_password.php?token=" . $token;
-    
+
     $message = "
     <html>
     <head>
@@ -350,7 +360,7 @@ function send_password_reset_email($email, $token, $username) {
     </body>
     </html>
     ";
-    
+
     // Email headers
     $headers = [
         'MIME-Version: 1.0',
@@ -358,7 +368,7 @@ function send_password_reset_email($email, $token, $username) {
         'From: Argo Community <noreply@argorobots.com>',
         'Reply-To: no-reply@argorobots.com'
     ];
-    
+
     // Send email
     return mail($email, $subject, $message, implode("\r\n", $headers));
 }
@@ -370,26 +380,27 @@ function send_password_reset_email($email, $token, $username) {
  * @param string $new_password New password
  * @return bool Success status
  */
-function reset_password($token, $new_password) {
+function reset_password($token, $new_password)
+{
     $db = get_db_connection();
-    
+
     // Find user by reset token and check expiry
     $stmt = $db->prepare('SELECT id FROM community_users WHERE reset_token = :token AND reset_token_expiry > CURRENT_TIMESTAMP');
     $stmt->bindValue(':token', $token, SQLITE3_TEXT);
     $user = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
-    
+
     if (!$user) {
         return false;
     }
-    
+
     // Hash new password
     $password_hash = password_hash($new_password, PASSWORD_DEFAULT);
-    
+
     // Update user with new password and clear reset token
     $stmt = $db->prepare('UPDATE community_users SET password_hash = :password_hash, reset_token = NULL, reset_token_expiry = NULL WHERE id = :id');
     $stmt->bindValue(':password_hash', $password_hash, SQLITE3_TEXT);
     $stmt->bindValue(':id', $user['id'], SQLITE3_INTEGER);
-    
+
     return $stmt->execute() !== false;
 }
 
@@ -399,13 +410,14 @@ function reset_password($token, $new_password) {
  * @param int $user_id User ID
  * @return bool True if user is admin
  */
-function is_admin($user_id) {
+function is_admin($user_id)
+{
     $db = get_db_connection();
-    
+
     $stmt = $db->prepare('SELECT role FROM community_users WHERE id = :id');
     $stmt->bindValue(':id', $user_id, SQLITE3_INTEGER);
     $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
-    
+
     return $result && $result['role'] === 'admin';
 }
 
@@ -415,14 +427,15 @@ function is_admin($user_id) {
  * @param int $user_id User ID
  * @return array|bool User profile data or false if not found
  */
-function get_user_profile($user_id) {
+function get_user_profile($user_id)
+{
     $db = get_db_connection();
-    
+
     $stmt = $db->prepare('SELECT * FROM community_user_profiles WHERE id = :id');
     $stmt->bindValue(':id', $user_id, SQLITE3_INTEGER);
-    
+
     $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
-    
+
     return $result ? $result : false;
 }
 
@@ -433,9 +446,10 @@ function get_user_profile($user_id) {
  * @param int $limit Number of items to return (optional)
  * @return array Activity data
  */
-function get_user_activity($user_id, $limit = 10) {
+function get_user_activity($user_id, $limit = 10)
+{
     $db = get_db_connection();
-    
+
     // Get user's posts
     $stmt = $db->prepare('SELECT id, title, content, post_type, created_at, "post" as activity_type 
                          FROM community_posts 
@@ -445,12 +459,12 @@ function get_user_activity($user_id, $limit = 10) {
     $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
     $stmt->bindValue(':limit', $limit, SQLITE3_INTEGER);
     $result = $stmt->execute();
-    
+
     $posts = [];
     while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
         $posts[] = $row;
     }
-    
+
     // Get user's comments
     $stmt = $db->prepare('SELECT c.id, c.content, c.created_at, p.id as post_id, p.title as post_title, "comment" as activity_type 
                          FROM community_comments c
@@ -461,18 +475,18 @@ function get_user_activity($user_id, $limit = 10) {
     $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
     $stmt->bindValue(':limit', $limit, SQLITE3_INTEGER);
     $result = $stmt->execute();
-    
+
     $comments = [];
     while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
         $comments[] = $row;
     }
-    
+
     // Combine and sort by date (newest first)
     $activity = array_merge($posts, $comments);
-    usort($activity, function($a, $b) {
+    usort($activity, function ($a, $b) {
         return strtotime($b['created_at']) - strtotime($a['created_at']);
     });
-    
+
     // Truncate to limit
     return array_slice($activity, 0, $limit);
 }
@@ -483,9 +497,10 @@ function get_user_activity($user_id, $limit = 10) {
  * @param int $limit Number of users to return
  * @return array Active users
  */
-function get_active_users($limit = 5) {
+function get_active_users($limit = 5)
+{
     $db = get_db_connection();
-    
+
     $stmt = $db->prepare('SELECT u.id, u.username, u.display_name, u.avatar, COUNT(p.id) + COUNT(c.id) as activity_count
                          FROM community_users u
                          LEFT JOIN community_posts p ON u.id = p.user_id
@@ -495,12 +510,12 @@ function get_active_users($limit = 5) {
                          LIMIT :limit');
     $stmt->bindValue(':limit', $limit, SQLITE3_INTEGER);
     $result = $stmt->execute();
-    
+
     $users = [];
     while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
         $users[] = $row;
     }
-    
+
     return $users;
 }
 
@@ -511,35 +526,36 @@ function get_active_users($limit = 5) {
  * @param array $file File data from $_FILES
  * @return string|bool Image path on success, false on failure
  */
-function upload_avatar($user_id, $file) {
+function upload_avatar($user_id, $file)
+{
     // Check if file was uploaded without errors
     if ($file['error'] !== UPLOAD_ERR_OK) {
         return false;
     }
-    
+
     // Validate image type
     $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
     if (!in_array($file['type'], $allowed_types)) {
         return false;
     }
-    
+
     // Validate file size (max 2MB)
     $max_size = 2 * 1024 * 1024; // 2MB
     if ($file['size'] > $max_size) {
         return false;
     }
-    
+
     // Create avatars directory if it doesn't exist
     $upload_dir = __DIR__ . '/uploads/avatars/';
     if (!file_exists($upload_dir)) {
         mkdir($upload_dir, 0755, true);
     }
-    
+
     // Generate unique filename
     $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
     $filename = 'avatar_' . $user_id . '_' . time() . '.' . $extension;
     $target_path = $upload_dir . $filename;
-    
+
     // Move uploaded file
     if (move_uploaded_file($file['tmp_name'], $target_path)) {
         // Update user record with new avatar path
@@ -548,10 +564,10 @@ function upload_avatar($user_id, $file) {
         $stmt->bindValue(':avatar', 'uploads/avatars/' . $filename, SQLITE3_TEXT);
         $stmt->bindValue(':id', $user_id, SQLITE3_INTEGER);
         $stmt->execute();
-        
+
         return 'uploads/avatars/' . $filename;
     }
-    
+
     return false;
 }
 
@@ -560,7 +576,8 @@ function upload_avatar($user_id, $file) {
  * 
  * @return bool True if user is logged in
  */
-function is_user_logged_in() {
+function is_user_logged_in()
+{
     return isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
 }
 
@@ -568,15 +585,18 @@ function is_user_logged_in() {
  * Require user to be logged in, redirect to login if not
  * 
  * @param string $redirect_url URL to redirect to after login
+ * @param bool $force_redirect If true, will always redirect non-logged users, otherwise allows read-only access
  */
-function require_login($redirect_url = '') {
-    if (!is_user_logged_in()) {
+function require_login($redirect_url = '', $force_redirect = false)
+{
+    // For pages that require login for viewing (force_redirect=true), redirect to login
+    if ($force_redirect && !is_user_logged_in()) {
         $current_url = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
         $redirect = !empty($redirect_url) ? $redirect_url : $current_url;
-        
+
         // Store the intended destination for after login
         $_SESSION['redirect_after_login'] = $redirect;
-        
+
         // Redirect to login page
         header('Location: users/login.php');
         exit;
@@ -589,13 +609,14 @@ function require_login($redirect_url = '') {
  * @param int $user_id User ID
  * @return bool True if verification needed
  */
-function requires_email_verification($user_id) {
+function requires_email_verification($user_id)
+{
     $db = get_db_connection();
-    
+
     $stmt = $db->prepare('SELECT email_verified FROM community_users WHERE id = :id');
     $stmt->bindValue(':id', $user_id, SQLITE3_INTEGER);
     $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
-    
+
     return !($result && $result['email_verified'] == 1);
 }
 
@@ -605,31 +626,32 @@ function requires_email_verification($user_id) {
  * @param int $user_id User ID
  * @return bool Success status
  */
-function resend_verification_email($user_id) {
+function resend_verification_email($user_id)
+{
     $db = get_db_connection();
-    
+
     // Get user data
     $stmt = $db->prepare('SELECT email, username FROM community_users WHERE id = :id');
     $stmt->bindValue(':id', $user_id, SQLITE3_INTEGER);
     $user = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
-    
+
     if (!$user) {
         return false;
     }
-    
+
     // Generate new verification token
     $verification_token = md5(uniqid(rand(), true));
-    
+
     // Update user with new verification token
     $stmt = $db->prepare('UPDATE community_users SET verification_token = :token WHERE id = :id');
     $stmt->bindValue(':token', $verification_token, SQLITE3_TEXT);
     $stmt->bindValue(':id', $user_id, SQLITE3_INTEGER);
-    
+
     if ($stmt->execute()) {
         // Send verification email
         return send_verification_email($user['email'], $verification_token, $user['username']);
     }
-    
+
     return false;
 }
 
@@ -641,26 +663,27 @@ function resend_verification_email($user_id) {
  * @param string $email User's email
  * @return bool Success status
  */
-function connect_content_to_user($user_id, $email) {
+function connect_content_to_user($user_id, $email)
+{
     $db = get_db_connection();
-    
+
     // Update posts
     $stmt = $db->prepare('UPDATE community_posts SET user_id = :user_id WHERE user_email = :email');
     $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
     $stmt->bindValue(':email', $email, SQLITE3_TEXT);
     $stmt->execute();
-    
+
     // Update comments
     $stmt = $db->prepare('UPDATE community_comments SET user_id = :user_id WHERE user_email = :email');
     $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
     $stmt->bindValue(':email', $email, SQLITE3_TEXT);
     $stmt->execute();
-    
+
     // Update votes
     $stmt = $db->prepare('UPDATE community_votes SET user_id = :user_id WHERE user_email = :email');
     $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
     $stmt->bindValue(':email', $email, SQLITE3_TEXT);
     $stmt->execute();
-    
+
     return true;
 }

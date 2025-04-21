@@ -4,8 +4,8 @@ require_once '../db_connect.php';
 require_once 'community_functions.php';
 require_once 'users/user_functions.php';
 
-// Require user to be logged in
-require_login();
+// Require user to be logged in - force redirect for this page
+require_login('', true);
 
 // Get current user
 $current_user = get_current_user();
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = isset($_POST['post_title']) ? trim($_POST['post_title']) : '';
     $content = isset($_POST['post_content']) ? trim($_POST['post_content']) : '';
     $post_type = isset($_POST['post_type']) ? trim($_POST['post_type']) : '';
-    
+
     // Basic validation
     if (empty($title) || empty($content) || empty($post_type)) {
         $error_message = 'All fields are required';
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         // Add the post with user info
         $post_id = add_post($current_user['display_name'], $current_user['email'], $title, $content, $post_type);
-        
+
         if ($post_id) {
             // Connect post to user account
             $db = get_db_connection();
@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->bindValue(':user_id', $current_user['id'], SQLITE3_INTEGER);
             $stmt->bindValue(':post_id', $post_id, SQLITE3_INTEGER);
             $stmt->execute();
-            
+
             $success_message = 'Your post has been submitted successfully. Redirecting to post...';
             // Redirect to the new post after 2 seconds
             header("refresh:2;url=view_post.php?id=$post_id");
@@ -65,25 +65,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
     <title>Create New Post - Argo Community</title>
-    
+
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../resources/scripts/main.js"></script>
-    
+
     <link rel="stylesheet" href="../resources/styles/button.css">
     <link rel="stylesheet" href="../resources/header/style.css">
     <link rel="stylesheet" href="../resources/footer/style.css">
     <link rel="stylesheet" href="create-post.css">
 </head>
+
 <body>
     <header>
         <script>
-            $(function () {
-                $("#includeHeader").load("../resources/header/index.html", function () {
+            $(function() {
+                $("#includeHeader").load("../resources/header/index.html", function() {
                     adjustLinksAndImages("#includeHeader");
                 });
             });
@@ -93,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div class="community-header">
         <h1>Argo Sales Tracker Community</h1>
-        
+
         <!-- Email verification warning if needed -->
         <?php if (isset($current_user['email_verified']) && !$current_user['email_verified']): ?>
             <div class="verification-alert">
@@ -109,13 +111,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php echo htmlspecialchars($success_message); ?>
                 </div>
             <?php endif; ?>
-            
+
             <?php if ($error_message): ?>
                 <div class="error-message">
                     <?php echo htmlspecialchars($error_message); ?>
                 </div>
             <?php endif; ?>
-            
+
             <div class="post-form">
                 <h2>Create New Post</h2>
                 <form id="community-post-form" method="post" action="create_post.php">
@@ -146,8 +148,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <footer class="footer">
         <script>
-            $(function () {
-                $("#includeFooter").load("../resources/footer/index.html", function () {
+            $(function() {
+                $("#includeFooter").load("../resources/footer/index.html", function() {
                     adjustLinksAndImages("#includeFooter");
                 });
             });
@@ -155,4 +157,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div id="includeFooter"></div>
     </footer>
 </body>
+
 </html>

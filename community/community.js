@@ -16,6 +16,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const deleteSelectedBtn = document.getElementById("delete-selected");
   const selectedCountSpan = document.querySelector(".selected-count");
 
+  // Check if user is logged in
+  function isUserLoggedIn() {
+    // We'll check this by looking for disabled vote buttons
+    const voteBtn = document.querySelector(".vote-btn");
+    return voteBtn && !voteBtn.hasAttribute("disabled");
+  }
+
   // Get all posts on the page
   let allPosts = Array.from(document.querySelectorAll(".post-card"));
 
@@ -32,8 +39,10 @@ document.addEventListener("DOMContentLoaded", function () {
         post.dataset.visible = "true";
       }
 
-      // Add checkbox for selection
-      addSelectionCheckbox(post);
+      // Add checkbox for selection if user is admin
+      if (bulkActionsDiv) {
+        addSelectionCheckbox(post);
+      }
     });
 
     // Show loading indicator if there are more posts
@@ -64,6 +73,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Function to toggle selection mode
   function toggleSelectionMode(enable) {
+    if (!isUserLoggedIn()) {
+      return; // Non-logged users can't select posts
+    }
+
     allPosts.forEach((post) => {
       if (enable) {
         post.classList.add("selectable");
@@ -74,24 +87,32 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
-    bulkActionsDiv.style.display = enable ? "flex" : "none";
+    if (bulkActionsDiv) {
+      bulkActionsDiv.style.display = enable ? "flex" : "none";
+    }
     updateSelectedCount();
     updateDeleteButtonState();
   }
 
   // Event listener for Ctrl+A (select all posts)
   document.addEventListener("keydown", function (e) {
+    if (!isUserLoggedIn()) {
+      return; // Non-logged users can't select posts
+    }
+
     // Check if Ctrl+A is pressed
     if (e.ctrlKey && e.key === "a" && document.activeElement !== searchInput) {
       e.preventDefault(); // Prevent default select all behavior
 
       // Enable selection mode if not already enabled
-      if (bulkActionsDiv.style.display === "none") {
+      if (bulkActionsDiv && bulkActionsDiv.style.display === "none") {
         toggleSelectionMode(true);
       }
 
       // Check all visible checkboxes
-      selectAllCheckbox.checked = true;
+      if (selectAllCheckbox) {
+        selectAllCheckbox.checked = true;
+      }
       const visiblePosts = allPosts.filter(
         (post) => post.style.display !== "none"
       );
@@ -123,6 +144,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Update selected count
   function updateSelectedCount() {
+    if (!selectedCountSpan) return;
+
     const selectedPosts = document.querySelectorAll(
       ".post-checkbox:checked"
     ).length;
@@ -131,6 +154,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Update delete button state
   function updateDeleteButtonState() {
+    if (!deleteSelectedBtn) return;
+
     const selectedPosts = document.querySelectorAll(
       ".post-checkbox:checked"
     ).length;
@@ -140,6 +165,11 @@ document.addEventListener("DOMContentLoaded", function () {
   // Event listener for delete selected button
   if (deleteSelectedBtn) {
     deleteSelectedBtn.addEventListener("click", function () {
+      if (!isUserLoggedIn()) {
+        window.location.href = "users/login.php";
+        return;
+      }
+
       const selectedPosts = document.querySelectorAll(".post-checkbox:checked");
       const numSelected = selectedPosts.length;
 
@@ -183,8 +213,20 @@ document.addEventListener("DOMContentLoaded", function () {
               // Update allPosts array
               allPosts = Array.from(document.querySelectorAll(".post-card"));
 
+              // Disable selection mode
               toggleSelectionMode(false);
-              checkAndLoadMorePosts();
+
+              // Check if we need to load more posts
+              if (allPosts.length === 0) {
+                postsContainer.innerHTML = `
+                                <div class="empty-state">
+                                    <h3>No posts yet!</h3>
+                                    <p>Be the first to create a post in our community.</p>
+                                </div>
+                            `;
+              } else {
+                checkAndLoadMorePosts();
+              }
             } else {
               alert("Some posts could not be deleted. Please try again.");
             }
@@ -404,251 +446,51 @@ document.addEventListener("DOMContentLoaded", function () {
   // Initialize long-press detection for enabling selection mode
   let longPressTimer;
 
-  allPosts.forEach((post) => {
-    post.addEventListener("mousedown", function (e) {
-      // Only trigger on the post itself, not on buttons or links inside
-      if (
-        e.target.closest(".post-votes") ||
-        e.target.closest(".post-link") ||
-        e.target.closest(".post-actions")
-      ) {
-        return;
-      }
-
-      longPressTimer = setTimeout(() => {
-        toggleSelectionMode(true);
-
-        // Select the long-pressed post
-        const checkbox = post.querySelector(".post-checkbox");
-        if (checkbox) {
-          checkbox.checked = true;
-          updateSelectedCount();
-          updateDeleteButtonState();
-        }
-      }, 500); // 500ms for long press
-    });
-
-    post.addEventListener("mouseup", function () {
-      clearTimeout(longPressTimer);
-    });
-
-    post.addEventListener("mouseleave", function () {
-      clearTimeout(longPressTimer);
-    });
-  });
-
-  // Handle delete post button clicks for individual posts
-  const deleteButtons = document.querySelectorAll(".delete-post-btn");
-
-  deleteButtons.forEach((btn) => {
-    btn.addEventListener("click", function () {
-      const postId = this.getAttribute("data-post-id");
-
-      if (
-        confirm(
-          "Are you sure you want to delete this post? This action cannot be undone."
-        )
-      ) {
-        fetch("delete_post.php", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          body: `post_id=${postId}`,
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.success) {
-              // Find and remove the post from the DOM
-              const post = document.querySelector(
-                `.post-card[data-post-id="${postId}"]`
-              );
-              if (post) {
-                post.remove();
-
-                // Update allPosts array
-                allPosts = Array.from(document.querySelectorAll(".post-card"));
-
-                checkAndLoadMorePosts();
-              }
-            } else {
-              // Show the error message from the server
-              alert(data.message || "Failed to delete post. Please try again.");
-            }
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-            alert(
-              "An error occurred while deleting the post. Please try again."
-            );
-          });
-      }
-    });
-  });
-
-  // Fix for status update dropdown
-  // We need to properly attach event listeners to all status update dropdowns
-  document.addEventListener("change", function (event) {
-    // Check if the changed element is a status dropdown
-    if (event.target.classList.contains("status-update")) {
-      const select = event.target;
-      const postId = select.getAttribute("data-post-id");
-      const newStatus = select.value;
-
-      // Send the status update request
-      fetch("update_status.php", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: `post_id=${postId}&status=${newStatus}`,
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.success) {
-            // Find and update the status label for this post
-            const post = document.querySelector(
-              `.post-card[data-post-id="${postId}"]`
-            );
-            if (post) {
-              const statusLabel = post.querySelector(".post-status");
-              if (statusLabel) {
-                // Update the class
-                statusLabel.className = "post-status " + newStatus;
-
-                // Update the text
-                let statusText = "";
-                switch (newStatus) {
-                  case "open":
-                    statusText = "Open";
-                    break;
-                  case "in_progress":
-                    statusText = "In Progress";
-                    break;
-                  case "completed":
-                    statusText = "Completed";
-                    break;
-                  case "declined":
-                    statusText = "Declined";
-                    break;
-                }
-                statusLabel.textContent = statusText;
-              }
-            }
-          } else {
-            // Show the error message from the server
-            alert(data.message || "Failed to update status. Please try again.");
-
-            // Reset the dropdown to its previous value if the update failed
-            const post = document.querySelector(
-              `.post-card[data-post-id="${postId}"]`
-            );
-            if (post) {
-              const statusLabel = post.querySelector(".post-status");
-              if (statusLabel) {
-                // Get the current status from the label's class
-                const currentStatus = Array.from(statusLabel.classList).find(
-                  (cls) =>
-                    ["open", "in_progress", "completed", "declined"].includes(
-                      cls
-                    )
-                );
-
-                // Reset the dropdown
-                if (currentStatus) {
-                  select.value = currentStatus;
-                }
-              }
-            }
-          }
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-          alert(
-            "An error occurred while updating the status. Please try again."
-          );
-        });
-    }
-  });
-});
-
-// Create Post Page - Confirm before leaving with unsaved changes
-document.addEventListener("DOMContentLoaded", function () {
-  // Check if we're on the create post page
-  const createPostForm = document.getElementById("community-post-form");
-
-  if (createPostForm) {
-    // Store original form state
-    const originalFormState = createPostForm.innerHTML;
-
-    // Flag to track if form has been modified
-    let formModified = false;
-
-    // Function to check if form has been modified
-    function isFormModified() {
-      const inputs = createPostForm.querySelectorAll("input, textarea, select");
-
-      for (const input of inputs) {
-        // Skip hidden inputs
-        if (input.type === "hidden") continue;
-
-        // Check if text/textarea has been modified
+  // Only set up selection functionality for logged-in users
+  if (isUserLoggedIn() && bulkActionsDiv) {
+    allPosts.forEach((post) => {
+      post.addEventListener("mousedown", function (e) {
+        // Only trigger on the post itself, not on buttons or links inside
         if (
-          (input.type === "text" ||
-            input.type === "textarea" ||
-            input.type === "email" ||
-            input.tagName === "TEXTAREA") &&
-          input.value.trim() !== ""
+          e.target.closest(".post-votes") ||
+          e.target.closest(".post-link") ||
+          e.target.closest(".post-actions")
         ) {
-          return true;
+          return;
         }
 
-        // Check if select has been modified
-        if (input.tagName === "SELECT" && input.value !== "") {
-          return true;
-        }
-      }
+        longPressTimer = setTimeout(() => {
+          toggleSelectionMode(true);
 
-      return false;
-    }
+          // Select the long-pressed post
+          const checkbox = post.querySelector(".post-checkbox");
+          if (checkbox) {
+            checkbox.checked = true;
+            updateSelectedCount();
+            updateDeleteButtonState();
+          }
+        }, 500); // 500ms for long press
+      });
 
-    // Add input event listeners to all form fields
-    const formElements = createPostForm.querySelectorAll(
-      "input, textarea, select"
-    );
+      post.addEventListener("mouseup", function () {
+        clearTimeout(longPressTimer);
+      });
 
-    formElements.forEach((element) => {
-      element.addEventListener("input", function () {
-        formModified = isFormModified();
+      post.addEventListener("mouseleave", function () {
+        clearTimeout(longPressTimer);
       });
     });
+  }
 
-    // Listen for cancel button clicks
-    const cancelButton = document.querySelector(".btn.btn-black");
-
-    if (cancelButton) {
-      cancelButton.addEventListener("click", function (e) {
-        if (formModified) {
-          if (
-            !confirm(
-              "You have unsaved changes. Are you sure you want to leave?"
-            )
-          ) {
-            e.preventDefault();
-          }
-        }
+  // Redirect vote buttons for non-logged-in users
+  if (!isUserLoggedIn()) {
+    const voteButtons = document.querySelectorAll(".vote-btn");
+    voteButtons.forEach((button) => {
+      button.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        window.location.href = "users/login.php";
       });
-    }
-
-    // Listen for beforeunload event
-    window.addEventListener("beforeunload", function (e) {
-      if (formModified) {
-        // Standard message for modern browsers
-        const message =
-          "You have unsaved changes. Are you sure you want to leave?";
-        e.returnValue = message;
-        return message;
-      }
     });
   }
 });

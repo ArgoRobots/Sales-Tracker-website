@@ -64,7 +64,6 @@ CREATE TABLE IF NOT EXISTS community_users (
     verification_token TEXT,
     reset_token TEXT,
     reset_token_expiry TIMESTAMP,
-    remember_token TEXT,
     last_login TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
