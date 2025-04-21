@@ -4,13 +4,8 @@ require_once '../db_connect.php';
 require_once 'community_functions.php';
 require_once 'users/user_functions.php';
 
-// Get all posts with vote counts
 $posts = get_all_posts();
-
-// Check if user is logged in
 $is_logged_in = is_user_logged_in();
-
-// Get current user data if logged in
 $current_user = $is_logged_in ? get_current_user() : null;
 
 // Make sure current_user is an array and has the expected structure if logged in
@@ -26,8 +21,6 @@ if ($is_logged_in && !is_array($current_user)) {
     );
 }
 
-// Get active users for the sidebar
-$active_users = get_active_users(5);
 ?>
 <!DOCTYPE html>
 <html lang="en">

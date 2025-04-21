@@ -4,7 +4,6 @@ require_once '../../db_connect.php';
 require_once 'user_functions.php';
 require_once '../community_functions.php';
 
-// Require user to be logged in
 require_login();
 
 // Get requested user profile
@@ -28,10 +27,7 @@ if (!$user) {
     exit;
 }
 
-// Get profile data including post and comment counts
 $profile = get_user_profile($user['id']);
-
-// Get user's latest activity
 $activity = get_user_activity($user['id'], 5);
 
 // Handle profile update (if own profile)

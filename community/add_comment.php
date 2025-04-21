@@ -20,7 +20,6 @@ if (!is_user_logged_in()) {
     exit;
 }
 
-// Get current user
 $current_user = get_current_user();
 
 // Make sure current_user is an array with the expected structure
@@ -41,11 +40,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validate and sanitize inputs
     $post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
     $content = isset($_POST['comment_content']) ? trim($_POST['comment_content']) : '';
-    
+
     // Get user display name and email with fallbacks
     $display_name = isset($current_user['display_name']) ? $current_user['display_name'] : 'Anonymous';
     $email = isset($current_user['email']) ? $current_user['email'] : 'anonymous@example.com';
-    
+
     // Basic validation
     if (empty($post_id) || empty($content)) {
         $response['message'] = 'All fields are required';
@@ -54,27 +53,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         // Verify post exists
         $post = get_post($post_id);
-        
+
         if (!$post) {
             $response['message'] = 'Post not found';
         } else {
             // Add the comment
             $comment = add_comment($post_id, $display_name, $email, $content);
-            
+
             if ($comment) {
                 // Connect comment to user account
                 $db = get_db_connection();
-                
+
                 // Make sure we have a valid user ID
                 $user_id = isset($current_user['id']) ? intval($current_user['id']) : 0;
-                
+
                 if ($user_id > 0) {
                     $stmt = $db->prepare('UPDATE community_comments SET user_id = :user_id WHERE id = :comment_id');
                     $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
                     $stmt->bindValue(':comment_id', $comment['id'], SQLITE3_INTEGER);
                     $stmt->execute();
                 }
-                
+
                 $response = [
                     'success' => true,
                     'message' => 'Comment added successfully',

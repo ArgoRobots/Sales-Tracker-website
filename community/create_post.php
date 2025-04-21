@@ -4,10 +4,7 @@ require_once '../db_connect.php';
 require_once 'community_functions.php';
 require_once 'users/user_functions.php';
 
-// Require user to be logged in - force redirect for this page
 require_login('', true);
-
-// Get current user
 $current_user = get_current_user();
 
 // Make sure current_user is an array and has the expected structure

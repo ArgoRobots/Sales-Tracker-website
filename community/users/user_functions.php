@@ -1,10 +1,6 @@
 <?php
 
 /**
- * User account management functions
- */
-
-/**
  * Register a new user
  * 
  * @param string $username Username
@@ -489,34 +485,6 @@ function get_user_activity($user_id, $limit = 10)
 
     // Truncate to limit
     return array_slice($activity, 0, $limit);
-}
-
-/**
- * Get active users for the community sidebar
- * 
- * @param int $limit Number of users to return
- * @return array Active users
- */
-function get_active_users($limit = 5)
-{
-    $db = get_db_connection();
-
-    $stmt = $db->prepare('SELECT u.id, u.username, u.display_name, u.avatar, COUNT(p.id) + COUNT(c.id) as activity_count
-                         FROM community_users u
-                         LEFT JOIN community_posts p ON u.id = p.user_id
-                         LEFT JOIN community_comments c ON u.id = c.user_id
-                         GROUP BY u.id
-                         ORDER BY activity_count DESC, u.last_login DESC
-                         LIMIT :limit');
-    $stmt->bindValue(':limit', $limit, SQLITE3_INTEGER);
-    $result = $stmt->execute();
-
-    $users = [];
-    while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
-        $users[] = $row;
-    }
-
-    return $users;
 }
 
 /**

@@ -4,10 +4,7 @@ require_once '../db_connect.php';
 require_once 'community_functions.php';
 require_once 'users/user_functions.php';
 
-// Require user to be logged in
 require_login();
-
-// Get current user
 $current_user = get_current_user();
 
 // Make sure current_user is an array with the expected structure
@@ -32,7 +29,6 @@ if ($post_id <= 0) {
     exit;
 }
 
-// Get the post data
 $post = get_post($post_id);
 
 // Redirect to index if post not found
@@ -69,8 +65,6 @@ $can_edit_post = (isset($current_user['role']) && $current_user['role'] === 'adm
 // Get user's vote for this post
 $user_vote = isset($current_user['email']) ? get_user_vote($post_id, $current_user['email']) : 0;
 
-// Get active users for the sidebar
-$active_users = get_active_users(5);
 ?>
 <!DOCTYPE html>
 <html lang="en">

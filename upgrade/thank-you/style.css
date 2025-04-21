@@ -19,7 +19,6 @@ h1 {
 }
 
 .thank-you-card h2 {
-    margin-top: 0;
     font-size: 32px;
     color: #1e3a8a;
 }
@@ -58,7 +57,6 @@ h1 {
 }
 
 .license-container h3 {
-    margin-top: 0;
     font-size: 20px;
     color: #1e3a8a;
     text-align: center;

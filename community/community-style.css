@@ -48,11 +48,11 @@ header .header-inner .menu-container .menu .community:after {
 .login-prompt a {
     color: #0284c7;
     font-weight: bold;
-    text-decoration: none;
+    text-decoration: underline;
 }
 
 .login-prompt a:hover {
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 /* Community styles */
@@ -65,7 +65,7 @@ header .header-inner .menu-container .menu .community:after {
 
 .community-wrapper {
     max-width: 80%;
-    margin: 0 auto;
+    margin: 30px auto;
     padding: 0;
 }
 
@@ -91,7 +91,16 @@ header .header-inner .menu-container .menu .community:after {
 .community-actions {
     display: flex;
     justify-content: space-between;
-    margin: 20px 0;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+}
+
+.action-left {
+    display: flex;
+    gap: 12px;
+    align-items: center;
     flex-wrap: wrap;
 }
 
@@ -391,23 +400,6 @@ header .header-inner .menu-container .menu .community:after {
         flex-direction: column;
         align-items: flex-start;
     }
-}
-
-/* Action Bar Improvements */
-.community-actions {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-    gap: 15px;
-    align-items: center;
-}
-
-.action-left {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    flex-wrap: wrap;
 }
 
 /* Filter dropdown styling */
