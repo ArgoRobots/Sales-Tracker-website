@@ -183,20 +183,8 @@ document.addEventListener("DOMContentLoaded", function () {
               // Update allPosts array
               allPosts = Array.from(document.querySelectorAll(".post-card"));
 
-              // Disable selection mode
               toggleSelectionMode(false);
-
-              // Check if we need to load more posts
-              if (allPosts.length === 0) {
-                postsContainer.innerHTML = `
-                                <div class="empty-state">
-                                    <h3>No posts yet!</h3>
-                                    <p>Be the first to create a post in our community.</p>
-                                </div>
-                            `;
-              } else {
-                checkAndLoadMorePosts();
-              }
+              checkAndLoadMorePosts();
             } else {
               alert("Some posts could not be deleted. Please try again.");
             }
@@ -447,6 +435,140 @@ document.addEventListener("DOMContentLoaded", function () {
     post.addEventListener("mouseleave", function () {
       clearTimeout(longPressTimer);
     });
+  });
+
+  // Handle delete post button clicks for individual posts
+  const deleteButtons = document.querySelectorAll(".delete-post-btn");
+
+  deleteButtons.forEach((btn) => {
+    btn.addEventListener("click", function () {
+      const postId = this.getAttribute("data-post-id");
+
+      if (
+        confirm(
+          "Are you sure you want to delete this post? This action cannot be undone."
+        )
+      ) {
+        fetch("delete_post.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: `post_id=${postId}`,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              // Find and remove the post from the DOM
+              const post = document.querySelector(
+                `.post-card[data-post-id="${postId}"]`
+              );
+              if (post) {
+                post.remove();
+
+                // Update allPosts array
+                allPosts = Array.from(document.querySelectorAll(".post-card"));
+
+                checkAndLoadMorePosts();
+              }
+            } else {
+              // Show the error message from the server
+              alert(data.message || "Failed to delete post. Please try again.");
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert(
+              "An error occurred while deleting the post. Please try again."
+            );
+          });
+      }
+    });
+  });
+
+  // Fix for status update dropdown
+  // We need to properly attach event listeners to all status update dropdowns
+  document.addEventListener("change", function (event) {
+    // Check if the changed element is a status dropdown
+    if (event.target.classList.contains("status-update")) {
+      const select = event.target;
+      const postId = select.getAttribute("data-post-id");
+      const newStatus = select.value;
+
+      // Send the status update request
+      fetch("update_status.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: `post_id=${postId}&status=${newStatus}`,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            // Find and update the status label for this post
+            const post = document.querySelector(
+              `.post-card[data-post-id="${postId}"]`
+            );
+            if (post) {
+              const statusLabel = post.querySelector(".post-status");
+              if (statusLabel) {
+                // Update the class
+                statusLabel.className = "post-status " + newStatus;
+
+                // Update the text
+                let statusText = "";
+                switch (newStatus) {
+                  case "open":
+                    statusText = "Open";
+                    break;
+                  case "in_progress":
+                    statusText = "In Progress";
+                    break;
+                  case "completed":
+                    statusText = "Completed";
+                    break;
+                  case "declined":
+                    statusText = "Declined";
+                    break;
+                }
+                statusLabel.textContent = statusText;
+              }
+            }
+          } else {
+            // Show the error message from the server
+            alert(data.message || "Failed to update status. Please try again.");
+
+            // Reset the dropdown to its previous value if the update failed
+            const post = document.querySelector(
+              `.post-card[data-post-id="${postId}"]`
+            );
+            if (post) {
+              const statusLabel = post.querySelector(".post-status");
+              if (statusLabel) {
+                // Get the current status from the label's class
+                const currentStatus = Array.from(statusLabel.classList).find(
+                  (cls) =>
+                    ["open", "in_progress", "completed", "declined"].includes(
+                      cls
+                    )
+                );
+
+                // Reset the dropdown
+                if (currentStatus) {
+                  select.value = currentStatus;
+                }
+              }
+            }
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          alert(
+            "An error occurred while updating the status. Please try again."
+          );
+        });
+    }
   });
 });
 

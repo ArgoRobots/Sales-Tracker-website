@@ -13,12 +13,12 @@ $response = [
 ];
 
 // Check if user is an admin
-if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
+if ($_SESSION['role'] === 'admin') {
     // Only accept POST requests
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
         $status = isset($_POST['status']) ? trim($_POST['status']) : '';
-        
+
         // Validate status
         if (!in_array($status, ['open', 'in_progress', 'completed', 'declined'])) {
             $response['message'] = 'Invalid status value';

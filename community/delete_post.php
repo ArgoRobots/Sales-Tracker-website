@@ -13,11 +13,11 @@ $response = [
 ];
 
 // Check if user is an admin
-if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
+if ($_SESSION['role'] === 'admin') {
     // Only accept POST requests
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
-        
+
         if ($post_id > 0) {
             // Delete the post
             if (delete_post($post_id)) {

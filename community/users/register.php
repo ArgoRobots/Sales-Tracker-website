@@ -1,0 +1,148 @@
+<?php
+session_start();
+require_once '../../db_connect.php';
+require_once 'user_functions.php';
+
+// Redirect if already logged in
+if (isset($_SESSION['user_id'])) {
+    header('Location: ../index.php');
+    exit;
+}
+
+$error = '';
+$success = '';
+
+// Process form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Get form data
+    $username = isset($_POST['username']) ? trim($_POST['username']) : '';
+    $email = isset($_POST['email']) ? trim($_POST['email']) : '';
+    $password = isset($_POST['password']) ? $_POST['password'] : '';
+    $password_confirm = isset($_POST['password_confirm']) ? $_POST['password_confirm'] : '';
+    $display_name = isset($_POST['display_name']) ? trim($_POST['display_name']) : '';
+    
+    // Basic validation
+    if (empty($username) || empty($email) || empty($password) || empty($password_confirm)) {
+        $error = 'All fields are required';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = 'Please enter a valid email address';
+    } elseif (strlen($username) < 3 || strlen($username) > 20) {
+        $error = 'Username must be between 3 and 20 characters';
+    } elseif (!preg_match('/^[a-zA-Z0-9_]+$/', $username)) {
+        $error = 'Username can only contain letters, numbers, and underscores';
+    } elseif (strlen($password) < 8) {
+        $error = 'Password must be at least 8 characters long';
+    } elseif ($password !== $password_confirm) {
+        $error = 'Passwords do not match';
+    } else {
+        // Attempt to register user
+        $result = register_user($username, $email, $password, $display_name);
+        
+        if ($result['success']) {
+            $success = $result['message'];
+        } else {
+            $error = $result['message'];
+        }
+    }
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
+    <title>Register - Argo Community</title>
+
+    <script src="../../resources/scripts/jquery-3.6.0.js"></script>
+    <script src="../../resources/scripts/main.js"></script>
+    
+    <link rel="stylesheet" href="auth-style.css">
+    <link rel="stylesheet" href="../../resources/styles/button.css">
+    <link rel="stylesheet" href="../../resources/header/style.css">
+    <link rel="stylesheet" href="../../resources/footer/style.css">
+    <link rel="stylesheet" href="../../resources/header/dark.css">
+</head>
+<body>
+    <header>
+        <script>
+            $(function () {
+                $("#includeHeader").load("../../resources/header/index.html", function () {
+                    adjustLinksAndImages("#includeHeader");
+                });
+            });
+        </script>
+        <div id="includeHeader"></div>
+    </header>
+
+    <div class="auth-container">
+        <div class="auth-card">
+            <h1>Create an Account</h1>
+            <p class="auth-subtitle">Join Argo Community to share ideas and connect with other users</p>
+            
+            <?php if ($error): ?>
+                <div class="error-message">
+                    <?php echo htmlspecialchars($error); ?>
+                </div>
+            <?php endif; ?>
+            
+            <?php if ($success): ?>
+                <div class="success-message">
+                    <?php echo htmlspecialchars($success); ?>
+                    <p>Please check your email to verify your account.</p>
+                    <p><a href="login.php" class="btn btn-blue">Proceed to Login</a></p>
+                </div>
+            <?php else: ?>
+                <form method="post" class="auth-form">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username']) : ''; ?>" required>
+                        <small>Letters, numbers, and underscores only (3-20 characters)</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="display_name">Display Name (Optional)</label>
+                        <input type="text" id="display_name" name="display_name" value="<?php echo isset($_POST['display_name']) ? htmlspecialchars($_POST['display_name']) : ''; ?>">
+                        <small>This is how your name will appear in the community</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required>
+                        <small>At least 8 characters</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password_confirm">Confirm Password</label>
+                        <input type="password" id="password_confirm" name="password_confirm" required>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-blue btn-block">Register</button>
+                    </div>
+                    
+                    <div class="auth-links">
+                        <p>Already have an account? <a href="login.php">Log in</a></p>
+                    </div>
+                </form>
+            <?php endif; ?>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <script>
+            $(function () {
+                $("#includeFooter").load("../../resources/footer/index.html", function () {
+                    adjustLinksAndImages("#includeFooter");
+                });
+            });
+        </script>
+        <div id="includeFooter"></div>
+    </footer>
+</body>
+</html>

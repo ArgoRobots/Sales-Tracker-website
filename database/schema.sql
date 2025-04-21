@@ -50,39 +50,116 @@ CREATE INDEX IF NOT EXISTS idx_license_keys_email ON license_keys(email);
 CREATE INDEX IF NOT EXISTS idx_license_keys_payment_intent ON license_keys(payment_intent);
 
 -- Community forum tables
+-- Create users table
+CREATE TABLE IF NOT EXISTS community_users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT NOT NULL UNIQUE,
+    email TEXT NOT NULL UNIQUE,
+    password_hash TEXT NOT NULL,
+    display_name TEXT,
+    bio TEXT,
+    avatar TEXT,
+    role TEXT DEFAULT 'user',
+    email_verified BOOLEAN DEFAULT 0,
+    verification_token TEXT,
+    reset_token TEXT,
+    reset_token_expiry TIMESTAMP,
+    remember_token TEXT,
+    last_login TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
--- Posts table
+-- Add indexes on username and email for faster lookups
+CREATE INDEX IF NOT EXISTS idx_users_username ON community_users(username);
+CREATE INDEX IF NOT EXISTS idx_users_email ON community_users(email);
+
+-- Create posts table
 CREATE TABLE IF NOT EXISTS community_posts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_email TEXT NOT NULL,
+    user_id INTEGER,
     user_name TEXT NOT NULL,
+    user_email TEXT NOT NULL,
     title TEXT NOT NULL,
     content TEXT NOT NULL,
     post_type TEXT NOT NULL CHECK(post_type IN ('bug', 'feature')),
     status TEXT DEFAULT 'open' CHECK(status IN ('open', 'in_progress', 'completed', 'declined')),
     votes INTEGER DEFAULT 0,
+    views INTEGER DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES community_users(id) ON DELETE SET NULL
 );
 
--- Comments table
+-- Add indexes for posts
+CREATE INDEX IF NOT EXISTS idx_posts_user_id ON community_posts(user_id);
+CREATE INDEX IF NOT EXISTS idx_posts_user_email ON community_posts(user_email);
+CREATE INDEX IF NOT EXISTS idx_posts_post_type ON community_posts(post_type);
+CREATE INDEX IF NOT EXISTS idx_posts_status ON community_posts(status);
+CREATE INDEX IF NOT EXISTS idx_posts_created_at ON community_posts(created_at);
+
+-- Create comments table
 CREATE TABLE IF NOT EXISTS community_comments (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     post_id INTEGER NOT NULL,
-    user_email TEXT NOT NULL,
+    user_id INTEGER,
     user_name TEXT NOT NULL,
+    user_email TEXT NOT NULL,
     content TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (post_id) REFERENCES community_posts(id) ON DELETE CASCADE
+    FOREIGN KEY (post_id) REFERENCES community_posts(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES community_users(id) ON DELETE SET NULL
 );
 
--- Votes table to track individual votes
+-- Add indexes for comments
+CREATE INDEX IF NOT EXISTS idx_comments_post_id ON community_comments(post_id);
+CREATE INDEX IF NOT EXISTS idx_comments_user_id ON community_comments(user_id);
+CREATE INDEX IF NOT EXISTS idx_comments_user_email ON community_comments(user_email);
+CREATE INDEX IF NOT EXISTS idx_comments_created_at ON community_comments(created_at);
+
+-- Create votes table
 CREATE TABLE IF NOT EXISTS community_votes (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     post_id INTEGER NOT NULL,
+    user_id INTEGER,
     user_email TEXT NOT NULL,
     vote_type INTEGER NOT NULL CHECK(vote_type IN (-1, 1)), -- -1 for downvote, 1 for upvote
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE(post_id, user_email), -- Prevent multiple votes from same user
-    FOREIGN KEY (post_id) REFERENCES community_posts(id) ON DELETE CASCADE
+    FOREIGN KEY (post_id) REFERENCES community_posts(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES community_users(id) ON DELETE SET NULL,
+    UNIQUE(post_id, user_email) -- Ensure one vote per user per post
 );
+
+-- Add indexes for votes
+CREATE INDEX IF NOT EXISTS idx_votes_post_id ON community_votes(post_id);
+CREATE INDEX IF NOT EXISTS idx_votes_user_id ON community_votes(user_id);
+CREATE INDEX IF NOT EXISTS idx_votes_user_email ON community_votes(user_email);
+
+-- Create view for user profiles with post and comment counts
+CREATE VIEW IF NOT EXISTS community_user_profiles AS
+SELECT 
+    u.id,
+    u.username,
+    u.display_name,
+    u.email,
+    u.bio,
+    u.avatar,
+    u.role,
+    u.created_at,
+    COUNT(DISTINCT p.id) AS post_count,
+    COUNT(DISTINCT c.id) AS comment_count
+FROM 
+    community_users u
+LEFT JOIN 
+    community_posts p ON u.id = p.user_id
+LEFT JOIN 
+    community_comments c ON u.id = c.user_id
+GROUP BY 
+    u.id;
+
+-- Insert default admin user
+INSERT OR IGNORE INTO community_users 
+    (username, email, password_hash, display_name, role, email_verified) 
+VALUES 
+    ('admin', 'admin@argorobots.com', '$2y$10$8QLEr4QVu1KmOVkBHZq97.bN9Nt5sUwdvxdxhUl5wMdcpIVih5WH2', 'Administrator', 'admin', 1);
+-- Note: The password hash above is for 'admin123' - change this in production!

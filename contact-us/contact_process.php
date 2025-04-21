@@ -121,7 +121,6 @@ function get_contact_email_template($firstName, $lastName, $email, $message) {
         
         .header h1 {
             color: #ffffff;
-            margin: 0;
             font-size: 22px;
         }
         

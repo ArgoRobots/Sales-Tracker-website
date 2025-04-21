@@ -1,4 +1,4 @@
-/* Common styles for 2FA pages (login.php and 2fa-setup.php) */
+/* Common styles for 2FA pages (users/login.php and 2fa-setup.php) */
 
 /* Remove up/down arrows from number inputs - Chrome, Safari, Edge, Opera */
 input[type="number"]::-webkit-outer-spin-button,

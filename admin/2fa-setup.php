@@ -5,7 +5,7 @@ require_once '2fa.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
-    header('Location: login.php');
+    header('Location: users/login.php');
     exit;
 }
 

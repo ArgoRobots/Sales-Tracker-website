@@ -10,7 +10,7 @@ if (isset($_SESSION['email_message'])) {
 
 // Check if user is logged in
 if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
-    header('Location: login.php');
+    header('Location: users/login.php');
     exit;
 }
 
@@ -168,7 +168,7 @@ $chart_data = get_chart_data();
             <h1>License Key Administration</h1>
             <div class="header-buttons">
                 <a href="2fa-setup.php" class="btn btn-secondary">2FA Settings</a>
-                <a href="logout.php" class="btn logout-btn">Logout</a>
+                <a href="users/users/logout.php" class="btn logout-btn">Logout</a>
             </div>
         </div>
         

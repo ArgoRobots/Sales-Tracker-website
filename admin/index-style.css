@@ -1,7 +1,6 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
-    margin: 0;
     padding: 20px;
     background-color: #f5f7fa;
 }
@@ -35,7 +34,6 @@ body {
 
 h1 {
     color: #1e3a8a;
-    margin: 0;
 }
 
 .btn {
@@ -247,7 +245,6 @@ td:nth-child(6) {
     font-size: 12px;
     text-align: center;
     display: block;
-    margin: 0;
 }
 
 .btn-activate {
@@ -292,10 +289,6 @@ td:nth-child(6) {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 15px;
-}
-
-.table-header h2 {
-    margin: 0;
 }
 
 .total-keys {

@@ -18,7 +18,6 @@ header .header-inner .menu-container .menu .community:after {
 
 .community-header h1 {
     font-size: 36px;
-    margin: 0;
     padding: 10px 0;
 }
 
@@ -126,7 +125,6 @@ header .header-inner .menu-container .menu .community:after {
 }
 
 .post-title {
-    margin: 0;
     font-size: 22px;
     color: #1e3a8a;
     flex: 1;
@@ -184,19 +182,14 @@ header .header-inner .menu-container .menu .community:after {
 }
 
 .post-body p {
-    margin: 0;
     white-space: pre-line;
 }
 
 .post-footer {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
     margin-top: auto;
     padding-top: 15px;
     border-top: 1px solid #f3f4f6;
-    flex-wrap: wrap;
-    gap: 10px;
 }
 
 .post-info {
@@ -222,6 +215,7 @@ header .header-inner .menu-container .menu .community:after {
     display: flex;
     align-items: center;
     gap: 8px;
+    margin-left: auto;
 }
 
 .status-update {
@@ -261,18 +255,11 @@ header .header-inner .menu-container .menu .community:after {
     margin-bottom: 30px;
 }
 
-.no-comments {
-    text-align: center;
-    color: #6b7280;
-    font-style: italic;
-    padding: 20px 0;
-}
-
 .comment {
     background-color: white;
     border-radius: 6px;
     padding: 15px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
@@ -289,14 +276,8 @@ header .header-inner .menu-container .menu .community:after {
 }
 
 .comment-date {
+    margin-left: 10px;
     color: #6b7280;
-}
-
-.comment-content {
-    color: #4b5563;
-    white-space: pre-line;
-    line-height: 1.5;
-    margin-bottom: 10px;
 }
 
 .comment-actions {
@@ -324,7 +305,7 @@ header .header-inner .menu-container .menu .community:after {
 
 .comment-form h4 {
     margin-top: 0;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
     color: #1f2937;
     font-size: 16px;
 }

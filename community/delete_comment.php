@@ -13,15 +13,15 @@ $response = [
 ];
 
 // Check if user is an admin
-if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
+if ($_SESSION['role'] === 'admin') {
     // Only accept POST requests
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $comment_id = isset($_POST['comment_id']) ? intval($_POST['comment_id']) : 0;
-        
+
         if ($comment_id > 0) {
             // Delete the comment
             $result = delete_comment($comment_id);
-            
+
             if ($result && $result['success']) {
                 $response = [
                     'success' => true,
