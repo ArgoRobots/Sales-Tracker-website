@@ -453,6 +453,18 @@ document.addEventListener("DOMContentLoaded", function () {
   function setupVoting() {
     const voteButtons = document.querySelectorAll(".vote-btn");
 
+    // Apply initial vote colors based on 'voted' class
+    voteButtons.forEach((btn) => {
+      if (btn.classList.contains("upvote") && btn.classList.contains("voted")) {
+        btn.style.color = "#2563eb";
+      } else if (
+        btn.classList.contains("downvote") &&
+        btn.classList.contains("voted")
+      ) {
+        btn.style.color = "#dc2626";
+      }
+    });
+
     voteButtons.forEach((btn) => {
       btn.addEventListener("click", function (e) {
         // If user is not logged in, redirect is already handled via index.php script
@@ -494,11 +506,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
               upvoteBtn.style.color = "";
               downvoteBtn.style.color = "";
+              upvoteBtn.classList.remove("voted");
+              downvoteBtn.classList.remove("voted");
 
               if (data.user_vote === 1) {
                 upvoteBtn.style.color = "#2563eb";
+                upvoteBtn.classList.add("voted");
               } else if (data.user_vote === -1) {
                 downvoteBtn.style.color = "#dc2626";
+                downvoteBtn.classList.add("voted");
               }
             } else {
               if (data.message === "You must be logged in to vote") {

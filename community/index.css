@@ -331,7 +331,7 @@ header .header-inner .menu-container .menu .community:after {
     text-decoration: none;
 }
 
-.user-link,
+.user-link:hover,
 .view-comments-btn:hover {
     text-decoration: underline;
 }

@@ -128,16 +128,20 @@ if ($is_logged_in && !is_array($current_user)) {
                 </div>
             <?php else: ?>
                 <?php foreach ($posts as $post): ?>
+                    <?php
+                    // Get user's vote for this post
+                    $user_vote = $is_logged_in ? get_user_vote($post['id'], $current_user['email']) : 0;
+                    ?>
                     <div class="post-card" data-post-id="<?php echo $post['id']; ?>" data-post-type="<?php echo $post['post_type']; ?>">
                         <!-- Post votes -->
                         <div class="post-votes">
-                            <button class="vote-btn upvote" data-post-id="<?php echo $post['id']; ?>" data-vote="up" <?php echo !$is_logged_in ? 'disabled title="Please log in to vote"' : ''; ?>>
+                            <button class="vote-btn upvote <?php echo $user_vote === 1 ? 'voted' : ''; ?>" data-post-id="<?php echo $post['id']; ?>" data-vote="up" <?php echo !$is_logged_in ? 'disabled title="Please log in to vote"' : ''; ?>>
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                     <path stroke-width="2" d="M12 19V5M5 12l7-7 7 7" />
                                 </svg>
                             </button>
                             <span class="vote-count"><?php echo $post['votes']; ?></span>
-                            <button class="vote-btn downvote" data-post-id="<?php echo $post['id']; ?>" data-vote="down" <?php echo !$is_logged_in ? 'disabled title="Please log in to vote"' : ''; ?>>
+                            <button class="vote-btn downvote <?php echo $user_vote === -1 ? 'voted' : ''; ?>" data-post-id="<?php echo $post['id']; ?>" data-vote="down" <?php echo !$is_logged_in ? 'disabled title="Please log in to vote"' : ''; ?>>
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                     <path stroke-width="2" d="M12 5v14M5 12l7 7 7-7" />
                                 </svg>
