@@ -102,16 +102,50 @@ $user_vote = $is_logged_in ? get_user_vote($post_id, $email) : 0;
     </div>
 
     <div class="community-container">
-        <a href="index.php" class="btn back-button">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path stroke-width="2" d="M19 12H5M12 19l-7-7 7-7" />
-            </svg>
-            Back to All Posts
-        </a>
+        <div class="page-header">
+            <a href="index.php" class="btn back-button">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-width="2" d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+                Back to All Posts
+            </a>
+
+            <div class="post-status-controls">
+                <span class="post-status-label">Status:</span>
+                <span class="post-status post-status-large <?php echo $post['status']; ?>">
+                    <?php
+                    switch ($post['status']) {
+                        case 'open':
+                            echo 'Open';
+                            break;
+                        case 'in_progress':
+                            echo 'In Progress';
+                            break;
+                        case 'completed':
+                            echo 'Completed';
+                            break;
+                        case 'declined':
+                            echo 'Declined';
+                            break;
+                    }
+                    ?>
+                </span>
+
+                <?php if ($can_edit_post): ?>
+                    <select class="status-update" data-post-id="<?php echo $post['id']; ?>">
+                        <option value="open" <?php echo $post['status'] === 'open' ? 'selected' : ''; ?>>Open</option>
+                        <option value="in_progress" <?php echo $post['status'] === 'in_progress' ? 'selected' : ''; ?>>In Progress</option>
+                        <option value="completed" <?php echo $post['status'] === 'completed' ? 'selected' : ''; ?>>Completed</option>
+                        <option value="declined" <?php echo $post['status'] === 'declined' ? 'selected' : ''; ?>>Declined</option>
+                    </select>
+                <?php endif; ?>
+            </div>
+        </div>
 
         <div class="post-detail">
             <div class="post-card" data-post-id="<?php echo $post['id']; ?>" data-post-type="<?php echo $post['post_type']; ?>">
-                <!-- Move votes to the left side -->
+
+                <!-- Post votes -->
                 <div class="post-votes">
                     <button class="vote-btn upvote <?php echo $user_vote === 1 ? 'voted' : ''; ?>" data-post-id="<?php echo $post['id']; ?>" data-vote="up">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -125,6 +159,8 @@ $user_vote = $is_logged_in ? get_user_vote($post_id, $email) : 0;
                         </svg>
                     </button>
                 </div>
+
+                <!-- Post content -->
                 <div class="post-content">
                     <div class="post-header">
                         <h2 class="post-title"><?php echo htmlspecialchars($post['title']); ?></h2>
@@ -138,40 +174,15 @@ $user_vote = $is_logged_in ? get_user_vote($post_id, $email) : 0;
                                 <a href="edit_post.php?id=<?php echo $post['id']; ?>" class="edit-post-btn">Edit Post</a>
                             <?php endif; ?>
 
-                            <span class="post-status <?php echo $post['status']; ?>">
-                                <?php
-                                switch ($post['status']) {
-                                    case 'open':
-                                        echo 'Open';
-                                        break;
-                                    case 'in_progress':
-                                        echo 'In Progress';
-                                        break;
-                                    case 'completed':
-                                        echo 'Completed';
-                                        break;
-                                    case 'declined':
-                                        echo 'Declined';
-                                        break;
-                                }
-                                ?>
-                            </span>
-                            <?php if ($can_edit_post): ?>
-                                <div class="admin-actions">
-                                    <select class="status-update" data-post-id="<?php echo $post['id']; ?>">
-                                        <option value="open" <?php echo $post['status'] === 'open' ? 'selected' : ''; ?>>Open</option>
-                                        <option value="in_progress" <?php echo $post['status'] === 'in_progress' ? 'selected' : ''; ?>>In Progress</option>
-                                        <option value="completed" <?php echo $post['status'] === 'completed' ? 'selected' : ''; ?>>Completed</option>
-                                        <option value="declined" <?php echo $post['status'] === 'declined' ? 'selected' : ''; ?>>Declined</option>
-                                    </select>
-                                    <button class="delete-post-btn" data-post-id="<?php echo $post['id']; ?>">Delete</button>
-                                </div>
-                            <?php endif; ?>
+                            <!-- Delete post button -->
+                            <button class="delete-post-btn" data-post-id="<?php echo $post['id']; ?>">Delete</button>
                         </div>
                     </div>
                     <div class="post-body">
                         <p><?php echo nl2br(htmlspecialchars($post['content'])); ?></p>
                     </div>
+
+                    <!-- Post footer -->
                     <div class="post-footer">
                         <div class="post-info">
                             <span class="post-author">
@@ -193,6 +204,7 @@ $user_vote = $is_logged_in ? get_user_vote($post_id, $email) : 0;
                 </div>
             </div>
 
+            <!-- Comments -->
             <div class="comments-section">
                 <h3><?php echo count($comments); ?> Comments</h3>
 
@@ -267,23 +279,38 @@ $user_vote = $is_logged_in ? get_user_vote($post_id, $email) : 0;
                 </div>
 
                 <div class="comment-form">
-                    <h4>Add a Comment</h4>
                     <?php if ($is_logged_in): ?>
-                        <form id="add-comment-form" data-post-id="<?php echo $post['id']; ?>">
-                            <input type="hidden" name="post_id" value="<?php echo $post['id']; ?>">
-                            <div class="form-group">
-                                <textarea id="comment_content" name="comment_content" rows="4" required></textarea>
-                            </div>
-                            <div class="form-actions">
-                                <button type="submit" class="btn btn-primary">Submit Comment</button>
-                            </div>
-                        </form>
+                        <div class="comments-disabled-message" style="<?php echo ($post['status'] === 'completed' || $post['status'] === 'declined') ? '' : 'display: none;'; ?>">
+                            <p>
+                                <?php
+                                if ($post['status'] === 'completed') {
+                                    echo 'Comments are disabled for completed posts.';
+                                } elseif ($post['status'] === 'declined') {
+                                    echo 'Comments are disabled for declined posts.';
+                                }
+                                ?>
+                            </p>
+                        </div>
+
+                        <?php if ($post['status'] !== 'completed' && $post['status'] !== 'declined'): ?>
+                            <form id="add-comment-form" data-post-id="<?php echo $post['id']; ?>">
+                                <h4>Add a Comment</h4>
+                                <input type="hidden" name="post_id" value="<?php echo $post['id']; ?>">
+                                <div class="form-group">
+                                    <textarea id="comment_content" name="comment_content" rows="4" required></textarea>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">Submit Comment</button>
+                                </div>
+                            </form>
+                        <?php endif; ?>
                     <?php else: ?>
                         <div class="login-required">
                             <p>Please <a href="users/login.php">log in</a> or <a href="users/register.php">create an account</a> to comment on this post.</p>
                         </div>
                     <?php endif; ?>
                 </div>
+
             </div>
         </div>
     </div>

@@ -163,7 +163,6 @@ h1 {
 /* Square specific styles */
 #card-container {
     min-height: 90px;
-    padding: 0;
     background: #f9fafb;
     border: 1px solid #ddd;
     border-radius: 6px;

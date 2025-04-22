@@ -86,10 +86,6 @@ header .header-inner .menu-container .menu .community:after {
     margin-right: 8px;
 }
 
-.checkbox-group .checkbox-label {
-    margin: 0;
-}
-
 /* Button styling */
 .form-actions {
     margin-top: 25px;

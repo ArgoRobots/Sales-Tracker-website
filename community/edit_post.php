@@ -101,13 +101,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             justify-content: space-between;
             align-items: center;
         }
-
-        .back-button {
-            font-size: 14px;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
     </style>
 </head>
 
@@ -142,15 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php endif; ?>
 
             <div class="post-form">
-                <h2>
-                    Edit Post
-                    <a href="view_post.php?id=<?php echo $post_id; ?>" class="btn back-button">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                            <path stroke-width="2" d="M19 12H5M12 19l-7-7 7-7" />
-                        </svg>
-                        Back to Post
-                    </a>
-                </h2>
+                <h2>Edit Post</h2>
 
                 <form method="post" action="edit_post.php?id=<?php echo $post_id; ?>">
                     <div class="form-group">

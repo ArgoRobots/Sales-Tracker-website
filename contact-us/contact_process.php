@@ -1,7 +1,7 @@
 <?php
+
 /**
  * Contact Form Processing
- * 
  * Processes the contact form submission and sends an email
  */
 
@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $lastName = isset($_POST['lastName']) ? trim($_POST['lastName']) : '';
     $email = isset($_POST['email']) ? trim($_POST['email']) : '';
     $message = isset($_POST['message']) ? trim($_POST['message']) : '';
-    
+
     // Basic validation
     if (empty($firstName) || empty($lastName) || empty($email) || empty($message)) {
         $response['message'] = 'All fields are required.';
@@ -27,10 +27,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         // Send the email
         $subject = "Argo Sales Tracker Contact: {$firstName} {$lastName}";
-        
+
         // Build HTML email content
         $email_html = get_contact_email_template($firstName, $lastName, $email, $message);
-        
+
         // Email headers for HTML email
         $headers = [
             'MIME-Version: 1.0',
@@ -39,12 +39,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'Reply-To: ' . $email,
             'X-Mailer: PHP/' . phpversion()
         ];
-        
+
         $to_email = 'contact@argorobots.com';
-        
+
         // Send the email
         $mail_result = mail($to_email, $subject, $email_html, implode("\r\n", $headers));
-        
+
         if ($mail_result) {
             $response['success'] = true;
             $response['message'] = 'Message sent successfully!';
@@ -80,10 +80,11 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
  * @param string $message Message content
  * @return string HTML email content
  */
-function get_contact_email_template($firstName, $lastName, $email, $message) {
+function get_contact_email_template($firstName, $lastName, $email, $message)
+{
     // Format message with line breaks
     $formatted_message = nl2br(htmlspecialchars($message));
-    
+
     return <<<HTML
 <!DOCTYPE html>
 <html>
