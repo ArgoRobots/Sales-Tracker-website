@@ -97,3 +97,10 @@ header .header-inner .menu-container .menu .community:after {
 .btn {
     padding: 6px 0;
 }
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .community-wrapper {
+        max-width: 90%;
+    }
+}

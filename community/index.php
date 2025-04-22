@@ -34,7 +34,7 @@ if ($is_logged_in && !is_array($current_user)) {
     <script src="../resources/scripts/main.js"></script>
     <script src="community.js" defer></script>
 
-    <link rel="stylesheet" href="community-style.css">
+    <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../resources/styles/button.css">
     <link rel="stylesheet" href="../resources/header/style.css">

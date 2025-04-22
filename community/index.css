@@ -386,6 +386,10 @@ header .header-inner .menu-container .menu .community:after {
 
 /* Responsive design */
 @media (max-width: 768px) {
+    .community-wrapper {
+        max-width: 90%;
+    }
+
     .community-actions {
         flex-direction: column;
         gap: 15px;
@@ -527,5 +531,63 @@ header .header-inner .menu-container .menu .community:after {
     .bulk-actions {
         flex-direction: column;
         gap: 10px;
+    }
+}
+
+@media (max-width: 640px) {
+
+    /* Improve post actions layout on mobile */
+    .post-actions {
+        flex-direction: column;
+        width: 100%;
+        gap: 8px;
+        align-items: flex-start;
+    }
+
+    /* Make status dropdown and delete button full width */
+    .admin-actions {
+        display: flex;
+        width: 100%;
+        gap: 8px;
+    }
+
+    .status-update {
+        flex: 1;
+        min-width: 0;
+        max-width: none;
+    }
+
+    .delete-post-btn {
+        white-space: nowrap;
+        padding: 5px 8px;
+        height: 100%;
+    }
+
+    /* Better spacing for mobile view */
+    .post-footer {
+        padding-top: 10px;
+        gap: 12px;
+    }
+}
+
+/* Even smaller screens */
+@media (max-width: 480px) {
+    .post-card {
+        flex-direction: column;
+    }
+
+    .post-votes {
+        flex-direction: row;
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #e5e7eb;
+        padding: 5px;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .vote-btn {
+        min-width: 40px;
+        min-height: 40px;
     }
 }
