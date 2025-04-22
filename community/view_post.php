@@ -207,7 +207,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                                     <?php echo htmlspecialchars($post['user_name']); ?>
                                 </a>
                             </span>
-                            <span class="post-date"><?php echo date('M j, Y g:i a', strtotime($comment['created_at'])); ?></span>
+                            <span class="post-date"><?php echo date('M j, Y g:i a', strtotime($post['created_at'])); ?></span>
                             <span class="post-views">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>

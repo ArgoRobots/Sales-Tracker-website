@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['user_email'] = $user_email;
 
         // Add the post
-        $post_id = add_post($user_name, $user_email, $title, $content, $post_type);
+        $post_id = add_post($current_user['id'], $user_name, $user_email, $title, $content, $post_type);
 
         if ($post_id) {
             $response = [

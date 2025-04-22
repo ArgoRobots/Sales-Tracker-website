@@ -175,11 +175,11 @@ document.addEventListener("DOMContentLoaded", function () {
               // Check if we need to load more posts
               if (allPosts.length === 0) {
                 postsContainer.innerHTML = `
-                                <div class="empty-state">
-                                    <h3>No posts yet!</h3>
-                                    <p>Be the first to create a post in our community.</p>
-                                </div>
-                            `;
+                    <div class="empty-state">
+                        <h3>No posts yet!</h3>
+                        <p>Be the first to create a post in our community.</p>
+                    </div>
+                `;
               } else {
                 checkAndLoadMorePosts();
               }
@@ -338,16 +338,16 @@ document.addEventListener("DOMContentLoaded", function () {
       if (emptyState) {
         emptyState.style.display = "block";
         emptyState.innerHTML = `
-                    <h3>No matching posts</h3>
-                    <p>Try different search terms or filters</p>
-                `;
+            <h3>No matching posts</h3>
+            <p>Try different search terms or filters</p>
+        `;
       } else {
         const newEmptyState = document.createElement("div");
         newEmptyState.className = "empty-state";
         newEmptyState.innerHTML = `
-                    <h3>No matching posts</h3>
-                    <p>Try different search terms or filters</p>
-                `;
+            <h3>No matching posts</h3>
+            <p>Try different search terms or filters</p>
+        `;
         postsContainer.appendChild(newEmptyState);
       }
     } else {

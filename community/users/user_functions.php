@@ -533,13 +533,52 @@ function upload_avatar($user_id, $file)
 }
 
 /**
- * Check if user is logged in
+ * Check if user is logged in and exists in database
  * 
- * @return bool True if user is logged in
+ * @return bool True if user is logged in and exists in database
  */
 function is_user_logged_in()
 {
-    return isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
+    // First check session variables
+    if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
+        error_log('Session user_id is not set or empty');
+        return false;
+    }
+
+    // Then verify user exists in database
+    try {
+        $db = get_db_connection();
+        if (!$db) {
+            error_log('Database connection failed in is_user_logged_in');
+            return false;
+        }
+
+        $stmt = $db->prepare('SELECT id FROM community_users WHERE id = :id');
+        if (!$stmt) {
+            error_log('Failed to prepare statement in is_user_logged_in: ' . $db->lastErrorMsg());
+            return false;
+        }
+
+        $stmt->bindValue(':id', $_SESSION['user_id'], SQLITE3_INTEGER);
+        $result = $stmt->execute();
+
+        if (!$result) {
+            error_log('Failed to execute statement in is_user_logged_in: ' . $db->lastErrorMsg());
+            return false;
+        }
+
+        $user = $result->fetchArray(SQLITE3_ASSOC);
+
+        if ($user === false) {
+            error_log('User with ID ' . $_SESSION['user_id'] . ' not found in database');
+            return false;
+        }
+
+        return true;
+    } catch (Exception $e) {
+        error_log('Exception in is_user_logged_in: ' . $e->getMessage());
+        return false;
+    }
 }
 
 /**
@@ -559,7 +598,7 @@ function require_login($redirect_url = '', $force_redirect = false)
         $_SESSION['redirect_after_login'] = $redirect;
 
         // Redirect to login page
-        header('Location: users/login.php');
+        header('Location: login.php');
         exit;
     }
 }

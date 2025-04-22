@@ -80,15 +80,18 @@ function ensure_views_column_exists($db)
  * @param string $post_type Post type ('bug' or 'feature')
  * @return int|false New post ID or false on failure
  */
-function add_post($user_name, $user_email, $title, $content, $post_type)
+function add_post($user_id, $user_name, $user_email, $title, $content, $post_type)
 {
     $db = get_db_connection();
 
     // Check if views column exists, add it if not
     ensure_views_column_exists($db);
 
-    $stmt = $db->prepare('INSERT INTO community_posts (user_name, user_email, title, content, post_type, views) 
-                         VALUES (:user_name, :user_email, :title, :content, :post_type, 0)');
+    $stmt = $db->prepare('INSERT INTO community_posts 
+        (user_id, user_name, user_email, title, content, post_type, views) 
+        VALUES (:user_id, :user_name, :user_email, :title, :content, :post_type, 0)');
+
+    $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
     $stmt->bindValue(':user_name', $user_name, SQLITE3_TEXT);
     $stmt->bindValue(':user_email', $user_email, SQLITE3_TEXT);
     $stmt->bindValue(':title', $title, SQLITE3_TEXT);

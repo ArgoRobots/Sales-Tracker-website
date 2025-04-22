@@ -303,6 +303,13 @@ document.addEventListener("DOMContentLoaded", function () {
         const commentElement = this.closest(".comment");
         const commentId = commentElement.getAttribute("data-comment-id");
 
+        // Hide the comment controls (edit/delete buttons)
+        const commentControls =
+          commentElement.querySelector(".comment-controls");
+        if (commentControls) {
+          commentControls.style.display = "none";
+        }
+
         // Find the comment content within the new structure
         const commentContent = commentElement.querySelector(".comment-content");
         const originalContent = commentContent.innerHTML;
@@ -329,8 +336,10 @@ document.addEventListener("DOMContentLoaded", function () {
         // Replace the comment content with the form
         commentContent.innerHTML = formHtml;
 
-        // Focus on the textarea
-        commentContent.querySelector("textarea").focus();
+        // Set cursor position to end of text
+        const textarea = commentContent.querySelector("textarea");
+        textarea.focus();
+        textarea.selectionStart = textarea.selectionEnd = textarea.value.length;
 
         // Add event listeners for the new form
         const form = commentContent.querySelector("form");
@@ -342,6 +351,13 @@ document.addEventListener("DOMContentLoaded", function () {
           commentContent.innerHTML = commentElement.getAttribute(
             "data-original-content"
           );
+
+          // Show the comment controls again
+          const commentControls =
+            commentElement.querySelector(".comment-controls");
+          if (commentControls) {
+            commentControls.style.display = "";
+          }
         });
 
         // Form submit event
@@ -371,6 +387,13 @@ document.addEventListener("DOMContentLoaded", function () {
                   "<br>"
                 );
                 commentContent.innerHTML = updatedContent;
+
+                // Show the comment controls again
+                const commentControls =
+                  commentElement.querySelector(".comment-controls");
+                if (commentControls) {
+                  commentControls.style.display = "";
+                }
 
                 // Call attachCommentListeners to ensure all comments have proper event handlers
                 attachCommentListeners();

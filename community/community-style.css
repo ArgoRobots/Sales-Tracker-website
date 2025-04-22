@@ -175,7 +175,7 @@ header .header-inner .menu-container .menu .community:after {
 
 .post-votes {
     background-color: var(--whiteBackground);
-    padding: 15px 10px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;

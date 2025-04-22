@@ -4,8 +4,8 @@ require_once '../../db_connect.php';
 require_once 'user_functions.php';
 
 // Redirect if already logged in
-if (isset($_SESSION['user_id'])) {
-    header('Location: ../index.php');
+if (is_user_logged_in()) {
+    header('Location: profile.php');
     exit;
 }
 

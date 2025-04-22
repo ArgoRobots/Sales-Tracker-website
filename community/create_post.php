@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error_message = 'Content is too long (maximum 10,000 characters)';
     } else {
         // Add the post with user info
-        $post_id = add_post($current_user['username'], $current_user['email'], $title, $content, $post_type);
+        $post_id = add_post($current_user['id'], $current_user['username'], $current_user['email'], $title, $content, $post_type);
 
         if ($post_id) {
             // Connect post to user account
@@ -71,6 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script src="../resources/scripts/main.js"></script>
 
     <link rel="stylesheet" href="../resources/styles/button.css">
+    <link rel="stylesheet" href="../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../resources/header/style.css">
     <link rel="stylesheet" href="../resources/footer/style.css">
     <link rel="stylesheet" href="create-post.css">

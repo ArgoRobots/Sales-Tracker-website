@@ -96,6 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script src="../resources/scripts/main.js"></script>
 
     <link rel="stylesheet" href="../resources/styles/button.css">
+    <link rel="stylesheet" href="../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../resources/header/style.css">
     <link rel="stylesheet" href="../resources/footer/style.css">
     <link rel="stylesheet" href="create-post.css">
