@@ -132,6 +132,12 @@ $user_vote = $is_logged_in ? get_user_vote($post_id, $email) : 0;
                             <span class="post-type <?php echo $post['post_type']; ?>">
                                 <?php echo $post['post_type'] === 'bug' ? 'Bug Report' : 'Feature Request'; ?>
                             </span>
+
+                            <!-- Edit Post button -->
+                            <?php if ($can_edit_post): ?>
+                                <a href="edit_post.php?id=<?php echo $post['id']; ?>" class="edit-post-btn">Edit Post</a>
+                            <?php endif; ?>
+
                             <span class="post-status <?php echo $post['status']; ?>">
                                 <?php
                                 switch ($post['status']) {
@@ -202,46 +208,59 @@ $user_vote = $is_logged_in ? get_user_vote($post_id, $email) : 0;
 
                         // Ensure votes value exists
                         $comment_votes = isset($comment['votes']) ? (int)$comment['votes'] : 0;
+
+                        // Check if current user can edit this comment
+                        $can_edit_comment = ($role === 'admin') ||
+                            (isset($comment['user_id']) && !empty($comment['user_id']) && $comment['user_id'] == $user_id);
                         ?>
                         <div class="comment" data-comment-id="<?php echo $comment['id']; ?>">
-                            <div class="comment-header">
-                                <div class="comment-author-info">
-                                    <a href="users/profile.php?username=<?php echo urlencode($comment['user_name']); ?>" class="comment-author">
-                                        <?php echo htmlspecialchars($comment['user_name']); ?>
-                                    </a>
-                                    <span class="comment-date"><?php echo date('M j, Y g:i a', strtotime($comment['created_at'])); ?></span>
-                                </div>
-                                <div class="comment-controls">
-                                    <!-- Small voting controls for comment -->
-                                    <div class="comment-votes">
-                                        <button class="comment-vote-btn upvote <?php echo $comment_vote === 1 ? 'voted' : ''; ?>"
-                                            data-comment-id="<?php echo $comment['id']; ?>"
-                                            data-vote="up"
-                                            <?php echo !$is_logged_in ? 'disabled title="Please log in to vote"' : ''; ?>>
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                                <path stroke-width="2" d="M12 19V5M5 12l7-7 7 7" />
-                                            </svg>
-                                        </button>
-                                        <span class="comment-vote-count"><?php echo $comment_votes; ?></span>
-                                        <button class="comment-vote-btn downvote <?php echo $comment_vote === -1 ? 'voted' : ''; ?>"
-                                            data-comment-id="<?php echo $comment['id']; ?>"
-                                            data-vote="down"
-                                            <?php echo !$is_logged_in ? 'disabled title="Please log in to vote"' : ''; ?>>
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                                <path stroke-width="2" d="M12 5v14M5 12l7 7 7-7" />
-                                            </svg>
-                                        </button>
-                                    </div>
-
-                                    <?php if ($can_delete_comment): ?>
-                                        <div class="comment-actions">
-                                            <button class="delete-comment-btn" data-comment-id="<?php echo $comment['id']; ?>">Delete</button>
-                                        </div>
-                                    <?php endif; ?>
-                                </div>
+                            <!-- Vertical vote controls on left -->
+                            <div class="comment-votes">
+                                <button class="comment-vote-btn upvote <?php echo $comment_vote === 1 ? 'voted' : ''; ?>"
+                                    data-comment-id="<?php echo $comment['id']; ?>"
+                                    data-vote="up"
+                                    <?php echo !$is_logged_in ? 'disabled title="Please log in to vote"' : ''; ?>>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path stroke-width="2" d="M12 19V5M5 12l7-7 7 7" />
+                                    </svg>
+                                </button>
+                                <span class="comment-vote-count"><?php echo $comment_votes; ?></span>
+                                <button class="comment-vote-btn downvote <?php echo $comment_vote === -1 ? 'voted' : ''; ?>"
+                                    data-comment-id="<?php echo $comment['id']; ?>"
+                                    data-vote="down"
+                                    <?php echo !$is_logged_in ? 'disabled title="Please log in to vote"' : ''; ?>>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path stroke-width="2" d="M12 5v14M5 12l7 7 7-7" />
+                                    </svg>
+                                </button>
                             </div>
-                            <div class="comment-content">
-                                <?php echo nl2br(htmlspecialchars($comment['content'])); ?>
+
+                            <!-- Main comment content area -->
+                            <div class="comment-main">
+                                <div class="comment-header">
+                                    <div class="comment-author-info">
+                                        <a href="users/profile.php?username=<?php echo urlencode($comment['user_name']); ?>" class="comment-author">
+                                            <?php echo htmlspecialchars($comment['user_name']); ?>
+                                        </a>
+                                        <span class="comment-date"><?php echo date('M j, Y g:i a', strtotime($comment['created_at'])); ?></span>
+                                    </div>
+                                    <div class="comment-controls">
+                                        <?php if ($can_edit_comment || $can_delete_comment): ?>
+                                            <div class="comment-actions">
+                                                <?php if ($can_edit_comment): ?>
+                                                    <button class="edit-comment-btn" data-comment-id="<?php echo $comment['id']; ?>">Edit</button>
+                                                <?php endif; ?>
+
+                                                <?php if ($can_delete_comment): ?>
+                                                    <button class="delete-comment-btn" data-comment-id="<?php echo $comment['id']; ?>">Delete</button>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                                <div class="comment-content">
+                                    <?php echo nl2br(htmlspecialchars($comment['content'])); ?>
+                                </div>
                             </div>
                         </div>
                     <?php endforeach; ?>
@@ -255,7 +274,9 @@ $user_vote = $is_logged_in ? get_user_vote($post_id, $email) : 0;
                             <div class="form-group">
                                 <textarea id="comment_content" name="comment_content" rows="4" required></textarea>
                             </div>
-                            <button type="submit" class="btn btn-primary">Submit Comment</button>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">Submit Comment</button>
+                            </div>
                         </form>
                     <?php else: ?>
                         <div class="login-required">

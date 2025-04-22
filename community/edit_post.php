@@ -1,0 +1,187 @@
+<?php
+session_start();
+require_once '../db_connect.php';
+require_once 'community_functions.php';
+require_once 'users/user_functions.php';
+
+// Check if user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header('Location: users/login.php');
+    exit;
+}
+
+// Get post ID from URL
+$post_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+// Redirect to index if no valid post ID
+if ($post_id <= 0) {
+    header('Location: index.php');
+    exit;
+}
+
+// Get the post
+$post = get_post($post_id);
+
+// Redirect if post not found
+if (!$post) {
+    header('Location: index.php');
+    exit;
+}
+
+// Check if user has permission to edit
+$user_id = $_SESSION['user_id'];
+$role = $_SESSION['role'] ?? 'user';
+
+// Determine if user can edit this post
+$can_edit_post = ($role === 'admin') ||
+    (isset($post['user_id']) && $post['user_id'] == $user_id);
+
+if (!$can_edit_post) {
+    // Redirect to view post if no permission
+    header("Location: view_post.php?id=$post_id");
+    exit;
+}
+
+// Process form submission
+$success_message = '';
+$error_message = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Validate and sanitize inputs
+    $title = isset($_POST['title']) ? trim($_POST['title']) : '';
+    $content = isset($_POST['content']) ? trim($_POST['content']) : '';
+
+    // Basic validation
+    if (empty($title) || empty($content)) {
+        $error_message = 'All fields are required';
+    } elseif (strlen($title) > 255) {
+        $error_message = 'Title is too long (maximum 255 characters)';
+    } elseif (strlen($content) > 10000) {
+        $error_message = 'Content is too long (maximum 10,000 characters)';
+    } else {
+        // Update the post
+        $db = get_db_connection();
+
+        $stmt = $db->prepare('UPDATE community_posts 
+                             SET title = :title, content = :content, updated_at = CURRENT_TIMESTAMP 
+                             WHERE id = :id');
+        $stmt->bindValue(':title', $title, SQLITE3_TEXT);
+        $stmt->bindValue(':content', $content, SQLITE3_TEXT);
+        $stmt->bindValue(':id', $post_id, SQLITE3_INTEGER);
+
+        if ($stmt->execute()) {
+            $success_message = 'Post updated successfully. Redirecting...';
+            // Redirect after 2 seconds
+            header("refresh:2;url=view_post.php?id=$post_id");
+        } else {
+            $error_message = 'Error updating the post';
+        }
+    }
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
+    <title>Edit Post - Argo Community</title>
+
+    <script src="../resources/scripts/jquery-3.6.0.js"></script>
+    <script src="../resources/scripts/main.js"></script>
+
+    <link rel="stylesheet" href="../resources/styles/button.css">
+    <link rel="stylesheet" href="../resources/header/style.css">
+    <link rel="stylesheet" href="../resources/footer/style.css">
+    <link rel="stylesheet" href="create-post.css">
+    <style>
+        .post-form h2 {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-button {
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <script>
+            $(function() {
+                $("#includeHeader").load("../resources/header/index.html", function() {
+                    adjustLinksAndImages("#includeHeader");
+                });
+            });
+        </script>
+        <div id="includeHeader"></div>
+    </header>
+
+    <div class="community-header">
+        <h1>Argo Sales Tracker Community</h1>
+    </div>
+
+    <div class="community-wrapper">
+        <div class="post-form-container">
+            <?php if ($success_message): ?>
+                <div class="success-message">
+                    <?php echo htmlspecialchars($success_message); ?>
+                </div>
+            <?php endif; ?>
+
+            <?php if ($error_message): ?>
+                <div class="error-message">
+                    <?php echo htmlspecialchars($error_message); ?>
+                </div>
+            <?php endif; ?>
+
+            <div class="post-form">
+                <h2>
+                    Edit Post
+                    <a href="view_post.php?id=<?php echo $post_id; ?>" class="btn back-button">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-width="2" d="M19 12H5M12 19l-7-7 7-7" />
+                        </svg>
+                        Back to Post
+                    </a>
+                </h2>
+
+                <form method="post" action="edit_post.php?id=<?php echo $post_id; ?>">
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" id="title" name="title" value="<?php echo htmlspecialchars($post['title']); ?>" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="content">Content</label>
+                        <textarea id="content" name="content" required><?php echo htmlspecialchars($post['content']); ?></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <a href="view_post.php?id=<?php echo $post_id; ?>" class="btn btn-black">Cancel</a>
+                        <button type="submit" class="btn btn-blue">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <script>
+            $(function() {
+                $("#includeFooter").load("../resources/footer/index.html", function() {
+                    adjustLinksAndImages("#includeFooter");
+                });
+            });
+        </script>
+        <div id="includeFooter"></div>
+    </footer>
+</body>
+
+</html>

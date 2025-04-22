@@ -234,11 +234,9 @@ a:hover {
 }
 
 .comment {
-    background-color: white;
-    border-radius: 6px;
-    padding: 15px;
-    margin-bottom: 10px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    display: flex;
+    position: relative;
+    margin-bottom: 15px;
 }
 
 .comment-header {
@@ -287,10 +285,6 @@ a:hover {
     font-size: 16px;
 }
 
-.form-group {
-    margin-bottom: 5px;
-}
-
 .form-group label {
     display: block;
     margin-bottom: 5px;
@@ -312,6 +306,7 @@ a:hover {
 .form-group textarea {
     resize: vertical;
     min-height: 50px;
+    height: 50px;
 }
 
 /* Responsive styles */
@@ -357,12 +352,16 @@ a:hover {
     align-items: center;
 }
 
-/* Comment voting buttons container */
 .comment-votes {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 4px;
-    margin-right: 15px;
+    justify-content: center;
+    min-width: 40px;
+    padding: 8px 5px;
+    background-color: #f9fafb;
+    border-right: 1px solid #e5e7eb;
+    border-radius: 6px 0 0 6px;
 }
 
 /* Individual vote buttons */
@@ -371,7 +370,7 @@ a:hover {
     border: none;
     cursor: pointer;
     color: #94a3b8;
-    padding: 2px;
+    padding: 3px;
     transition: all 0.2s ease;
 }
 
@@ -389,11 +388,19 @@ a:hover {
 
 /* Vote count display */
 .comment-vote-count {
+    font-weight: bold;
     font-size: 14px;
-    font-weight: 600;
-    color: #64748b;
-    min-width: 20px;
-    text-align: center;
+    margin: 4px 0;
+    color: #1e3a8a;
+}
+
+.comment-main {
+    flex: 1;
+    padding: 10px 15px;
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-left: none;
+    border-radius: 0 6px 6px 0;
 }
 
 .comment-header {
@@ -411,4 +418,200 @@ a:hover {
 
 .comment-actions {
     margin-left: 5px;
+}
+
+/* Comment form buttons container */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 5px;
+}
+
+/* Submit Comment button styling */
+.form-actions .btn {
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-primary {
+    background-color: #2563eb;
+    color: white;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+/* Edit buttons styling */
+.edit-post-btn {
+    background-color: #dbeafe;
+    color: #2563eb;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-right: 10px;
+    font-weight: 500;
+}
+
+.edit-post-btn:hover {
+    background-color: #bfdbfe;
+}
+
+.edit-comment-btn {
+    background-color: #dbeafe;
+    color: #2563eb;
+    border: none;
+    padding: 3px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    margin-right: 5px;
+}
+
+.edit-comment-btn:hover {
+    background-color: #bfdbfe;
+}
+
+/* Comment controls layout */
+.comment-controls {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.comment-actions {
+    display: flex;
+    gap: 5px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+    .comment-controls {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .comment-actions {
+        margin-top: 5px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        align-items: flex-end;
+    }
+}
+
+/* Styles for inline comment editing */
+/* Format the inline edit form properly */
+.inline-edit-form {
+    margin: 0;
+    padding: 0;
+}
+
+.inline-edit-form .form-group {
+    margin-bottom: 10px;
+}
+
+.inline-edit-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 14px;
+    min-height: 80px;
+    resize: vertical;
+    background-color: #f9fafb;
+}
+
+.inline-edit-form textarea:focus {
+    outline: none;
+    border-color: #60a5fa;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+}
+
+.inline-edit-form .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+/* Button styling */
+.inline-edit-form .btn {
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+}
+
+.inline-edit-form .btn-primary {
+    background-color: #2563eb;
+    color: white;
+}
+
+.inline-edit-form .btn-primary:hover {
+    background-color: #1d4ed8;
+}
+
+.inline-edit-form .cancel-edit {
+    background-color: #f3f4f6;
+    color: #4b5563;
+    border: 1px solid #d1d5db;
+}
+
+.inline-edit-form .cancel-edit:hover {
+    background-color: #e5e7eb;
+}
+
+.comment-content {
+    margin-top: 8px;
+    line-height: 1.5;
+    color: #4b5563;
+}
+
+/* Better positioning for edit button */
+.edit-comment-btn {
+    background-color: #dbeafe;
+    color: #2563eb;
+    border: none;
+    padding: 3px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    margin-right: 5px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.edit-comment-btn:hover {
+    background-color: #bfdbfe;
+    text-decoration: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+    .comment {
+        flex-direction: row;
+    }
+
+    .comment-votes {
+        min-width: 30px;
+        padding: 5px 3px;
+    }
+
+    .comment-vote-count {
+        font-size: 12px;
+    }
 }
