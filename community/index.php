@@ -180,9 +180,7 @@ if ($is_logged_in && !is_array($current_user)) {
                                 <div class="post-info">
                                     <span class="post-author">
                                         Posted by
-                                        <a href="users/profile.php?username=<?php echo urlencode($post['user_name']); ?>" class="user-link">
-                                            <?php echo htmlspecialchars($post['user_name']); ?>
-                                        </a>
+                                        <a href="users/profile.php?username=<?php echo urlencode(trim($post['user_name'])); ?>" class="user-link"><?php echo htmlspecialchars(trim($post['user_name'])); ?></a>
                                     </span>
                                     <span class="post-date"><?php echo date('M j, Y', strtotime($post['created_at'])); ?></span>
                                     <span class="post-views">

@@ -143,12 +143,17 @@ header .header-inner .menu-container .menu .community:after {
 }
 
 .search-icon-button:hover {
-    background-color: #1d4ed8;
+    background-color: var(--buttonHover);
 }
 
 /* Post listings */
 .posts-container {
     margin-top: 20px;
+}
+
+.empty-state {
+    text-align: center;
+    margin: 50px 0;
 }
 
 .post-card {
@@ -169,7 +174,7 @@ header .header-inner .menu-container .menu .community:after {
 }
 
 .post-votes {
-    background-color: #f9fafb;
+    background-color: var(--whiteBackground);
     padding: 15px 10px;
     display: flex;
     flex-direction: column;
@@ -306,6 +311,10 @@ header .header-inner .menu-container .menu .community:after {
     gap: 10px;
 }
 
+.view-comments-btn {
+    font-size: 14px;
+}
+
 .post-info {
     font-size: 14px;
     color: #64748b;
@@ -316,21 +325,21 @@ header .header-inner .menu-container .menu .community:after {
     margin-right: 10px;
 }
 
+.user-link,
+.view-comments-btn {
+    color: var(--button);
+    text-decoration: none;
+}
+
+.user-link,
+.view-comments-btn:hover {
+    text-decoration: underline;
+}
+
 .post-actions {
     display: flex;
     align-items: center;
     gap: 10px;
-}
-
-.view-comments-btn {
-    color: #1e3a8a;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 500;
-}
-
-.view-comments-btn:hover {
-    text-decoration: underline;
 }
 
 .admin-actions {

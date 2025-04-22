@@ -54,6 +54,14 @@ $can_edit_post = ($role === 'admin') ||
 // Get user's vote for this post
 $user_vote = $is_logged_in ? get_user_vote($post_id, $email) : 0;
 
+// Check for status messages in URL parameters
+$status_message = '';
+if (isset($_GET['created']) && $_GET['created'] == '1') {
+    $status_message = 'Post created successfully!';
+} elseif (isset($_GET['updated']) && $_GET['updated'] == '1') {
+    $status_message = 'Post updated successfully!';
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -100,6 +108,14 @@ $user_vote = $is_logged_in ? get_user_vote($post_id, $email) : 0;
             </div>
         <?php endif; ?>
     </div>
+
+    <?php if ($status_message): ?>
+        <div class="community-wrapper">
+            <div class="success-message">
+                <?php echo htmlspecialchars($status_message); ?>
+            </div>
+        </div>
+    <?php endif; ?>
 
     <div class="community-container">
         <div class="page-header">
@@ -191,7 +207,7 @@ $user_vote = $is_logged_in ? get_user_vote($post_id, $email) : 0;
                                     <?php echo htmlspecialchars($post['user_name']); ?>
                                 </a>
                             </span>
-                            <span class="post-date"><?php echo date('M j, Y', strtotime($post['created_at'])); ?></span>
+                            <span class="post-date"><?php echo date('M j, Y g:i a', strtotime($comment['created_at'])); ?></span>
                             <span class="post-views">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
@@ -232,7 +248,7 @@ $user_vote = $is_logged_in ? get_user_vote($post_id, $email) : 0;
                                     data-comment-id="<?php echo $comment['id']; ?>"
                                     data-vote="up"
                                     <?php echo !$is_logged_in ? 'disabled title="Please log in to vote"' : ''; ?>>
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                         <path stroke-width="2" d="M12 19V5M5 12l7-7 7 7" />
                                     </svg>
                                 </button>
@@ -241,7 +257,7 @@ $user_vote = $is_logged_in ? get_user_vote($post_id, $email) : 0;
                                     data-comment-id="<?php echo $comment['id']; ?>"
                                     data-vote="down"
                                     <?php echo !$is_logged_in ? 'disabled title="Please log in to vote"' : ''; ?>>
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                         <path stroke-width="2" d="M12 5v14M5 12l7 7 7-7" />
                                     </svg>
                                 </button>
@@ -251,9 +267,7 @@ $user_vote = $is_logged_in ? get_user_vote($post_id, $email) : 0;
                             <div class="comment-main">
                                 <div class="comment-header">
                                     <div class="comment-author-info">
-                                        <a href="users/profile.php?username=<?php echo urlencode($comment['user_name']); ?>" class="comment-author">
-                                            <?php echo htmlspecialchars($comment['user_name']); ?>
-                                        </a>
+                                        <a href="users/profile.php?username=<?php echo urlencode($comment['user_name']); ?>" class="user-link"><?php echo htmlspecialchars($comment['user_name']); ?></a>
                                         <span class="comment-date"><?php echo date('M j, Y g:i a', strtotime($comment['created_at'])); ?></span>
                                     </div>
                                     <div class="comment-controls">

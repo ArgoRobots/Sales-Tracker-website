@@ -72,10 +72,6 @@ a:hover {
 .post-detail {
     max-width: 800px;
     margin: 0 auto;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    overflow: hidden;
 }
 
 .post-card {
@@ -87,8 +83,7 @@ a:hover {
 
 /* Vote buttons on the left */
 .post-votes {
-    background-color: #f9fafb;
-    padding: 15px 10px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -213,7 +208,7 @@ a:hover {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    color: #000;
+    color: #6b7280;
 }
 
 .post-views svg {
@@ -249,8 +244,9 @@ a:hover {
 /* Comments section */
 .comments-section {
     padding: 20px;
-    background-color: #f9fafb;
     border-radius: 0 0 8px 8px;
+    width: 80%;
+    margin: auto;
 }
 
 .comments-section h3 {
@@ -275,11 +271,6 @@ a:hover {
     display: flex;
     justify-content: space-between;
     font-size: 14px;
-}
-
-.comment-author {
-    font-weight: 600;
-    color: #1f2937;
 }
 
 .comment-date {
@@ -307,8 +298,7 @@ a:hover {
 .comment-form {
     background-color: white;
     border-radius: 6px;
-    padding: 20px 20px 10px 20px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    padding: 20px 0 10px 20px;
 }
 
 .comment-form h4 {
@@ -399,7 +389,6 @@ a:hover {
     align-items: center;
     justify-content: center;
     padding: 0 10px;
-    background-color: #f9fafb;
     border-right: 1px solid #e5e7eb;
     border-radius: 6px 0 0 6px;
 }
@@ -419,7 +408,7 @@ a:hover {
 }
 
 .comment-vote-btn.voted.upvote {
-    color: #2563eb;
+    color: var(--button);
 }
 
 .comment-vote-btn.voted.downvote {
@@ -458,7 +447,7 @@ a:hover {
 /* Edit buttons styling */
 .edit-post-btn {
     background-color: #dbeafe;
-    color: #2563eb;
+    color: var(--button);
     border: none;
     padding: 5px 10px;
     border-radius: 4px;
@@ -473,7 +462,7 @@ a:hover {
 
 .edit-comment-btn {
     background-color: #dbeafe;
-    color: #2563eb;
+    color: var(--button);
     border: none;
     padding: 3px 8px;
     border-radius: 4px;
@@ -521,7 +510,7 @@ a:hover {
     font-size: 14px;
     min-height: 80px;
     resize: vertical;
-    background-color: #f9fafb;
+    background-color: var(--whiteBackground);
 }
 
 .inline-edit-form textarea:focus {
@@ -547,12 +536,12 @@ a:hover {
 }
 
 .inline-edit-form .btn-primary {
-    background-color: #2563eb;
+    background-color: var(--button);
     color: white;
 }
 
 .inline-edit-form .btn-primary:hover {
-    background-color: #1d4ed8;
+    background-color: var(--buttonHover);
 }
 
 .inline-edit-form .cancel-edit {
@@ -584,4 +573,34 @@ a:hover {
     .comment-vote-count {
         font-size: 12px;
     }
+}
+
+/* Success message styling */
+.success-message {
+    background-color: #d1fae5;
+    color: #065f46;
+    border: 1px solid #10b981;
+    border-radius: 6px;
+    padding: 15px 20px;
+    margin: 20px 0;
+    font-weight: 500;
+    animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Ensure this message is properly spaced in the community wrapper */
+.community-wrapper .success-message {
+    max-width: 800px;
+    margin: 20px auto;
 }

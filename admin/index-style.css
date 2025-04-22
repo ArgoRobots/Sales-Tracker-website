@@ -48,7 +48,7 @@ h1 {
 }
 
 .btn:hover {
-    background: #1d4ed8;
+    background: var(--buttonHover);
 }
 
 .form-container,
@@ -146,7 +146,7 @@ td {
 }
 
 tr:hover {
-    background-color: #f9fafb !important;
+    background-color: var(--whiteBackground) !important;
 }
 
 th {
@@ -155,7 +155,7 @@ th {
 }
 
 tr:hover {
-    background-color: #f9fafb;
+    background-color: var(--whiteBackground);
 }
 
 /* Column widths */

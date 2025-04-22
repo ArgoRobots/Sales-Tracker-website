@@ -1,6 +1,6 @@
 body {
   line-height: 1.5;
-  background-color: #f9fafb;
+  background-color: var(--whiteBackground);
 }
 
 .container {
@@ -285,7 +285,7 @@ body {
 
 .comparison-item:first-child {
   border-right: 1px solid #e5e7eb;
-  background-color: #f9fafb;
+  background-color: var(--whiteBackground);
 }
 
 .comparison-content h3 {
@@ -322,7 +322,7 @@ body {
   display: flex;
   padding: 20px;
   gap: 15px;
-  background-color: #f9fafb;
+  background-color: var(--whiteBackground);
   border-bottom: 1px solid #e5e7eb;
 }
 

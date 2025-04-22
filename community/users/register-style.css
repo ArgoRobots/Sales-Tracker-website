@@ -19,7 +19,7 @@
 }
 
 .toggle-password:hover {
-    color: #2563eb;
+    color: var(--button);
 }
 
 .toggle-password.active i.fa-eye {
@@ -40,7 +40,7 @@
     overflow: hidden;
     opacity: 0;
     transition: all 0.3s ease;
-    background: #f9fafb;
+    background: var(--whiteBackground);
     border-radius: 6px;
 }
 

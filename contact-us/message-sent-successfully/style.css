@@ -7,7 +7,7 @@ header .header-inner .menu-container .menu .contact-us:after {
 .first {
   min-height: calc(100vh - 80px);
   padding: 100px 0 40px;
-  background: linear-gradient(to bottom, #f9fafb, #ffffff);
+  background: linear-gradient(to bottom, var(--whiteBackground), #ffffff);
   display: flex;
   align-items: flex-start;
   justify-content: center;

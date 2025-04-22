@@ -4,7 +4,7 @@ header .header-inner .menu-container .menu .about-us:after {
 }
 
 body {
-    background-color: #f9fafb;
+    background-color: var(--whiteBackground);
     line-height: 1.5;
 }
 
@@ -132,7 +132,7 @@ body {
 
 /* Values Section */
 .values {
-    background-color: #f9fafb;
+    background-color: var(--whiteBackground);
     padding: 90px 0;
 }
 

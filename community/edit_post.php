@@ -50,29 +50,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validate and sanitize inputs
     $title = isset($_POST['title']) ? trim($_POST['title']) : '';
     $content = isset($_POST['content']) ? trim($_POST['content']) : '';
+    $post_type = isset($_POST['post_type']) ? trim($_POST['post_type']) : '';
 
     // Basic validation
-    if (empty($title) || empty($content)) {
+    if (empty($title) || empty($content) || empty($post_type)) {
         $error_message = 'All fields are required';
     } elseif (strlen($title) > 255) {
         $error_message = 'Title is too long (maximum 255 characters)';
     } elseif (strlen($content) > 10000) {
         $error_message = 'Content is too long (maximum 10,000 characters)';
+    } elseif (!in_array($post_type, ['bug', 'feature'])) {
+        $error_message = 'Invalid post type';
     } else {
         // Update the post
         $db = get_db_connection();
 
         $stmt = $db->prepare('UPDATE community_posts 
-                             SET title = :title, content = :content, updated_at = CURRENT_TIMESTAMP 
+                             SET title = :title, content = :content, post_type = :post_type, updated_at = CURRENT_TIMESTAMP 
                              WHERE id = :id');
         $stmt->bindValue(':title', $title, SQLITE3_TEXT);
         $stmt->bindValue(':content', $content, SQLITE3_TEXT);
+        $stmt->bindValue(':post_type', $post_type, SQLITE3_TEXT);
         $stmt->bindValue(':id', $post_id, SQLITE3_INTEGER);
 
         if ($stmt->execute()) {
-            $success_message = 'Post updated successfully. Redirecting...';
-            // Redirect after 2 seconds
-            header("refresh:2;url=view_post.php?id=$post_id");
+            // Redirect immediately to view page with success message
+            header("Location: view_post.php?id=$post_id&updated=1");
+            exit;
         } else {
             $error_message = 'Error updating the post';
         }
@@ -141,6 +145,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="form-group">
                         <label for="title">Title</label>
                         <input type="text" id="title" name="title" value="<?php echo htmlspecialchars($post['title']); ?>" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="post_type">Post Type</label>
+                        <select id="post_type" name="post_type" required>
+                            <option value="">-- Select Type --</option>
+                            <option value="bug" <?php echo $post['post_type'] === 'bug' ? 'selected' : ''; ?>>Bug Report</option>
+                            <option value="feature" <?php echo $post['post_type'] === 'feature' ? 'selected' : ''; ?>>Feature Request</option>
+                        </select>
                     </div>
 
                     <div class="form-group">

@@ -113,7 +113,7 @@ body {
 }
 
 .sidebar-toggle:hover {
-    background: #1d4ed8;
+    background: var(--buttonHover);
     transform: translateY(-1px);
 }
 
@@ -133,7 +133,7 @@ body {
 
 /* Active state styles */
 .sidebar-toggle.active {
-    background: #1d4ed8;
+    background: var(--buttonHover);
 }
 
 /* Update mobile sidebar styles */
@@ -421,7 +421,7 @@ body {
 }
 
 .comparison-table tr:nth-child(even) {
-    background: #f9fafb;
+    background: var(--whiteBackground);
 }
 
 .comparison-table tr:nth-child(odd) {

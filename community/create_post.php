@@ -20,7 +20,6 @@ if (!is_array($current_user)) {
 }
 
 // Handle post submission
-$success_message = '';
 $error_message = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -50,9 +49,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->bindValue(':post_id', $post_id, SQLITE3_INTEGER);
             $stmt->execute();
 
-            $success_message = 'Your post has been submitted successfully. Redirecting to post...';
-            // Redirect to the new post after 2 seconds
-            header("refresh:2;url=view_post.php?id=$post_id");
+            // Redirect immediately to view page with success message
+            header("Location: view_post.php?id=$post_id&created=1");
+            exit;
         } else {
             $error_message = 'Error adding post to the database';
         }
@@ -102,12 +101,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div class="community-wrapper">
         <div class="post-form-container">
-            <?php if ($success_message): ?>
-                <div class="success-message">
-                    <?php echo htmlspecialchars($success_message); ?>
-                </div>
-            <?php endif; ?>
-
             <?php if ($error_message): ?>
                 <div class="error-message">
                     <?php echo htmlspecialchars($error_message); ?>

@@ -36,7 +36,7 @@
 }
 
 .btn-blue:hover {
-    background: #1d4ed8;
+    background: var(--buttonHover);
 }
 
 .btn-black {
@@ -56,7 +56,7 @@
     margin: 20px 0;
     padding: 8px 16px;
     color: #000;
-    background-color: #f9fafb;
+    background-color: var(--whiteBackground);
     border: 1px solid #e5e7eb;
     border-radius: 6px;
     font-size: 14px;
