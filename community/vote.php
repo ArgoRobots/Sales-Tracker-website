@@ -62,39 +62,78 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!$post) {
                 $response['message'] = 'Post not found';
             } else {
-                // Process the vote
-                $result = vote_post($post_id, $email, $vote_type);
-
-                if ($result !== false) {
-                    // Connect vote to user account
-                    if ($user_id > 0) {
-                        // Update the vote record with user_id
-                        $stmt = $db->prepare('UPDATE community_votes SET user_id = :user_id WHERE post_id = :post_id AND user_email = :user_email');
-                        $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
-                        $stmt->bindValue(':post_id', $post_id, SQLITE3_INTEGER);
-                        $stmt->bindValue(':user_email', $email, SQLITE3_TEXT);
-                        $stmt->execute();
-                    }
-
-                    $response = [
-                        'success' => true,
-                        'message' => 'Vote recorded successfully',
-                        'new_vote_count' => $result['new_vote_count'],
-                        'user_vote' => $result['user_vote']
+                // Check if user is the author of the post
+                if ($post['user_id'] == $user_id) {
+                    $response['success'] = false;
+                    $response['message'] = 'You cannot vote on your own post';
+                    $response['show_message'] = true;
+                    $response['message_html'] = 'You cannot vote on your own post';
+                    $response['message_style'] = [
+                        'position' => 'fixed',
+                        'top' => '20px',
+                        'left' => '50%',
+                        'transform' => 'translateX(-50%)',
+                        'padding' => '10px 20px',
+                        'backgroundColor' => '#f8d7da',
+                        'color' => '#842029',
+                        'borderRadius' => '4px',
+                        'zIndex' => '1000',
+                        'boxShadow' => '0 2px 4px rgba(0,0,0,0.2)'
                     ];
+                    $response['message_duration'] = 3000; // milliseconds
                 } else {
-                    $response['message'] = 'Error recording vote';
+                    // Process the vote
+                    $result = vote_post($post_id, $email, $vote_type);
+
+                    if ($result !== false) {
+                        // Connect vote to user account
+                        if ($user_id > 0) {
+                            // Update the vote record with user_id
+                            $stmt = $db->prepare('UPDATE community_votes SET user_id = :user_id WHERE post_id = :post_id AND user_email = :user_email');
+                            $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
+                            $stmt->bindValue(':post_id', $post_id, SQLITE3_INTEGER);
+                            $stmt->bindValue(':user_email', $email, SQLITE3_TEXT);
+                            $stmt->execute();
+                        }
+
+                        $response = [
+                            'success' => true,
+                            'message' => 'Vote recorded successfully',
+                            'new_vote_count' => $result['new_vote_count'],
+                            'user_vote' => $result['user_vote']
+                        ];
+                    } else {
+                        $response['message'] = 'Error recording vote';
+                    }
                 }
             }
         } elseif ($comment_id > 0) {
             // Voting on a comment
-            // Verify comment exists
-            $stmt = $db->prepare('SELECT id FROM community_comments WHERE id = :id');
+            // Verify comment exists and check if user is the author
+            $stmt = $db->prepare('SELECT id, user_id FROM community_comments WHERE id = :id');
             $stmt->bindValue(':id', $comment_id, SQLITE3_INTEGER);
             $comment = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
 
             if (!$comment) {
                 $response['message'] = 'Comment not found';
+            } elseif ($comment['user_id'] == $user_id) {
+                $response['success'] = false;
+                $response['message'] = 'You cannot vote on your own comment';
+                $response['show_message'] = true;
+                $response['message_html'] = 'You cannot vote on your own comment';
+                $response['message_style'] = [
+                    'position' => 'fixed',
+                    'top' => '20px',
+                    'left' => '50%',
+                    'transform' => 'translateX(-50%)',
+                    'padding' => '10px 20px',
+                    'backgroundColor' => '#f8d7da',
+                    'color' => '#842029',
+                    'borderRadius' => '4px',
+                    'zIndex' => '1000',
+                    'boxShadow' => '0 2px 4px rgba(0,0,0,0.2)'
+                ];
+                $response['message_duration'] = 3000; // milliseconds
             } else {
                 // Process the comment vote
                 $result = vote_comment($comment_id, $email, $vote_type);
