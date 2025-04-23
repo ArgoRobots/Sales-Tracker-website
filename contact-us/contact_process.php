@@ -115,7 +115,7 @@ function get_contact_email_template($firstName, $lastName, $email, $message)
         }
         
         .header {
-            background-color: #1e3a8a;
+            background-color: var(--blueHeader);
             padding: 20px;
             text-align: center;
         }
@@ -138,7 +138,7 @@ function get_contact_email_template($firstName, $lastName, $email, $message)
             font-weight: bold;
             display: block;
             margin-bottom: 5px;
-            color: #1e3a8a;
+            color: var(--blueHeader);
         }
         
         .field-value {

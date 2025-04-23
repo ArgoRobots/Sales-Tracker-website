@@ -595,7 +595,15 @@ if ($user) {
                 <div class="profile-content">
                     <!-- Reputation Chart Section -->
                     <div class="reputation-chart-section">
-                        <h3>Reputation Overview</h3>
+                        <h3>Reputation Overview
+                            <a href="reputation_help.php" class="reputation-help-link" title="Learn about the reputation system">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                                </svg>
+                            </a>
+                        </h3>
                         <div class="reputation-container">
                             <?php if (empty($chart_data)): ?>
                                 <div class="empty-state">

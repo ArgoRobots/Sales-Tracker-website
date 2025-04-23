@@ -61,7 +61,7 @@ body {
 }
 
 .hero-grid .price-tag p {
-    color: #1e3a8a;
+    color: var(--blueHeader);
 }
 
 .hero-grid .price-tag .price {

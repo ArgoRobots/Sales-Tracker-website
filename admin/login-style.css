@@ -23,7 +23,7 @@ body {
 }
 
 .login-header h1 {
-    color: #1e3a8a;
+    color: var(--blueHeader);
     margin-bottom: 10px;
 }
 

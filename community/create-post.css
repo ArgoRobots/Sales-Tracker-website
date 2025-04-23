@@ -38,7 +38,7 @@ header .header-inner .menu-container .menu .community:after {
 
 .post-form h2 {
     margin-bottom: 20px;
-    color: #1e3a8a;
+    color: var(--blueHeader);
     border-bottom: 1px solid #e5e7eb;
     padding-bottom: 15px;
 }

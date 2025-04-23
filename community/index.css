@@ -200,7 +200,7 @@ header .header-inner .menu-container .menu .community:after {
     font-weight: bold;
     font-size: 18px;
     margin: 8px 0;
-    color: #1e3a8a;
+    color: var(--blueHeader);
 }
 
 /* View count styling */
@@ -248,7 +248,7 @@ header .header-inner .menu-container .menu .community:after {
 
 .post-title {
     font-size: 18px;
-    color: #1e3a8a;
+    color: var(--blueHeader);
     flex: 1;
 }
 
@@ -481,7 +481,7 @@ header .header-inner .menu-container .menu .community:after {
 
 .selected-count {
     font-size: 14px;
-    color: #1e3a8a;
+    color: var(--blueHeader);
     font-weight: 500;
 }
 

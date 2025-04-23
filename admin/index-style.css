@@ -33,7 +33,7 @@ body {
 }
 
 h1 {
-    color: #1e3a8a;
+    color: var(--blueHeader);
 }
 
 .btn {
@@ -92,7 +92,7 @@ h1 {
 .stat-card .stat-value {
     font-size: 32px;
     font-weight: bold;
-    color: #1e3a8a;
+    color: var(--blueHeader);
 }
 
 .form-group {
@@ -288,7 +288,7 @@ td:nth-child(6) {
 
 .total-keys {
     font-weight: bold;
-    color: #1e3a8a;
+    color: var(--blueHeader);
 }
 
 @media (max-width: 900px) {

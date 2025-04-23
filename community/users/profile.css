@@ -16,7 +16,7 @@
 }
 
 .profile-header h1 {
-    color: #1e3a8a;
+    color: var(--blueHeader);
     font-size: 28px;
     display: flex;
     align-items: center;
@@ -176,7 +176,7 @@
 .stat-value {
     font-size: 24px;
     font-weight: 700;
-    color: #1e3a8a;
+    color: var(--blueHeader);
 }
 
 .stat-label {
@@ -261,7 +261,7 @@
 .impact-value {
     font-size: 18px;
     font-weight: 600;
-    color: #1e3a8a;
+    color: var(--blueHeader);
 }
 
 .impact-label {
@@ -300,6 +300,8 @@
     margin: 0;
     color: #1f2937;
     font-size: 18px;
+    display: flex;
+    align-items: center;
 }
 
 .sort-controls {
@@ -370,7 +372,7 @@
     align-items: center;
     justify-content: center;
     min-width: 60px;
-    color: #1e3a8a;
+    color: var(--blueHeader);
     padding: 8px;
     background-color: #f3f4f6;
     border-radius: 4px;
@@ -456,6 +458,22 @@
 }
 
 /* Reputation section */
+.reputation-help-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #6b7280;
+    transition: color 0.2s ease;
+}
+
+.reputation-help-link svg {
+    color: var(--button);
+}
+
+.reputation-help-link svg:hover {
+    color: var(--buttonHover);
+}
+
 .reputation-history {
     display: flex;
     flex-direction: column;

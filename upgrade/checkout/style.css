@@ -132,7 +132,7 @@ h1 {
 }
 
 .processing-overlay h2 {
-    color: #1e3a8a;
+    color: var(--blueHeader);
     margin-bottom: 15px;
     font-size: 28px;
 }

@@ -13,7 +13,7 @@
 
 .btn-white {
     background: white;
-    color: #1e3a8a;
+    color: var(--blueHeader);
 }
 
 .btn-white:hover {
@@ -67,7 +67,7 @@
 
 .back-button:hover {
     background-color: #f3f4f6;
-    color: #1e3a8a;
+    color: var(--blueHeader);
     border-color: #d1d5db;
 }
 

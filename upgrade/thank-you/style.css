@@ -20,7 +20,7 @@ h1 {
 
 .thank-you-card h2 {
     font-size: 32px;
-    color: #1e3a8a;
+    color: var(--blueHeader);
 }
 
 .thank-you-card p {
@@ -58,7 +58,7 @@ h1 {
 
 .license-container h3 {
     font-size: 20px;
-    color: #1e3a8a;
+    color: var(--blueHeader);
     text-align: center;
     margin-bottom: 20px;
 }
@@ -98,7 +98,7 @@ h1 {
 
 .next-steps h3 {
     font-size: 22px;
-    color: #1e3a8a;
+    color: var(--blueHeader);
     margin-bottom: 20px;
 }
 
@@ -119,7 +119,7 @@ h1 {
     justify-content: center;
     margin-right: 15px;
     font-weight: bold;
-    color: #1e3a8a;
+    color: var(--blueHeader);
     flex-shrink: 0;
 }
 

@@ -90,7 +90,7 @@ header .header-inner .menu-container .menu .whats-new:after {
 
 .version-tag {
     background: #dbeafe;
-    color: #1e3a8a;
+    color: var(--blueHeader);
     padding: 4px 12px;
     border-radius: 9999px;
     font-weight: 600;
@@ -137,7 +137,7 @@ header .header-inner .menu-container .menu .whats-new:after {
 
 .feature {
     background: #dbeafe;
-    color: #1e3a8a;
+    color: var(--blueHeader);
 }
 
 .fix {
