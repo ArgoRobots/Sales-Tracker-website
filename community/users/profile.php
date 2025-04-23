@@ -551,11 +551,21 @@ if ($user) {
                         </div>
 
                         <div class="profile-actions">
-                            <?php if ($is_own_profile && !$_SESSION['email_verified']): ?>
-                                <a href="verify_email.php" class="btn btn-secondary">Verify Email</a>
-                            <?php endif; ?>
-
                             <?php if ($is_own_profile): ?>
+                                <a href="resend_verification.php" class="btn btn-primary get-license-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                    </svg>
+                                    Resend License Key
+                                </a>
+
+                                <?php if (!$_SESSION['email_verified']): ?>
+                                    <div class="verification-alert-profile">
+                                        Your email is not verified. Please check your inbox for the verification email to activate your account.
+                                    </div>
+                                <?php endif; ?>
+
                                 <a href="logout.php" class="btn btn-logout">Log Out</a>
                             <?php endif; ?>
                         </div>

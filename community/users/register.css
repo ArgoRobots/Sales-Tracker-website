@@ -75,3 +75,31 @@
     content: "✓";
     color: #10b981;
 }
+
+/* Verification notice styling */
+.verification-notice {
+    background-color: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 6px;
+    color: #1e40af;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.verification-notice p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.verification-notice strong {
+    font-weight: 600;
+}
+
+/* Make small text under email input more prominent */
+.form-group small {
+    display: block;
+    color: #4b5563;
+    margin-top: 4px;
+    font-size: 0.85em;
+}

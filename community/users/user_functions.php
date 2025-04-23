@@ -62,7 +62,7 @@ function register_user($username, $email, $password)
 }
 
 /**
- * Send verification email
+ * Send verification email with license information
  * 
  * @param string $email User's email address
  * @param string $token Verification token
@@ -71,7 +71,7 @@ function register_user($username, $email, $password)
  */
 function send_verification_email($email, $token, $username)
 {
-    $subject = 'Verify Your Account - Argo Community';
+    $subject = 'Verify Your Account - Argo Sales Tracker';
 
     // Get the base URL
     $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
@@ -84,17 +84,68 @@ function send_verification_email($email, $token, $username)
     <html>
     <head>
         <title>Verify Your Account</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                line-height: 1.6;
+                color: #333;
+                max-width: 600px;
+                margin: 0 auto;
+            }
+            .container {
+                padding: 20px;
+                background-color: #f9f9f9;
+                border-radius: 5px;
+            }
+            .header {
+                background-color: #1e3a8a;
+                color: white;
+                padding: 15px;
+                text-align: center;
+                border-radius: 5px 5px 0 0;
+            }
+            .content {
+                padding: 20px;
+                background-color: white;
+                border: 1px solid #ddd;
+            }
+            .btn {
+                display: inline-block;
+                background-color: #2563eb;
+                color: white;
+                padding: 10px 20px;
+                text-decoration: none;
+                border-radius: 4px;
+                margin: 15px 0;
+            }
+            .footer {
+                margin-top: 20px;
+                font-size: 12px;
+                color: #666;
+                text-align: center;
+            }
+        </style>
     </head>
     <body>
-        <div style='max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;'>
-            <h2>Welcome to Argo Community!</h2>
-            <p>Hello $username,</p>
-            <p>Thank you for registering. Please click the link below to verify your email address:</p>
-            <p><a href='$verification_link' style='display: inline-block; background-color: #2563eb; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px;'>Verify My Email</a></p>
-            <p>Or copy and paste this link in your browser:</p>
-            <p>$verification_link</p>
-            <p>If you did not sign up for an account, you can ignore this email.</p>
-            <p>Regards,<br>The Argo Team</p>
+        <div class='container'>
+            <div class='header'>
+                <h2>Welcome to Argo Community!</h2>
+            </div>
+            <div class='content'>
+                <p>Hello $username,</p>
+                <p>Thank you for registering. <strong>Email verification is required</strong> to activate your account and access your license key.</p>
+                
+                <p>Please click the button below to verify your email address:</p>
+                <p style='text-align: center;'><a href='$verification_link' class='btn'>Verify My Email</a></p>
+                <p>Or copy and paste this link in your browser:</p>
+                <p>$verification_link</p>
+                
+                <p>If you did not sign up for an account, you can ignore this email.</p>
+                <p>Regards,<br>The Argo Team</p>
+            </div>
+            <div class='footer'>
+                <p>© Argo. All rights reserved.</p>
+            </div>
         </div>
     </body>
     </html>

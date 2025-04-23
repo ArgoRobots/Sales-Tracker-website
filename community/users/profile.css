@@ -1,6 +1,6 @@
 /* Profile container */
 .profile-container {
-    max-width: 1200px;
+    max-width: 1350px;
     min-height: 100vh;
     margin: 0 auto;
     padding: 60px 20px;
@@ -630,4 +630,58 @@
 .posts-section,
 .comments-section {
     height: 100%;
+}
+
+/* Get License button styling */
+.get-license-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: var(--button);
+    color: white;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.get-license-btn:hover {
+    background-color: var(--buttonHover);
+    text-decoration: none;
+}
+
+.get-license-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Verification alert on profile page */
+.verification-alert-profile {
+    background-color: #eff6ff;
+    border: 1px solid #bfdbfe;
+    color: #1e40af;
+    padding: 12px;
+    border-radius: 6px;
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: center;
+}
+
+/* License verified status */
+.license-verified {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: #16a34a;
+    background-color: #dcfce7;
+    border: 1px solid #86efac;
+    border-radius: 6px;
+    padding: 10px;
+    font-weight: 500;
+    width: 100%;
+}
+
+.license-verified svg {
+    color: #16a34a;
 }

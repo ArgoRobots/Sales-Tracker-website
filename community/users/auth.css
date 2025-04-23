@@ -155,3 +155,127 @@ a:hover {
         padding: 20px 15px;
     }
 }
+
+/* License info section on verification page */
+.license-info {
+    background-color: #f0f9ff;
+    border: 1px solid #bae6fd;
+    color: #0369a1;
+    border-radius: 6px;
+    padding: 15px 20px;
+    margin: 20px 0;
+}
+
+.license-info h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #0369a1;
+    font-size: 18px;
+}
+
+.license-info p {
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* Styling for verification messages */
+.success-message {
+    background-color: #d1fae5;
+    color: #065f46;
+    border: 1px solid #10b981;
+    border-radius: 6px;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.error-message {
+    background-color: #fee2e2;
+    color: #b91c1c;
+    border: 1px solid #ef4444;
+    border-radius: 6px;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Update auth-links styling for multiple buttons */
+.auth-links {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.auth-links a {
+    color: var(--button);
+    text-decoration: none;
+}
+
+.auth-links a:hover {
+    text-decoration: underline;
+}
+
+.auth-links .btn {
+    margin: 5px;
+    display: inline-block;
+}
+
+/* Make the verification notice more visible */
+.verification-notice {
+    background-color: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 6px;
+    color: #1e40af;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.verification-notice p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.verification-notice strong {
+    font-weight: 600;
+}
+
+/* Verification reminder styling for login page */
+.verification-reminder {
+    background-color: #f1f5f9;
+    border-left: 4px solid #64748b;
+    border-radius: 0 4px 4px 0;
+    color: #475569;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.verification-reminder p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.verification-reminder strong {
+    color: #334155;
+}
+
+/* Style for verification notice with link */
+.verification-notice {
+    background-color: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 6px;
+    color: #1e40af;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.verification-notice a {
+    color: #2563eb;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.verification-notice a:hover {
+    text-decoration: none;
+}

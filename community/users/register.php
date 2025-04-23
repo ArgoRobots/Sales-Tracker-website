@@ -79,6 +79,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <h1>Create an Account</h1>
             <p class="auth-subtitle">Join Argo Community to share ideas and connect with other users</p>
 
+            <!-- Added email verification requirement notice -->
+            <div class="verification-notice">
+                <p><strong>Note:</strong> Email verification is required to activate your account and obtain your license.</p>
+            </div>
+
             <?php if ($error): ?>
                 <div class="error-message">
                     <?php echo htmlspecialchars($error); ?>
@@ -88,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php if ($success): ?>
                 <div class="success-message">
                     <?php echo htmlspecialchars($success); ?>
-                    <p>Please check your email to verify your account.</p>
+                    <p>Please check your email to verify your account and receive your license.</p>
                     <p><a href="login.php" class="btn btn-blue">Proceed to Login</a></p>
                 </div>
             <?php else: ?>
@@ -102,6 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input type="email" id="email" name="email" value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>" required>
+                        <small>A verification email will be sent to this address</small>
                     </div>
 
                     <div class="form-group">

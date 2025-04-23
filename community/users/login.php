@@ -10,6 +10,7 @@ if (is_user_logged_in()) {
 }
 
 $error = '';
+$verification_notice = '';
 
 // Process form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -25,6 +26,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user = login_user($login, $password);
 
         if ($user) {
+            // Check if email is verified
+            if (!$user['email_verified']) {
+                $verification_notice = 'Your email has not been verified. Please check your inbox for the verification email or <a href="resend_verification.php">request a new verification email</a>.';
+            }
+
             // Set session data
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $user['username'];
@@ -33,13 +39,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['email_verified'] = $user['email_verified'];
             $_SESSION['avatar'] = $user['avatar'];
 
-            // Redirect after login
+            // Redirect after login - even if not verified, we'll show them the profile page with the verification message
             if (isset($_SESSION['redirect_after_login']) && !empty($_SESSION['redirect_after_login'])) {
                 $redirect = $_SESSION['redirect_after_login'];
                 unset($_SESSION['redirect_after_login']);
                 header("Location: $redirect");
             } else {
-                header('Location: ../index.php');
+                header('Location: profile.php');
             }
             exit;
         } else {
@@ -83,6 +89,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php echo htmlspecialchars($error); ?>
                 </div>
             <?php endif; ?>
+
+            <?php if ($verification_notice): ?>
+                <div class="verification-notice">
+                    <?php echo $verification_notice; ?>
+                </div>
+            <?php endif; ?>
+
+            <!-- Add email verification reminder -->
+            <div class="verification-reminder">
+                <p><strong>Note:</strong> Email verification is required to activate your account and receive your license key.</p>
+            </div>
 
             <form method="post" class="auth-form">
                 <div class="form-group">
