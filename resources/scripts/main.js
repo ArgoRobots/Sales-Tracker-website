@@ -1,59 +1,73 @@
 function adjustLinksAndImages(containerSelector) {
   var path = window.location.pathname;
-  // Normalize the path to remove the leading slash if present
   path = path.startsWith("/") ? path.substr(1) : path;
-  // Split the path into segments
   var segments = path.split("/");
-  // Calculate the depth based on the number of segments - assuming the last segment is a file or an ending slash
-  var depth = segments.length - 1;
   var linkDepth = segments.length - 2;
-  var prefix = "";
   var linkPrefix = "";
-  // Construct the prefix based on the depth for local development
-  for (var i = 0; i < depth; i++) {
-    prefix += "../";
-  }
-  for (var i = 0; i < linkDepth; i++) {
-    linkPrefix += "../";
-  }
 
-  // Append the static server URL to the prefix for adjusting image and script sources
-  var staticServerPrefix = prefix + "static.argorobots.ca/";
+  // Calculate path prefixes
+  for (var i = 0; i < linkDepth; i++) linkPrefix += "../";
 
-  // Adjust href for links within the specified container
+  // Adjust relative links
   $(containerSelector + " a").each(function () {
     var href = $(this).attr("href");
-    // Skip adjustment for absolute URLs, apply depth-based prefix for relative navigation
+    if (!href || href.startsWith("#")) return;
+
     if (
       !href.startsWith("http://") &&
       !href.startsWith("https://") &&
+      !href.startsWith("/") &&
       !href.startsWith("#")
     ) {
-      var newHref = linkPrefix + (href.startsWith("/") ? href.substr(1) : href);
+      var newHref = linkPrefix + href;
       $(this).attr("href", newHref);
-      //console.log("Adjusted href for link:", href, "to", newHref); // Debugging: log adjustment
-    }
-  });
-
-  // Adjust src for images within the specified container
-  $(containerSelector + " img").each(function () {
-    var src = $(this).attr("src");
-    if (!src.startsWith("http://") && !src.startsWith("https://")) {
-      var newSrc =
-        staticServerPrefix + (src.startsWith("/") ? src.substr(1) : src);
-      $(this).attr("src", newSrc);
-      //console.log("Adjusted src for image:", src, "to", newSrc); // Debugging: log adjustment
-    }
-  });
-
-  // Adjust src for scripts within the specified container
-  $(containerSelector + " script").each(function () {
-    var src = $(this).attr("src");
-    if (src && !src.startsWith("http://") && !src.startsWith("https://")) {
-      var newSrc =
-        staticServerPrefix + (src.startsWith("/") ? src.substr(1) : src);
-      $(this).attr("src", newSrc);
-      //console.log("Adjusted src for script:", src, "to", newSrc); // Debugging: log adjustment
     }
   });
 }
+
+// Avatar handling with absolute path
+document.addEventListener("DOMContentLoaded", function () {
+  fetch("/community/get_avatar_info.php")
+    .then((response) => response.json())
+    .then((data) => {
+      const accountAvatar = document.querySelector(".account-avatar");
+
+      if (accountAvatar) {
+        if (data.logged_in) {
+          if (data.has_avatar) {
+            accountAvatar.innerHTML = `<img src="${data.avatar_url}" alt="Profile">`;
+          } else {
+            accountAvatar.innerHTML = `<span class="author-avatar-placeholder">${data.initial}</span>`;
+          }
+        } else {
+          accountAvatar.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+          </svg>`;
+        }
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching avatar info:", error);
+      const accountAvatar = document.querySelector(".account-avatar");
+      if (accountAvatar) {
+        accountAvatar.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+        </svg>`;
+      }
+    });
+});
+
+// Apply adjustments to all pages
+$(document).ready(function () {
+  // Header adjustments
+  $("#includeHeader").load("../../resources/header/index.html", function () {
+    adjustLinksAndImages("#includeHeader");
+  });
+
+  // Footer adjustments
+  $("#includeFooter").load("../../resources/footer/index.html", function () {
+    adjustLinksAndImages("#includeFooter");
+  });
+});

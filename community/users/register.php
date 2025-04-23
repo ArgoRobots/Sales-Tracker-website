@@ -71,13 +71,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
     <header>
-        <script>
-            $(function() {
-                $("#includeHeader").load("../../resources/header/index.html", function() {
-                    adjustLinksAndImages("#includeHeader");
-                });
-            });
-        </script>
         <div id="includeHeader"></div>
     </header>
 
@@ -155,13 +148,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <footer class="footer">
-        <script>
-            $(function() {
-                $("#includeFooter").load("../../resources/footer/index.html", function() {
-                    adjustLinksAndImages("#includeFooter");
-                });
-            });
-        </script>
         <div id="includeFooter"></div>
     </footer>
 

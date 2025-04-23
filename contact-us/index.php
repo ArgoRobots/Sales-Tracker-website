@@ -5,8 +5,8 @@ session_start();
 // Get error message if exists
 $error_message = '';
 if (isset($_SESSION['contact_error'])) {
-    $error_message = $_SESSION['contact_error'];
-    unset($_SESSION['contact_error']); // Clear the error after retrieving
+  $error_message = $_SESSION['contact_error'];
+  unset($_SESSION['contact_error']); // Clear the error after retrieving
 }
 ?>
 <!DOCTYPE html>
@@ -23,8 +23,8 @@ if (isset($_SESSION['contact_error'])) {
   <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
   <title>Contact Us - Argo Sales Tracker</title>
 
-  <script src="../resources/scripts/main.js"></script>
   <script src="../resources/scripts/jquery-3.6.0.js"></script>
+  <script src="../resources/scripts/main.js"></script>
   <script src="main.js"></script>
 
   <link rel="stylesheet" href="style.css">
@@ -36,13 +36,6 @@ if (isset($_SESSION['contact_error'])) {
 
 <body>
   <header>
-    <script>
-      $(function () {
-        $("#includeHeader").load("../resources/header/index.html", function () {
-          adjustLinksAndImages("#includeHeader");
-        });
-      });
-    </script>
     <div id="includeHeader"></div>
   </header>
 
@@ -51,9 +44,9 @@ if (isset($_SESSION['contact_error'])) {
       <h1 class="title">Contact Us</h1>
 
       <?php if (!empty($error_message)): ?>
-      <div class="error-message">
-        <?php echo htmlspecialchars($error_message); ?>
-      </div>
+        <div class="error-message">
+          <?php echo htmlspecialchars($error_message); ?>
+        </div>
       <?php endif; ?>
 
       <!-- Contact form using PHP for form submission handling -->
@@ -113,13 +106,6 @@ if (isset($_SESSION['contact_error'])) {
   </section>
 
   <footer class="footer">
-    <script>
-      $(function () {
-        $("#includeFooter").load("../resources/footer/index.html", function () {
-          adjustLinksAndImages("#includeFooter");
-        });
-      });
-    </script>
     <div id="includeFooter"></div>
   </footer>
 </body>

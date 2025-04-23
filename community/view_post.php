@@ -87,13 +87,6 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
 
 <body>
     <header>
-        <script>
-            $(function() {
-                $("#includeHeader").load("../resources/header/index.html", function() {
-                    adjustLinksAndImages("#includeHeader");
-                });
-            });
-        </script>
         <div id="includeHeader"></div>
     </header>
 
@@ -187,7 +180,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
 
                             <!-- Edit Post button -->
                             <?php if ($can_edit_post): ?>
-                                <a href="edit_post.php?id=<?php echo $post['id']; ?>" class="edit-post-btn">Edit Post</a>
+                                <a href="edit_post.php?id=<?php echo $post['id']; ?>" class="edit-post-btn">Edit</a>
                             <?php endif; ?>
 
                             <!-- Delete post button -->
@@ -350,13 +343,6 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
     </div>
 
     <footer class="footer">
-        <script>
-            $(function() {
-                $("#includeFooter").load("../resources/footer/index.html", function() {
-                    adjustLinksAndImages("#includeFooter");
-                });
-            });
-        </script>
         <div id="includeFooter"></div>
     </footer>
 

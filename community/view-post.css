@@ -221,6 +221,12 @@ a:hover {
     gap: 4px;
 }
 
+.post-views {
+    position: relative;
+    top: 2px;
+    margin-left: 8px;
+}
+
 .post-views svg {
     vertical-align: middle;
     color: #94a3b8;
@@ -324,7 +330,6 @@ a:hover {
 .comment-form {
     background-color: white;
     border-radius: 6px;
-    padding: 20px 15px;
 }
 
 .comment-form h4 {
@@ -410,7 +415,6 @@ a:hover {
     padding: 3px;
     transition: all 0.2s ease;
     min-width: 38px;
-    min-height: 38px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -497,6 +501,7 @@ a:hover {
     line-height: 1.5;
     color: #4b5563;
     word-break: break-word;
+    margin: 5px 0 0 10px;
 }
 
 /* Success message styling */

@@ -74,13 +74,6 @@ $valid_token = ($result !== false);
 
 <body>
     <header>
-        <script>
-            $(function() {
-                $("#includeHeader").load("../../resources/header/index.html", function() {
-                    adjustLinksAndImages("#includeHeader");
-                });
-            });
-        </script>
         <div id="includeHeader"></div>
     </header>
 
@@ -131,13 +124,6 @@ $valid_token = ($result !== false);
     </div>
 
     <footer class="footer">
-        <script>
-            $(function() {
-                $("#includeFooter").load("../../resources/footer/index.html", function() {
-                    adjustLinksAndImages("#includeFooter");
-                });
-            });
-        </script>
         <div id="includeFooter"></div>
     </footer>
 </body>

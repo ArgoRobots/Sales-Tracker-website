@@ -347,3 +347,51 @@ header .header-inner .menu-container ul li a:hover::after {
     transform: translateY(-50%);
   }
 }
+
+.author-avatar {
+  display: inline-flex;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 5px;
+  vertical-align: middle;
+  border: 1px solid #e5e7eb;
+  margin-left: 5px;
+}
+
+.author-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.author-avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  background-color: #3b82f6;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.post-author,
+.comment-author-info {
+  display: flex;
+  align-items: center;
+}
+
+.comment-author-info .author-avatar {
+  width: 30px;
+  height: 30px;
+  font-size: 10px;
+}
+
+@media (max-width: 480px) {
+  .author-avatar-placeholder {
+    font-size: 10px;
+  }
+}

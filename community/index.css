@@ -326,6 +326,8 @@ header .header-inner .menu-container .menu .community:after {
 }
 
 .post-views {
+    position: relative;
+    top: 2px;
     display: inline-flex;
     align-items: center;
     gap: 4px;
