@@ -73,12 +73,21 @@ if ($is_logged_in && !is_array($current_user)) {
                     <a href="users/login.php" class="btn btn-blue">Log in to Post</a>
                 <?php endif; ?>
 
-                <!-- Category Filter -->
+                <!-- Category filter -->
                 <div class="filter-dropdown">
                     <select id="category-filter" class="filter-select">
                         <option value="all">All Categories</option>
                         <option value="bug">Bug Reports</option>
                         <option value="feature">Feature Requests</option>
+                    </select>
+                </div>
+
+                <!-- Type filter -->
+                <div class="filter-dropdown">
+                    <select id="sort-filter" class="filter-select">
+                        <option value="newest">Newest First</option>
+                        <option value="oldest">Oldest First</option>
+                        <option value="most_voted">Most Voted</option>
                     </select>
                 </div>
             </div>

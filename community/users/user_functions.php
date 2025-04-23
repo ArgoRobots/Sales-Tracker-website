@@ -55,7 +55,7 @@ function register_user($username, $email, $password)
         // Send verification email
         send_verification_email($email, $verification_token, $username);
 
-        return ['success' => true, 'user' => $user, 'message' => 'Registration successful! Please check your email to verify your account.'];
+        return true;
     }
 
     return ['success' => false, 'message' => 'Registration failed'];

@@ -11,12 +11,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const searchInput = document.getElementById("search-posts");
   const searchBtn = document.getElementById("search-btn");
   const categoryFilter = document.getElementById("category-filter");
+  const sortFilter = document.getElementById("sort-filter");
   const selectAllCheckbox = document.getElementById("select-all-posts");
   const bulkActionsDiv = document.querySelector(".bulk-actions");
   const deleteSelectedBtn = document.getElementById("delete-selected");
   const selectedCountSpan = document.querySelector(".selected-count");
 
-  setupVoteHandlers(); // Add this line to set up vote handlers
+  setupVoteHandlers();
   setupDeletePost();
   setupUpdatePostStatus();
 
@@ -52,7 +53,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Function to set up vote handlers
   function setupVoteHandlers() {
-    // Get all vote buttons (initial load)
     const voteButtons = document.querySelectorAll(".vote-btn");
 
     voteButtons.forEach((btn) => {
@@ -366,7 +366,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const searchTerm = searchInput.value.toLowerCase().trim();
     const category = categoryFilter.value;
 
-    return allPosts.filter((post) => {
+    // First filter the posts
+    let filtered = allPosts.filter((post) => {
       // Filter by category
       if (category !== "all" && post.dataset.postType !== category) {
         return false;
@@ -393,16 +394,69 @@ document.addEventListener("DOMContentLoaded", function () {
 
       return true;
     });
+
+    return filtered;
   }
 
-  // Apply filters function
+  // New function to sort posts using DOM manipulation
+  function sortPosts(posts) {
+    if (!sortFilter) return posts;
+
+    const sortBy = sortFilter.value;
+    const postsArray = Array.from(posts);
+
+    // Sort the posts array
+    postsArray.sort((a, b) => {
+      if (sortBy === "most_voted") {
+        const votesA = parseInt(
+          a.querySelector(".vote-count").textContent.trim()
+        );
+        const votesB = parseInt(
+          b.querySelector(".vote-count").textContent.trim()
+        );
+
+        return votesB - votesA;
+      } else if (sortBy === "oldest") {
+        const dateTextA = a.querySelector(".post-date").textContent.trim();
+        const dateTextB = b.querySelector(".post-date").textContent.trim();
+
+        // Parse the dates
+        const dateA = new Date(dateTextA);
+        const dateB = new Date(dateTextB);
+
+        return dateA - dateB;
+      } else {
+        // Sort by date (newest first)
+        const dateTextA = a.querySelector(".post-date").textContent.trim();
+        const dateTextB = b.querySelector(".post-date").textContent.trim();
+
+        // Parse the dates
+        const dateA = new Date(dateTextA);
+        const dateB = new Date(dateTextB);
+
+        return dateB - dateA;
+      }
+    });
+
+    // Remove all posts from container
+    postsArray.forEach((post) => {
+      post.remove();
+    });
+
+    // Re-append in sorted order
+    postsArray.forEach((post) => {
+      postsContainer.appendChild(post);
+    });
+
+    return postsArray;
+  }
+
+  // Apply filters function - now with separate sorting
   function applyFilters() {
-    // Reset page counter
     page = 1;
     hasMorePosts = true;
-
-    // Get filtered posts
-    const filteredPosts = getFilteredPosts();
+    let filteredPosts = getFilteredPosts();
+    filteredPosts = sortPosts(filteredPosts);
 
     // Hide all posts first
     allPosts.forEach((post) => {
@@ -456,11 +510,18 @@ document.addEventListener("DOMContentLoaded", function () {
       updateDeleteButtonState();
     }
 
-    // Set up vote handlers for displayed posts
     setupVoteHandlers();
   }
 
   // Event listeners for filters
+  if (categoryFilter) {
+    categoryFilter.addEventListener("change", applyFilters);
+  }
+
+  if (sortFilter) {
+    sortFilter.addEventListener("change", applyFilters);
+  }
+
   if (searchBtn) {
     searchBtn.addEventListener("click", applyFilters);
   }
@@ -488,10 +549,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 500);
       }
     });
-  }
-
-  if (categoryFilter) {
-    categoryFilter.addEventListener("change", applyFilters);
   }
 
   // Initialize long-press detection for enabling selection mode

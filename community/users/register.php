@@ -4,7 +4,7 @@ require_once '../../db_connect.php';
 require_once 'user_functions.php';
 
 $error = '';
-$success = '';
+$success = false;
 
 // Process form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Attempt to register user - username will be used as display name
         $result = register_user($username, $email, $password);
 
-        if ($result['success']) {
+        if ($success) {
             $success = $result['message'];
         } else {
             $error = $result['message'];
