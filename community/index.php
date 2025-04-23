@@ -129,13 +129,13 @@ if ($is_logged_in && !is_array($current_user)) {
                     <div class="post-card" data-post-id="<?php echo $post['id']; ?>" data-post-type="<?php echo $post['post_type']; ?>">
                         <!-- Post votes -->
                         <div class="post-votes">
-                            <button class="vote-btn upvote <?php echo $user_vote === 1 ? 'voted' : ''; ?>" data-post-id="<?php echo $post['id']; ?>" data-vote="up" <?php echo !$is_logged_in ? 'disabled title="Please log in to vote"' : ''; ?>>
+                            <button class="vote-btn upvote <?php echo $user_vote === 1 ? 'voted' : ''; ?>" data-post-id="<?php echo $post['id']; ?>" data-vote="up">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                     <path stroke-width="2" d="M12 19V5M5 12l7-7 7 7" />
                                 </svg>
                             </button>
                             <span class="vote-count"><?php echo $post['votes']; ?></span>
-                            <button class="vote-btn downvote <?php echo $user_vote === -1 ? 'voted' : ''; ?>" data-post-id="<?php echo $post['id']; ?>" data-vote="down" <?php echo !$is_logged_in ? 'disabled title="Please log in to vote"' : ''; ?>>
+                            <button class="vote-btn downvote <?php echo $user_vote === -1 ? 'voted' : ''; ?>" data-post-id="<?php echo $post['id']; ?>" data-vote="down">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                     <path stroke-width="2" d="M12 5v14M5 12l7 7 7-7" />
                                 </svg>
@@ -187,8 +187,7 @@ if ($is_logged_in && !is_array($current_user)) {
                                                         <?php echo strtoupper(substr(trim($post['user_name']), 0, 1)); ?>
                                                     </span>
                                                 <?php endif; ?>
-                                            </span>
-                                            <?php echo htmlspecialchars(trim($post['user_name'])); ?>
+                                            </span><?php echo htmlspecialchars(trim($post['user_name'])); ?>
                                         </a>
                                     </span>
                                     <span class="post-date"><?php echo date('M j, Y', strtotime($post['created_at'])); ?></span>
@@ -232,22 +231,6 @@ if ($is_logged_in && !is_array($current_user)) {
     <footer class="footer">
         <div id="includeFooter"></div>
     </footer>
-
-    <script>
-        // Add an event listener to handle login redirects for voting buttons
-        document.addEventListener('DOMContentLoaded', function() {
-            <?php if (!$is_logged_in): ?>
-                const voteButtons = document.querySelectorAll('.vote-btn');
-                voteButtons.forEach(button => {
-                    button.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        window.location.href = 'users/login.php';
-                    });
-                });
-            <?php endif; ?>
-        });
-    </script>
 </body>
 
 </html>

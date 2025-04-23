@@ -161,6 +161,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                             <path stroke-width="2" d="M12 19V5M5 12l7-7 7 7" />
                         </svg>
                     </button>
+
                     <span class="vote-count"><?php echo $post['votes']; ?></span>
                     <button class="vote-btn downvote <?php echo $user_vote === -1 ? 'voted' : ''; ?>" data-post-id="<?php echo $post['id']; ?>" data-vote="down">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -205,8 +206,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                                                 <?php echo strtoupper(substr($post['user_name'], 0, 1)); ?>
                                             </span>
                                         <?php endif; ?>
-                                    </span>
-                                    <?php echo htmlspecialchars($post['user_name']); ?>
+                                    </span><?php echo htmlspecialchars($post['user_name']); ?>
                                 </a>
                             </span>
                             <span class="post-date"><?php echo date('M j, Y g:i a', strtotime($post['created_at'])); ?></span>
@@ -246,19 +246,13 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                         <div class="comment" data-comment-id="<?php echo $comment['id']; ?>">
                             <!-- Vertical vote controls on left -->
                             <div class="comment-votes">
-                                <button class="comment-vote-btn upvote <?php echo $comment_vote === 1 ? 'voted' : ''; ?>"
-                                    data-comment-id="<?php echo $comment['id']; ?>"
-                                    data-vote="up"
-                                    <?php echo !$is_logged_in ? 'disabled title="Please log in to vote"' : ''; ?>>
+                                <button class="comment-vote-btn upvote <?php echo $comment_vote === 1 ? 'voted' : ''; ?>" data-comment-id="<?php echo $comment['id']; ?>" data-vote="up">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                         <path stroke-width="2" d="M12 19V5M5 12l7-7 7 7" />
                                     </svg>
                                 </button>
                                 <span class="comment-vote-count"><?php echo $comment_votes; ?></span>
-                                <button class="comment-vote-btn downvote <?php echo $comment_vote === -1 ? 'voted' : ''; ?>"
-                                    data-comment-id="<?php echo $comment['id']; ?>"
-                                    data-vote="down"
-                                    <?php echo !$is_logged_in ? 'disabled title="Please log in to vote"' : ''; ?>>
+                                <button class="comment-vote-btn downvote <?php echo $comment_vote === -1 ? 'voted' : ''; ?>" data-comment-id="<?php echo $comment['id']; ?>" data-vote="down">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                         <path stroke-width="2" d="M12 5v14M5 12l7 7 7-7" />
                                     </svg>
@@ -278,8 +272,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                                                         <?php echo strtoupper(substr($comment['user_name'], 0, 1)); ?>
                                                     </span>
                                                 <?php endif; ?>
-                                            </span>
-                                            <?php echo htmlspecialchars($comment['user_name']); ?>
+                                            </span><?php echo htmlspecialchars($comment['user_name']); ?>
                                         </a>
                                         <span class="comment-date"><?php echo date('M j, Y g:i a', strtotime($comment['created_at'])); ?></span>
                                     </div>
@@ -345,32 +338,6 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
     <footer class="footer">
         <div id="includeFooter"></div>
     </footer>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Set up voting buttons with visual feedback
-            const upvoteBtn = document.querySelector(".upvote");
-            const downvoteBtn = document.querySelector(".downvote");
-
-            if (upvoteBtn && downvoteBtn) {
-                // If user already voted, show the buttons as active
-                if (upvoteBtn.classList.contains('voted')) {
-                    upvoteBtn.style.color = "#2563eb";
-                } else if (downvoteBtn.classList.contains('voted')) {
-                    downvoteBtn.style.color = "#dc2626";
-                }
-            }
-
-            // Set color for comment vote buttons that are active
-            document.querySelectorAll('.comment-vote-btn.voted').forEach(btn => {
-                if (btn.classList.contains('upvote')) {
-                    btn.style.color = "#2563eb";
-                } else if (btn.classList.contains('downvote')) {
-                    btn.style.color = "#dc2626";
-                }
-            });
-        });
-    </script>
 </body>
 
 </html>

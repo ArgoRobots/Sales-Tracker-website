@@ -1,8 +1,8 @@
 <?php
 session_start();
 require_once '../../db_connect.php';
-require_once 'user_functions.php';
 require_once '../community_functions.php';
+require_once 'user_functions.php';
 
 require_login('', true);
 
@@ -440,6 +440,7 @@ if ($user) {
 
     <link rel="stylesheet" href="profile.css">
     <link rel="stylesheet" href="../../resources/styles/button.css">
+    <link rel="stylesheet" href="../../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../../resources/header/style.css">
     <link rel="stylesheet" href="../../resources/header/dark.css">
     <link rel="stylesheet" href="../../resources/footer/style.css">
@@ -645,7 +646,7 @@ if ($user) {
                                                             <?php echo htmlspecialchars($rep_description); ?>
                                                             <?php if (!empty($rep_item['post_title'])): ?>
                                                                 <a href="../view_post.php?id=<?php echo $rep_item['post_id']; ?>">
-                                                                    "<?php echo htmlspecialchars($rep_item['post_title']); ?>"
+                                                                    <?php echo htmlspecialchars($rep_item['post_title']); ?>
                                                                 </a>
                                                             <?php endif; ?>
                                                         </div>
@@ -678,15 +679,23 @@ if ($user) {
                                                     backgroundColor: 'rgba(59, 130, 246, 0.1)',
                                                     fill: true,
                                                     tension: 0.1,
-                                                    pointRadius: 4,
+                                                    pointRadius: 3,
                                                     pointBackgroundColor: '#3b82f6',
                                                     pointBorderColor: '#fff',
-                                                    pointBorderWidth: 2
+                                                    pointBorderWidth: 1
                                                 }]
                                             },
                                             options: {
                                                 responsive: true,
                                                 maintainAspectRatio: false,
+                                                layout: {
+                                                    padding: {
+                                                        top: 5,
+                                                        right: 10,
+                                                        bottom: 40,
+                                                        left: 10
+                                                    }
+                                                },
                                                 plugins: {
                                                     legend: {
                                                         display: false
@@ -711,12 +720,21 @@ if ($user) {
                                                     x: {
                                                         grid: {
                                                             display: false
+                                                        },
+                                                        ticks: {
+                                                            maxRotation: 0,
+                                                            autoSkip: true,
+                                                            maxTicksLimit: 5
                                                         }
                                                     },
                                                     y: {
                                                         beginAtZero: true,
                                                         grid: {
                                                             color: 'rgba(0, 0, 0, 0.05)'
+                                                        },
+                                                        ticks: {
+                                                            padding: 5,
+                                                            precision: 0 // Integer values only
                                                         }
                                                     }
                                                 }
@@ -836,7 +854,7 @@ if ($user) {
                                                 <div class="comment-meta-info">
                                                     <span class="comment-on">
                                                         on post: <a href="../view_post.php?id=<?php echo $comment['post_id']; ?>" class="post-link">
-                                                            "<?php echo htmlspecialchars($comment['post_title']); ?>"
+                                                            <?php echo htmlspecialchars($comment['post_title']); ?>
                                                         </a>
                                                     </span>
                                                     <span class="comment-date">
@@ -887,9 +905,9 @@ if ($user) {
                                             <div class="reputation-description">
                                                 <?php echo htmlspecialchars($rep_description); ?>
                                                 <?php if (!empty($rep_item['post_title'])): ?>
-                                                    <a href="../view_post.php?id=<?php echo $rep_item['post_id']; ?>">
-                                                        "<?php echo htmlspecialchars($rep_item['post_title']); ?>"
-                                                    </a>
+                                                    "<a class="link" href="../view_post.php?id=<?php echo $rep_item['post_id']; ?>">
+                                                        <?php echo htmlspecialchars($rep_item['post_title']); ?>
+                                                    </a>"
                                                 <?php endif; ?>
                                             </div>
                                             <div class="reputation-date">

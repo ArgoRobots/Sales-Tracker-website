@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const deleteSelectedBtn = document.getElementById("delete-selected");
   const selectedCountSpan = document.querySelector(".selected-count");
 
-  setupVoting();
+  setupVoteHandlers(); // Add this line to set up vote handlers
   setupDeletePost();
   setupUpdatePostStatus();
 
@@ -25,6 +25,95 @@ document.addEventListener("DOMContentLoaded", function () {
     // We'll check this by looking for disabled vote buttons
     const voteBtn = document.querySelector(".vote-btn");
     return voteBtn && !voteBtn.hasAttribute("disabled");
+  }
+
+  // Helper function to display message from server
+  function displayServerMessage(messageData) {
+    if (!messageData.show_message) return;
+
+    const message = document.createElement("div");
+    message.className = "login-alert";
+    message.innerHTML = messageData.message_html || messageData.message;
+
+    // Apply all styles from the server
+    if (messageData.message_style) {
+      Object.entries(messageData.message_style).forEach(([key, value]) => {
+        message.style[key] = value;
+      });
+    }
+
+    document.body.appendChild(message);
+
+    // Remove after specified duration or default to 3 seconds
+    setTimeout(() => {
+      message.remove();
+    }, messageData.message_duration || 3000);
+  }
+
+  // Function to set up vote handlers
+  function setupVoteHandlers() {
+    // Get all vote buttons (initial load)
+    const voteButtons = document.querySelectorAll(".vote-btn");
+
+    voteButtons.forEach((btn) => {
+      btn.addEventListener("click", function (e) {
+        const postId = this.getAttribute("data-post-id");
+        const voteType = this.getAttribute("data-vote") === "up" ? 1 : -1;
+        const postCard = this.closest(".post-card");
+
+        // Disable all vote buttons in this post to prevent double-clicks
+        const postVoteButtons = postCard.querySelectorAll(".vote-btn");
+        postVoteButtons.forEach((button) => (button.disabled = true));
+
+        fetch("vote.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: `post_id=${postId}&vote_type=${voteType}`,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              // Update the vote count
+              const voteCountElement = postCard.querySelector(".vote-count");
+              voteCountElement.textContent = data.new_vote_count;
+
+              // Change button colors based on user's vote
+              const upvoteBtn = postCard.querySelector(".upvote");
+              const downvoteBtn = postCard.querySelector(".downvote");
+
+              upvoteBtn.style.color = "";
+              downvoteBtn.style.color = "";
+              upvoteBtn.classList.remove("voted");
+              downvoteBtn.classList.remove("voted");
+
+              if (data.user_vote === 1) {
+                upvoteBtn.style.color = "#2563eb";
+                upvoteBtn.classList.add("voted");
+              } else if (data.user_vote === -1) {
+                downvoteBtn.style.color = "#dc2626";
+                downvoteBtn.classList.add("voted");
+              }
+            } else {
+              // Display message from server if provided
+              if (data.show_message) {
+                displayServerMessage(data);
+              } else {
+                alert("Error voting: " + data.message);
+              }
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert("An error occurred while voting");
+          })
+          .finally(() => {
+            // Re-enable buttons after operation is complete
+            postVoteButtons.forEach((button) => (button.disabled = false));
+          });
+      });
+    });
   }
 
   // Get all posts on the page
@@ -238,6 +327,9 @@ document.addEventListener("DOMContentLoaded", function () {
       isLoading = false;
       loadingIndicator.style.display = hasMorePosts ? "block" : "none";
     }, 500);
+
+    // Set up vote handlers for newly displayed posts
+    setupVoteHandlers();
   }
 
   // Function to check and load more posts if needed
@@ -363,6 +455,9 @@ document.addEventListener("DOMContentLoaded", function () {
       updateSelectedCount();
       updateDeleteButtonState();
     }
+
+    // Set up vote handlers for displayed posts
+    setupVoteHandlers();
   }
 
   // Event listeners for filters
@@ -434,104 +529,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
       post.addEventListener("mouseleave", function () {
         clearTimeout(longPressTimer);
-      });
-    });
-  }
-
-  // Redirect vote buttons for non-logged-in users
-  if (!isUserLoggedIn()) {
-    const voteButtons = document.querySelectorAll(".vote-btn");
-    voteButtons.forEach((button) => {
-      button.addEventListener("click", function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        window.location.href = "users/login.php";
-      });
-    });
-  }
-
-  function setupVoting() {
-    const voteButtons = document.querySelectorAll(".vote-btn");
-
-    // Apply initial vote colors based on 'voted' class
-    voteButtons.forEach((btn) => {
-      if (btn.classList.contains("upvote") && btn.classList.contains("voted")) {
-        btn.style.color = "#2563eb";
-      } else if (
-        btn.classList.contains("downvote") &&
-        btn.classList.contains("voted")
-      ) {
-        btn.style.color = "#dc2626";
-      }
-    });
-
-    voteButtons.forEach((btn) => {
-      btn.addEventListener("click", function (e) {
-        // If user is not logged in, redirect is already handled via index.php script
-        // This is just for users who are logged in
-        e.preventDefault();
-        e.stopPropagation();
-
-        if (btn.hasAttribute("disabled")) {
-          return; // Skip if disabled
-        }
-
-        const postId = this.getAttribute("data-post-id");
-        const voteType = this.getAttribute("data-vote") === "up" ? 1 : -1;
-
-        // Find the parent post card
-        const postCard = this.closest(".post-card");
-
-        // Disable all vote buttons to prevent double-clicks
-        const postVoteButtons = postCard.querySelectorAll(".vote-btn");
-        postVoteButtons.forEach((button) => (button.disabled = true));
-
-        fetch("vote.php", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          body: `post_id=${postId}&vote_type=${voteType}`,
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.success) {
-              // Update the vote count
-              const voteCountElement = postCard.querySelector(".vote-count");
-              voteCountElement.textContent = data.new_vote_count;
-
-              // Change button colors based on user's vote
-              const upvoteBtn = postCard.querySelector(".upvote");
-              const downvoteBtn = postCard.querySelector(".downvote");
-
-              upvoteBtn.style.color = "";
-              downvoteBtn.style.color = "";
-              upvoteBtn.classList.remove("voted");
-              downvoteBtn.classList.remove("voted");
-
-              if (data.user_vote === 1) {
-                upvoteBtn.style.color = "#2563eb";
-                upvoteBtn.classList.add("voted");
-              } else if (data.user_vote === -1) {
-                downvoteBtn.style.color = "#dc2626";
-                downvoteBtn.classList.add("voted");
-              }
-            } else {
-              if (data.message === "You must be logged in to vote") {
-                window.location.href = "users/login.php";
-              } else {
-                alert("Error voting: " + data.message);
-              }
-            }
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-            alert("An error occurred while voting");
-          })
-          .finally(() => {
-            // Re-enable buttons after operation is complete
-            postVoteButtons.forEach((button) => (button.disabled = false));
-          });
       });
     });
   }

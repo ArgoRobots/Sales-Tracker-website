@@ -603,4 +603,8 @@ header .header-inner .menu-container .menu .community:after {
         min-width: 40px;
         min-height: 40px;
     }
+
+    .btn-blue {
+        display: none !important;
+    }
 }

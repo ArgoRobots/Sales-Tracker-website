@@ -14,7 +14,23 @@ $response = [
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
+    $response['success'] = false;
     $response['message'] = 'You must be logged in to vote';
+    $response['show_message'] = true;
+    $response['message_html'] = 'You must be logged in to vote';
+    $response['message_style'] = [
+        'position' => 'fixed',
+        'top' => '20px',
+        'left' => '50%',
+        'transform' => 'translateX(-50%)',
+        'padding' => '10px 20px',
+        'backgroundColor' => '#f8d7da',
+        'color' => '#842029',
+        'borderRadius' => '4px',
+        'zIndex' => '1000',
+        'boxShadow' => '0 2px 4px rgba(0,0,0,0.2)'
+    ];
+    $response['message_duration'] = 3000; // milliseconds
     echo json_encode($response);
     exit;
 }

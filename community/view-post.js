@@ -6,21 +6,58 @@ document.addEventListener("DOMContentLoaded", function () {
     return voteBtn && !voteBtn.hasAttribute("disabled");
   }
 
+  // Set up voting buttons with visual feedback
+  const upvoteBtn = document.querySelector(".upvote");
+  const downvoteBtn = document.querySelector(".downvote");
+
+  if (upvoteBtn && downvoteBtn) {
+    // If user already voted, show the buttons as active
+    if (upvoteBtn.classList.contains("voted")) {
+      upvoteBtn.style.color = "#2563eb";
+    } else if (downvoteBtn.classList.contains("voted")) {
+      downvoteBtn.style.color = "#dc2626";
+    }
+  }
+
+  // Set color for comment vote buttons that are active
+  document.querySelectorAll(".comment-vote-btn.voted").forEach((btn) => {
+    if (btn.classList.contains("upvote")) {
+      btn.style.color = "#2563eb";
+    } else if (btn.classList.contains("downvote")) {
+      btn.style.color = "#dc2626";
+    }
+  });
+
   attachCommentListeners();
+
+  // Helper function to display message from server
+  function displayServerMessage(messageData) {
+    if (!messageData.show_message) return;
+
+    const message = document.createElement("div");
+    message.className = "login-alert";
+    message.innerHTML = messageData.message_html || messageData.message;
+
+    // Apply all styles from the server
+    if (messageData.message_style) {
+      Object.entries(messageData.message_style).forEach(([key, value]) => {
+        message.style[key] = value;
+      });
+    }
+
+    document.body.appendChild(message);
+
+    // Remove after specified duration or default to 3 seconds
+    setTimeout(() => {
+      message.remove();
+    }, messageData.message_duration || 3000);
+  }
 
   // Handle post voting
   const voteButtons = document.querySelectorAll(".vote-btn");
 
   voteButtons.forEach((btn) => {
     btn.addEventListener("click", function (e) {
-      // If user is not logged in, redirect to login page
-      if (!isUserLoggedIn()) {
-        e.preventDefault();
-        e.stopPropagation();
-        window.location.href = "users/login.php";
-        return;
-      }
-
       const postId = this.getAttribute("data-post-id");
       const voteType = this.getAttribute("data-vote") === "up" ? 1 : -1;
 
@@ -58,8 +95,9 @@ document.addEventListener("DOMContentLoaded", function () {
               downvoteBtn.classList.add("voted");
             }
           } else {
-            if (data.message === "You must be logged in to vote") {
-              window.location.href = "users/login.php";
+            // Display message from server if provided
+            if (data.show_message) {
+              displayServerMessage(data);
             } else {
               alert("Error voting: " + data.message);
             }
@@ -76,19 +114,11 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Handle comment voting
+  // Handle comment voting - updated with similar changes
   const commentVoteButtons = document.querySelectorAll(".comment-vote-btn");
 
   commentVoteButtons.forEach((btn) => {
     btn.addEventListener("click", function (e) {
-      // If user is not logged in, redirect to login page
-      if (!isUserLoggedIn()) {
-        e.preventDefault();
-        e.stopPropagation();
-        window.location.href = "users/login.php";
-        return;
-      }
-
       const commentId = this.getAttribute("data-comment-id");
       const voteType = this.getAttribute("data-vote") === "up" ? 1 : -1;
 
@@ -136,8 +166,9 @@ document.addEventListener("DOMContentLoaded", function () {
               downvoteBtn.classList.add("voted");
             }
           } else {
-            if (data.message === "You must be logged in to vote") {
-              window.location.href = "users/login.php";
+            // Display message from server if provided
+            if (data.show_message) {
+              displayServerMessage(data);
             } else {
               alert("Error voting: " + data.message);
             }
