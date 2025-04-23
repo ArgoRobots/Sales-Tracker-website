@@ -174,6 +174,9 @@ function login_user($login, $password)
         unset($user['reset_token']);
         unset($user['reset_token_expiry']);
 
+        // Store avatar in session for the header
+        $_SESSION['avatar'] = $user['avatar'];
+
         return $user;
     }
 
@@ -491,26 +494,46 @@ function upload_avatar($user_id, $file)
 {
     // Check if file was uploaded without errors
     if ($file['error'] !== UPLOAD_ERR_OK) {
+        error_log("File upload error: " . $file['error']);
         return false;
     }
 
     // Validate image type
     $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
     if (!in_array($file['type'], $allowed_types)) {
+        error_log("Invalid file type: " . $file['type']);
         return false;
     }
 
     // Validate file size (max 2MB)
     $max_size = 2 * 1024 * 1024; // 2MB
     if ($file['size'] > $max_size) {
+        error_log("File too large: " . $file['size'] . " bytes");
         return false;
     }
 
-    // Create avatars directory if it doesn't exist
-    $upload_dir = __DIR__ . '/uploads/avatars/';
-    if (!file_exists($upload_dir)) {
-        mkdir($upload_dir, 0755, true);
+    // Create base uploads directory first
+    $base_dir = dirname(__DIR__) . '/uploads/';
+    if (!file_exists($base_dir)) {
+        if (!mkdir($base_dir, 0755)) {
+            error_log("Failed to create base uploads directory: " . $base_dir);
+            return false;
+        }
+        chmod($base_dir, 0755); // Ensure correct permissions
     }
+
+    // Then create avatars subdirectory
+    $upload_dir = $base_dir . 'avatars/';
+    if (!file_exists($upload_dir)) {
+        if (!mkdir($upload_dir, 0755)) {
+            error_log("Failed to create avatars directory: " . $upload_dir);
+            return false;
+        }
+        chmod($upload_dir, 0755); // Ensure correct permissions
+    }
+
+    // Log the directory path for debugging
+    error_log("Avatar upload directory: " . $upload_dir);
 
     // Generate unique filename
     $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
@@ -519,16 +542,25 @@ function upload_avatar($user_id, $file)
 
     // Move uploaded file
     if (move_uploaded_file($file['tmp_name'], $target_path)) {
+        // Set permissions for the file
+        chmod($target_path, 0644);
+
         // Update user record with new avatar path
         $db = get_db_connection();
+        $avatar_path = 'uploads/avatars/' . $filename;
         $stmt = $db->prepare('UPDATE community_users SET avatar = :avatar, updated_at = CURRENT_TIMESTAMP WHERE id = :id');
-        $stmt->bindValue(':avatar', 'uploads/avatars/' . $filename, SQLITE3_TEXT);
+        $stmt->bindValue(':avatar', $avatar_path, SQLITE3_TEXT);
         $stmt->bindValue(':id', $user_id, SQLITE3_INTEGER);
         $stmt->execute();
 
-        return 'uploads/avatars/' . $filename;
+        // Update session with avatar path
+        $_SESSION['avatar'] = $avatar_path;
+
+        error_log("Avatar successfully uploaded: " . $avatar_path);
+        return $avatar_path;
     }
 
+    error_log("Failed to move uploaded file to: " . $target_path);
     return false;
 }
 

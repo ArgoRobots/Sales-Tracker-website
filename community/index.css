@@ -325,6 +325,17 @@ header .header-inner .menu-container .menu .community:after {
     margin-right: 10px;
 }
 
+.post-views {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.post-views svg {
+    vertical-align: middle;
+    color: #94a3b8;
+}
+
 .user-link,
 .view-comments-btn {
     color: var(--button);

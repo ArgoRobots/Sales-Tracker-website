@@ -16,7 +16,10 @@ function get_all_posts()
     // Check if views column exists, add it if not
     ensure_views_column_exists($db);
 
-    $result = $db->query('SELECT * FROM community_posts ORDER BY created_at DESC');
+    // Join with users table to get avatar
+    $result = $db->query('SELECT p.*, u.avatar FROM community_posts p 
+                         LEFT JOIN community_users u ON p.user_id = u.id 
+                         ORDER BY p.created_at DESC');
 
     $posts = [];
     while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
@@ -39,7 +42,10 @@ function get_post($post_id)
     // Check if views column exists, add it if not
     ensure_views_column_exists($db);
 
-    $stmt = $db->prepare('SELECT * FROM community_posts WHERE id = :id');
+    // Join with users table to get avatar
+    $stmt = $db->prepare('SELECT p.*, u.avatar FROM community_posts p 
+                         LEFT JOIN community_users u ON p.user_id = u.id 
+                         WHERE p.id = :id');
     $stmt->bindValue(':id', $post_id, SQLITE3_INTEGER);
     $result = $stmt->execute();
 
@@ -163,7 +169,10 @@ function get_post_comments($post_id)
     // Ensure votes column exists in community_comments
     ensure_comment_votes_column_exists($db);
 
-    $stmt = $db->prepare('SELECT * FROM community_comments WHERE post_id = :post_id ORDER BY created_at ASC');
+    // Join with users table to get avatar
+    $stmt = $db->prepare('SELECT c.*, u.avatar FROM community_comments c 
+                         LEFT JOIN community_users u ON c.user_id = u.id 
+                         WHERE c.post_id = :post_id ORDER BY c.created_at ASC');
     $stmt->bindValue(':post_id', $post_id, SQLITE3_INTEGER);
     $result = $stmt->execute();
 

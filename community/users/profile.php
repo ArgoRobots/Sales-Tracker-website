@@ -96,6 +96,7 @@ if ($user) {
 
     <script src="../../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../../resources/scripts/main.js"></script>
+    <script src="profile.js" defer></script>
 
     <link rel="stylesheet" href="profile-style.css">
     <link rel="stylesheet" href="../../resources/styles/button.css">
@@ -164,7 +165,7 @@ if ($user) {
                         <form method="post" enctype="multipart/form-data" id="avatar-form">
                             <div class="profile-avatar <?php echo $is_own_profile ? 'editable' : ''; ?>" id="profile-avatar">
                                 <?php if (!empty($user['avatar'])): ?>
-                                    <img src="<?php echo htmlspecialchars($user['avatar']); ?>" alt="<?php echo htmlspecialchars($user['username']); ?>'s avatar" id="avatar-preview">
+                                    <img src="../<?php echo htmlspecialchars($user['avatar']); ?>" alt="<?php echo htmlspecialchars($user['username']); ?>'s avatar" id="avatar-preview">
                                 <?php else: ?>
                                     <div class="profile-avatar-placeholder" id="avatar-placeholder">
                                         <?php echo strtoupper(substr($user['username'], 0, 1)); ?>
@@ -291,31 +292,6 @@ if ($user) {
         </script>
         <div id="includeFooter"></div>
     </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Variables for avatar handling
-            const profileAvatar = document.getElementById('profile-avatar');
-            const fileInput = document.getElementById('avatar');
-            const avatarForm = document.getElementById('avatar-form');
-
-            // Avatar click to upload and auto-submit
-            if (profileAvatar && fileInput) {
-                profileAvatar.addEventListener('click', function(e) {
-                    if (profileAvatar.classList.contains('editable')) {
-                        fileInput.click();
-                    }
-                });
-
-                // Auto-submit form when file is selected
-                fileInput.addEventListener('change', function() {
-                    if (this.files && this.files[0]) {
-                        avatarForm.submit();
-                    }
-                });
-            }
-        });
-    </script>
 </body>
 
 </html>

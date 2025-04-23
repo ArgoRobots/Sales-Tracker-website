@@ -35,6 +35,7 @@ if ($is_logged_in && !is_array($current_user)) {
     <script src="community.js" defer></script>
 
     <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="../resources/styles/avatar.css">
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../resources/styles/button.css">
     <link rel="stylesheet" href="../resources/header/style.css">
@@ -184,7 +185,18 @@ if ($is_logged_in && !is_array($current_user)) {
                                 <div class="post-info">
                                     <span class="post-author">
                                         Posted by
-                                        <a href="users/profile.php?username=<?php echo urlencode(trim($post['user_name'])); ?>" class="user-link"><?php echo htmlspecialchars(trim($post['user_name'])); ?></a>
+                                        <a href="users/profile.php?username=<?php echo urlencode(trim($post['user_name'])); ?>" class="user-link">
+                                            <span class="author-avatar">
+                                                <?php if (!empty($post['avatar'])): ?>
+                                                    <img src="<?php echo htmlspecialchars($post['avatar']); ?>" alt="Avatar">
+                                                <?php else: ?>
+                                                    <span class="author-avatar-placeholder">
+                                                        <?php echo strtoupper(substr(trim($post['user_name']), 0, 1)); ?>
+                                                    </span>
+                                                <?php endif; ?>
+                                            </span>
+                                            <?php echo htmlspecialchars(trim($post['user_name'])); ?>
+                                        </a>
                                     </span>
                                     <span class="post-date"><?php echo date('M j, Y', strtotime($post['created_at'])); ?></span>
                                     <span class="post-views">

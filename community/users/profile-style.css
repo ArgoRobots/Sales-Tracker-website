@@ -1,14 +1,9 @@
-/* Underline current page */
-header .header-inner .menu-container .menu .community:after {
-    transform: translateX(-50%) scaleX(1);
-}
-
 /* Profile container */
 .profile-container {
     max-width: 1200px;
     min-height: 100vh;
     margin: 0 auto;
-    padding: 40px 20px;
+    padding: 60px 20px;
 }
 
 .profile-header {
@@ -371,7 +366,7 @@ header .header-inner .menu-container .menu .community:after {
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .profile-container {
-        padding: 20px 15px;
+        padding: 50px 20px;
     }
 
     .profile-header h1 {

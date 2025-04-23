@@ -216,11 +216,9 @@ a:hover {
 .post-author,
 .post-date,
 .post-views {
-    margin-right: 15px;
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    color: #6b7280;
 }
 
 .post-views svg {
@@ -310,11 +308,10 @@ a:hover {
 .delete-comment-btn,
 .edit-comment-btn {
     border: none;
-    padding: 3px 8px;
+    padding: 5px 10px;
     border-radius: 4px;
     cursor: pointer;
     font-size: 13px;
-    min-height: 32px;
     min-width: 60px;
 }
 

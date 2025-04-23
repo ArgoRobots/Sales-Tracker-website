@@ -77,8 +77,8 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
     <script src="view-post.js"></script>
 
     <link rel="stylesheet" href="view-post.css">
+    <link rel="stylesheet" href="../resources/styles/avatar.css">
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
-    <link rel="stylesheet" href="../../resources/styles/button.css">
     <link rel="stylesheet" href="../resources/styles/button.css">
     <link rel="stylesheet" href="../resources/header/style.css">
     <link rel="stylesheet" href="../resources/footer/style.css">
@@ -204,6 +204,15 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                             <span class="post-author">
                                 Posted by
                                 <a href="users/profile.php?username=<?php echo urlencode($post['user_name']); ?>" class="user-link">
+                                    <span class="author-avatar">
+                                        <?php if (!empty($post['avatar'])): ?>
+                                            <img src="<?php echo htmlspecialchars($post['avatar']); ?>" alt="Avatar">
+                                        <?php else: ?>
+                                            <span class="author-avatar-placeholder">
+                                                <?php echo strtoupper(substr($post['user_name'], 0, 1)); ?>
+                                            </span>
+                                        <?php endif; ?>
+                                    </span>
                                     <?php echo htmlspecialchars($post['user_name']); ?>
                                 </a>
                             </span>
@@ -267,7 +276,18 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                             <div class="comment-main">
                                 <div class="comment-header">
                                     <div class="comment-author-info">
-                                        <a href="users/profile.php?username=<?php echo urlencode($comment['user_name']); ?>" class="user-link"><?php echo htmlspecialchars($comment['user_name']); ?></a>
+                                        <a href="users/profile.php?username=<?php echo urlencode($comment['user_name']); ?>" class="user-link">
+                                            <span class="author-avatar">
+                                                <?php if (!empty($comment['avatar'])): ?>
+                                                    <img src="<?php echo htmlspecialchars($comment['avatar']); ?>" alt="Avatar">
+                                                <?php else: ?>
+                                                    <span class="author-avatar-placeholder">
+                                                        <?php echo strtoupper(substr($comment['user_name'], 0, 1)); ?>
+                                                    </span>
+                                                <?php endif; ?>
+                                            </span>
+                                            <?php echo htmlspecialchars($comment['user_name']); ?>
+                                        </a>
                                         <span class="comment-date"><?php echo date('M j, Y g:i a', strtotime($comment['created_at'])); ?></span>
                                     </div>
                                     <div class="comment-controls">
