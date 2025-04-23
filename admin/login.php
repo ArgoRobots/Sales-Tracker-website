@@ -4,7 +4,7 @@ require_once '../db_connect.php';
 require_once '2fa.php';
 
 // Check if user is already logged in
-if ($_SESSION['role'] === 'admin') {
+if ($_SESSION['role'] === 'admin' && isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] === true) {
     header('Location: index.php');
     exit;
 }
@@ -96,8 +96,10 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
     <title>Admin Login - Argo Sales Tracker</title>
+
     <link rel="stylesheet" href="login-style.css">
     <link rel="stylesheet" href="2fa-styles.css">
+    <link rel="stylesheet" href="../resources/styles/custom-colors.css">
 </head>
 
 <body>

@@ -96,11 +96,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             <?php endif; ?>
 
-            <!-- Add email verification reminder -->
-            <div class="verification-reminder">
-                <p><strong>Note:</strong> Email verification is required to activate your account and receive your license key.</p>
-            </div>
-
             <form method="post" class="auth-form">
                 <div class="form-group">
                     <label for="login">Username or Email</label>

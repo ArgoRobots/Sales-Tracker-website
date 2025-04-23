@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="../../images/argo-logo/A-logo.ico">
     <title>Register - Argo Community</title>
 
     <script src="../../resources/scripts/jquery-3.6.0.js"></script>
@@ -78,11 +78,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="auth-card">
             <h1>Create an Account</h1>
             <p class="auth-subtitle">Join Argo Community to share ideas and connect with other users</p>
-
-            <!-- Added email verification requirement notice -->
-            <div class="verification-notice">
-                <p><strong>Note:</strong> Email verification is required to activate your account and obtain your license.</p>
-            </div>
 
             <?php if ($error): ?>
                 <div class="error-message">
