@@ -39,7 +39,7 @@ if (!empty($token)) {
     <link rel="stylesheet" href="../../resources/styles/button.css">
     <link rel="stylesheet" href="../../resources/header/style.css">
     <link rel="stylesheet" href="../../resources/footer/style.css">
-    <link rel="stylesheet" href="auth-style.css">
+    <link rel="stylesheet" href="auth.css">
 </head>
 
 <body>

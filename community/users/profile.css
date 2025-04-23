@@ -1,0 +1,616 @@
+/* Profile container */
+.profile-container {
+    max-width: 1200px;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 60px 20px;
+}
+
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.profile-header h1 {
+    color: #1e3a8a;
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.admin-badge {
+    background-color: #3b82f6;
+    color: white;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 8px;
+    border-radius: 20px;
+}
+
+/* Grid layout for profile */
+.profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 30px;
+}
+
+@media (max-width: 992px) {
+    .profile-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Profile sidebar */
+.profile-sidebar {
+    align-self: start;
+}
+
+.profile-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 20px;
+    border: 3px solid #e5e7eb;
+    position: relative;
+}
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-avatar-placeholder {
+    width: 100%;
+    height: 100%;
+    background-color: #3b82f6;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    font-weight: bold;
+}
+
+/* Avatar editor styling */
+.profile-avatar.editable {
+    cursor: pointer;
+    position: relative;
+}
+
+.avatar-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 50%;
+}
+
+.avatar-overlay svg {
+    margin-bottom: 5px;
+}
+
+.avatar-overlay span {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.profile-avatar.editable:hover .avatar-overlay {
+    opacity: 1;
+}
+
+.profile-info {
+    text-align: center;
+    width: 100%;
+}
+
+.profile-info h2 {
+    margin-bottom: 10px;
+    color: #1f2937;
+    font-size: 22px;
+}
+
+.profile-meta {
+    color: #6b7280;
+    margin-bottom: 15px;
+}
+
+.profile-username {
+    margin: 5px 0;
+    font-weight: 500;
+}
+
+.profile-joined {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.profile-bio {
+    margin: 15px 0;
+    padding: 15px 0;
+    border-top: 1px solid #e5e7eb;
+    border-bottom: 1px solid #e5e7eb;
+    color: #4b5563;
+    line-height: 1.6;
+}
+
+.profile-stats {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    margin: 15px 0;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1e3a8a;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.profile-actions {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.profile-actions .btn {
+    width: 100%;
+    text-align: center;
+}
+
+.btn-logout {
+    background-color: #f3f4f6;
+    color: #4b5563;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    padding: 8px 16px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-logout:hover {
+    background-color: #e5e7eb;
+    color: #1f2937;
+    text-decoration: none;
+}
+
+/* Impact section */
+.impact-section {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.impact-section h3 {
+    color: #1f2937;
+    font-size: 18px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 10px;
+}
+
+.impact-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.impact-stat {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.impact-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: #dbeafe;
+    border-radius: 8px;
+    color: #3b82f6;
+}
+
+.impact-data {
+    display: flex;
+    flex-direction: column;
+}
+
+.impact-value {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1e3a8a;
+}
+
+.impact-label {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+/* Profile content */
+.profile-content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* Posts Section */
+.posts-section,
+.reputation-section,
+.comments-section {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    margin-bottom: 25px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e5e7eb;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.section-header h3 {
+    margin: 0;
+    color: #1f2937;
+    font-size: 18px;
+}
+
+.sort-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #4b5563;
+}
+
+/* Improved sort buttons styling */
+.sort-options {
+    display: flex;
+    gap: 8px;
+}
+
+.sort-option {
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: #4b5563;
+    border: 1px solid #e5e7eb;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    background-color: #fff;
+}
+
+.sort-option:hover {
+    background-color: #f3f4f6;
+    border-color: #d1d5db;
+    text-decoration: none;
+}
+
+.sort-option.active {
+    background-color: #dbeafe;
+    color: var(--button);
+    font-weight: 500;
+    border-color: #93c5fd;
+}
+
+/* User Posts List */
+.user-posts-list,
+.user-comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.user-post-item,
+.user-comment-item {
+    display: flex;
+    padding: 15px;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    gap: 15px;
+    background-color: var(--whiteBackground);
+}
+
+.user-post-item:hover,
+.user-comment-item:hover {
+    border-color: #d1d5db;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.post-score,
+.comment-score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 60px;
+    color: #1e3a8a;
+    padding: 8px;
+    background-color: #f3f4f6;
+    border-radius: 4px;
+    align-self: flex-start;
+}
+
+.score-value {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.score-label {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.post-details,
+.comment-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.post-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1e3a8a;
+    text-decoration: none;
+}
+
+.post-title:hover {
+    color: var(--button);
+    text-decoration: none;
+}
+
+.post-meta-info,
+.comment-meta-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 12px;
+    align-items: center;
+}
+
+.post-views,
+.post-date,
+.comment-date {
+    color: #6b7280;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.comment-content {
+    font-size: 14px;
+    color: #4b5563;
+    line-height: 1.5;
+}
+
+.comment-on {
+    color: #6b7280;
+    font-size: 12px;
+}
+
+.post-link {
+    color: var(--button);
+    text-decoration: none;
+}
+
+.post-link:hover {
+    text-decoration: underline;
+}
+
+/* Reputation section */
+.reputation-history {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.reputation-item {
+    display: flex;
+    padding: 15px;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    gap: 15px;
+    background-color: var(--whiteBackground);
+}
+
+.reputation-value {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.reputation-value.positive {
+    background-color: #dcfce7;
+    color: #16a34a;
+}
+
+.reputation-value.negative {
+    background-color: #fee2e2;
+    color: #dc2626;
+}
+
+.reputation-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.reputation-description {
+    font-size: 14px;
+    color: #4b5563;
+}
+
+.reputation-description a {
+    color: var(--button);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.reputation-description a:hover {
+    text-decoration: underline;
+}
+
+.reputation-date {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+/* Empty state styling */
+.empty-state {
+    text-align: center;
+    padding: 30px;
+    color: #6b7280;
+    background-color: var(--whiteBackground);
+    border-radius: 8px;
+    border: 1px dashed #e5e7eb;
+}
+
+/* Success and error messages */
+.success-message,
+.error-message {
+    margin-bottom: 20px;
+    padding: 10px 15px;
+    border-radius: 4px;
+}
+
+.success-message {
+    background-color: #dcfce7;
+    color: #16a34a;
+    border: 1px solid #16a34a;
+}
+
+.error-message {
+    background-color: #fee2e2;
+    color: #dc2626;
+    border: 1px solid #dc2626;
+}
+
+/* Make chart and reputation history side by side */
+.reputation-chart-section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Fix the reputation sections alignment */
+.reputation-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: start;
+}
+
+.reputation-chart-container {
+    height: 300px;
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 15px;
+    border: 1px solid #e5e7eb;
+}
+
+.reputation-chart-section h3,
+.reputation-history-section h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e5e7eb;
+    color: #1f2937;
+    font-size: 18px;
+}
+
+/* Make posts and comments side by side */
+.posts-comments-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+
+    .reputation-container,
+    .posts-comments-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Update size of chart */
+.reputation-chart-container {
+    width: 100%;
+    height: 250px;
+}
+
+/* Adjust section heights for alignment */
+.reputation-history {
+    max-height: 250px;
+    overflow-y: auto;
+    margin: 0;
+}
+
+.reputation-history-section {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Ensure sections have consistent min heights */
+.posts-section,
+.comments-section {
+    height: 100%;
+}
