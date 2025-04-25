@@ -13,7 +13,6 @@ if (!is_array($current_user)) {
         'id' => $_SESSION['user_id'] ?? 0,
         'username' => $_SESSION['username'] ?? 'Unknown',
         'email' => $_SESSION['email'] ?? '',
-        'email_verified' => $_SESSION['email_verified'] ?? 0,
         'role' => $_SESSION['role'] ?? 'user',
         'avatar' => ''
     );
@@ -84,13 +83,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div class="community-header">
         <h1>Argo Sales Tracker Community</h1>
-
-        <!-- Email verification warning if needed -->
-        <?php if (isset($current_user['email_verified']) && !$current_user['email_verified']): ?>
-            <div class="verification-alert">
-                Please verify your email address. <a href="resend_verification.php?auto=1">Resend verification email</a>
-            </div>
-        <?php endif; ?>
     </div>
 
     <div class="community-wrapper">

@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS community_users (
     avatar TEXT,
     role TEXT DEFAULT 'user',
     email_verified BOOLEAN DEFAULT 0,
-    verification_token TEXT,
+    verification_code TEXT,
     reset_token TEXT,
     reset_token_expiry TIMESTAMP,
     last_login TIMESTAMP,
@@ -140,6 +140,7 @@ CREATE TABLE IF NOT EXISTS community_comments (
     user_name TEXT NOT NULL,
     user_email TEXT NOT NULL,
     content TEXT NOT NULL,
+    votes INTEGER DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (post_id) REFERENCES community_posts(id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES community_users(id) ON DELETE SET NULL
@@ -168,6 +169,24 @@ CREATE TABLE IF NOT EXISTS community_votes (
 CREATE INDEX IF NOT EXISTS idx_votes_post_id ON community_votes(post_id);
 CREATE INDEX IF NOT EXISTS idx_votes_user_id ON community_votes(user_id);
 CREATE INDEX IF NOT EXISTS idx_votes_user_email ON community_votes(user_email);
+
+-- Create comment votes table
+CREATE TABLE IF NOT EXISTS comment_votes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    comment_id INTEGER NOT NULL,
+    user_id INTEGER,
+    user_email TEXT NOT NULL,
+    vote_type INTEGER NOT NULL CHECK(vote_type IN (-1, 1)), -- -1 for downvote, 1 for upvote
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (comment_id) REFERENCES community_comments(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES community_users(id) ON DELETE SET NULL,
+    UNIQUE(comment_id, user_email) -- Ensure one vote per user per comment
+);
+
+-- Add indexes for comment votes
+CREATE INDEX IF NOT EXISTS idx_comment_votes_comment_id ON comment_votes(comment_id);
+CREATE INDEX IF NOT EXISTS idx_comment_votes_user_id ON comment_votes(user_id);
+CREATE INDEX IF NOT EXISTS idx_comment_votes_user_email ON comment_votes(user_email);
 
 -- Create view for user profiles with post and comment counts
 CREATE VIEW IF NOT EXISTS community_user_profiles AS

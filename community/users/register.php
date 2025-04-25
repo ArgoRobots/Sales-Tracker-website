@@ -34,11 +34,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($password !== $password_confirm) {
         $error = 'Passwords do not match';
     } else {
-        // Attempt to register user - username will be used as display name
+        // Attempt to register user
         $result = register_user($username, $email, $password);
 
-        if ($success) {
-            $success = $result['message'];
+        if ($result['success']) {
+            // Debug log for troubleshooting
+            error_log("Registration successful. User ID: " . $result['user_id']);
+
+            // Store user_id temporarily for verification
+            $_SESSION['temp_user_id'] = $result['user_id'];
+
+            // Redirect to verification page
+            header('Location: verify_code.php');
+            exit;
         } else {
             $error = $result['message'];
         }
@@ -85,66 +93,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             <?php endif; ?>
 
-            <?php if ($success): ?>
-                <div class="success-message">
-                    <?php echo htmlspecialchars($success); ?>
-                    <p>Please check your email to verify your account and receive your license.</p>
-                    <p><a href="login.php" class="btn btn-blue">Proceed to Login</a></p>
+            <form method="post" class="auth-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username']) : ''; ?>" required>
+                    <small>Letters, numbers, and underscores only (3-20 characters)</small>
                 </div>
-            <?php else: ?>
-                <form method="post" class="auth-form">
-                    <div class="form-group">
-                        <label for="username">Username</label>
-                        <input type="text" id="username" name="username" value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username']) : ''; ?>" required>
-                        <small>Letters, numbers, and underscores only (3-20 characters)</small>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>" required>
-                        <small>A verification email will be sent to this address</small>
-                    </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>" required>
+                    <small>A verification code will be sent to this address</small>
+                </div>
 
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <div class="password-field-wrapper">
-                            <input type="password" id="password-field" name="password" required>
-                            <div class="toggle-password">
-                                <i class="fa fa-eye"></i>
-                                <i class="fa fa-eye-slash"></i>
-                            </div>
-                        </div>
-
-                        <div class="password-policies">
-                            <div class="policy-length">
-                                At least 8 characters
-                            </div>
-                            <div class="policy-uppercase">
-                                Contains uppercase letter
-                            </div>
-                            <div class="policy-number">
-                                Contains number
-                            </div>
-                            <div class="policy-special">
-                                Contains special character
-                            </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="password-field-wrapper">
+                        <input type="password" id="password-field" name="password" required>
+                        <div class="toggle-password">
+                            <i class="fa fa-eye"></i>
+                            <i class="fa fa-eye-slash"></i>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="password_confirm">Confirm Password</label>
-                        <input type="password" id="password_confirm" name="password_confirm" required>
+                    <div class="password-policies">
+                        <div class="policy-length">
+                            At least 8 characters
+                        </div>
+                        <div class="policy-uppercase">
+                            Contains uppercase letter
+                        </div>
+                        <div class="policy-number">
+                            Contains number
+                        </div>
+                        <div class="policy-special">
+                            Contains special character
+                        </div>
                     </div>
+                </div>
 
-                    <div class="form-actions">
-                        <button type="submit" class="btn btn-blue btn-block">Register</button>
-                    </div>
+                <div class="form-group">
+                    <label for="password_confirm">Confirm Password</label>
+                    <input type="password" id="password_confirm" name="password_confirm" required>
+                </div>
 
-                    <div class="auth-links">
-                        <p>Already have an account? <a href="login.php">Log in</a></p>
-                    </div>
-                </form>
-            <?php endif; ?>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-blue btn-block">Register</button>
+                </div>
+
+                <div class="auth-links">
+                    <p>Already have an account? <a href="login.php">Log in</a></p>
+                </div>
+            </form>
         </div>
     </div>
 

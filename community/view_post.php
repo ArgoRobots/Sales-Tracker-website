@@ -93,13 +93,6 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
     <div class="community-header">
         <h1>Argo Sales Tracker Community</h1>
         <p>Report bugs and suggest features to help us improve</p>
-
-        <!-- Email verification reminder if needed -->
-        <?php if ($is_logged_in && isset($_SESSION['email_verified']) && !$_SESSION['email_verified']): ?>
-            <div class="verification-alert">
-                Please verify your email address. <a href="resend_verification.php?auto=1">Resend verification email</a>
-            </div>
-        <?php endif; ?>
     </div>
 
     <?php if ($status_message): ?>

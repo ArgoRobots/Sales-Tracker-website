@@ -1,12 +1,12 @@
 <?php
 
 /**
- * Register a new user
+ * Register a new user with verification code
  * 
  * @param string $username Username
  * @param string $email Email address
  * @param string $password Plain text password
- * @return array|bool User data on success, false on failure
+ * @return array Result with success, message, and user_id
  */
 function register_user($username, $email, $password)
 {
@@ -30,55 +30,47 @@ function register_user($username, $email, $password)
         return ['success' => false, 'message' => 'Email already exists'];
     }
 
-    // Generate verification token
-    $verification_token = md5(uniqid(rand(), true));
+    // Generate verification code
+    $verification_code = generate_verification_code();
 
     // Generate password hash
     $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
     // Insert new user
-    $stmt = $db->prepare('INSERT INTO community_users (username, email, password_hash, verification_token) 
-                         VALUES (:username, :email, :password_hash, :verification_token)');
+    $stmt = $db->prepare('INSERT INTO community_users (username, email, password_hash, verification_code, email_verified) 
+                         VALUES (:username, :email, :password_hash, :verification_code, 0)');
     $stmt->bindValue(':username', $username, SQLITE3_TEXT);
     $stmt->bindValue(':email', $email, SQLITE3_TEXT);
     $stmt->bindValue(':password_hash', $password_hash, SQLITE3_TEXT);
-    $stmt->bindValue(':verification_token', $verification_token, SQLITE3_TEXT);
+    $stmt->bindValue(':verification_code', $verification_code, SQLITE3_TEXT);
 
     if ($stmt->execute()) {
         $user_id = $db->lastInsertRowID();
 
-        // Get the user data
-        $stmt = $db->prepare('SELECT id, username, email, email_verified, role, created_at FROM community_users WHERE id = :id');
-        $stmt->bindValue(':id', $user_id, SQLITE3_INTEGER);
-        $user = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+        // Send verification email with code
+        send_verification_email($email, $verification_code, $username);
 
-        // Send verification email
-        send_verification_email($email, $verification_token, $username);
-
-        return true;
+        return [
+            'success' => true,
+            'message' => 'Registration successful! Please check your email for the verification code.',
+            'user_id' => $user_id
+        ];
     }
 
     return ['success' => false, 'message' => 'Registration failed'];
 }
 
 /**
- * Send verification email with license information
+ * Send verification email with code
  * 
  * @param string $email User's email address
- * @param string $token Verification token
+ * @param string $code Verification code
  * @param string $username Username
  * @return bool Success status
  */
-function send_verification_email($email, $token, $username)
+function send_verification_email($email, $code, $username)
 {
     $subject = 'Verify Your Account - Argo Sales Tracker';
-
-    // Get the base URL
-    $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
-    $host = $_SERVER['HTTP_HOST'];
-    $base_url = $protocol . $host;
-
-    $verification_link = $base_url . "/community/verify_email.php?token=" . $token;
 
     $message = "
     <html>
@@ -109,14 +101,16 @@ function send_verification_email($email, $token, $username)
                 background-color: white;
                 border: 1px solid #ddd;
             }
-            .btn {
-                display: inline-block;
-                background-color: #2563eb;
-                color: white;
-                padding: 10px 20px;
-                text-decoration: none;
-                border-radius: 4px;
-                margin: 15px 0;
+            .verification-code {
+                font-size: 32px;
+                font-weight: bold;
+                letter-spacing: 5px;
+                text-align: center;
+                color: #1e3a8a;
+                margin: 20px 0;
+                padding: 10px;
+                background-color: #f0f4ff;
+                border-radius: 5px;
             }
             .footer {
                 margin-top: 20px;
@@ -135,10 +129,10 @@ function send_verification_email($email, $token, $username)
                 <p>Hello $username,</p>
                 <p>Thank you for registering. <strong>Email verification is required</strong> to activate your account and access your license key.</p>
                 
-                <p>Please click the button below to verify your email address:</p>
-                <p style='text-align: center;'><a href='$verification_link' class='btn'>Verify My Email</a></p>
-                <p>Or copy and paste this link in your browser:</p>
-                <p>$verification_link</p>
+                <p>Please use the following verification code to complete your registration:</p>
+                <div class='verification-code'>$code</div>
+                
+                <p>This code will expire in 24 hours.</p>
                 
                 <p>If you did not sign up for an account, you can ignore this email.</p>
                 <p>Regards,<br>The Argo Team</p>
@@ -804,4 +798,84 @@ function get_current_user_ID()
     }
 
     return $result;
+}
+
+/**
+ * Generate a 6-digit verification code
+ * 
+ * @return string 6-digit code
+ */
+function generate_verification_code()
+{
+    return sprintf('%06d', mt_rand(100000, 999999));
+}
+
+/**
+ * Verify user email with verification code
+ * 
+ * @param int $user_id User ID
+ * @param string $code Verification code
+ * @return bool Success status
+ */
+function verify_email_code($user_id, $code)
+{
+    $db = get_db_connection();
+
+    // Check if the user exists and the code matches
+    $stmt = $db->prepare('SELECT id FROM community_users WHERE id = :id AND verification_code = :code');
+    $stmt->bindValue(':id', $user_id, SQLITE3_INTEGER);
+    $stmt->bindValue(':code', $code, SQLITE3_TEXT);
+    $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+
+    if (!$result) {
+        error_log("User with ID $user_id and verification code $code not found");
+        return false;
+    }
+
+    // Update user as verified
+    $stmt = $db->prepare('UPDATE community_users SET email_verified = 1, verification_code = NULL WHERE id = :id');
+    $stmt->bindValue(':id', $user_id, SQLITE3_INTEGER);
+
+    $update_result = $stmt->execute();
+
+    if (!$update_result) {
+        error_log("Failed to update email verification status for user ID $user_id");
+        return false;
+    }
+
+    return true;
+}
+/**
+ * Resend verification code
+ * 
+ * @param int $user_id User ID
+ * @return bool Success status
+ */
+function resend_verification_code($user_id)
+{
+    $db = get_db_connection();
+
+    // Get user data
+    $stmt = $db->prepare('SELECT email, username FROM community_users WHERE id = :id');
+    $stmt->bindValue(':id', $user_id, SQLITE3_INTEGER);
+    $user = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+
+    if (!$user) {
+        return false;
+    }
+
+    // Generate new verification code
+    $verification_code = generate_verification_code();
+
+    // Update user with new verification code
+    $stmt = $db->prepare('UPDATE community_users SET verification_code = :code WHERE id = :id');
+    $stmt->bindValue(':code', $verification_code, SQLITE3_TEXT);
+    $stmt->bindValue(':id', $user_id, SQLITE3_INTEGER);
+
+    if ($stmt->execute()) {
+        // Send verification email
+        return send_verification_email($user['email'], $verification_code, $user['username']);
+    }
+
+    return false;
 }

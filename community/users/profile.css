@@ -551,6 +551,7 @@
     margin-bottom: 20px;
     padding: 10px 15px;
     border-radius: 4px;
+    text-align: center;
 }
 
 .success-message {

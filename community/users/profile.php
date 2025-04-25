@@ -11,6 +11,12 @@ $requested_username = isset($_GET['username']) ? trim($_GET['username']) : '';
 $is_own_profile = false;
 $user = null;
 $user_not_found = false;
+$just_verified = isset($_SESSION['just_verified']) && $_SESSION['just_verified'];
+
+// If the user was just verified, clear the flag
+if ($just_verified) {
+    unset($_SESSION['just_verified']);
+}
 
 if (empty($requested_username)) {
     // If no username specified, show current user's profile
@@ -481,6 +487,14 @@ if ($user) {
                 </h1>
             </div>
 
+            <?php if ($just_verified): ?>
+                <div class="container">
+                    <div class="success-message">
+                        <strong>Email verified successfully!</strong> Your account has been created.
+                    </div>
+                </div>
+            <?php endif; ?>
+
             <?php if (!empty($success_message)): ?>
                 <div class="success-message">
                     <?php echo htmlspecialchars($success_message); ?>
@@ -559,12 +573,6 @@ if ($user) {
                                     </svg>
                                     Resend License Key
                                 </a>
-
-                                <?php if (!$_SESSION['email_verified']): ?>
-                                    <div class="verification-alert-profile">
-                                        Your email is not verified. Please check your inbox for the verification email to activate your account.
-                                    </div>
-                                <?php endif; ?>
 
                                 <a href="logout.php" class="btn btn-logout">Log Out</a>
                             <?php endif; ?>
