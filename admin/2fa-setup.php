@@ -72,10 +72,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enable_2fa'])) {
     <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
     <title>Argo Sales Tracker - 2FA</title>
 
+    <script src="../resources/notifications/notifications.js" defer></script>
+
     <link rel="stylesheet" href="index-style.css">
     <link rel="stylesheet" href="2fa-setup-style.css">
     <link rel="stylesheet" href="2fa-styles.css">
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
+    <link rel="stylesheet" href="../resources/notifications/notifications.css">
 </head>
 
 <body>

@@ -43,7 +43,6 @@ if (!$can_edit_post) {
 }
 
 // Process form submission
-$success_message = '';
 $error_message = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -120,12 +119,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div class="community-wrapper">
         <div class="post-form-container">
-            <?php if ($success_message): ?>
-                <div class="success-message">
-                    <?php echo htmlspecialchars($success_message); ?>
-                </div>
-            <?php endif; ?>
-
             <?php if ($error_message): ?>
                 <div class="error-message">
                     <?php echo htmlspecialchars($error_message); ?>

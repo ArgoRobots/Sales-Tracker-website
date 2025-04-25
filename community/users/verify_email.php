@@ -36,10 +36,10 @@ if (!empty($token)) {
     <script src="../../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../../resources/scripts/main.js"></script>
 
+    <link rel="stylesheet" href="auth.css">
     <link rel="stylesheet" href="../../resources/styles/button.css">
     <link rel="stylesheet" href="../../resources/header/style.css">
     <link rel="stylesheet" href="../../resources/footer/style.css">
-    <link rel="stylesheet" href="auth.css">
 </head>
 
 <body>

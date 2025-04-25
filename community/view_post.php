@@ -75,6 +75,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../resources/scripts/main.js"></script>
     <script src="view-post.js"></script>
+    <script src="../../resources/notifications/notifications.js" defer></script>
 
     <link rel="stylesheet" href="view-post.css">
     <link rel="stylesheet" href="../resources/styles/avatar.css">
@@ -82,7 +83,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
     <link rel="stylesheet" href="../resources/styles/button.css">
     <link rel="stylesheet" href="../resources/header/style.css">
     <link rel="stylesheet" href="../resources/footer/style.css">
-
+    <link rel="stylesheet" href="../../resources/notifications/notifications.css">
 </head>
 
 <body>
@@ -331,27 +332,6 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
     <footer class="footer">
         <div id="includeFooter"></div>
     </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check if success message exists
-            const successMessage = document.querySelector('.success-message');
-
-            if (successMessage) {
-                // Set timeout to hide the message after 3 seconds
-                setTimeout(function() {
-                    // Add fade-out class for smooth transition
-                    successMessage.style.opacity = '0';
-                    successMessage.style.transition = 'opacity 0.5s ease';
-
-                    // After fade completes, remove the element from DOM
-                    setTimeout(function() {
-                        successMessage.parentNode.removeChild(successMessage);
-                    }, 500); // Additional delay for fade-out animation
-                }, 3000); // 3 seconds
-            }
-        });
-    </script>
 </body>
 
 </html>

@@ -443,6 +443,7 @@ if ($user) {
     <script src="../../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../../resources/scripts/main.js"></script>
     <script src="profile.js" defer></script>
+    <script src="../../resources/notifications/notifications.js" defer></script>
 
     <link rel="stylesheet" href="profile.css">
     <link rel="stylesheet" href="../../resources/styles/button.css">
@@ -450,6 +451,7 @@ if ($user) {
     <link rel="stylesheet" href="../../resources/header/style.css">
     <link rel="stylesheet" href="../../resources/header/dark.css">
     <link rel="stylesheet" href="../../resources/footer/style.css">
+    <link rel="stylesheet" href="../../resources/notifications/notifications.css">
 </head>
 
 <body>

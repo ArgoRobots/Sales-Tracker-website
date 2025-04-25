@@ -111,26 +111,6 @@ a:hover {
     text-decoration: underline;
 }
 
-/* Message boxes */
-.error-message,
-.success-message {
-    padding: 12px 15px;
-    border-radius: 6px;
-    margin-bottom: 20px;
-}
-
-.error-message {
-    background-color: #fee2e2;
-    border: 1px solid #ef4444;
-    color: #b91c1c;
-}
-
-.success-message {
-    background-color: #d1fae5;
-    border: 1px solid #10b981;
-    color: #065f46;
-}
-
 /* Center aligned elements */
 .centered {
     text-align: center;
