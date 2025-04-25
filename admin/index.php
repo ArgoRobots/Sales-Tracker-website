@@ -82,6 +82,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindValue(':id', $key_id, SQLITE3_INTEGER);
         $stmt->execute();
 
+        $_SESSION['message'] = 'License key activated successfully.';
+        $_SESSION['message_type'] = 'success';
+
         header('Location: index.php' . (isset($_GET['search']) ? '?search=' . urlencode($_GET['search']) : ''));
         exit;
     } elseif (isset($_POST['deactivate_key'])) {
@@ -92,6 +95,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $db->prepare('UPDATE license_keys SET activated = 0, activation_date = NULL WHERE id = :id');
         $stmt->bindValue(':id', $key_id, SQLITE3_INTEGER);
         $stmt->execute();
+
+        $_SESSION['message'] = 'License key deactivated successfully.';
+        $_SESSION['message_type'] = 'success';
 
         header('Location: index.php' . (isset($_GET['search']) ? '?search=' . urlencode($_GET['search']) : ''));
         exit;
@@ -104,6 +110,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindValue(':id', $key_id, SQLITE3_INTEGER);
         $stmt->execute();
 
+        $_SESSION['message'] = 'License key deleted successfully.';
+        $_SESSION['message_type'] = 'success';
+
         header('Location: index.php' . (isset($_GET['search']) ? '?search=' . urlencode($_GET['search']) : ''));
         exit;
     } elseif (isset($_POST['resend_email'])) {
@@ -115,10 +124,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Send the license key via email
         $email_status = send_license_email($email, $license_key);
 
-        $_SESSION['email_status'] = $email_status;
-        $_SESSION['email_message'] = $email_status
+        $_SESSION['message'] = $email_status
             ? "Email successfully sent to {$email}"
             : "Failed to send email to {$email}";
+        $_SESSION['message_type'] = $email_status ? 'success' : 'error';
 
         header('Location: index.php' . (isset($_GET['search']) ? '?search=' . urlencode($_GET['search']) : ''));
         exit;
@@ -152,6 +161,21 @@ $licenses = get_license_keys($search);
 
 // Get chart data
 $chart_data = get_chart_data();
+
+// Count total registered users
+$db = get_db_connection();
+$result = $db->query('SELECT COUNT(*) as count FROM community_users');
+$user_count = $result->fetchArray(SQLITE3_ASSOC)['count'] ?? 0;
+
+// Check for flash messages
+$message = '';
+$message_type = '';
+if (isset($_SESSION['message'])) {
+    $message = $_SESSION['message'];
+    $message_type = $_SESSION['message_type'];
+    unset($_SESSION['message']);
+    unset($_SESSION['message_type']);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -162,9 +186,11 @@ $chart_data = get_chart_data();
     <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
     <title>Argo Sales Tracker - Admin</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="../resources/notifications/notifications.js" defer></script>
 
     <link rel="stylesheet" href="index-style.css">
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
+    <link rel="stylesheet" href="../resources/notifications/notifications.css">
 </head>
 
 <body>
@@ -172,8 +198,9 @@ $chart_data = get_chart_data();
         <div class="header">
             <h1>License Key Administration</h1>
             <div class="header-buttons">
+                <a href="users.php" class="btn btn-secondary">User Accounts</a>
                 <a href="2fa-setup.php" class="btn btn-secondary">2FA Settings</a>
-                <a href="users/users/logout.php" class="btn logout-btn">Logout</a>
+                <a href="logout.php" class="btn logout-btn">Logout</a>
             </div>
         </div>
 
@@ -201,7 +228,17 @@ $chart_data = get_chart_data();
                 <h3>Pending Keys</h3>
                 <div class="stat-value"><?php echo count($licenses) - $active_count; ?></div>
             </div>
+            <div class="stat-card">
+                <h3>Registered Users</h3>
+                <div class="stat-value"><?php echo $user_count; ?></div>
+            </div>
         </div>
+
+        <?php if (!empty($message)): ?>
+            <div class="<?php echo $message_type === 'success' ? 'success-message' : 'error-message'; ?>">
+                <?php echo htmlspecialchars($message); ?>
+            </div>
+        <?php endif; ?>
 
         <!-- Chart -->
         <div class="chart-container">
@@ -212,12 +249,12 @@ $chart_data = get_chart_data();
         <div class="form-container">
             <h2>Generate New License Key</h2>
             <?php if ($generated_key): ?>
-                <div class="generated-key">
+                <div class="success-message">
                     New key generated: <?php echo htmlspecialchars($generated_key); ?>
                 </div>
 
                 <?php if ($email_status !== null): ?>
-                    <div class="email-status <?php echo $email_status ? 'email-success' : 'email-error'; ?>">
+                    <div class="<?php echo $email_status ? 'success-message' : 'error-message'; ?>">
                         <?php if ($email_status): ?>
                             <span>Email with license key was successfully sent to <strong><?php echo htmlspecialchars($customer_email); ?></strong></span>
                         <?php else: ?>
@@ -228,7 +265,7 @@ $chart_data = get_chart_data();
             <?php endif; ?>
 
             <?php if ($email_message): ?>
-                <div class="email-status <?php echo strpos($email_message, 'Failed') === false ? 'email-success' : 'email-error'; ?>">
+                <div class="<?php echo strpos($email_message, 'Failed') === false ? 'success-message' : 'error-message'; ?>">
                     <span><?php echo htmlspecialchars($email_message); ?></span>
                 </div>
             <?php endif; ?>
@@ -375,7 +412,7 @@ $chart_data = get_chart_data();
                     },
                     layout: {
                         padding: {
-                            bottom: 40
+                            bottom: 60
                         }
                     }
                 }
