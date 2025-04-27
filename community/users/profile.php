@@ -440,9 +440,9 @@ if ($user) {
     <link rel="shortcut icon" type="image/x-icon" href="../../images/argo-logo/A-logo.ico">
     <title><?php echo $user_not_found ? 'User Not Found' : htmlspecialchars($user['username']) . "'s Profile"; ?> - Argo Community</title>
 
+    <script src="profile.js" defer></script>
     <script src="../../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../../resources/scripts/main.js"></script>
-    <script src="profile.js" defer></script>
     <script src="../../resources/notifications/notifications.js" defer></script>
 
     <link rel="stylesheet" href="profile.css">

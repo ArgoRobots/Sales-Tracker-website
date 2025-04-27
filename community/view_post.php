@@ -84,19 +84,18 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
     <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
     <title><?php echo htmlspecialchars($post['title']); ?> - Argo Community</title>
 
+    <script src="view-post.js"></script>
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../resources/scripts/main.js"></script>
-    <script src="view-post.js"></script>
-    <script src="../resources/notifications/notifications.js" defer></script>
 
     <link rel="stylesheet" href="create-post.css">
     <link rel="stylesheet" href="view-post.css">
+    <link rel="stylesheet" href="rate-limit.css">
     <link rel="stylesheet" href="../resources/styles/avatar.css">
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../resources/styles/button.css">
     <link rel="stylesheet" href="../resources/header/style.css">
     <link rel="stylesheet" href="../resources/footer/style.css">
-    <link rel="stylesheet" href="../resources/notifications/notifications.css">
 </head>
 
 <body>

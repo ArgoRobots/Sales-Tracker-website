@@ -5,20 +5,69 @@ document.addEventListener("DOMContentLoaded", function () {
     return voteBtn && !voteBtn.hasAttribute("disabled");
   }
 
-  // Set up voting buttons with visual feedback
+  // Set up countdown timer function
+  function startCountdown(element, endTime) {
+    if (!element) return;
+
+    function updateCountdown() {
+      const now = Math.floor(Date.now() / 1000);
+      const timeLeft = endTime - now;
+
+      if (timeLeft <= 0) {
+        element.textContent = "now";
+        // If we're in a rate limit message, try to re-enable the submit button
+        const submitBtn = document.querySelector(
+          ".comment-form button[type='submit']"
+        );
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.classList.remove("btn-disabled");
+        }
+
+        // Remove the rate limit message
+        const rateMessage = document.querySelector(".rate-limit-message");
+        if (rateMessage) {
+          rateMessage.style.opacity = "0";
+          setTimeout(() => {
+            if (rateMessage && rateMessage.parentNode) {
+              rateMessage.parentNode.removeChild(rateMessage);
+            }
+          }, 500);
+        }
+
+        return;
+      }
+
+      const minutes = Math.floor(timeLeft / 60);
+      const seconds = timeLeft % 60;
+      element.textContent =
+        minutes + "m " + (seconds < 10 ? "0" : "") + seconds + "s";
+      setTimeout(updateCountdown, 1000);
+    }
+
+    updateCountdown();
+  }
+
+  // Initialize any countdown timers that exist on page load
+  document.querySelectorAll(".countdown-timer").forEach((element) => {
+    if (element.dataset.resetTimestamp) {
+      startCountdown(element, parseInt(element.dataset.resetTimestamp, 10));
+    }
+  });
+
+  // Set up voting button visual feedback
   const upvoteBtn = document.querySelector(".upvote");
   const downvoteBtn = document.querySelector(".downvote");
 
-  if (upvoteBtn && downvoteBtn) {
-    // If user already voted, show the buttons as active
-    if (upvoteBtn.classList.contains("voted")) {
-      upvoteBtn.style.color = "#2563eb";
-    } else if (downvoteBtn.classList.contains("voted")) {
-      downvoteBtn.style.color = "#dc2626";
-    }
+  if (upvoteBtn && upvoteBtn.classList.contains("voted")) {
+    upvoteBtn.style.color = "#2563eb";
   }
 
-  // Set color for comment vote buttons that are active
+  if (downvoteBtn && downvoteBtn.classList.contains("voted")) {
+    downvoteBtn.style.color = "#dc2626";
+  }
+
+  // Set up comment vote buttons
   document.querySelectorAll(".comment-vote-btn.voted").forEach((btn) => {
     if (btn.classList.contains("upvote")) {
       btn.style.color = "#2563eb";
@@ -27,16 +76,23 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  attachCommentListeners();
-
   function displayServerMessage(messageData) {
     const message = document.createElement("div");
     message.className = messageData.success
       ? "success-message"
       : "error-message";
-    message.textContent = messageData.message;
+    message.innerHTML = messageData.message_html || messageData.message;
 
-    // Remove after 3 seconds
+    // Apply all styles from the server
+    if (messageData.message_style) {
+      Object.entries(messageData.message_style).forEach(([key, value]) => {
+        message.style[key] = value;
+      });
+    }
+
+    document.body.appendChild(message);
+
+    // Remove after specified duration or default to 3 seconds
     setTimeout(() => {
       message.style.opacity = "0";
       message.style.transform = "translateY(-10px)";
@@ -47,7 +103,74 @@ document.addEventListener("DOMContentLoaded", function () {
           message.parentNode.removeChild(message);
         }
       }, 300);
-    }, 3000);
+    }, messageData.message_duration || 3000);
+  }
+
+  // Handle rate limit error display
+  function handleRateLimitError(data, formContainer, submitButton) {
+    // Remove any existing rate limit messages first
+    const existingMessages = document.querySelectorAll(".rate-limit-message");
+    existingMessages.forEach((el) => el.remove());
+
+    // Create rate limit message container
+    const messageContainer = document.createElement("div");
+    messageContainer.className = "rate-limit-message";
+
+    // Clean up any HTML to prevent nested divs
+    let messageHTML = "";
+
+    // If there's custom HTML provided, use it but clean it first
+    if (data.html_message) {
+      // Extract just the inner content if it's wrapped in a div with the same class
+      if (data.html_message.includes('class="rate-limit-message"')) {
+        // Create a temporary element to parse the HTML
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = data.html_message;
+
+        // Get the inner HTML of the first .rate-limit-message div
+        const innerMessage = tempDiv.querySelector(".rate-limit-message");
+        if (innerMessage) {
+          messageHTML = innerMessage.innerHTML;
+        } else {
+          messageHTML = data.html_message;
+        }
+      } else {
+        messageHTML = data.html_message;
+      }
+    } else {
+      // Otherwise create our own message with countdown
+      messageHTML = `You are commenting too frequently. 
+      Please wait <span class="countdown-timer" data-reset-timestamp="${data.reset_timestamp}">5m 00s</span> 
+      before commenting again.`;
+    }
+
+    // Set the message HTML content
+    messageContainer.innerHTML = messageHTML;
+
+    // Insert message before the form
+    const commentForm = document.getElementById("add-comment-form");
+    if (commentForm) {
+      formContainer.insertBefore(messageContainer, commentForm);
+
+      // Hide the form if needed
+      if (data.hide_form) {
+        commentForm.style.display = "none";
+      }
+
+      // Start countdown
+      const countdownElement =
+        messageContainer.querySelector(".countdown-timer");
+      if (countdownElement && data.reset_timestamp) {
+        startCountdown(countdownElement, parseInt(data.reset_timestamp, 10));
+      }
+
+      // Keep submit button disabled
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.classList.add("btn-disabled");
+        submitButton.innerHTML = "Submit Comment";
+      }
+    }
   }
 
   // Handle post voting
@@ -58,7 +181,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const postId = this.getAttribute("data-post-id");
       const voteType = this.getAttribute("data-vote") === "up" ? 1 : -1;
 
-      // Disable button temporarily to prevent double-clicks
+      // Disable all vote buttons in this post to prevent double-clicks
       voteButtons.forEach((button) => (button.disabled = true));
 
       fetch("vote.php", {
@@ -198,7 +321,9 @@ document.addEventListener("DOMContentLoaded", function () {
       const postId = this.getAttribute("data-post-id");
       const contentInput = document.getElementById("comment_content");
       const submitButton = this.querySelector('button[type="submit"]');
+      const formContainer = commentForm.parentNode;
 
+      // Validate content
       if (!contentInput.value.trim()) {
         alert("Please fill in the comment field");
         return;
@@ -217,7 +342,12 @@ document.addEventListener("DOMContentLoaded", function () {
         method: "POST",
         body: formData,
       })
-        .then((response) => response.json())
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
         .then((data) => {
           if (data.success) {
             // Reload the page to show the new comment
@@ -225,74 +355,25 @@ document.addEventListener("DOMContentLoaded", function () {
           } else {
             // Check for rate limit errors
             if (data.rate_limited) {
-              console.log("Rate limit data received:", data);
-
-              // Create rate limit message
-              const messageContainer = document.createElement("div");
-              messageContainer.className = "rate-limit-message";
-              messageContainer.innerHTML =
-                data.message || "You are commenting too frequently.";
-
-              // If there's an HTML message, use that instead
-              if (data.html_message) {
-                messageContainer.innerHTML = data.html_message;
-              } else {
-                // Otherwise create the countdown manually
-                messageContainer.innerHTML =
-                  data.message +
-                  ' <span class="countdown-timer" data-reset-timestamp="' +
-                  data.reset_timestamp +
-                  '"></span>';
-              }
-
-              // Insert before the form
-              const formContainer = commentForm.parentNode;
-
-              // Remove any existing rate limit messages first
-              const existingMessages = formContainer.querySelectorAll(
-                ".rate-limit-message"
-              );
-              existingMessages.forEach((el) => el.remove());
-
-              formContainer.insertBefore(messageContainer, commentForm);
-
-              // Get the countdown timer element
-              const countdownElement =
-                messageContainer.querySelector(".countdown-timer");
-              if (countdownElement && data.reset_timestamp) {
-                // Initialize the countdown
-                startCountdown(
-                  countdownElement,
-                  parseInt(data.reset_timestamp)
-                );
-              }
-
-              // Keep the form disabled
-              submitButton.disabled = true;
-              submitButton.classList.add("btn-disabled");
-
-              // Clear comment form - optional
-              // contentInput.value = "";
+              handleRateLimitError(data, formContainer, submitButton);
             } else if (data.message === "You must be logged in to comment") {
               window.location.href = "users/login.php";
             } else {
               alert("Error adding comment: " + data.message);
+              // Re-enable submit button
+              submitButton.disabled = false;
+              submitButton.classList.remove("btn-disabled");
+              submitButton.innerHTML = "Submit Comment";
             }
           }
         })
         .catch((error) => {
           console.error("Error:", error);
-          alert("An error occurred while adding the comment");
-        })
-        .finally(() => {
-          // Re-enable submit button if not rate limited
-          if (!document.querySelector(".rate-limit-message")) {
-            submitButton.disabled = false;
-            submitButton.classList.remove("btn-disabled");
-            submitButton.innerHTML = "Submit Comment";
-          } else {
-            submitButton.innerHTML = "Submit Comment";
-          }
+          alert("An error occurred while adding the comment: " + error.message);
+          // Re-enable submit button
+          submitButton.disabled = false;
+          submitButton.classList.remove("btn-disabled");
+          submitButton.innerHTML = "Submit Comment";
         });
     });
   }
@@ -382,6 +463,42 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // Delete post functionality
+  const deletePostBtn = document.querySelector(".delete-post-btn");
+
+  if (deletePostBtn) {
+    deletePostBtn.addEventListener("click", function () {
+      if (
+        confirm(
+          "Are you sure you want to delete this post? This cannot be undone."
+        )
+      ) {
+        const postId = this.getAttribute("data-post-id");
+
+        fetch("delete_post.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: `post_id=${postId}`,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              window.location.href = "index.php";
+            } else {
+              alert("Error deleting post: " + data.message);
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert("An error occurred while deleting the post");
+          });
+      }
+    });
+  }
+
+  // Edit and delete comment buttons
   function attachCommentListeners() {
     // Re-attach edit comment listeners
     document.querySelectorAll(".edit-comment-btn").forEach((btn) => {
@@ -437,7 +554,7 @@ document.addEventListener("DOMContentLoaded", function () {
         textarea.focus();
         textarea.selectionStart = textarea.selectionEnd = textarea.value.length;
 
-        // Add event listeners for the new form
+        // Add event listeners for the form
         const form = commentContent.querySelector("form");
         const cancelButton = form.querySelector(".cancel-edit");
 
@@ -517,8 +634,6 @@ document.addEventListener("DOMContentLoaded", function () {
       newDeleteBtn.addEventListener("click", function () {
         if (confirm("Are you sure you want to delete this comment?")) {
           const commentId = this.getAttribute("data-comment-id");
-
-          // Use the closest() method to find the parent comment element
           const commentElement = this.closest(".comment");
 
           fetch("delete_comment.php", {
@@ -558,62 +673,11 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Admin functionality - Delete post
-  const deletePostBtn = document.querySelector(".delete-post-btn");
-
-  if (deletePostBtn) {
-    deletePostBtn.addEventListener("click", function () {
-      if (
-        confirm(
-          "Are you sure you want to delete this post? This cannot be undone."
-        )
-      ) {
-        const postId = this.getAttribute("data-post-id");
-
-        fetch("delete_post.php", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          body: `post_id=${postId}`,
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.success) {
-              window.location.href = "index.php";
-            } else {
-              alert("Error deleting post: " + data.message);
-            }
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-            alert("An error occurred while deleting the post");
-          });
-      }
-    });
-  }
+  // Call to attach event listeners to comment buttons
+  attachCommentListeners();
 
   // Helper function to convert newlines to <br> tags
   function nl2br(str) {
     return str.replace(/\n/g, "<br>");
-  }
-
-  // Update UI for Submit Comment button
-  const submitButton = document.querySelector(
-    ".comment-form button[type='submit']"
-  );
-  if (submitButton) {
-    const submitParent = submitButton.parentElement;
-
-    // Check if submit button is not already in a form-actions container
-    if (!submitParent.classList.contains("form-actions")) {
-      // Create a form-actions container if needed
-      const formActions = document.createElement("div");
-      formActions.className = "form-actions";
-
-      // Move button to the container
-      submitButton.parentNode.insertBefore(formActions, submitButton);
-      formActions.appendChild(submitButton);
-    }
   }
 });

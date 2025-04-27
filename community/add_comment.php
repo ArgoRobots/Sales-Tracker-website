@@ -3,6 +3,7 @@ session_start();
 require_once '../db_connect.php';
 require_once 'community_functions.php';
 require_once 'users/user_functions.php';
+include_once 'rate_limit.php';
 
 header('Content-Type: application/json');
 
@@ -19,8 +20,8 @@ if (!is_user_logged_in()) {
     exit;
 }
 
-$user_id = $current_user['id'] ?? 0;
-$response = '';
+$user_id = $_SESSION['user_id'] ?? 0;
+$current_user = get_current_user_ID();
 
 // Only accept POST requests
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -30,6 +31,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get user data from session
     $username = $_SESSION['username'] ?? 'Unknown';
     $email = $_SESSION['email'] ?? '';
+
+    // Check rate limit for comments
+    $rate_limit_message = check_rate_limit($user_id, 'comment');
+
+    if ($rate_limit_message !== false) {
+        // User has hit rate limit
+        $response['success'] = false;
+        $response['message'] = 'You are commenting too frequently';
+        $response['rate_limited'] = true;
+
+        // Format the rate limit message with proper styling
+        $response['html_message'] = $rate_limit_message;
+
+        // Extract reset timestamp from the message for frontend countdown
+        if (preg_match('/data-reset-timestamp="(\d+)"/', $rate_limit_message, $matches)) {
+            $response['reset_timestamp'] = intval($matches[1]);
+        } else {
+            // Fallback to 5 minutes from now if no timestamp found
+            $response['reset_timestamp'] = time() + 300;
+        }
+
+        echo json_encode($response);
+        exit;
+    }
 
     // Basic validation
     if (empty($content)) {
