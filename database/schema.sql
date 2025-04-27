@@ -208,3 +208,32 @@ LEFT JOIN
     community_comments c ON u.id = c.user_id
 GROUP BY 
     u.id;
+
+-- Create table for post edit history
+CREATE TABLE IF NOT EXISTS post_edit_history (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    post_id INTEGER NOT NULL,
+    user_id INTEGER,
+    title TEXT,
+    content TEXT,
+    edited_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (post_id) REFERENCES community_posts(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES community_users(id) ON DELETE SET NULL
+);
+
+-- Add index for faster queries
+CREATE INDEX IF NOT EXISTS idx_post_edit_history_post_id ON post_edit_history(post_id);
+
+-- Create table for rate limit tracking
+CREATE TABLE IF NOT EXISTS rate_limits (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    action_type TEXT NOT NULL, -- 'post', 'comment'
+    count INTEGER DEFAULT 1,
+    period_start TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_action_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES community_users(id) ON DELETE CASCADE
+);
+
+-- Add index for faster lookups
+CREATE INDEX IF NOT EXISTS idx_rate_limits_user_action ON rate_limits(user_id, action_type);

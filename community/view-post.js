@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Check if user is logged in
   function isUserLoggedIn() {
     // We'll check this by looking for disabled vote buttons
     const voteBtn = document.querySelector(".vote-btn");
@@ -30,27 +29,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
   attachCommentListeners();
 
-  // Helper function to display message from server
   function displayServerMessage(messageData) {
-    if (!messageData.show_message) return;
-
     const message = document.createElement("div");
-    message.className = "login-alert";
-    message.innerHTML = messageData.message_html || messageData.message;
+    message.className = messageData.success
+      ? "success-message"
+      : "error-message";
+    message.textContent = messageData.message;
 
-    // Apply all styles from the server
-    if (messageData.message_style) {
-      Object.entries(messageData.message_style).forEach(([key, value]) => {
-        message.style[key] = value;
-      });
-    }
-
-    document.body.appendChild(message);
-
-    // Remove after specified duration or default to 3 seconds
+    // Remove after 3 seconds
     setTimeout(() => {
-      message.remove();
-    }, messageData.message_duration || 3000);
+      message.style.opacity = "0";
+      message.style.transform = "translateY(-10px)";
+      message.style.transition = "opacity 0.3s, transform 0.3s";
+
+      setTimeout(() => {
+        if (message.parentNode) {
+          message.parentNode.removeChild(message);
+        }
+      }, 300);
+    }, 3000);
   }
 
   // Handle post voting
@@ -200,11 +197,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const postId = this.getAttribute("data-post-id");
       const contentInput = document.getElementById("comment_content");
+      const submitButton = this.querySelector('button[type="submit"]');
 
       if (!contentInput.value.trim()) {
         alert("Please fill in the comment field");
         return;
       }
+
+      // Disable submit button while processing
+      submitButton.disabled = true;
+      submitButton.classList.add("btn-disabled");
+      submitButton.innerHTML = "Submitting...";
 
       const formData = new FormData();
       formData.append("post_id", postId);
@@ -220,7 +223,57 @@ document.addEventListener("DOMContentLoaded", function () {
             // Reload the page to show the new comment
             window.location.reload();
           } else {
-            if (data.message === "You must be logged in to comment") {
+            // Check for rate limit errors
+            if (data.rate_limited) {
+              console.log("Rate limit data received:", data);
+
+              // Create rate limit message
+              const messageContainer = document.createElement("div");
+              messageContainer.className = "rate-limit-message";
+              messageContainer.innerHTML =
+                data.message || "You are commenting too frequently.";
+
+              // If there's an HTML message, use that instead
+              if (data.html_message) {
+                messageContainer.innerHTML = data.html_message;
+              } else {
+                // Otherwise create the countdown manually
+                messageContainer.innerHTML =
+                  data.message +
+                  ' <span class="countdown-timer" data-reset-timestamp="' +
+                  data.reset_timestamp +
+                  '"></span>';
+              }
+
+              // Insert before the form
+              const formContainer = commentForm.parentNode;
+
+              // Remove any existing rate limit messages first
+              const existingMessages = formContainer.querySelectorAll(
+                ".rate-limit-message"
+              );
+              existingMessages.forEach((el) => el.remove());
+
+              formContainer.insertBefore(messageContainer, commentForm);
+
+              // Get the countdown timer element
+              const countdownElement =
+                messageContainer.querySelector(".countdown-timer");
+              if (countdownElement && data.reset_timestamp) {
+                // Initialize the countdown
+                startCountdown(
+                  countdownElement,
+                  parseInt(data.reset_timestamp)
+                );
+              }
+
+              // Keep the form disabled
+              submitButton.disabled = true;
+              submitButton.classList.add("btn-disabled");
+
+              // Clear comment form - optional
+              // contentInput.value = "";
+            } else if (data.message === "You must be logged in to comment") {
               window.location.href = "users/login.php";
             } else {
               alert("Error adding comment: " + data.message);
@@ -230,6 +283,16 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch((error) => {
           console.error("Error:", error);
           alert("An error occurred while adding the comment");
+        })
+        .finally(() => {
+          // Re-enable submit button if not rate limited
+          if (!document.querySelector(".rate-limit-message")) {
+            submitButton.disabled = false;
+            submitButton.classList.remove("btn-disabled");
+            submitButton.innerHTML = "Submit Comment";
+          } else {
+            submitButton.innerHTML = "Submit Comment";
+          }
         });
     });
   }
@@ -349,7 +412,9 @@ document.addEventListener("DOMContentLoaded", function () {
         commentElement.setAttribute("data-original-content", originalContent);
 
         // Get the comment text (strip any HTML)
-        const commentText = commentContent.textContent.trim();
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = originalContent;
+        const commentText = tempDiv.textContent.trim();
 
         // Create and insert the edit form
         const formHtml = `
@@ -413,10 +478,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .then((data) => {
               if (data.success) {
                 // Format the updated content with line breaks
-                const updatedContent = data.comment.content.replace(
-                  /\n/g,
-                  "<br>"
-                );
+                const updatedContent = nl2br(data.comment.content);
                 commentContent.innerHTML = updatedContent;
 
                 // Show the comment controls again
@@ -426,7 +488,6 @@ document.addEventListener("DOMContentLoaded", function () {
                   commentControls.style.display = "";
                 }
 
-                // Call attachCommentListeners to ensure all comments have proper event handlers
                 attachCommentListeners();
               } else {
                 alert("Error: " + data.message);
@@ -457,6 +518,9 @@ document.addEventListener("DOMContentLoaded", function () {
         if (confirm("Are you sure you want to delete this comment?")) {
           const commentId = this.getAttribute("data-comment-id");
 
+          // Use the closest() method to find the parent comment element
+          const commentElement = this.closest(".comment");
+
           fetch("delete_comment.php", {
             method: "POST",
             headers: {
@@ -467,18 +531,20 @@ document.addEventListener("DOMContentLoaded", function () {
             .then((response) => response.json())
             .then((data) => {
               if (data.success) {
-                const commentElement = document.querySelector(
-                  `.comment[data-comment-id="${commentId}"]`
-                );
+                // Remove the comment from the DOM
                 commentElement.remove();
 
                 // Update comment count heading
                 const commentsHeading = document.querySelector(
                   ".comments-section h3"
                 );
-                const currentCount = parseInt(commentsHeading.textContent);
-                const newCount = currentCount - 1;
-                commentsHeading.textContent = `${newCount} Comments`;
+                // Extract just the number from the heading text
+                const currentText = commentsHeading.textContent;
+                const currentCount = parseInt(currentText);
+                if (!isNaN(currentCount)) {
+                  const newCount = currentCount - 1;
+                  commentsHeading.textContent = `${newCount} Comments`;
+                }
               } else {
                 alert("Error deleting comment: " + data.message);
               }

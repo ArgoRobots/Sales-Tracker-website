@@ -1,11 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Create notification container if it doesn't exist
-  if (!document.querySelector(".notification-container")) {
-    const container = document.createElement("div");
-    container.className = "notification-container";
-    document.body.appendChild(container);
-  }
-
   // Process any existing notification messages
   initializeNotifications();
 
@@ -30,9 +23,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // Start observing the document for added notifications
   observer.observe(document.body, { childList: true, subtree: true });
 
-  /**
-   * Initialize existing notifications on page load
-   */
   function initializeNotifications() {
     // Find all existing notification messages
     const messages = document.querySelectorAll(
@@ -50,18 +40,10 @@ document.addEventListener("DOMContentLoaded", function () {
    */
   function processNotification(message) {
     // Skip if already processed
-    if (message.dataset.processed === "true") return;
+    if (message.dataset.processed === "true") {
+      return;
+    }
     message.dataset.processed = "true";
-
-    // Create a clone of the message for the notification container
-    const clone = message.cloneNode(true);
-
-    // Add to the notification container
-    const container = document.querySelector(".notification-container");
-    container.appendChild(clone);
-
-    // Hide the original message
-    message.style.display = "none";
 
     // Set a timeout to remove the notification
     setTimeout(function () {

@@ -13,9 +13,6 @@ function get_all_posts()
 {
     $db = get_db_connection();
 
-    // Check if views column exists, add it if not
-    ensure_views_column_exists($db);
-
     // Join with users table to get avatar
     $result = $db->query('SELECT p.*, u.avatar FROM community_posts p 
                          LEFT JOIN community_users u ON p.user_id = u.id 
@@ -39,9 +36,6 @@ function get_post($post_id)
 {
     $db = get_db_connection();
 
-    // Check if views column exists, add it if not
-    ensure_views_column_exists($db);
-
     // Join with users table to get avatar
     $stmt = $db->prepare('SELECT p.*, u.avatar FROM community_posts p 
                          LEFT JOIN community_users u ON p.user_id = u.id 
@@ -50,30 +44,6 @@ function get_post($post_id)
     $result = $stmt->execute();
 
     return $result->fetchArray(SQLITE3_ASSOC);
-}
-
-/**
- * Ensure the views column exists in the community_posts table
- * 
- * @param SQLite3 $db Database connection
- */
-function ensure_views_column_exists($db)
-{
-    // Check if the column exists
-    $result = $db->query("PRAGMA table_info(community_posts)");
-    $columnExists = false;
-
-    while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
-        if ($row['name'] === 'views') {
-            $columnExists = true;
-            break;
-        }
-    }
-
-    // Add the views column if it doesn't exist
-    if (!$columnExists) {
-        $db->exec('ALTER TABLE community_posts ADD COLUMN views INTEGER DEFAULT 0');
-    }
 }
 
 /**
@@ -89,9 +59,6 @@ function ensure_views_column_exists($db)
 function add_post($user_id, $user_name, $user_email, $title, $content, $post_type)
 {
     $db = get_db_connection();
-
-    // Check if views column exists, add it if not
-    ensure_views_column_exists($db);
 
     $stmt = $db->prepare('INSERT INTO community_posts 
         (user_id, user_name, user_email, title, content, post_type, views) 

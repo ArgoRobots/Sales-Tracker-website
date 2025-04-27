@@ -27,6 +27,18 @@ if (!$post) {
     exit;
 }
 
+// Get last edit for the post
+$db = get_db_connection();
+$stmt = $db->prepare('SELECT h.*, u.username 
+    FROM post_edit_history h
+    LEFT JOIN community_users u ON h.user_id = u.id
+    WHERE h.post_id = :post_id
+    ORDER BY h.edited_at DESC
+    LIMIT 1');
+$stmt->bindValue(':post_id', $post_id, SQLITE3_INTEGER);
+$result = $stmt->execute();
+$post_last_edit = $result->fetchArray(SQLITE3_ASSOC);
+
 // Increment view count (only once per session to count unique views)
 $viewed_posts = isset($_SESSION['viewed_posts']) ? $_SESSION['viewed_posts'] : array();
 if (!in_array($post_id, $viewed_posts)) {
@@ -75,15 +87,16 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../resources/scripts/main.js"></script>
     <script src="view-post.js"></script>
-    <script src="../../resources/notifications/notifications.js" defer></script>
+    <script src="../resources/notifications/notifications.js" defer></script>
 
+    <link rel="stylesheet" href="create-post.css">
     <link rel="stylesheet" href="view-post.css">
     <link rel="stylesheet" href="../resources/styles/avatar.css">
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../resources/styles/button.css">
     <link rel="stylesheet" href="../resources/header/style.css">
     <link rel="stylesheet" href="../resources/footer/style.css">
-    <link rel="stylesheet" href="../../resources/notifications/notifications.css">
+    <link rel="stylesheet" href="../resources/notifications/notifications.css">
 </head>
 
 <body>
@@ -179,7 +192,9 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                             <?php endif; ?>
 
                             <!-- Delete post button -->
-                            <button class="delete-post-btn" data-post-id="<?php echo $post['id']; ?>">Delete</button>
+                            <?php if ($can_edit_post): ?>
+                                <button class="delete-post-btn" data-post-id="<?php echo $post['id']; ?>">Delete</button>
+                            <?php endif; ?>
                         </div>
                     </div>
                     <div class="post-body">
@@ -189,6 +204,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                     <!-- Post footer -->
                     <div class="post-footer">
                         <div class="post-info">
+                            <!-- Author -->
                             <span class="post-author">
                                 Posted by
                                 <a href="users/profile.php?username=<?php echo urlencode($post['user_name']); ?>" class="user-link">
@@ -203,7 +219,11 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                                     </span><?php echo htmlspecialchars($post['user_name']); ?>
                                 </a>
                             </span>
+
+                            <!-- Date -->
                             <span class="post-date"><?php echo date('M j, Y g:i a', strtotime($post['created_at'])); ?></span>
+
+                            <!-- Views -->
                             <span class="post-views">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
@@ -211,6 +231,13 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                                 </svg>
                                 <?php echo (isset($post['views']) && (int)$post['views'] > 0) ? (int)$post['views'] : 0; ?> <?php echo ((isset($post['views']) && (int)$post['views'] == 1) ? 'view' : 'views'); ?>
                             </span>
+
+                            <!-- Last edited -->
+                            <?php if ($post_last_edit): ?>
+                                <span class="post-last-edited">
+                                    <a href="post_history.php?id=<?php echo $post_id; ?>">Last edited by <?php echo htmlspecialchars($post_last_edit['username']); ?></a>
+                                </span>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>

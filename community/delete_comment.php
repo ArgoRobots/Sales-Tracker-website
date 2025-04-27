@@ -2,6 +2,7 @@
 session_start();
 require_once '../db_connect.php';
 require_once 'community_functions.php';
+require_once 'users/user_functions.php';
 
 header('Content-Type: application/json');
 
@@ -11,31 +12,63 @@ $response = [
     'message' => 'Unauthorized access'
 ];
 
-// Check if user is an admin
-if ($_SESSION['role'] === 'admin') {
-    // Only accept POST requests
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $comment_id = isset($_POST['comment_id']) ? intval($_POST['comment_id']) : 0;
+// Check if user is logged in
+if (!isset($_SESSION['user_id'])) {
+    $response['message'] = 'You must be logged in to delete comments';
+    echo json_encode($response);
+    exit;
+}
 
-        if ($comment_id > 0) {
-            // Delete the comment
-            $result = delete_comment($comment_id);
+// Only accept POST requests
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $comment_id = isset($_POST['comment_id']) ? intval($_POST['comment_id']) : 0;
 
-            if ($result && $result['success']) {
-                $response = [
-                    'success' => true,
-                    'message' => 'Comment deleted successfully',
-                    'post_id' => $result['post_id']
-                ];
-            } else {
-                $response['message'] = 'Error deleting comment';
-            }
-        } else {
-            $response['message'] = 'Invalid comment ID';
-        }
-    } else {
-        $response['message'] = 'Invalid request method';
+    if ($comment_id <= 0) {
+        $response['message'] = 'Invalid comment ID';
+        echo json_encode($response);
+        exit;
     }
+
+    $user_id = $_SESSION['user_id'];
+    $role = $_SESSION['role'] ?? 'user';
+
+    // Get the comment to verify ownership
+    $db = get_db_connection();
+    $stmt = $db->prepare('SELECT * FROM community_comments WHERE id = :id');
+    $stmt->bindValue(':id', $comment_id, SQLITE3_INTEGER);
+    $comment = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+
+    if (!$comment) {
+        $response['message'] = 'Comment not found';
+        echo json_encode($response);
+        exit;
+    }
+
+    // Check permission: admin or comment owner can delete
+    $can_delete = ($role === 'admin') ||
+        (isset($comment['user_id']) && $comment['user_id'] == $user_id);
+
+    if (!$can_delete) {
+        $response['message'] = 'You do not have permission to delete this comment';
+        echo json_encode($response);
+        exit;
+    }
+
+    // Delete the comment
+    $stmt = $db->prepare('DELETE FROM community_comments WHERE id = :id');
+    $stmt->bindValue(':id', $comment_id, SQLITE3_INTEGER);
+
+    if ($stmt->execute()) {
+        $response = [
+            'success' => true,
+            'message' => 'Comment deleted successfully',
+            'post_id' => $comment['post_id']
+        ];
+    } else {
+        $response['message'] = 'Error deleting comment: ' . $db->lastErrorMsg();
+    }
+} else {
+    $response['message'] = 'Invalid request method';
 }
 
 // Send the response

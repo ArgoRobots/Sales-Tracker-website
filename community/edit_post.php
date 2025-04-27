@@ -61,9 +61,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (!in_array($post_type, ['bug', 'feature'])) {
         $error_message = 'Invalid post type';
     } else {
-        // Update the post
         $db = get_db_connection();
 
+        // Save the current post to history
+        $stmt = $db->prepare('INSERT INTO post_edit_history (post_id, user_id, title, content, edited_at) 
+                            VALUES (:post_id, :user_id, :title, :content, CURRENT_TIMESTAMP)');
+        $stmt->bindValue(':post_id', $post_id, SQLITE3_INTEGER);
+        $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
+        $stmt->bindValue(':title', $post['title'], SQLITE3_TEXT);
+        $stmt->bindValue(':content', $post['content'], SQLITE3_TEXT);
+        $stmt->execute();
+
+        // Update the post
         $stmt = $db->prepare('UPDATE community_posts 
                              SET title = :title, content = :content, post_type = :post_type, updated_at = CURRENT_TIMESTAMP 
                              WHERE id = :id');

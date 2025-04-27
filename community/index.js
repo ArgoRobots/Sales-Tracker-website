@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   // Initialize variables for infinite scrolling
   let page = 1;
-  const postsPerPage = 5;
+  const postsPerPage = 15;
   let isLoading = false;
   let hasMorePosts = true;
 
@@ -21,14 +21,31 @@ document.addEventListener("DOMContentLoaded", function () {
   setupDeletePost();
   setupUpdatePostStatus();
 
-  // Check if user is logged in
+  // Initialize countdowns for any rate limit messages on page load
+  // Find any countdown elements
+  const countdownElements = document.querySelectorAll(".countdown-timer");
+
+  countdownElements.forEach((element) => {
+    if (element.dataset.resetTimestamp) {
+      startCountdown(element, parseInt(element.dataset.resetTimestamp));
+    }
+  });
+
+  // Listen for rate limit error events
+  document.addEventListener("ratelimit:error", function (e) {
+    const data = e.detail;
+
+    if (data && data.rate_limited) {
+      showRateLimitNotification(data);
+    }
+  });
+
   function isUserLoggedIn() {
     // We'll check this by looking for disabled vote buttons
     const voteBtn = document.querySelector(".vote-btn");
     return voteBtn && !voteBtn.hasAttribute("disabled");
   }
 
-  // Helper function to display message from server
   function displayServerMessage(messageData) {
     if (!messageData.show_message) return;
 
@@ -51,7 +68,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }, messageData.message_duration || 3000);
   }
 
-  // Function to set up vote handlers
   function setupVoteHandlers() {
     const voteButtons = document.querySelectorAll(".vote-btn");
 
@@ -96,8 +112,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 downvoteBtn.classList.add("voted");
               }
             } else {
-              // Display message from server if provided
-              if (data.show_message) {
+              // Check for rate limiting
+              if (data.rate_limited) {
+                // Create and dispatch a custom event for the rate limit system
+                const rateLimitEvent = new CustomEvent("ratelimit:error", {
+                  detail: data,
+                });
+                document.dispatchEvent(rateLimitEvent);
+              } else if (data.show_message) {
+                // Use the existing displayServerMessage function
                 displayServerMessage(data);
               } else {
                 alert("Error voting: " + data.message);
@@ -116,13 +139,10 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Get all posts on the page
-  let allPosts = Array.from(document.querySelectorAll(".post-card"));
-
   // Hide all posts except the first few
+  let allPosts = Array.from(document.querySelectorAll(".post-card"));
   initializePostDisplay();
 
-  // Function to initialize post display
   function initializePostDisplay() {
     // Hide all posts first
     allPosts.forEach((post, index) => {
@@ -147,7 +167,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Add checkbox for post selection
   function addSelectionCheckbox(post) {
     const postSelect = document.createElement("div");
     postSelect.className = "post-select";
@@ -164,7 +183,6 @@ document.addEventListener("DOMContentLoaded", function () {
     post.insertBefore(postSelect, post.firstChild);
   }
 
-  // Function to toggle selection mode
   function toggleSelectionMode(enable) {
     if (!isUserLoggedIn()) {
       return; // Non-logged users can't select posts
@@ -187,7 +205,6 @@ document.addEventListener("DOMContentLoaded", function () {
     updateDeleteButtonState();
   }
 
-  // Update selected count
   function updateSelectedCount() {
     if (!selectedCountSpan) return;
 
@@ -197,7 +214,6 @@ document.addEventListener("DOMContentLoaded", function () {
     selectedCountSpan.textContent = selectedPosts + " selected";
   }
 
-  // Update delete button state
   function updateDeleteButtonState() {
     if (!deleteSelectedBtn) return;
 
@@ -284,7 +300,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Function to load more posts
   function loadMorePosts() {
     if (isLoading || !hasMorePosts) return;
 
@@ -332,7 +347,6 @@ document.addEventListener("DOMContentLoaded", function () {
     setupVoteHandlers();
   }
 
-  // Function to check and load more posts if needed
   function checkAndLoadMorePosts() {
     // Calculate how many posts should be visible
     const shouldBeVisible = Math.min(page * postsPerPage, allPosts.length);
@@ -346,7 +360,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Infinite scroll event listener
   window.addEventListener("scroll", function () {
     if (isLoading || !hasMorePosts) return;
 
@@ -361,7 +374,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Function to get filtered posts
   function getFilteredPosts() {
     const searchTerm = searchInput.value.toLowerCase().trim();
     const category = categoryFilter.value;
@@ -398,7 +410,6 @@ document.addEventListener("DOMContentLoaded", function () {
     return filtered;
   }
 
-  // New function to sort posts using DOM manipulation
   function sortPosts(posts) {
     if (!sortFilter) return posts;
 
@@ -451,7 +462,6 @@ document.addEventListener("DOMContentLoaded", function () {
     return postsArray;
   }
 
-  // Apply filters function - now with separate sorting
   function applyFilters() {
     page = 1;
     hasMorePosts = true;

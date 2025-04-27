@@ -8,17 +8,6 @@ $posts = get_all_posts();
 $is_logged_in = is_user_logged_in();
 $current_user = $is_logged_in ? get_current_user_ID() : null;
 
-// Make sure current_user is an array and has the expected structure if logged in
-if ($is_logged_in && !is_array($current_user)) {
-    $current_user = array(
-        'id' => $_SESSION['user_id'] ?? 0,
-        'username' => $_SESSION['username'] ?? 'Unknown',
-        'email' => $_SESSION['email'] ?? '',
-        'role' => $_SESSION['role'] ?? 'user',
-        'avatar' => ''
-    );
-}
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,7 +20,7 @@ if ($is_logged_in && !is_array($current_user)) {
 
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../resources/scripts/main.js"></script>
-    <script src="community.js" defer></script>
+    <script src="index.js" defer></script>
 
     <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="../resources/styles/avatar.css">
@@ -109,12 +98,6 @@ if ($is_logged_in && !is_array($current_user)) {
                 <button id="delete-selected" class="btn btn-danger" disabled>Delete Selected</button>
             </div>
         <?php endif; ?>
-
-        <!-- Loading indicator for infinite scroll -->
-        <div id="loading-indicator" style="display: none;">
-            <div class="spinner"></div>
-            <p>Loading more posts...</p>
-        </div>
 
         <div id="posts-container" class="posts-container">
             <?php if (empty($posts)): ?>
@@ -227,6 +210,12 @@ if ($is_logged_in && !is_array($current_user)) {
                     </div>
                 <?php endforeach; ?>
             <?php endif; ?>
+        </div>
+
+        <!-- Loading indicator -->
+        <div id="loading-indicator" style="display: none;">
+            <div class="spinner"></div>
+            <p>Loading more posts...</p>
         </div>
     </div>
 
