@@ -155,9 +155,6 @@ $current_user = $is_logged_in ? get_current_user_ID() : null;
                                         </span>
                                     </div>
                                 </div>
-                                <div class="post-body">
-                                    <p><?php echo nl2br(htmlspecialchars($post['content'])); ?></p>
-                                </div>
                             </a>
                             <div class="post-footer">
                                 <div class="post-info">

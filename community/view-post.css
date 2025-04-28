@@ -189,14 +189,8 @@ a:hover {
 
 .post-body {
     margin-bottom: 20px;
-    line-height: 1.6;
-    color: #4b5563;
     overflow-wrap: break-word;
     word-wrap: break-word;
-}
-
-.post-body p {
-    white-space: pre-line;
 }
 
 .post-footer {

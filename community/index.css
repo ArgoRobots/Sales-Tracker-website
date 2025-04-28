@@ -337,11 +337,6 @@ header .header-inner .menu-container .menu .community:after {
     color: #dc2626;
 }
 
-.post-body {
-    margin-bottom: 15px;
-    line-height: 1.5;
-}
-
 .post-footer {
     display: flex;
     justify-content: space-between;
