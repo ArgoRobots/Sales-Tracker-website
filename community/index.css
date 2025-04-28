@@ -103,6 +103,19 @@ header .header-inner .menu-container .menu .community:after {
     flex-wrap: wrap;
 }
 
+/* Search Filter Label */
+.search-filter-label {
+    text-align: center;
+    color: #4b5563;
+    font-size: 14px;
+    padding: 10px;
+    margin-bottom: 15px;
+    font-style: italic;
+    border-radius: 6px;
+    background-color: #f9fafb;
+    border: 1px solid #e5e7eb;
+}
+
 .search-box {
     display: flex;
     align-items: center;
@@ -156,6 +169,7 @@ header .header-inner .menu-container .menu .community:after {
     margin: 50px 0;
 }
 
+/* Post card layout with select checkbox */
 .post-card {
     display: flex;
     background-color: #fff;
@@ -163,16 +177,34 @@ header .header-inner .menu-container .menu .community:after {
     border-radius: 8px;
     margin-bottom: 15px;
     overflow: hidden;
+    position: relative;
 }
 
+/* Selection checkbox styling */
 .post-select {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    z-index: 10;
-    display: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    background-color: #f8fafc;
+    border-right: 1px solid #e5e7eb;
+    min-width: 40px;
 }
 
+.post-select-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.post-checkbox {
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+}
+
+/* Votes section */
 .post-votes {
     background-color: var(--whiteBackground);
     padding: 10px;
@@ -194,6 +226,14 @@ header .header-inner .menu-container .menu .community:after {
 
 .vote-btn:hover {
     color: #1e40af;
+}
+
+.vote-btn.voted.upvote {
+    color: #2563eb;
+}
+
+.vote-btn.voted.downvote {
+    color: #dc2626;
 }
 
 .vote-count {
@@ -397,57 +437,9 @@ header .header-inner .menu-container .menu .community:after {
     animation: highlight-pulse 2s infinite;
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
-    .community-wrapper {
-        max-width: 90%;
-    }
-
-    .community-actions {
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .search-box {
-        width: 100%;
-    }
-
-    .search-box input {
-        flex-grow: 1;
-        min-width: 0;
-    }
-
-    .post-header {
-        flex-direction: column;
-    }
-
-    .post-footer {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-}
-
-/* Filter dropdown styling */
-.filter-dropdown {
-    position: relative;
-}
-
-.filter-select {
-    padding: 8px 12px;
-    border: 1px solid #d1d5db;
-    border-radius: 4px;
-    background-color: white;
-    min-width: 150px;
-}
-
-.filter-select:hover {
-    border-color: #9ca3af;
-}
-
-.filter-select:focus {
-    outline: none;
-    border-color: var(--button);
-    box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.2);
+/* Style for selected posts */
+.post-card.selectable {
+    border-left: 3px solid #3b82f6;
 }
 
 /* Bulk actions styling */
@@ -485,17 +477,17 @@ header .header-inner .menu-container .menu .community:after {
     font-weight: 500;
 }
 
-.btn-danger {
+.btn-delete {
     background-color: #ef4444;
     color: white;
     transition: background-color 0.2s;
 }
 
-.btn-danger:hover {
+.btn-delete:hover {
     background-color: #dc2626;
 }
 
-.btn-danger:disabled {
+.btn-delete:disabled {
     background-color: #f87171;
     cursor: not-allowed;
     opacity: 0.7;
@@ -525,6 +517,29 @@ header .header-inner .menu-container .menu .community:after {
     }
 }
 
+/* Filter dropdown styling */
+.filter-dropdown {
+    position: relative;
+}
+
+.filter-select {
+    padding: 8px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    background-color: white;
+    min-width: 150px;
+}
+
+.filter-select:hover {
+    border-color: #9ca3af;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: var(--button);
+    box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.2);
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .community-actions {
@@ -544,6 +559,22 @@ header .header-inner .menu-container .menu .community:after {
     .bulk-actions {
         flex-direction: column;
         gap: 10px;
+    }
+
+    .community-wrapper {
+        max-width: 90%;
+    }
+
+    .community-header {
+        padding: 40px 0;
+    }
+
+    .community-header h1 {
+        font-size: 24px;
+    }
+
+    .community-header p {
+        font-size: 16px;
     }
 }
 
@@ -581,30 +612,30 @@ header .header-inner .menu-container .menu .community:after {
         padding-top: 10px;
         gap: 12px;
     }
+
+    /* Adjust selection controls for small screens */
+    .select-all-container {
+        margin-bottom: 8px;
+    }
 }
 
 /* Even smaller screens */
 @media (max-width: 480px) {
-    .post-card {
-        flex-direction: column;
-    }
 
-    .post-votes {
-        flex-direction: row;
-        width: 100%;
-        border-right: none;
-        border-bottom: 1px solid #e5e7eb;
+    /* Ensure selection checkbox stays visible */
+    .post-select {
+        min-width: 30px;
         padding: 5px;
-        justify-content: center;
-        gap: 15px;
     }
 
-    .vote-btn {
+    /* Adjust layout for tiny screens */
+    .post-votes {
         min-width: 40px;
-        min-height: 40px;
+        padding: 5px;
     }
 
     .btn-blue {
-        display: none !important;
+        font-size: 14px;
+        padding: 8px 12px;
     }
 }

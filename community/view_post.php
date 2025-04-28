@@ -87,6 +87,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
     <script src="view-post.js"></script>
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../resources/scripts/main.js"></script>
+    <script src="../resources/notifications/notifications.js" defer></script>
 
     <link rel="stylesheet" href="create-post.css">
     <link rel="stylesheet" href="view-post.css">
@@ -96,6 +97,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
     <link rel="stylesheet" href="../resources/styles/button.css">
     <link rel="stylesheet" href="../resources/header/style.css">
     <link rel="stylesheet" href="../resources/footer/style.css">
+    <link rel="stylesheet" href="../resources/notifications/notifications.css">
 </head>
 
 <body>

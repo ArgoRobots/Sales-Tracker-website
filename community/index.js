@@ -17,9 +17,21 @@ document.addEventListener("DOMContentLoaded", function () {
   const deleteSelectedBtn = document.getElementById("delete-selected");
   const selectedCountSpan = document.querySelector(".selected-count");
 
+  // Create search filter label container
+  let searchFilterLabel = document.createElement("div");
+  searchFilterLabel.className = "search-filter-label";
+
+  // Insert after community actions
+  const communityActions = document.querySelector(".community-actions");
+  if (communityActions) {
+    communityActions.after(searchFilterLabel);
+  }
+
+  // Initial setup
   setupVoteHandlers();
   setupDeletePost();
   setupUpdatePostStatus();
+  updateSearchFilterLabel();
 
   // Initialize countdowns for any rate limit messages on page load
   // Find any countdown elements
@@ -44,6 +56,11 @@ document.addEventListener("DOMContentLoaded", function () {
     // We'll check this by looking for disabled vote buttons
     const voteBtn = document.querySelector(".vote-btn");
     return voteBtn && !voteBtn.hasAttribute("disabled");
+  }
+
+  function isUserAdmin() {
+    // Check if bulk actions div exists (which should only be created for admins)
+    return bulkActionsDiv !== null;
   }
 
   function displayServerMessage(messageData) {
@@ -153,10 +170,15 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       // Add checkbox for selection if user is admin
-      if (bulkActionsDiv) {
+      if (isUserAdmin()) {
         addSelectionCheckbox(post);
       }
     });
+
+    // Show bulk actions immediately for admin users
+    if (isUserAdmin()) {
+      toggleSelectionMode(true);
+    }
 
     // Show loading indicator if there are more posts
     if (allPosts.length > postsPerPage) {
@@ -168,9 +190,11 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function addSelectionCheckbox(post) {
+    // Create selection container
     const postSelect = document.createElement("div");
     postSelect.className = "post-select";
 
+    // Create checkbox
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.className = "post-checkbox";
@@ -179,7 +203,13 @@ document.addEventListener("DOMContentLoaded", function () {
       updateDeleteButtonState();
     });
 
-    postSelect.appendChild(checkbox);
+    // Add label for better UX
+    const label = document.createElement("label");
+    label.className = "post-select-label";
+    label.appendChild(checkbox);
+    postSelect.appendChild(label);
+
+    // Insert at the beginning of the post card
     post.insertBefore(postSelect, post.firstChild);
   }
 
@@ -191,10 +221,20 @@ document.addEventListener("DOMContentLoaded", function () {
     allPosts.forEach((post) => {
       if (enable) {
         post.classList.add("selectable");
+        // Display the selection checkbox
+        const postSelect = post.querySelector(".post-select");
+        if (postSelect) {
+          postSelect.style.display = "flex";
+        }
       } else {
         post.classList.remove("selectable");
         const checkbox = post.querySelector(".post-checkbox");
         if (checkbox) checkbox.checked = false;
+        // Hide the selection checkbox
+        const postSelect = post.querySelector(".post-select");
+        if (postSelect) {
+          postSelect.style.display = "none";
+        }
       }
     });
 
@@ -221,6 +261,53 @@ document.addEventListener("DOMContentLoaded", function () {
       ".post-checkbox:checked"
     ).length;
     deleteSelectedBtn.disabled = selectedPosts === 0;
+  }
+
+  // Update the search/filter label
+  function updateSearchFilterLabel() {
+    if (!searchFilterLabel) return;
+
+    const searchTerm = searchInput.value.trim();
+    const category = categoryFilter
+      ? categoryFilter.options[categoryFilter.selectedIndex].text
+      : "All Categories";
+    const sortType = sortFilter
+      ? sortFilter.options[sortFilter.selectedIndex].text
+      : "Newest First";
+
+    let labelText = "";
+
+    // Build the label text based on applied filters
+    if (searchTerm) {
+      labelText += `Searching for "${searchTerm}"`;
+    }
+
+    if (category !== "All Categories") {
+      labelText += (labelText ? " in " : "Showing ") + category;
+    }
+
+    labelText +=
+      (labelText ? " • " : "Showing posts • ") + `Sorted by ${sortType}`;
+
+    // Display the label
+    searchFilterLabel.textContent = labelText;
+    searchFilterLabel.style.display = "block";
+  }
+
+  // Event listener for select all checkbox
+  if (selectAllCheckbox) {
+    selectAllCheckbox.addEventListener("change", function () {
+      const isChecked = this.checked;
+      document.querySelectorAll(".post-checkbox").forEach((checkbox) => {
+        const post = checkbox.closest(".post-card");
+        if (post && post.style.display !== "none") {
+          // Only select visible posts
+          checkbox.checked = isChecked;
+        }
+      });
+      updateSelectedCount();
+      updateDeleteButtonState();
+    });
   }
 
   // Event listener for delete selected button
@@ -276,6 +363,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
               // Disable selection mode
               toggleSelectionMode(false);
+
+              // Re-enable selection mode for admin users
+              if (isUserAdmin()) {
+                toggleSelectionMode(true);
+              }
 
               // Check if we need to load more posts
               if (allPosts.length === 0) {
@@ -468,6 +560,9 @@ document.addEventListener("DOMContentLoaded", function () {
     let filteredPosts = getFilteredPosts();
     filteredPosts = sortPosts(filteredPosts);
 
+    // Update the search/filter label
+    updateSearchFilterLabel();
+
     // Hide all posts first
     allPosts.forEach((post) => {
       post.style.display = "none";
@@ -558,45 +653,6 @@ document.addEventListener("DOMContentLoaded", function () {
           applyFilters();
         }, 500);
       }
-    });
-  }
-
-  // Initialize long-press detection for enabling selection mode
-  let longPressTimer;
-
-  // Only set up selection functionality for logged-in users
-  if (isUserLoggedIn() && bulkActionsDiv) {
-    allPosts.forEach((post) => {
-      post.addEventListener("mousedown", function (e) {
-        // Only trigger on the post itself, not on buttons or links inside
-        if (
-          e.target.closest(".post-votes") ||
-          e.target.closest(".post-link") ||
-          e.target.closest(".post-actions")
-        ) {
-          return;
-        }
-
-        longPressTimer = setTimeout(() => {
-          toggleSelectionMode(true);
-
-          // Select the long-pressed post
-          const checkbox = post.querySelector(".post-checkbox");
-          if (checkbox) {
-            checkbox.checked = true;
-            updateSelectedCount();
-            updateDeleteButtonState();
-          }
-        }, 500); // 500ms for long press
-      });
-
-      post.addEventListener("mouseup", function () {
-        clearTimeout(longPressTimer);
-      });
-
-      post.addEventListener("mouseleave", function () {
-        clearTimeout(longPressTimer);
-      });
     });
   }
 
