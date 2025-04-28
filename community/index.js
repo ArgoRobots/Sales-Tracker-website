@@ -252,6 +252,8 @@ document.addEventListener("DOMContentLoaded", function () {
       ".post-checkbox:checked"
     ).length;
     selectedCountSpan.textContent = selectedPosts + " selected";
+
+    updateSelectAllCheckbox();
   }
 
   function updateDeleteButtonState() {
@@ -261,6 +263,31 @@ document.addEventListener("DOMContentLoaded", function () {
       ".post-checkbox:checked"
     ).length;
     deleteSelectedBtn.disabled = selectedPosts === 0;
+  }
+
+  function updateSelectAllCheckbox() {
+    if (!selectAllCheckbox) return;
+
+    const checkboxes = document.querySelectorAll(".post-checkbox");
+    const visibleCheckboxes = Array.from(checkboxes).filter((checkbox) => {
+      const post = checkbox.closest(".post-card");
+      return post && post.style.display !== "none";
+    });
+
+    const checkedVisibleCheckboxes = Array.from(visibleCheckboxes).filter(
+      (checkbox) => checkbox.checked
+    );
+
+    // If all visible checkboxes are checked, check the "Select All" checkbox
+    // If some or none are checked, uncheck it
+    selectAllCheckbox.checked =
+      visibleCheckboxes.length > 0 &&
+      checkedVisibleCheckboxes.length === visibleCheckboxes.length;
+
+    // Add indeterminate state when some but not all are selected
+    selectAllCheckbox.indeterminate =
+      checkedVisibleCheckboxes.length > 0 &&
+      checkedVisibleCheckboxes.length < visibleCheckboxes.length;
   }
 
   // Update the search/filter label
@@ -361,12 +388,23 @@ document.addEventListener("DOMContentLoaded", function () {
               // Update allPosts array
               allPosts = Array.from(document.querySelectorAll(".post-card"));
 
-              // Disable selection mode
-              toggleSelectionMode(false);
-
-              // Re-enable selection mode for admin users
+              // Re-enable selection mode for admin users - without disabling first
+              // This prevents the "1 selected" issue after deleting
               if (isUserAdmin()) {
-                toggleSelectionMode(true);
+                // Reset the selected count
+                if (selectedCountSpan) {
+                  selectedCountSpan.textContent = "0 selected";
+                }
+
+                // Update the delete button state
+                if (deleteSelectedBtn) {
+                  deleteSelectedBtn.disabled = true;
+                }
+
+                // Uncheck the "select all" checkbox
+                if (selectAllCheckbox) {
+                  selectAllCheckbox.checked = false;
+                }
               }
 
               // Check if we need to load more posts
@@ -620,11 +658,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Event listeners for filters
   if (categoryFilter) {
-    categoryFilter.addEventListener("change", applyFilters);
+    categoryFilter.addEventListener("change", function () {
+      applyFilters();
+      setTimeout(updateSelectAllCheckbox, 100);
+    });
   }
 
   if (sortFilter) {
-    sortFilter.addEventListener("change", applyFilters);
+    sortFilter.addEventListener("change", function () {
+      applyFilters();
+      setTimeout(updateSelectAllCheckbox, 100);
+    });
   }
 
   if (searchBtn) {

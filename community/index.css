@@ -580,7 +580,6 @@ header .header-inner .menu-container .menu .community:after {
 
 @media (max-width: 640px) {
 
-    /* Improve post actions layout on mobile */
     .post-actions {
         flex-direction: column;
         width: 100%;
@@ -588,7 +587,6 @@ header .header-inner .menu-container .menu .community:after {
         align-items: flex-start;
     }
 
-    /* Make status dropdown and delete button full width */
     .admin-actions {
         display: flex;
         width: 100%;
@@ -607,28 +605,22 @@ header .header-inner .menu-container .menu .community:after {
         height: 100%;
     }
 
-    /* Better spacing for mobile view */
     .post-footer {
         padding-top: 10px;
         gap: 12px;
     }
 
-    /* Adjust selection controls for small screens */
     .select-all-container {
         margin-bottom: 8px;
     }
 }
 
-/* Even smaller screens */
 @media (max-width: 480px) {
-
-    /* Ensure selection checkbox stays visible */
     .post-select {
         min-width: 30px;
         padding: 5px;
     }
 
-    /* Adjust layout for tiny screens */
     .post-votes {
         min-width: 40px;
         padding: 5px;
