@@ -44,26 +44,5 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
     message.dataset.processed = "true";
-
-    // Set a timeout to remove the notification
-    setTimeout(function () {
-      removeNotification(clone);
-    }, 3000);
-  }
-
-  /**
-   * Remove a notification with a fade out effect
-   * @param {HTMLElement} notification - The notification to remove
-   */
-  function removeNotification(notification) {
-    notification.style.opacity = "0";
-    notification.style.transform = "translateY(-10px)";
-    notification.style.transition = "opacity 0.3s, transform 0.3s";
-
-    setTimeout(function () {
-      if (notification.parentNode) {
-        notification.parentNode.removeChild(notification);
-      }
-    }, 300);
   }
 });

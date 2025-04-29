@@ -116,9 +116,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const messageContainer = document.createElement("div");
     messageContainer.className = "rate-limit-message";
 
-    // Clean up any HTML to prevent nested divs
-    let messageHTML = "";
-
     // If there's custom HTML provided, use it but clean it first
     if (data.html_message) {
       // Extract just the inner content if it's wrapped in a div with the same class
@@ -144,7 +141,6 @@ document.addEventListener("DOMContentLoaded", function () {
       before commenting again.`;
     }
 
-    // Set the message HTML content
     messageContainer.innerHTML = messageHTML;
 
     // Insert message before the form
@@ -673,7 +669,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Call to attach event listeners to comment buttons
   attachCommentListeners();
 
   // Helper function to convert newlines to <br> tags

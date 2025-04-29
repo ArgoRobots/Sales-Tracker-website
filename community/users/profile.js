@@ -1,7 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Determine if we're in a subdirectory
-  const isInSubdirectory = window.location.pathname.includes("/users/");
-
   // Variables for avatar handling
   const profileAvatar = document.getElementById("profile-avatar");
   const fileInput = document.getElementById("avatar");
@@ -38,10 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
           }
 
-          // Update header avatar immediately
           updateHeaderAvatar(e.target.result);
-
-          // Submit the form
           avatarForm.submit();
         };
         reader.readAsDataURL(this.files[0]);
