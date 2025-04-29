@@ -229,6 +229,134 @@ function login_user($login, $password)
 }
 
 /**
+ * Check for remember me token and auto-login user
+ */
+function check_remember_me()
+{
+    if (isset($_COOKIE['remember_me']) && !isset($_SESSION['user_id'])) {
+        $token = $_COOKIE['remember_me'];
+        $user = validate_remember_token($token);
+
+        if ($user) {
+            // Set session data
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['username'] = $user['username'];
+            $_SESSION['email'] = $user['email'];
+            $_SESSION['role'] = $user['role'];
+            $_SESSION['avatar'] = $user['avatar'];
+
+            // Refresh the remember me token
+            $new_token = generate_remember_token($user['id']);
+            if ($new_token) {
+                setcookie(
+                    'remember_me',
+                    $new_token,
+                    time() + (30 * 24 * 60 * 60), // 30 days
+                    '/'
+                );
+            }
+
+            return true;
+        } else {
+            // Invalid token, clear cookie
+            setcookie('remember_me', '', time() - 3600, '/');
+            return false;
+        }
+    }
+
+    return false;
+}
+
+/**
+ * Generate a remember me token for a user
+ * 
+ * @param int $user_id User ID
+ * @return string|bool Token or false on failure
+ */
+function generate_remember_token($user_id)
+{
+    $db = get_db_connection();
+
+    // Create a unique token
+    $token = bin2hex(random_bytes(32));
+    $expires = date('Y-m-d H:i:s', time() + (30 * 24 * 60 * 60)); // 30 days
+
+    // Check if table exists, create if not
+    $db->exec("CREATE TABLE IF NOT EXISTS remember_tokens (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        token TEXT NOT NULL,
+        expires_at TIMESTAMP NOT NULL,
+        FOREIGN KEY (user_id) REFERENCES community_users(id) ON DELETE CASCADE
+    )");
+
+    // Remove any existing tokens for this user
+    $stmt = $db->prepare('DELETE FROM remember_tokens WHERE user_id = :user_id');
+    $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
+    $stmt->execute();
+
+    // Store the new token
+    $stmt = $db->prepare('INSERT INTO remember_tokens (user_id, token, expires_at) VALUES (:user_id, :token, :expires_at)');
+    $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
+    $stmt->bindValue(':token', $token, SQLITE3_TEXT);
+    $stmt->bindValue(':expires_at', $expires, SQLITE3_TEXT);
+
+    if ($stmt->execute()) {
+        return $token;
+    }
+
+    return false;
+}
+
+/**
+ * Validate a remember me token and get the associated user
+ * 
+ * @param string $token Remember me token
+ * @return array|bool User data or false if invalid
+ */
+function validate_remember_token($token)
+{
+    $db = get_db_connection();
+
+    $stmt = $db->prepare('SELECT rt.user_id, u.* FROM remember_tokens rt 
+                         JOIN community_users u ON rt.user_id = u.id
+                         WHERE rt.token = :token AND rt.expires_at > CURRENT_TIMESTAMP');
+    $stmt->bindValue(':token', $token, SQLITE3_TEXT);
+    $result = $stmt->execute();
+
+    $user = $result->fetchArray(SQLITE3_ASSOC);
+
+    if ($user) {
+        // Don't return sensitive data
+        unset($user['password_hash']);
+        unset($user['verification_token']);
+        unset($user['reset_token']);
+        unset($user['reset_token_expiry']);
+
+        return $user;
+    }
+
+    return false;
+}
+
+/**
+ * Clear remember me token when logging out
+ * 
+ * @param int $user_id User ID
+ */
+function clear_remember_token($user_id)
+{
+    $db = get_db_connection();
+
+    $stmt = $db->prepare('DELETE FROM remember_tokens WHERE user_id = :user_id');
+    $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
+    $stmt->execute();
+
+    // Clear the cookie
+    setcookie('remember_me', '', time() - 3600, '/');
+}
+
+/**
  * Get user by ID
  * 
  * @param int $user_id User ID

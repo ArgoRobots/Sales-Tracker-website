@@ -237,3 +237,19 @@ CREATE TABLE IF NOT EXISTS rate_limits (
 
 -- Add index for faster lookups
 CREATE INDEX IF NOT EXISTS idx_rate_limits_user_action ON rate_limits(user_id, action_type);
+
+-- Create remember tokens table for "stay logged in"
+CREATE TABLE IF NOT EXISTS remember_tokens (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    token TEXT NOT NULL,
+    expires_at TIMESTAMP NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES community_users(id) ON DELETE CASCADE
+);
+
+-- Add index for faster token lookup
+CREATE INDEX IF NOT EXISTS idx_remember_tokens_token ON remember_tokens(token);
+
+-- Add index for user_id for faster cleanup
+CREATE INDEX IF NOT EXISTS idx_remember_tokens_user_id ON remember_tokens(user_id);

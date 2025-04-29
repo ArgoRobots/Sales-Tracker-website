@@ -4,6 +4,11 @@ require_once '../db_connect.php';
 require_once 'community_functions.php';
 require_once 'users/user_functions.php';
 
+// Check for remember me cookie and auto-login user if valid
+if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
+    check_remember_me();
+}
+
 $posts = get_all_posts();
 $is_logged_in = is_user_logged_in();
 $current_user = $is_logged_in ? get_current_user_ID() : null;

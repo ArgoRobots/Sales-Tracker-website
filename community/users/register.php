@@ -3,6 +3,11 @@ session_start();
 require_once '../../db_connect.php';
 require_once 'user_functions.php';
 
+// Check for remember me cookie and auto-login user if valid
+if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
+    check_remember_me();
+}
+
 $error = '';
 $success = false;
 

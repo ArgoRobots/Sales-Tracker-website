@@ -9,6 +9,11 @@ if (is_user_logged_in()) {
     exit;
 }
 
+// Check for remember me cookie and auto-login user if valid
+if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
+    check_remember_me();
+}
+
 $error = '';
 $verification_notice = '';
 
@@ -17,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get form data
     $login = isset($_POST['login']) ? trim($_POST['login']) : '';
     $password = isset($_POST['password']) ? $_POST['password'] : '';
+    $remember_me = isset($_POST['remember_me']) ? true : false;
 
     // Basic validation
     if (empty($login) || empty($password)) {
@@ -32,6 +38,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['email'] = $user['email'];
             $_SESSION['role'] = $user['role'];
             $_SESSION['avatar'] = $user['avatar'];
+
+            // Handle "Stay logged in" option
+            if ($remember_me) {
+                // Set session cookie to last 30 days instead of browser close
+                $cookie_params = session_get_cookie_params();
+                setcookie(
+                    session_name(),
+                    session_id(),
+                    time() + (30 * 24 * 60 * 60), // 30 days
+                    $cookie_params['path'],
+                    $cookie_params['domain'],
+                    $cookie_params['secure'],
+                    $cookie_params['httponly']
+                );
+
+                // Store remember me token in database and set cookie
+                $token = generate_remember_token($user['id']);
+                if ($token) {
+                    setcookie(
+                        'remember_me',
+                        $token,
+                        time() + (30 * 24 * 60 * 60), // 30 days
+                        '/'
+                    );
+                }
+            }
 
             // Redirect after login
             if (isset($_SESSION['redirect_after_login']) && !empty($_SESSION['redirect_after_login'])) {
@@ -99,6 +131,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" required>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="remember_me" name="remember_me">
+                    <label for="remember_me">Stay logged in for 30 days</label>
                 </div>
 
                 <div class="form-actions">
