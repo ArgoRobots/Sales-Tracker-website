@@ -21,6 +21,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $content = isset($_POST['post_content']) ? trim($_POST['post_content']) : '';
         $post_type = isset($_POST['post_type']) ? trim($_POST['post_type']) : '';
 
+        // Get bug-specific fields if this is a bug report
+        $bug_metadata = [];
+        if ($post_type === 'bug') {
+            $bug_metadata = [
+                'bug_location' => isset($_POST['bug_location']) ? trim($_POST['bug_location']) : '',
+                'bug_version' => isset($_POST['bug_version']) ? trim($_POST['bug_version']) : '',
+                'bug_steps' => isset($_POST['bug_steps']) ? trim($_POST['bug_steps']) : '',
+                'bug_expected' => isset($_POST['bug_expected']) ? trim($_POST['bug_expected']) : '',
+                'bug_actual' => isset($_POST['bug_actual']) ? trim($_POST['bug_actual']) : ''
+            ];
+
+            // We'll store the raw content as is, without formatting/duplication
+            // The structured fields will be stored in metadata
+        }
+
         // Basic validation
         if (empty($title) || empty($content) || empty($post_type)) {
             $error_message = 'All fields are required';
@@ -41,6 +56,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt->bindValue(':user_id', $current_user['id'], SQLITE3_INTEGER);
                 $stmt->bindValue(':post_id', $post_id, SQLITE3_INTEGER);
                 $stmt->execute();
+
+                // Save bug metadata as JSON in a separate field or table if needed
+                if ($post_type === 'bug' && !empty($bug_metadata)) {
+                    // Check if the metadata column exists, if not create it
+                    $result = $db->query("PRAGMA table_info(community_posts)");
+                    $has_metadata_column = false;
+                    while ($col = $result->fetchArray(SQLITE3_ASSOC)) {
+                        if ($col['name'] === 'metadata') {
+                            $has_metadata_column = true;
+                            break;
+                        }
+                    }
+
+                    if (!$has_metadata_column) {
+                        $db->exec("ALTER TABLE community_posts ADD COLUMN metadata TEXT");
+                    }
+
+                    // Save metadata as JSON
+                    $stmt = $db->prepare('UPDATE community_posts SET metadata = :metadata WHERE id = :post_id');
+                    $stmt->bindValue(':metadata', json_encode($bug_metadata), SQLITE3_TEXT);
+                    $stmt->bindValue(':post_id', $post_id, SQLITE3_INTEGER);
+                    $stmt->execute();
+                }
 
                 // Redirect immediately to view page with success message
                 header("Location: view_post.php?id=$post_id&created=1");
@@ -101,6 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <label for="post_title">Title</label>
                         <input type="text" id="post_title" name="post_title" value="<?php echo isset($_POST['post_title']) ? htmlspecialchars($_POST['post_title']) : ''; ?>" required>
                     </div>
+
                     <div class="form-group">
                         <label for="post_type">Post Type</label>
                         <select id="post_type" name="post_type" required>
@@ -109,13 +148,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <option value="feature" <?php echo (isset($_POST['post_type']) && $_POST['post_type'] === 'feature') ? 'selected' : ''; ?>>Feature Request</option>
                         </select>
                     </div>
+
+                    <!-- Bug Report Specific Fields - Initially Hidden -->
+                    <div id="bug-specific-fields" style="display: none;">
+                        <div class="form-group">
+                            <label for="bug_location">Where did you find this bug?</label>
+                            <select id="bug_location" name="bug_location">
+                                <option value="">-- Select Location --</option>
+                                <option value="website">Website</option>
+                                <option value="sales_tracker">Sales Tracker Application</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="bug_version">Browser or Sales Tracker Version</label>
+                            <input type="text" id="bug_version" name="bug_version" placeholder="e.g., Chrome 99.0.4844 or Sales Tracker v2.1.3">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="bug_steps">Steps to Reproduce</label>
+                            <textarea id="bug_steps" name="bug_steps" rows="4" placeholder="Please provide step-by-step instructions to reproduce the issue"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="bug_expected">Expected Result</label>
+                            <textarea id="bug_expected" name="bug_expected" rows="3" placeholder="What you expected to happen"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="bug_actual">Actual Result</label>
+                            <textarea id="bug_actual" name="bug_actual" rows="3" placeholder="What actually happened"></textarea>
+                        </div>
+                    </div>
+
                     <div class="form-group">
-                        <label for="post_content">Description</label>
+                        <label for="post_content">Additional Details</label>
                         <textarea id="post_content" name="post_content" required><?php echo isset($_POST['post_content']) ? htmlspecialchars($_POST['post_content']) : ''; ?></textarea>
                     </div>
+
                     <div class="form-actions">
                         <a href="index.php" class="btn btn-black">Cancel</a>
-                        <button type="submit" class="btn btn-blue <?php if ($html_message) echo 'btn-disabled'; ?>" <?php if ($html_message) echo 'disabled'; ?>>Submit Post</button>
+                        <button type="submit" class="btn btn-blue <?php if (isset($html_message) && $html_message) echo 'btn-disabled'; ?>" <?php if (isset($html_message) && $html_message) echo 'disabled'; ?>>Submit Post</button>
                     </div>
                 </form>
             </div>
@@ -155,6 +228,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                 }, 1000);
             });
+
+            const postTypeSelect = document.getElementById('post_type');
+            const bugFields = document.getElementById('bug-specific-fields');
+            const postContentLabel = document.querySelector('label[for="post_content"]');
+
+            // Function to show/hide fields based on post type
+            function toggleFields() {
+                const selectedType = postTypeSelect.value;
+
+                if (selectedType === 'bug') {
+                    bugFields.style.display = 'block';
+                } else {
+                    bugFields.style.display = 'none';
+                }
+            }
+
+            toggleFields();
+            postTypeSelect.addEventListener('change', toggleFields);
         });
     </script>
 </body>

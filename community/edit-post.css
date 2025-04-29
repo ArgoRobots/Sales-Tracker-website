@@ -1,0 +1,58 @@
+.post-form h2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form-section {
+    background: #f9fafb;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #e5e7eb;
+}
+
+.form-section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--blueHeader);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.form-section-title svg {
+    margin-right: 8px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #374151;
+}
+
+.form-group .field-hint {
+    display: block;
+    font-size: 13px;
+    color: #6b7280;
+    margin-top: 4px;
+}
+
+/* Animation for conditional fields */
+#bug-specific-fields {
+    transition: all 0.3s ease-in-out;
+    overflow: hidden;
+    opacity: 1;
+}
+
+#bug-specific-fields.hidden {
+    max-height: 0;
+    opacity: 0;
+    margin: 0;
+    padding: 0;
+}

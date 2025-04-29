@@ -216,6 +216,7 @@ CREATE TABLE IF NOT EXISTS post_edit_history (
     user_id INTEGER,
     title TEXT,
     content TEXT,
+    metadata TEXT,
     edited_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (post_id) REFERENCES community_posts(id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES community_users(id) ON DELETE SET NULL

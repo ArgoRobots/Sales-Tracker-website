@@ -32,8 +32,34 @@ if (!$post) {
     exit;
 }
 
-// Get last edit for the post
+// Check if the post has metadata (for bug reports)
+$has_metadata = false;
+$metadata = null;
+
+// Check if metadata column exists
+$metadata_exists = false;
 $db = get_db_connection();
+$result = $db->query("PRAGMA table_info(community_posts)");
+while ($col = $result->fetchArray(SQLITE3_ASSOC)) {
+    if ($col['name'] === 'metadata') {
+        $metadata_exists = true;
+        break;
+    }
+}
+
+if ($metadata_exists) {
+    // Get metadata if it exists
+    $stmt = $db->prepare('SELECT metadata FROM community_posts WHERE id = :id');
+    $stmt->bindValue(':id', $post_id, SQLITE3_INTEGER);
+    $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+
+    if ($result && !empty($result['metadata'])) {
+        $metadata = json_decode($result['metadata'], true);
+        $has_metadata = !empty($metadata);
+    }
+}
+
+// Get last edit for the post
 $stmt = $db->prepare('SELECT h.*, u.username 
     FROM post_edit_history h
     LEFT JOIN community_users u ON h.user_id = u.id
@@ -169,14 +195,14 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
 
                 <!-- Post votes -->
                 <div class="post-votes">
-                    <button class="vote-btn upvote <?php echo $user_vote === 1 ? 'voted' : ''; ?>" data-post-id="<?php echo $post['id']; ?>" data-vote="up">
+                    <button class="vote-btn upvote <?php echo $user_vote === 1 ? 'voted' : ''; ?>" data-post-id="<?php echo $post['id']; ?>" data-vote="up" <?php echo !$is_logged_in ? 'disabled' : ''; ?>>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                             <path stroke-width="2" d="M12 19V5M5 12l7-7 7 7" />
                         </svg>
                     </button>
 
                     <span class="vote-count"><?php echo $post['votes']; ?></span>
-                    <button class="vote-btn downvote <?php echo $user_vote === -1 ? 'voted' : ''; ?>" data-post-id="<?php echo $post['id']; ?>" data-vote="down">
+                    <button class="vote-btn downvote <?php echo $user_vote === -1 ? 'voted' : ''; ?>" data-post-id="<?php echo $post['id']; ?>" data-vote="down" <?php echo !$is_logged_in ? 'disabled' : ''; ?>>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                             <path stroke-width="2" d="M12 5v14M5 12l7 7 7-7" />
                         </svg>
@@ -203,9 +229,66 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                             <?php endif; ?>
                         </div>
                     </div>
-                    <div class="post-body">
-                        <p><?php echo nl2br(htmlspecialchars($post['content'])); ?></p>
-                    </div>
+
+                    <!-- Enhanced display for bug reports with metadata -->
+                    <?php if ($post['post_type'] === 'bug' && $has_metadata): ?>
+                        <div class="post-body">
+                            <div class="bug-report-container">
+                                <div class="bug-report-header">
+                                    <h3>Bug Report Details</h3>
+                                </div>
+
+                                <div class="bug-info-grid">
+                                    <?php if (!empty($metadata['bug_location'])): ?>
+                                        <div class="bug-info-item">
+                                            <div class="bug-info-label">Location:</div>
+                                            <div class="bug-info-value"><?php echo $metadata['bug_location'] === 'website' ? 'Website' : 'Sales Tracker Application'; ?></div>
+                                        </div>
+                                    <?php endif; ?>
+
+                                    <?php if (!empty($metadata['bug_version'])): ?>
+                                        <div class="bug-info-item">
+                                            <div class="bug-info-label">Version:</div>
+                                            <div class="bug-info-value"><?php echo htmlspecialchars($metadata['bug_version']); ?></div>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+
+                                <?php if (!empty($metadata['bug_steps'])): ?>
+                                    <div class="bug-info-section">
+                                        <div class="bug-info-section-title">Steps to Reproduce</div>
+                                        <div class="bug-info-section-content"><?php echo nl2br(htmlspecialchars($metadata['bug_steps'])); ?></div>
+                                    </div>
+                                <?php endif; ?>
+
+                                <div class="bug-results-container">
+                                    <?php if (!empty($metadata['bug_expected'])): ?>
+                                        <div class="bug-info-section">
+                                            <div class="bug-info-section-title">Expected Result</div>
+                                            <div class="bug-info-section-content"><?php echo nl2br(htmlspecialchars($metadata['bug_expected'])); ?></div>
+                                        </div>
+                                    <?php endif; ?>
+
+                                    <?php if (!empty($metadata['bug_actual'])): ?>
+                                        <div class="bug-info-section">
+                                            <div class="bug-info-section-title">Actual Result</div>
+                                            <div class="bug-info-section-content"><?php echo nl2br(htmlspecialchars($metadata['bug_actual'])); ?></div>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+
+                                <div class="bug-info-section">
+                                    <div class="bug-info-section-title">Additional Details</div>
+                                    <div class="bug-info-section-content"><?php echo nl2br(htmlspecialchars($post['content'])); ?></div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php else: ?>
+                        <!-- Regular post content display for non-bug posts or bugs without metadata -->
+                        <div class="post-body">
+                            <p><?php echo nl2br(htmlspecialchars($post['content'])); ?></p>
+                        </div>
+                    <?php endif; ?>
 
                     <!-- Post footer -->
                     <div class="post-footer">
@@ -273,13 +356,13 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                         <div class="comment" data-comment-id="<?php echo $comment['id']; ?>">
                             <!-- Vertical vote controls on left -->
                             <div class="comment-votes">
-                                <button class="comment-vote-btn upvote <?php echo $comment_vote === 1 ? 'voted' : ''; ?>" data-comment-id="<?php echo $comment['id']; ?>" data-vote="up">
+                                <button class="comment-vote-btn upvote <?php echo $comment_vote === 1 ? 'voted' : ''; ?>" data-comment-id="<?php echo $comment['id']; ?>" data-vote="up" <?php echo !$is_logged_in ? 'disabled' : ''; ?>>
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                         <path stroke-width="2" d="M12 19V5M5 12l7-7 7 7" />
                                     </svg>
                                 </button>
                                 <span class="comment-vote-count"><?php echo $comment_votes; ?></span>
-                                <button class="comment-vote-btn downvote <?php echo $comment_vote === -1 ? 'voted' : ''; ?>" data-comment-id="<?php echo $comment['id']; ?>" data-vote="down">
+                                <button class="comment-vote-btn downvote <?php echo $comment_vote === -1 ? 'voted' : ''; ?>" data-comment-id="<?php echo $comment['id']; ?>" data-vote="down" <?php echo !$is_logged_in ? 'disabled' : ''; ?>>
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                         <path stroke-width="2" d="M12 5v14M5 12l7 7 7-7" />
                                     </svg>
