@@ -107,3 +107,60 @@
     background: linear-gradient(to right, rgba(59, 130, 246, 0.5), rgba(59, 130, 246, 0.8), rgba(59, 130, 246, 0.5));
     margin: 30px 0;
 }
+
+/* Added content */
+.diff-add {
+    background-color: #dcfce7;
+    color: #166534;
+    border-radius: 2px;
+    text-decoration: none !important;
+}
+
+/* Removed content */
+.diff-del {
+    background-color: #fee2e2;
+    color: #991b1b;
+    border-radius: 2px;
+    text-decoration: line-through;
+}
+
+/* Changed metadata field highlighting */
+.metadata-changed {
+    background-color: #fef9c3 !important;
+    border-color: #fbbf24 !important;
+}
+
+/* Apply special styles to the diff section in the metadata display */
+.metadata-field-value .diff-add,
+.metadata-field-value .diff-del {
+    display: inline-block;
+    padding: 1px 3px;
+    margin: 0;
+}
+
+/* Version divider enhancements */
+.version-divider {
+    position: relative;
+}
+
+.version-divider::after {
+    content: "Previous Version";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 0 10px;
+    font-size: 12px;
+    color: #6b7280;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+
+    .diff-add,
+    .diff-del {
+        padding: 0 1px;
+        margin: 0 -1px;
+    }
+}

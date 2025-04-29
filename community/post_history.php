@@ -105,8 +105,10 @@ array_unshift($history, $current_post);
 
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../resources/scripts/main.js"></script>
+    <script src="post-history-diff.js" defer></script>
 
     <link rel="stylesheet" href="post-history.css">
+    <link rel="stylesheet" href="post-history-diff.css">
     <link rel="stylesheet" href="view-post.css">
     <link rel="stylesheet" href="../resources/styles/button.css">
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
@@ -157,7 +159,7 @@ array_unshift($history, $current_post);
                     // Determine if this is the first iteration
                     $is_first = ($index === 0);
                 ?>
-                    <div class="history-entry">
+                    <div class="history-entry" data-version="<?php echo $index; ?>">
                         <div class="history-meta">
                             <div>
                                 <?php if ($index === (count($history) - 1)): ?>
@@ -211,7 +213,7 @@ array_unshift($history, $current_post);
                                             $has_changed = ($prev_value !== $current_value);
                                         }
                                     ?>
-                                        <div class="metadata-field <?php echo $has_changed ? 'metadata-changed' : ''; ?>">
+                                        <div class="metadata-field <?php echo $has_changed ? 'metadata-changed' : ''; ?>" data-field="<?php echo $field_key; ?>">
                                             <div class="metadata-field-label"><?php echo $field_label; ?></div>
                                             <div class="metadata-field-value">
                                                 <?php
