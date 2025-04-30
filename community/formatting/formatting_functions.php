@@ -34,7 +34,7 @@ function process_formatting($text)
     // Blockquotes (multi-line support)
     $text = preg_replace_callback('/(^>+\s*.*(\n>+\s*.*)*)/m', function ($matches) {
         $content = preg_replace('/^>+\s*/m', '', $matches[0]);
-        return "\n<blockquote>" . trim($content) . "</blockquote>\n";
+        return "<blockquote>" . trim($content) . "</blockquote>";
     }, $text);
 
     $text = process_lists($text);
@@ -94,26 +94,39 @@ function final_cleanup($text)
     // Normalize line endings
     $text = str_replace(["\r\n", "\r"], "\n", $text);
 
-    // Convert single newlines to <br> except in special cases
-    $text = preg_replace('/(?<!\n)\n(?!\n)(?!\s*[-*0-9>])/', "<br>\n", $text);
+    // Split into lines
+    $lines = explode("\n", $text);
+    $output = [];
 
-    // Convert 2+ newlines to paragraph breaks
-    $text = preg_replace('/\n{2,}/', "</p>\n<p>", $text);
+    // Variable to track consecutive empty lines
+    $consecutiveEmptyLines = 0;
 
-    // Wrap in initial paragraph tags
-    $text = '<p>' . $text . '</p>';
+    foreach ($lines as $line) {
+        $trimmedLine = trim($line);
 
-    // Clean up empty paragraphs
-    $text = str_replace('<p></p>', '', $text);
+        if ($trimmedLine === '') {
+            // Only add <br> if we haven't already added one consecutively
+            if ($consecutiveEmptyLines < 1) {
+                $output[] = '<br>';
+                $consecutiveEmptyLines++;
+            }
+            // If we already have a blank line, skip this one
+        } else if (preg_match('/^<(blockquote|ul|ol|li|code|p|h[1-6]|hr)/i', $trimmedLine)) {
+            // Don't wrap in <p>
+            $output[] = $line;
+            // Reset consecutive empty lines counter
+            $consecutiveEmptyLines = 0;
+        } else {
+            $output[] = '<p>' . $line . '</p>';
+            // Reset consecutive empty lines counter
+            $consecutiveEmptyLines = 0;
+        }
+    }
 
-    // Protect block elements
-    $text = preg_replace([
-        '/<br>\s*<(ul|ol|blockquote|li)/',
-        '/(<\/ul|<\/ol|<\/blockquote|<\/li>)\s*<br>/'
-    ], [
-        '<$1',
-        '$1'
-    ], $text);
+    // Cleanup empty paragraphs and nested tags
+    $text = implode("\n", $output);
+    $text = preg_replace('/<p>\s*<\/p>/', '', $text);
+    $text = str_replace(['<p><p>', '</p></p>'], ['<p>', '</p>'], $text);
 
     return $text;
 }
