@@ -11,7 +11,10 @@ function render_formatted_text($text)
     $text = process_formatting($text);
     $text = htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
     $text = restore_formatting_tags($text);
-    return final_cleanup($text);
+    $text = final_cleanup($text);
+
+    // Wrap the formatted text in a div so we can apply a specific class
+    return '<div class="formatted-text">' . $text . '</div>';
 }
 
 /**
@@ -88,12 +91,30 @@ function restore_formatting_tags($text)
  */
 function final_cleanup($text)
 {
-    // Convert double newlines to paragraphs
-    $text = preg_replace('/(\n{2,})/', '</p><p>', $text);
-    // Replace single newlines with a space to prevent line breaks
-    $text = str_replace("\n", ' ', $text);
+    // Normalize line endings
+    $text = str_replace(["\r\n", "\r"], "\n", $text);
+
+    // Convert single newlines to <br> except in special cases
+    $text = preg_replace('/(?<!\n)\n(?!\n)(?!\s*[-*0-9>])/', "<br>\n", $text);
+
+    // Convert 2+ newlines to paragraph breaks
+    $text = preg_replace('/\n{2,}/', "</p>\n<p>", $text);
+
+    // Wrap in initial paragraph tags
     $text = '<p>' . $text . '</p>';
+
+    // Clean up empty paragraphs
     $text = str_replace('<p></p>', '', $text);
+
+    // Protect block elements
+    $text = preg_replace([
+        '/<br>\s*<(ul|ol|blockquote|li)/',
+        '/(<\/ul|<\/ol|<\/blockquote|<\/li>)\s*<br>/'
+    ], [
+        '<$1',
+        '$1'
+    ], $text);
+
     return $text;
 }
 

@@ -126,57 +126,20 @@
     align-items: center;
 }
 
-/* Preserve newlines without <br> */
-.formatted-text {
-    white-space: pre-wrap;
-    line-height: 1.4;
-}
-
-/* Reset for formatted elements */
-.formatted-text ul,
-.formatted-text ol,
-.formatted-text blockquote,
-.formatted-text pre {
-    white-space: normal;
-}
-
-blockquote {
-    margin: 1em 0 !important;
-    padding: 1em 1.5em;
+.formatted-text blockquote {
+    margin: .5em 0;
+    padding: .5em 1.5em;
     background: #f8fafc;
     border-left: 4px solid #3b82f6;
     border-radius: 4px;
     font-style: normal;
 }
 
-/* Ensure newlines after blockquotes */
-.formatted-text>blockquote+* {
-    margin-top: 1.5em;
-    display: block;
-}
-
-.formatted-text p {
-    margin: 0.5em 0;
-}
-
-ul,
-ol {
-    margin: 0.75em 0;
+.formatted-text ul,
+.formatted-text ol {
     padding-left: 1.5em;
 }
 
-li {
+.formatted-text li {
     margin: 0.25em 0;
-}
-
-/* Force line breaks before/after block-level italics */
-em.block-italic {
-    display: block;
-    margin: 0.5em 0;
-    font-style: italic;
-}
-
-/* Preserve original inline italics */
-em:not(.block-italic) {
-    display: inline;
 }

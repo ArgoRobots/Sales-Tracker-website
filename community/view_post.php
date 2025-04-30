@@ -252,7 +252,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                                     <?php if (!empty($metadata['bug_version'])): ?>
                                         <div class="bug-info-item">
                                             <div class="bug-info-label">Version:</div>
-                                            <div class="bug-info-value"><?php echo htmlspecialchars($metadata['bug_version']); ?></div>
+                                            <div class="bug-info-value"><?php echo render_formatted_text($metadata['bug_version']); ?></div>
                                         </div>
                                     <?php endif; ?>
                                 </div>
@@ -260,7 +260,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                                 <?php if (!empty($metadata['bug_steps'])): ?>
                                     <div class="bug-info-section">
                                         <div class="bug-info-section-title">Steps to Reproduce</div>
-                                        <div class="bug-info-section-content"><?php echo nl2br(htmlspecialchars($metadata['bug_steps'])); ?></div>
+                                        <div class="bug-info-section-content"><?php echo render_formatted_text($metadata['bug_steps']); ?></div>
                                     </div>
                                 <?php endif; ?>
 
@@ -268,14 +268,14 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                                     <?php if (!empty($metadata['bug_expected'])): ?>
                                         <div class="bug-info-section">
                                             <div class="bug-info-section-title">Expected Result</div>
-                                            <div class="bug-info-section-content"><?php echo nl2br(htmlspecialchars($metadata['bug_expected'])); ?></div>
+                                            <div class="bug-info-section-content"><?php echo render_formatted_text($metadata['bug_expected']); ?></div>
                                         </div>
                                     <?php endif; ?>
 
                                     <?php if (!empty($metadata['bug_actual'])): ?>
                                         <div class="bug-info-section">
                                             <div class="bug-info-section-title">Actual Result</div>
-                                            <div class="bug-info-section-content"><?php echo nl2br(htmlspecialchars($metadata['bug_actual'])); ?></div>
+                                            <div class="bug-info-section-content"><?php echo render_formatted_text($metadata['bug_actual']); ?></div>
                                         </div>
                                     <?php endif; ?>
                                 </div>
@@ -289,7 +289,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                     <?php else: ?>
                         <!-- Regular post content display for non-bug posts or bugs without metadata -->
                         <div class="post-body">
-                            <p><?php echo render_formatted_text($post['content']); ?></p>
+                            <?php echo render_formatted_text($post['content']); ?>
                         </div>
                     <?php endif; ?>
 
@@ -404,7 +404,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                                     </div>
                                 </div>
                                 <div class="comment-content">
-                                    <?php echo render_formatted_text($comment['content']); ?>
+                                    <?php echo nl2br(htmlspecialchars($comment['content'])); ?>
                                 </div>
                             </div>
                         </div>
