@@ -4,6 +4,7 @@ require_once '../db_connect.php';
 require_once 'community_functions.php';
 require_once 'users/user_functions.php';
 include_once 'rate_limit.php';
+require_once 'formatting/formatting_functions.php';
 
 require_login('', true);
 $current_user = get_current_user_ID();
@@ -101,9 +102,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../resources/scripts/main.js"></script>
+    <script src="formatting/text-formatting.js" defer></script>
 
     <link rel="stylesheet" href="create-post.css">
     <link rel="stylesheet" href="rate-limit.css">
+    <link rel="stylesheet" href="formatting/formatted-text.css">
     <link rel="stylesheet" href="../resources/styles/button.css">
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../resources/header/style.css">
@@ -167,23 +170,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                         <div class="form-group">
                             <label for="bug_steps">Steps to Reproduce</label>
-                            <textarea id="bug_steps" name="bug_steps" rows="4" placeholder="Please provide step-by-step instructions to reproduce the issue"></textarea>
+                            <textarea id="bug_steps" name="bug_steps" class="formattable" rows="4" placeholder="Please provide step-by-step instructions to reproduce the issue"></textarea>
+                            <?php add_formatting_toolbar('post_content'); ?>
                         </div>
 
                         <div class="form-group">
                             <label for="bug_expected">Expected Result</label>
-                            <textarea id="bug_expected" name="bug_expected" rows="3" placeholder="What you expected to happen"></textarea>
+                            <textarea id="bug_expected" name="bug_expected" rows="3" class="formattable" placeholder="What you expected to happen"></textarea>
+                            <?php add_formatting_toolbar('post_content'); ?>
                         </div>
 
                         <div class="form-group">
                             <label for="bug_actual">Actual Result</label>
-                            <textarea id="bug_actual" name="bug_actual" rows="3" placeholder="What actually happened"></textarea>
+                            <textarea id="bug_actual" name="bug_actual" rows="3" class="formattable" placeholder="What actually happened"></textarea>
+                            <?php add_formatting_toolbar('post_content'); ?>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="post_content">Additional Details</label>
-                        <textarea id="post_content" name="post_content" required><?php echo isset($_POST['post_content']) ? htmlspecialchars($_POST['post_content']) : ''; ?></textarea>
+                        <textarea id="post_content" name="post_content" class="formattable" required><?php echo isset($_POST['post_content']) ? htmlspecialchars($_POST['post_content']) : ''; ?></textarea>
+                        <?php add_formatting_toolbar('post_content'); ?>
                     </div>
 
                     <div class="form-actions">

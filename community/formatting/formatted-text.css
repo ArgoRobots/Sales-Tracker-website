@@ -1,0 +1,182 @@
+/* Formatting toolbar styles */
+.formatting-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    background-color: #f8f9fa;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px 4px 0 0;
+    padding: 5px;
+}
+
+.formatting-toolbar .format-btn {
+    background-color: #fff;
+    border: 1px solid #d1d5db;
+    border-radius: 3px;
+    color: #4b5563;
+    padding: 5px 8px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    width: auto;
+    min-width: 32px;
+    justify-content: center;
+}
+
+.formatting-toolbar .format-btn:hover {
+    background-color: #f3f4f6;
+    border-color: #9ca3af;
+}
+
+.formatting-toolbar .format-btn:active {
+    background-color: #e5e7eb;
+}
+
+/* When toolbar is visible, adjust textarea border radius */
+.formatting-toolbar+textarea {
+    border-radius: 0 0 4px 4px !important;
+    border-top: none !important;
+}
+
+/* Formatting help text */
+.formatting-help {
+    font-size: 13px;
+    color: #6b7280;
+    margin-top: 5px;
+}
+
+.formatting-help a {
+    color: var(--button);
+    text-decoration: none;
+}
+
+.formatting-help a:hover {
+    text-decoration: underline;
+}
+
+/* Preview area for rendered content */
+.preview-area {
+    background-color: white;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    padding: 12px;
+    margin-top: 10px;
+}
+
+.preview-area h3 {
+    font-size: 16px;
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #374151;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 5px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+    .formatting-toolbar {
+        padding: 3px;
+    }
+
+    .formatting-toolbar .format-btn {
+        padding: 4px 6px;
+        font-size: 12px;
+        height: 26px;
+    }
+}
+
+/* Help button */
+.formatting-toolbar .help-btn {
+    margin-left: auto;
+    order: 999;
+    background-color: #3b82f6;
+    border: none;
+    color: white;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s ease;
+    box-shadow: none;
+    transform: translateZ(0);
+}
+
+.formatting-toolbar .help-btn:hover {
+    background-color: #2563eb;
+    transform: scale(1.1);
+}
+
+.formatting-toolbar .help-btn:active {
+    transform: scale(0.9);
+}
+
+.formatting-toolbar .help-btn svg {
+    width: 18px;
+    height: 18px;
+    stroke: white;
+    margin: 1px 0 0 3px;
+}
+
+.formatting-toolbar {
+    align-items: center;
+}
+
+/* Preserve newlines without <br> */
+.formatted-text {
+    white-space: pre-wrap;
+    line-height: 1.4;
+}
+
+/* Reset for formatted elements */
+.formatted-text ul,
+.formatted-text ol,
+.formatted-text blockquote,
+.formatted-text pre {
+    white-space: normal;
+}
+
+blockquote {
+    margin: 1em 0 !important;
+    padding: 1em 1.5em;
+    background: #f8fafc;
+    border-left: 4px solid #3b82f6;
+    border-radius: 4px;
+    font-style: normal;
+}
+
+/* Ensure newlines after blockquotes */
+.formatted-text>blockquote+* {
+    margin-top: 1.5em;
+    display: block;
+}
+
+.formatted-text p {
+    margin: 0.5em 0;
+}
+
+ul,
+ol {
+    margin: 0.75em 0;
+    padding-left: 1.5em;
+}
+
+li {
+    margin: 0.25em 0;
+}
+
+/* Force line breaks before/after block-level italics */
+em.block-italic {
+    display: block;
+    margin: 0.5em 0;
+    font-style: italic;
+}
+
+/* Preserve original inline italics */
+em:not(.block-italic) {
+    display: inline;
+}

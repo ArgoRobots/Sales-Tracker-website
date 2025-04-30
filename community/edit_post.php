@@ -3,6 +3,7 @@ session_start();
 require_once '../db_connect.php';
 require_once 'community_functions.php';
 require_once 'users/user_functions.php';
+require_once 'formatting/formatting_functions.php';
 
 // Check for remember me cookie and auto-login user if valid
 if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
@@ -251,9 +252,11 @@ function ensure_metadata_column_in_history($db)
 
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../resources/scripts/main.js"></script>
+    <script src="formatting/text-formatting.js" defer></script>
 
     <link rel="stylesheet" href="create-post.css">
     <link rel="stylesheet" href="edit-post.css">
+    <link rel="stylesheet" href="formatting/formatted-text.css">
     <link rel="stylesheet" href="../resources/styles/button.css">
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../resources/header/style.css">
@@ -313,17 +316,20 @@ function ensure_metadata_column_in_history($db)
 
                         <div class="form-group">
                             <label for="bug_steps">Steps to Reproduce</label>
-                            <textarea id="bug_steps" name="bug_steps" rows="4" placeholder="Please provide step-by-step instructions to reproduce the issue"><?php echo isset($metadata['bug_steps']) ? htmlspecialchars($metadata['bug_steps']) : ''; ?></textarea>
+                            <textarea id="bug_steps" name="bug_steps" rows="4" class="formattable" placeholder="Please provide step-by-step instructions to reproduce the issue"><?php echo isset($metadata['bug_steps']) ? htmlspecialchars($metadata['bug_steps']) : ''; ?></textarea>
+                            <?php add_formatting_toolbar('post_content'); ?>
                         </div>
 
                         <div class="form-group">
                             <label for="bug_expected">Expected Result</label>
-                            <textarea id="bug_expected" name="bug_expected" rows="3" placeholder="What you expected to happen"><?php echo isset($metadata['bug_expected']) ? htmlspecialchars($metadata['bug_expected']) : ''; ?></textarea>
+                            <textarea id="bug_expected" name="bug_expected" rows="3" class="formattable" placeholder="What you expected to happen"><?php echo isset($metadata['bug_expected']) ? htmlspecialchars($metadata['bug_expected']) : ''; ?></textarea>
+                            <?php add_formatting_toolbar('post_content'); ?>
                         </div>
 
                         <div class="form-group">
                             <label for="bug_actual">Actual Result</label>
-                            <textarea id="bug_actual" name="bug_actual" rows="3" placeholder="What actually happened"><?php echo isset($metadata['bug_actual']) ? htmlspecialchars($metadata['bug_actual']) : ''; ?></textarea>
+                            <textarea id="bug_actual" name="bug_actual" rows="3" class="formattable" placeholder="What actually happened"><?php echo isset($metadata['bug_actual']) ? htmlspecialchars($metadata['bug_actual']) : ''; ?></textarea>
+                            <?php add_formatting_toolbar('post_content'); ?>
                         </div>
                     </div>
 
@@ -347,7 +353,8 @@ function ensure_metadata_column_in_history($db)
                             $content_to_display = $post['content'];
                         }
                         ?>
-                        <textarea id="content" name="content" required><?= htmlspecialchars($content_to_display) ?></textarea>
+                        <textarea id="content" name="content" class="formattable" required><?= htmlspecialchars($content_to_display) ?></textarea>
+                        <?php add_formatting_toolbar('post_content'); ?>
                     </div>
 
                     <div class="form-actions">

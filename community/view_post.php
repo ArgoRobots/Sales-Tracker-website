@@ -2,6 +2,7 @@
 session_start();
 require_once '../db_connect.php';
 require_once 'community_functions.php';
+require_once 'formatting/formatting_functions.php';
 
 // Check for remember me cookie and auto-login user if valid
 if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
@@ -119,10 +120,12 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../resources/scripts/main.js"></script>
     <script src="../resources/notifications/notifications.js" defer></script>
+    <script src="formatting/text-formatting.js" defer></script>
 
     <link rel="stylesheet" href="create-post.css">
     <link rel="stylesheet" href="view-post.css">
     <link rel="stylesheet" href="rate-limit.css">
+    <link rel="stylesheet" href="formatting/formatted-text.css">
     <link rel="stylesheet" href="../resources/styles/avatar.css">
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../resources/styles/button.css">
@@ -279,14 +282,14 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
 
                                 <div class="bug-info-section">
                                     <div class="bug-info-section-title">Additional Details</div>
-                                    <div class="bug-info-section-content"><?php echo nl2br(htmlspecialchars($post['content'])); ?></div>
+                                    <div class="bug-info-section-content"><?php echo render_formatted_text($post['content']); ?></div>
                                 </div>
                             </div>
                         </div>
                     <?php else: ?>
                         <!-- Regular post content display for non-bug posts or bugs without metadata -->
                         <div class="post-body">
-                            <p><?php echo nl2br(htmlspecialchars($post['content'])); ?></p>
+                            <p><?php echo render_formatted_text($post['content']); ?></p>
                         </div>
                     <?php endif; ?>
 
@@ -401,7 +404,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                                     </div>
                                 </div>
                                 <div class="comment-content">
-                                    <?php echo nl2br(htmlspecialchars($comment['content'])); ?>
+                                    <?php echo render_formatted_text($comment['content']); ?>
                                 </div>
                             </div>
                         </div>
