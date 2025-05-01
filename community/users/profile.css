@@ -285,6 +285,13 @@
     margin-bottom: 25px;
 }
 
+.posts-section,
+.comments-section {
+    height: 550px;
+    display: flex;
+    flex-direction: column;
+}
+
 .section-header {
     display: flex;
     justify-content: space-between;
@@ -294,6 +301,7 @@
     border-bottom: 1px solid #e5e7eb;
     flex-wrap: wrap;
     gap: 15px;
+    flex-shrink: 0;
 }
 
 .section-header h3 {
@@ -344,9 +352,36 @@
 /* User Posts List */
 .user-posts-list,
 .user-comments-list {
+    max-height: 450px;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 15px;
+    margin-bottom: 10px;
+    padding-right: 10px;
+}
+
+/* Custom scrollbar styling for better visibility */
+.user-posts-list::-webkit-scrollbar,
+.user-comments-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.user-posts-list::-webkit-scrollbar-track,
+.user-comments-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.user-posts-list::-webkit-scrollbar-thumb,
+.user-comments-list::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+.user-posts-list::-webkit-scrollbar-thumb:hover,
+.user-comments-list::-webkit-scrollbar-thumb:hover {
+    background: #a0a0a0;
 }
 
 .user-post-item,
@@ -543,6 +578,11 @@
     color: #6b7280;
     border-radius: 8px;
     border: 1px dashed #e5e7eb;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 /* Make chart and reputation history side by side */
@@ -591,6 +631,13 @@
     .posts-comments-container {
         grid-template-columns: 1fr;
     }
+
+    .posts-section,
+    .comments-section {
+        height: auto;
+        min-height: 400px;
+        max-height: 600px;
+    }
 }
 
 /* Adjust section heights for alignment */
@@ -604,12 +651,6 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-}
-
-/* Ensure sections have consistent min heights */
-.posts-section,
-.comments-section {
-    height: 100%;
 }
 
 /* Get License button styling */
