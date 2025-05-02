@@ -262,7 +262,7 @@
 .reputation-section,
 .comments-section {
     border-radius: 8px;
-    padding: 25px;
+    padding: 15px;
     margin-bottom: 25px;
 }
 
@@ -602,7 +602,6 @@
 .posts-comments-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
 }
 
 /* Responsive adjustments */

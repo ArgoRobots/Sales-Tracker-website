@@ -1,7 +1,6 @@
 <?php
 
 /**
- * Contact Form Processing
  * Processes the contact form submission and sends an email
  */
 

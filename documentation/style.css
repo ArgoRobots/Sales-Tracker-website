@@ -3,7 +3,6 @@ header .header-inner .menu-container .menu .documentation:after {
     transform: translateX(-50%) scaleX(1);
 }
 
-/* Footer styling fix */
 footer {
     width: calc(100% - 300px) !important;
     position: relative !important;
@@ -11,7 +10,6 @@ footer {
     clear: both;
 }
 
-/* Fix for mobile view */
 @media (max-width: 768px) {
     footer {
         width: 100% !important;
@@ -19,13 +17,11 @@ footer {
     }
 }
 
-/* Global styles */
 body {
     line-height: 1.5;
     background: var(--whiteBackground);
 }
 
-/* Documentation layout */
 .docs-container {
     display: flex;
     min-height: 100vh;

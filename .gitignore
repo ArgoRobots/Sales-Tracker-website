@@ -1,3 +1,4 @@
 .env
 .VSCodeCounter
+error_log.txt
 /vendor/

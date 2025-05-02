@@ -26,7 +26,6 @@ window.addEventListener("DOMContentLoaded", function () {
       submitButton.textContent = "SENDING...";
     }
 
-    // Create a FormData object with form data
     var formData = new FormData(form);
 
     fetch(form.action, {

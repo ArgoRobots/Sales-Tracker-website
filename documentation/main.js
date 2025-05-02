@@ -4,16 +4,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const navLinks = document.querySelectorAll(".nav-links li");
   const sections = document.querySelectorAll("section[id]");
 
-  // Function to check if device is mobile
   const isMobile = () => window.innerWidth <= 768;
 
-  // Function to handle sidebar state
   const toggleSidebar = () => {
     sidebar.classList.toggle("active");
     sidebarToggle.classList.toggle("active");
   };
 
-  // Close sidebar
   const closeSidebar = () => {
     if (isMobile() && sidebar.classList.contains("active")) {
       toggleSidebar();

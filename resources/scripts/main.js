@@ -25,13 +25,24 @@ function adjustLinksAndImages(containerSelector) {
   });
 }
 
-// Avatar handling with absolute path
+// Avatar handling
 document.addEventListener("DOMContentLoaded", function () {
+  const accountAvatar = document.querySelector(".account-avatar");
+
+  function setDefaultAvatar() {
+    if (accountAvatar) {
+      accountAvatar.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>`;
+    }
+  }
+
   fetch("/community/get_avatar_info.php")
     .then((response) => response.json())
     .then((data) => {
-      const accountAvatar = document.querySelector(".account-avatar");
-
       if (accountAvatar) {
         if (data.logged_in) {
           if (data.has_avatar) {
@@ -40,33 +51,22 @@ document.addEventListener("DOMContentLoaded", function () {
             accountAvatar.innerHTML = `<span class="author-avatar-placeholder">${data.initial}</span>`;
           }
         } else {
-          accountAvatar.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-          </svg>`;
+          setDefaultAvatar();
         }
       }
     })
     .catch((error) => {
       console.error("Error fetching avatar info:", error);
-      const accountAvatar = document.querySelector(".account-avatar");
-      if (accountAvatar) {
-        accountAvatar.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-        </svg>`;
-      }
+      setDefaultAvatar();
     });
 });
 
 // Apply adjustments to all pages
 $(document).ready(function () {
-  // Header adjustments
   $("#includeHeader").load("../../resources/header/index.html", function () {
     adjustLinksAndImages("#includeHeader");
   });
 
-  // Footer adjustments
   $("#includeFooter").load("../../resources/footer/index.html", function () {
     adjustLinksAndImages("#includeFooter");
   });

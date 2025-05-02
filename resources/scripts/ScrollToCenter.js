@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Function to smoothly scroll to a section
   const smoothScrollToSection = (targetSection) => {
     if (targetSection) {
       const viewportHeight = window.innerHeight;
@@ -28,13 +27,11 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll("[data-scroll-to]").forEach((trigger) => {
     trigger.style.cursor = "pointer";
 
-    // Add title attribute if not present
     if (!trigger.title) {
       trigger.title = "Click to scroll to section";
     }
 
     trigger.addEventListener("click", () => {
-      // Get the target section using the data attribute
       const targetId = trigger.getAttribute("data-scroll-to");
       const targetSection = document.getElementById(targetId);
 

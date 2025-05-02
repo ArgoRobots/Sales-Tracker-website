@@ -1,11 +1,6 @@
-// Function to prepare the page for PDF export
 function preparePDFExport() {
   // Create a clone of the document to manipulate
   const contentClone = document.querySelector(".content").cloneNode(true);
-
-  // Save the current state
-  const originalBody = document.body.innerHTML;
-  const originalStyles = document.head.innerHTML;
 
   // Create a clean document for printing
   const printWindow = window.open("", "_blank");
@@ -99,7 +94,7 @@ function preparePDFExport() {
     // Small delay to ensure all stylesheets are loaded
     setTimeout(() => {
       printWindow.print();
-      // Close the window after print dialog is closed (optional)
+      // Close the window after print dialog is closed
       printWindow.onafterprint = function () {
         printWindow.close();
       };
@@ -129,13 +124,9 @@ function addPDFExportButton() {
   const sidebarToggle = document.getElementById("sidebarToggle");
   if (sidebarToggle && sidebarToggle.parentNode) {
     sidebarToggle.parentNode.insertBefore(button, sidebarToggle.nextSibling);
-  } else {
-    // Fallback - append to body
-    document.body.appendChild(button);
   }
 }
 
-// Initialize when DOM is loaded
 document.addEventListener("DOMContentLoaded", function () {
   // Add PDF export button after a small delay to ensure other scripts have initialized
   setTimeout(addPDFExportButton, 100);
