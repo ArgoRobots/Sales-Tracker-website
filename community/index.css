@@ -3,37 +3,6 @@ header .header-inner .menu-container .menu .community:after {
     transform: translateX(-50%) scaleX(1);
 }
 
-/* Account button styles */
-.account-button {
-    display: flex;
-    align-items: center;
-    margin-left: 20px;
-    text-decoration: none;
-    color: inherit;
-}
-
-.account-avatar {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    background-color: #3b82f6;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: bold;
-    text-decoration: none;
-    overflow: hidden;
-    font-size: 16px;
-    border: 2px solid #e5e7eb;
-}
-
-.account-avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
 /* Login prompt banner for non-logged in users */
 .login-prompt {
     background-color: #f0f9ff;

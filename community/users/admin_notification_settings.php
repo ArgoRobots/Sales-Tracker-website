@@ -125,7 +125,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="admin-settings-container">
             <div class="admin-settings-header">
                 <h1>Admin Notification Settings</h1>
-                <p>Customize how and when you receive notifications about community activity</p>
             </div>
 
             <?php if ($success_message): ?>

@@ -9,33 +9,23 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     check_remember_me();
 }
 
-// Check if user is logged in
 $is_logged_in = isset($_SESSION['user_id']);
 $user_id = $is_logged_in ? $_SESSION['user_id'] : 0;
 $username = $is_logged_in ? ($_SESSION['username'] ?? 'Unknown') : '';
 $email = $is_logged_in ? ($_SESSION['email'] ?? '') : '';
 $role = $is_logged_in ? ($_SESSION['role'] ?? 'user') : '';
 
-// Get post ID from URL parameter
-$post_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-// Redirect to index if no valid post ID
-if ($post_id <= 0) {
-    header('Location: index.php');
-    exit;
-}
-
+$post_id = isset($_GET['id']) ? intval($_GET['id']) : 0; // Get post ID from URL parameter
 $post = get_post($post_id);
-
-// Redirect to index if post not found
-if (!$post) {
-    header('Location: index.php');
-    exit;
-}
-
-// Check if the post has metadata (for bug reports)
 $has_metadata = false;
 $metadata = null;
+
+// Redirect to index if no valid post ID or if post not found
+if ($post_id <= 0 || !$post) {
+    header('Location: index.php');
+    exit;
+}
 
 // Check if metadata column exists
 $metadata_exists = false;
@@ -88,14 +78,8 @@ if (!in_array($post_id, $viewed_posts)) {
     $post = get_post($post_id);
 }
 
-// Get comments for this post
 $comments = get_post_comments($post_id);
-
-// Check if user can edit this post
-$can_edit_post = ($role === 'admin') ||
-    (isset($post['user_id']) && !empty($post['user_id']) && $post['user_id'] == $user_id);
-
-// Get user's vote for this post
+$can_edit_post = ($role === 'admin') || (isset($post['user_id']) && !empty($post['user_id']) && $post['user_id'] == $user_id);
 $user_vote = $is_logged_in ? get_user_vote($post_id, $email) : 0;
 
 // Check for status messages in URL parameters
@@ -126,7 +110,6 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
     <link rel="stylesheet" href="view-post.css">
     <link rel="stylesheet" href="rate-limit.css">
     <link rel="stylesheet" href="formatting/formatted-text.css">
-    <link rel="stylesheet" href="../resources/styles/avatar.css">
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../resources/styles/button.css">
     <link rel="stylesheet" href="../resources/header/style.css">
@@ -342,30 +325,21 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                 <div class="comments-container">
                     <?php foreach ($comments as $comment): ?>
                         <?php
-                        // Check if current user can delete this comment
-                        $can_delete_comment = ($role === 'admin') ||
-                            (isset($comment['user_id']) && !empty($comment['user_id']) && $comment['user_id'] == $user_id);
-
-                        // Get user's vote for this comment
-                        $comment_vote = $is_logged_in ? get_user_comment_vote($comment['id'], $email) : 0;
-
-                        // Ensure votes value exists
+                        $can_delete_comment = ($role === 'admin') || (isset($comment['user_id']) && !empty($comment['user_id']) && $comment['user_id'] == $user_id);
+                        $can_edit_comment = ($role === 'admin') || (isset($comment['user_id']) && !empty($comment['user_id']) && $comment['user_id'] == $user_id);
+                        $user_comment_vote = $is_logged_in ? get_user_comment_vote($comment['id'], $email) : 0;
                         $comment_votes = isset($comment['votes']) ? (int)$comment['votes'] : 0;
-
-                        // Check if current user can edit this comment
-                        $can_edit_comment = ($role === 'admin') ||
-                            (isset($comment['user_id']) && !empty($comment['user_id']) && $comment['user_id'] == $user_id);
                         ?>
                         <div class="comment" data-comment-id="<?php echo $comment['id']; ?>">
                             <!-- Vertical vote controls on left -->
                             <div class="comment-votes">
-                                <button class="comment-vote-btn upvote <?php echo $comment_vote === 1 ? 'voted' : ''; ?>" data-comment-id="<?php echo $comment['id']; ?>" data-vote="up" <?php echo !$is_logged_in ? 'disabled' : ''; ?>>
+                                <button class="comment-vote-btn upvote <?php echo $user_comment_vote === 1 ? 'voted' : ''; ?>" data-comment-id="<?php echo $comment['id']; ?>" data-vote="up" <?php echo !$is_logged_in ? 'disabled' : ''; ?>>
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                         <path stroke-width="2" d="M12 19V5M5 12l7-7 7 7" />
                                     </svg>
                                 </button>
                                 <span class="comment-vote-count"><?php echo $comment_votes; ?></span>
-                                <button class="comment-vote-btn downvote <?php echo $comment_vote === -1 ? 'voted' : ''; ?>" data-comment-id="<?php echo $comment['id']; ?>" data-vote="down" <?php echo !$is_logged_in ? 'disabled' : ''; ?>>
+                                <button class="comment-vote-btn downvote <?php echo $user_comment_vote === -1 ? 'voted' : ''; ?>" data-comment-id="<?php echo $comment['id']; ?>" data-vote="down" <?php echo !$is_logged_in ? 'disabled' : ''; ?>>
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                         <path stroke-width="2" d="M12 5v14M5 12l7 7 7-7" />
                                     </svg>
@@ -433,7 +407,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                                     <textarea id="comment_content" name="comment_content" rows="4" required></textarea>
                                 </div>
                                 <div class="form-actions">
-                                    <button type="submit" class="btn btn-primary">Submit Comment</button>
+                                    <button type="submit" class="btn btn-gray">Submit Comment</button>
                                 </div>
                             </form>
                         <?php endif; ?>

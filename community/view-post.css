@@ -555,15 +555,6 @@ a:hover {
     border: none;
 }
 
-.inline-edit-form .btn-primary {
-    background-color: var(--button);
-    color: white;
-}
-
-.inline-edit-form .btn-primary:hover {
-    background-color: var(--buttonHover);
-}
-
 .inline-edit-form .cancel-edit {
     background-color: #f3f4f6;
     color: #4b5563;

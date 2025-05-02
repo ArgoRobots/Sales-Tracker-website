@@ -28,7 +28,6 @@ $current_user = $is_logged_in ? get_current_user_ID() : null;
     <script src="index.js" defer></script>
 
     <link rel="stylesheet" href="index.css">
-    <link rel="stylesheet" href="../resources/styles/avatar.css">
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../resources/styles/button.css">
     <link rel="stylesheet" href="../resources/header/style.css">

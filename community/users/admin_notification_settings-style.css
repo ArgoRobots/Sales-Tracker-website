@@ -24,10 +24,6 @@
     color: var(--blueHeader);
 }
 
-.admin-settings-header p {
-    margin-top: 10px;
-}
-
 .admin-settings-form {
     margin-top: 20px;
 }

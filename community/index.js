@@ -1,6 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Initialize variables for infinite scrolling
-  let page = 1;
   const postsPerPage = 15;
   let isLoading = false;
   let hasMorePosts = true;
@@ -388,8 +386,7 @@ document.addEventListener("DOMContentLoaded", function () {
               // Update allPosts array
               allPosts = Array.from(document.querySelectorAll(".post-card"));
 
-              // Re-enable selection mode for admin users - without disabling first
-              // This prevents the "1 selected" issue after deleting
+              // Re-enable selection mode for admin users after deleting
               if (isUserAdmin()) {
                 // Reset the selected count
                 if (selectedCountSpan) {
@@ -437,7 +434,7 @@ document.addEventListener("DOMContentLoaded", function () {
     loadingIndicator.style.display = "block";
 
     // Calculate which posts to show next
-    const startIndex = page * postsPerPage;
+    const startIndex = postsPerPage;
     const endIndex = startIndex + postsPerPage;
 
     // Get filtered posts based on current filters
@@ -461,9 +458,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
-    // Update page counter
-    page++;
-
     // Check if we have more posts to load
     hasMorePosts = endIndex < filteredPosts.length;
 
@@ -479,7 +473,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function checkAndLoadMorePosts() {
     // Calculate how many posts should be visible
-    const shouldBeVisible = Math.min(page * postsPerPage, allPosts.length);
+    const shouldBeVisible = Math.min(postsPerPage, allPosts.length);
     const visiblePosts = document.querySelectorAll(
       ".post-card[style*='display: flex']"
     ).length;
@@ -593,7 +587,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function applyFilters() {
-    page = 1;
     hasMorePosts = true;
     let filteredPosts = getFilteredPosts();
     filteredPosts = sortPosts(filteredPosts);

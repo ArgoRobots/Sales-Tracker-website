@@ -545,7 +545,7 @@ document.addEventListener("DOMContentLoaded", function () {
           </div>
           <div class="form-actions">
             <button type="button" class="btn cancel-edit">Cancel</button>
-            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <button type="submit" class="btn btn-gray">Save Changes</button>
           </div>
         </form>
       `;

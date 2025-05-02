@@ -38,10 +38,6 @@ if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
         if (!empty($user['avatar'])) {
             $response['has_avatar'] = true;
             $response['avatar_url'] = '/community/' . $user['avatar'];
-        } else if (isset($_SESSION['avatar']) && !empty($_SESSION['avatar'])) {
-            // Check session for avatar as fallback
-            $response['has_avatar'] = true;
-            $response['avatar_url'] = $_SESSION['avatar'];
         }
 
         // Set initial for avatar placeholder
