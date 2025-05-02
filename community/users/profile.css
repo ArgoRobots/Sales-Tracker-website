@@ -192,23 +192,6 @@
 
 .profile-actions .btn {
     width: 100%;
-    text-align: center;
-    border: #6b7280 1px solid;
-}
-
-.btn-logout {
-    background-color: #f3f4f6;
-    color: #4b5563;
-    border: 1px solid #d1d5db;
-    border-radius: 4px;
-    padding: 8px 16px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.btn-logout:hover {
-    background-color: #e5e7eb;
-    color: #1f2937;
-    text-decoration: none;
 }
 
 /* Impact section */

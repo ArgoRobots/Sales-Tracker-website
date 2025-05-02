@@ -592,7 +592,7 @@ if ($user) {
                                     </a>
                                 <?php endif; ?>
 
-                                <a href="logout.php" class="btn btn-logout">Log Out</a>
+                                <a href="logout.php" class="btn btn-gray">Log Out</a>
                             <?php endif; ?>
                         </div>
                     </div>

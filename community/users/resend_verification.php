@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' || $auto_redirect) {
 
     <style>
         .btn-large {
-            padding: 10px 0;
+            padding: 11px 0;
         }
     </style>
 </head>

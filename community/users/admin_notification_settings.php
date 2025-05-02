@@ -121,52 +121,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div id="includeHeader"></div>
     </header>
 
-    <div class="admin-settings-container">
-        <div class="admin-settings-header">
-            <h1>Admin Notification Settings</h1>
-            <p>Customize how and when you receive notifications about community activity</p>
+    <div class="wrapper">
+        <div class="admin-settings-container">
+            <div class="admin-settings-header">
+                <h1>Admin Notification Settings</h1>
+                <p>Customize how and when you receive notifications about community activity</p>
+            </div>
+
+            <?php if ($success_message): ?>
+                <div class="success-message">
+                    <?php echo htmlspecialchars($success_message); ?>
+                </div>
+            <?php endif; ?>
+
+            <?php if ($error_message): ?>
+                <div class="error-message">
+                    <?php echo htmlspecialchars($error_message); ?>
+                </div>
+            <?php endif; ?>
+
+            <form method="post" class="admin-settings-form">
+                <div class="settings-section">
+                    <h2>Email Notifications</h2>
+
+                    <div class="setting-option">
+                        <input type="checkbox" id="notify_new_posts" name="notify_new_posts" <?php echo $settings['notify_new_posts'] ? 'checked' : ''; ?>>
+                        <label for="notify_new_posts">New Post Notifications</label>
+                    </div>
+                    <p class="setting-description">Receive an email notification when a new post is created in the community.</p>
+
+                    <div class="setting-option">
+                        <input type="checkbox" id="notify_new_comments" name="notify_new_comments" <?php echo $settings['notify_new_comments'] ? 'checked' : ''; ?>>
+                        <label for="notify_new_comments">New Comment Notifications</label>
+                    </div>
+                    <p class="setting-description">Receive an email notification when someone comments on any post in the community.</p>
+
+                    <div class="email-field">
+                        <label for="notification_email">Notification Email</label>
+                        <input type="email" id="notification_email" name="notification_email" value="<?php echo htmlspecialchars($settings['notification_email']); ?>" required>
+                        <p class="hint">Email address where notifications will be sent</p>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <a href="profile.php" class="btn btn-black">Back to Profile</a>
+                    <button type="submit" class="btn btn-blue">Save Settings</button>
+                </div>
+            </form>
         </div>
-
-        <?php if ($success_message): ?>
-            <div class="success-message">
-                <?php echo htmlspecialchars($success_message); ?>
-            </div>
-        <?php endif; ?>
-
-        <?php if ($error_message): ?>
-            <div class="error-message">
-                <?php echo htmlspecialchars($error_message); ?>
-            </div>
-        <?php endif; ?>
-
-        <form method="post" class="admin-settings-form">
-            <div class="settings-section">
-                <h2>Email Notifications</h2>
-
-                <div class="setting-option">
-                    <input type="checkbox" id="notify_new_posts" name="notify_new_posts" <?php echo $settings['notify_new_posts'] ? 'checked' : ''; ?>>
-                    <label for="notify_new_posts">New Post Notifications</label>
-                </div>
-                <p class="setting-description">Receive an email notification when a new post is created in the community.</p>
-
-                <div class="setting-option">
-                    <input type="checkbox" id="notify_new_comments" name="notify_new_comments" <?php echo $settings['notify_new_comments'] ? 'checked' : ''; ?>>
-                    <label for="notify_new_comments">New Comment Notifications</label>
-                </div>
-                <p class="setting-description">Receive an email notification when someone comments on any post in the community.</p>
-
-                <div class="email-field">
-                    <label for="notification_email">Notification Email</label>
-                    <input type="email" id="notification_email" name="notification_email" value="<?php echo htmlspecialchars($settings['notification_email']); ?>" required>
-                    <p class="hint">Email address where notifications will be sent</p>
-                </div>
-            </div>
-
-            <div class="form-actions">
-                <a href="profile.php" class="btn btn-black">Back to Profile</a>
-                <button type="submit" class="btn btn-blue">Save Settings</button>
-            </div>
-        </form>
     </div>
 
     <footer class="footer">
