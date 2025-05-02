@@ -501,13 +501,6 @@ a:hover {
     margin: 5px 0 0 10px;
 }
 
-/* Improved navigation buttons */
-.btn {
-    min-height: 36px;
-    display: inline-flex;
-    align-items: center;
-}
-
 /* Login required message */
 .login-required {
     background-color: #f3f4f6;

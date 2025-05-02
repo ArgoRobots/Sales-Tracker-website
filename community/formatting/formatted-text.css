@@ -1,4 +1,3 @@
-/* Formatting toolbar styles */
 .formatting-toolbar {
     display: flex;
     flex-wrap: wrap;
@@ -35,47 +34,12 @@
     background-color: #e5e7eb;
 }
 
-/* When toolbar is visible, adjust textarea border radius */
 .formatting-toolbar+textarea {
     border-radius: 0 0 4px 4px !important;
     border-top: none !important;
+    max-height: 700px
 }
 
-/* Formatting help text */
-.formatting-help {
-    font-size: 13px;
-    color: #6b7280;
-    margin-top: 5px;
-}
-
-.formatting-help a {
-    color: var(--button);
-    text-decoration: none;
-}
-
-.formatting-help a:hover {
-    text-decoration: underline;
-}
-
-/* Preview area for rendered content */
-.preview-area {
-    background-color: white;
-    border: 1px solid #d1d5db;
-    border-radius: 4px;
-    padding: 12px;
-    margin-top: 10px;
-}
-
-.preview-area h3 {
-    font-size: 16px;
-    margin-top: 0;
-    margin-bottom: 10px;
-    color: #374151;
-    border-bottom: 1px solid #e5e7eb;
-    padding-bottom: 5px;
-}
-
-/* Responsive adjustments */
 @media (max-width: 640px) {
     .formatting-toolbar {
         padding: 3px;
@@ -88,22 +52,17 @@
     }
 }
 
-/* Help button */
 .formatting-toolbar .help-btn {
     margin-left: auto;
-    order: 999;
     background-color: #3b82f6;
     border: none;
     color: white;
     border-radius: 50%;
     width: 24px;
     height: 24px;
-    padding: 0;
     display: flex;
     align-items: center;
-    transition: all 0.2s ease;
-    box-shadow: none;
-    transform: translateZ(0);
+    justify-content: center;
 }
 
 .formatting-toolbar .help-btn:hover {
@@ -116,10 +75,9 @@
 }
 
 .formatting-toolbar .help-btn svg {
-    width: 18px;
-    height: 18px;
+    width: 22px;
+    height: 22px;
     stroke: white;
-    margin: 1px 0 0 3px;
 }
 
 .formatting-toolbar {

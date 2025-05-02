@@ -472,7 +472,8 @@ function get_user_comment_vote($comment_id, $user_email)
 }
 
 /**
- * Send notification email
+ * Updated notification function for the community forum
+ * Respects admin notification settings
  * 
  * @param string $type Notification type ('new_post', 'new_comment')
  * @param array $data Notification data
@@ -480,8 +481,26 @@ function get_user_comment_vote($comment_id, $user_email)
  */
 function send_notification_email($type, $data)
 {
-    // Hardcoded notification email
-    $admin_email = 'contact@argorobots.com';
+    $db = get_db_connection();
+
+    // Get all admins with the corresponding notification enabled
+    $notification_column = ($type === 'new_post') ? 'notify_new_posts' : 'notify_new_comments';
+
+    $stmt = $db->prepare("SELECT u.username, ans.notification_email 
+                         FROM admin_notification_settings ans
+                         JOIN community_users u ON ans.user_id = u.id
+                         WHERE u.role = 'admin' AND ans.$notification_column = 1");
+    $result = $stmt->execute();
+
+    $recipients = [];
+    while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+        $recipients[] = $row;
+    }
+
+    // If no admins have notifications enabled, exit early
+    if (empty($recipients)) {
+        return true;
+    }
 
     // Prepare email content
     $subject = '';
@@ -501,7 +520,7 @@ function send_notification_email($type, $data)
         </head>
         <body>
             <h2>New {$post_type_text} Posted</h2>
-            <p>A new {$post_type_text} has been posted on the Argo Sales Tracker Community:</p>
+            <p>A new {$post_type_text} has been posted on the Argo Community:</p>
             
             <p><strong>Title:</strong> {$data['title']}</p>
             <p><strong>Posted by:</strong> {$data['user_name']} ({$data['user_email']})</p>
@@ -511,7 +530,9 @@ function send_notification_email($type, $data)
             </p>
             
             <hr>
-            <p>This is an automated notification from the Argo Sales Tracker Community system.</p>
+            <p>This is an automated notification from the Argo Community system.</p>
+            <p><small>You received this message because you're an administrator of the Argo Community. 
+            You can adjust your notification settings <a href=\"$site_url/community/users/admin_notification_settings.php\">here</a>.</small></p>
         </body>
         </html>";
     } elseif ($type === 'new_comment') {
@@ -536,14 +557,16 @@ function send_notification_email($type, $data)
             </p>
             
             <hr>
-            <p>This is an automated notification from the Argo Sales Tracker Community system.</p>
+            <p>This is an automated notification from the Argo Community system.</p>
+            <p><small>You received this message because you're an administrator of the Argo Community. 
+            You can adjust your notification settings <a href=\"$site_url/community/users/admin_notification_settings.php\">here</a>.</small></p>
         </body>
         </html>";
     } else {
         return false; // Unknown notification type
     }
 
-    // Send the email
+    // Email headers
     $headers = [
         'MIME-Version: 1.0',
         'Content-Type: text/html; charset=UTF-8',
@@ -552,7 +575,22 @@ function send_notification_email($type, $data)
         'X-Mailer: PHP/' . phpversion()
     ];
 
-    return mail($admin_email, $subject, $message, implode("\r\n", $headers));
+    // Send emails to all recipients
+    $success = true;
+    foreach ($recipients as $recipient) {
+        $personal_message = str_replace(
+            'You\'re an administrator',
+            'You\'re an administrator (' . $recipient['username'] . ')',
+            $message
+        );
+
+        $mail_success = mail($recipient['notification_email'], $subject, $personal_message, implode("\r\n", $headers));
+        if (!$mail_success) {
+            $success = false;
+        }
+    }
+
+    return $success;
 }
 
 /**

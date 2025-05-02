@@ -72,14 +72,18 @@
     color: #4b5563;
 }
 
+.rep-positive,
+.rep-negative {
+    font-weight: 600;
+    margin-left: 5px;
+}
+
 .rep-positive {
     color: #16a34a;
-    font-weight: 600;
 }
 
 .rep-negative {
     color: #dc2626;
-    font-weight: 600;
 }
 
 .rep-example {

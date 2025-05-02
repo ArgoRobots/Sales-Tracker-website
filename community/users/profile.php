@@ -11,7 +11,6 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
 
 require_login('', true);
 
-// Get requested user profile
 $requested_username = isset($_GET['username']) ? trim($_GET['username']) : '';
 $is_own_profile = false;
 $user = null;
@@ -433,6 +432,8 @@ if ($user) {
             }
         }
     }
+
+    $is_admin = isset($user['role']) && $user['role'] === 'admin';
 }
 
 ?>
@@ -488,7 +489,7 @@ if ($user) {
             <div class="profile-header">
                 <h1>
                     <?php echo htmlspecialchars($user['username']); ?>
-                    <?php if (isset($user['role']) && $user['role'] === 'admin'): ?>
+                    <?php if ($is_admin): ?>
                         <span class="admin-badge">Admin</span>
                     <?php endif; ?>
                 </h1>
@@ -573,13 +574,23 @@ if ($user) {
 
                         <div class="profile-actions">
                             <?php if ($is_own_profile): ?>
-                                <a href="resend_verification.php" class="btn btn-primary get-license-btn">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <a href="resend_verification.php" class="btn btn-blue">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                                         <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                                     </svg>
                                     Resend License Key
                                 </a>
+
+                                <?php if ($is_admin): ?>
+                                    <a href="admin_notification_settings.php" class="btn btn-blue">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                                        </svg>
+                                        Notification Settings
+                                    </a>
+                                <?php endif; ?>
 
                                 <a href="logout.php" class="btn btn-logout">Log Out</a>
                             <?php endif; ?>

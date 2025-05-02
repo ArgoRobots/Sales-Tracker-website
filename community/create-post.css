@@ -82,10 +82,6 @@ header .header-inner .menu-container .menu .community:after {
     gap: 15px;
 }
 
-.btn {
-    padding: 6px 0;
-}
-
 @media (max-width: 768px) {
     .community-wrapper {
         max-width: 90%;

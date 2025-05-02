@@ -254,3 +254,18 @@ CREATE INDEX IF NOT EXISTS idx_remember_tokens_token ON remember_tokens(token);
 
 -- Add index for user_id for faster cleanup
 CREATE INDEX IF NOT EXISTS idx_remember_tokens_user_id ON remember_tokens(user_id);
+
+-- Create table for community admin notification settings
+CREATE TABLE IF NOT EXISTS admin_notification_settings (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    notify_new_posts INTEGER DEFAULT 1,
+    notify_new_comments INTEGER DEFAULT 1,
+    notification_email TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES community_users(id) ON DELETE CASCADE
+);
+
+-- Create index for faster lookups
+CREATE INDEX IF NOT EXISTS idx_notification_settings_user_id ON admin_notification_settings(user_id);

@@ -61,7 +61,7 @@ if (!empty($token)) {
                 <?php else: ?>
                     <?php if (isset($_SESSION['user_id'])): ?>
                         <p>
-                            <a href="resend_verification.php" class="btn btn-secondary">Resend Verification Email</a>
+                            <a href="resend_verification.php" class="btn">Resend Verification Email</a>
                         </p>
                         <p>
                             <a href="index.php" class="btn btn-blue">Back to Homepage</a>
