@@ -195,15 +195,17 @@ $current_user = $is_logged_in ? get_current_user_ID() : null;
                                             (isset($post['user_id']) && isset($current_user['id']) && $post['user_id'] == $current_user['id'])
                                         )
                                     ): ?>
-                                        <div class="admin-actions">
-                                            <select class="status-update" data-post-id="<?php echo $post['id']; ?>">
-                                                <option value="open" <?php echo $post['status'] === 'open' ? 'selected' : ''; ?>>Open</option>
-                                                <option value="in_progress" <?php echo $post['status'] === 'in_progress' ? 'selected' : ''; ?>>In Progress</option>
-                                                <option value="completed" <?php echo $post['status'] === 'completed' ? 'selected' : ''; ?>>Completed</option>
-                                                <option value="declined" <?php echo $post['status'] === 'declined' ? 'selected' : ''; ?>>Declined</option>
-                                            </select>
-                                            <button class="delete-post-btn" data-post-id="<?php echo $post['id']; ?>">Delete</button>
-                                        </div>
+                                        <?php if ($is_logged_in && isset($current_user['role']) && $current_user['role'] === 'admin'): ?>
+                                            <div class="admin-actions">
+                                                <select class="status-update" data-post-id="<?php echo $post['id']; ?>">
+                                                    <option value="open" <?php echo $post['status'] === 'open' ? 'selected' : ''; ?>>Open</option>
+                                                    <option value="in_progress" <?php echo $post['status'] === 'in_progress' ? 'selected' : ''; ?>>In Progress</option>
+                                                    <option value="completed" <?php echo $post['status'] === 'completed' ? 'selected' : ''; ?>>Completed</option>
+                                                    <option value="declined" <?php echo $post['status'] === 'declined' ? 'selected' : ''; ?>>Declined</option>
+                                                </select>
+                                                <button class="delete-post-btn" data-post-id="<?php echo $post['id']; ?>">Delete</button>
+                                            </div>
+                                        <?php endif; ?>
                                     <?php endif; ?>
                                 </div>
                             </div>

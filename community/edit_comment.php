@@ -40,12 +40,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Get the comment to verify ownership
     $db = get_db_connection();
-    $stmt = $db->prepare('SELECT * FROM community_comments WHERE id = :id');
-    $stmt->bindValue(':id', $comment_id, SQLITE3_INTEGER);
-    $comment = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+    $stmt = $db->prepare('SELECT * FROM community_comments WHERE id = ?');
+    $stmt->bind_param('i', $comment_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $comment = $result->fetch_assoc();
 
     if (!$comment) {
         $response['message'] = 'Comment not found';
+        $stmt->close();
         echo json_encode($response);
         exit;
     }
@@ -57,15 +60,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Admin can edit any comment, regular users can only edit their own comments
     if ($role === 'admin' || $comment['user_id'] == $user_id) {
         // Update the comment with new content
-        $stmt = $db->prepare('UPDATE community_comments SET content = :content WHERE id = :id');
-        $stmt->bindValue(':content', $comment_content, SQLITE3_TEXT);
-        $stmt->bindValue(':id', $comment_id, SQLITE3_INTEGER);
+        $stmt = $db->prepare('UPDATE community_comments SET content = ? WHERE id = ?');
+        $stmt->bind_param('si', $comment_content, $comment_id);
 
         if ($stmt->execute()) {
             // Get the updated comment
-            $stmt = $db->prepare('SELECT * FROM community_comments WHERE id = :id');
-            $stmt->bindValue(':id', $comment_id, SQLITE3_INTEGER);
-            $updated_comment = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+            $stmt->close();
+            $stmt = $db->prepare('SELECT * FROM community_comments WHERE id = ?');
+            $stmt->bind_param('i', $comment_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $updated_comment = $result->fetch_assoc();
 
             $response = [
                 'success' => true,
@@ -73,11 +78,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'comment' => $updated_comment
             ];
         } else {
-            $response['message'] = 'Error updating comment';
+            $response['message'] = 'Error updating comment: ' . $db->error;
         }
     } else {
         $response['message'] = "You do not have permission to edit this comment. Your user ID: $user_id, Comment user ID: {$comment['user_id']}";
     }
+
+    $stmt->close();
 }
 
 // Send the response

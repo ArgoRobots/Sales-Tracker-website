@@ -30,45 +30,46 @@ if ($post_id <= 0 || !$post) {
 // Check if metadata column exists
 $metadata_exists = false;
 $db = get_db_connection();
-$result = $db->query("PRAGMA table_info(community_posts)");
-while ($col = $result->fetchArray(SQLITE3_ASSOC)) {
-    if ($col['name'] === 'metadata') {
-        $metadata_exists = true;
-        break;
-    }
-}
+$result = $db->query("SHOW COLUMNS FROM community_posts LIKE 'metadata'");
+$metadata_exists = ($result->num_rows > 0);
 
 if ($metadata_exists) {
     // Get metadata if it exists
-    $stmt = $db->prepare('SELECT metadata FROM community_posts WHERE id = :id');
-    $stmt->bindValue(':id', $post_id, SQLITE3_INTEGER);
-    $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+    $stmt = $db->prepare('SELECT metadata FROM community_posts WHERE id = ?');
+    $stmt->bind_param('i', $post_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
 
-    if ($result && !empty($result['metadata'])) {
-        $metadata = json_decode($result['metadata'], true);
+    if ($row && !empty($row['metadata'])) {
+        $metadata = json_decode($row['metadata'], true);
         $has_metadata = !empty($metadata);
     }
+    $stmt->close();
 }
 
 // Get last edit for the post
 $stmt = $db->prepare('SELECT h.*, u.username 
     FROM post_edit_history h
     LEFT JOIN community_users u ON h.user_id = u.id
-    WHERE h.post_id = :post_id
+    WHERE h.post_id = ?
     ORDER BY h.edited_at DESC
     LIMIT 1');
-$stmt->bindValue(':post_id', $post_id, SQLITE3_INTEGER);
-$result = $stmt->execute();
-$post_last_edit = $result->fetchArray(SQLITE3_ASSOC);
+$stmt->bind_param('i', $post_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$post_last_edit = $result->fetch_assoc();
+$stmt->close();
 
 // Increment view count (only once per session to count unique views)
 $viewed_posts = isset($_SESSION['viewed_posts']) ? $_SESSION['viewed_posts'] : array();
 if (!in_array($post_id, $viewed_posts)) {
     // Update view count in database
     $db = get_db_connection();
-    $stmt = $db->prepare('UPDATE community_posts SET views = views + 1 WHERE id = :id');
-    $stmt->bindValue(':id', $post_id, SQLITE3_INTEGER);
+    $stmt = $db->prepare('UPDATE community_posts SET views = views + 1 WHERE id = ?');
+    $stmt->bind_param('i', $post_id);
     $stmt->execute();
+    $stmt->close();
 
     // Add post to viewed posts in session
     $viewed_posts[] = $post_id;
@@ -137,35 +138,41 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
 
     <div class="community-container">
         <div class="page-header">
-            <a href="index.php" class="btn back-button">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path stroke-width="2" d="M19 12H5M12 19l-7-7 7-7" />
-                </svg>
-                Back to All Posts
-            </a>
+            <div class="header-left">
+                <a href="index.php" class="btn back-button">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-width="2" d="M19 12H5M12 19l-7-7 7-7" />
+                    </svg>
+                    Back to All Posts
+                </a>
+            </div>
 
-            <div class="post-status-controls">
-                <span class="post-status-label">Status:</span>
-                <span class="post-status post-status-large <?php echo $post['status']; ?>">
-                    <?php
-                    switch ($post['status']) {
-                        case 'open':
-                            echo 'Open';
-                            break;
-                        case 'in_progress':
-                            echo 'In Progress';
-                            break;
-                        case 'completed':
-                            echo 'Completed';
-                            break;
-                        case 'declined':
-                            echo 'Declined';
-                            break;
-                    }
-                    ?>
-                </span>
+            <div class="header-center">
+                <div class="post-status-display">
+                    <span class="post-status-label">Status:</span>
+                    <span class="post-status post-status-large <?php echo $post['status']; ?>">
+                        <?php
+                        switch ($post['status']) {
+                            case 'open':
+                                echo 'Open';
+                                break;
+                            case 'in_progress':
+                                echo 'In Progress';
+                                break;
+                            case 'completed':
+                                echo 'Completed';
+                                break;
+                            case 'declined':
+                                echo 'Declined';
+                                break;
+                        }
+                        ?>
+                    </span>
+                </div>
+            </div>
 
-                <?php if ($can_edit_post): ?>
+            <div class="header-right">
+                <?php if ($role === 'admin'): ?>
                     <select class="status-update" data-post-id="<?php echo $post['id']; ?>">
                         <option value="open" <?php echo $post['status'] === 'open' ? 'selected' : ''; ?>>Open</option>
                         <option value="in_progress" <?php echo $post['status'] === 'in_progress' ? 'selected' : ''; ?>>In Progress</option>

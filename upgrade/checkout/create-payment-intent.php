@@ -2,7 +2,7 @@
 require_once '../../vendor/autoload.php';
 require_once '../../db_connect.php';
 require_once '../../license_functions.php';
- 
+
 // Set headers for JSON response
 header('Content-Type: application/json');
 
@@ -42,7 +42,7 @@ try {
                              LIMIT 1');
         $stmt->bindValue(':email', $customer_email, SQLITE3_TEXT);
         $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
-        
+
         if ($result) {
             $license_key = $result['license_key'];
         } else {
@@ -81,7 +81,6 @@ try {
         'client_secret' => $payment_intent->client_secret,
         'payment_intent_id' => $payment_intent->id
     ]);
-    
 } catch (Exception $e) {
     // Send proper JSON error response
     http_response_code(500);
@@ -89,5 +88,8 @@ try {
     echo json_encode([
         'error' => 'Payment processing error: ' . $e->getMessage()
     ]);
+
+    // Close database connection if it exists
+    if (isset($db)) {
+    }
 }
-?>

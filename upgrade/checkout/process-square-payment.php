@@ -49,24 +49,24 @@ try {
     $square_access_token = 'EAAAl8Gk1ywNhT-TTxh1v47ZXHH5x39glYRkUSVk3_jGNXxbTaLhaTnlz0zd7nH6';
     $square_location_id = 'L30NT6Z9HKW81';
     $is_production = true;
-    
+
     // Base URL for Square API
-    $api_base_url = $is_production ? 
-        'https://connect.squareup.com/v2' : 
+    $api_base_url = $is_production ?
+        'https://connect.squareup.com/v2' :
         'https://connect.squareupsandbox.com/v2';
-    
+
     error_log('Using Square ' . ($is_production ? 'Production' : 'Sandbox') . ' environment');
     error_log('Using location ID: ' . $square_location_id);
-    
+
     // Database connection
     $db = get_db_connection();
-    
+
     // Check if we've already processed this payment (idempotency)
     if (isset($data['idempotency_key'])) {
         $stmt = $db->prepare('SELECT license_key FROM license_keys WHERE transaction_id = :transaction_id LIMIT 1');
         $stmt->bindValue(':transaction_id', $data['idempotency_key'], SQLITE3_TEXT);
         $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
-        
+
         if ($result) {
             // Transaction already processed, return existing license key
             $response = [
@@ -93,12 +93,12 @@ try {
         'reference_id' => $data['reference_id'] ?? 'Argo_Sales_Tracker_License',
         'note' => 'Argo Sales Tracker - Lifetime Access'
     ];
-    
+
     // Log the payment request (without sensitive data)
     $masked_payment_data = $payment_data;
     $masked_payment_data['source_id'] = substr($payment_data['source_id'], 0, 4) . '...' . substr($payment_data['source_id'], -4);
     error_log('Square payment request: ' . json_encode($masked_payment_data));
-    
+
     // Process the payment through Square API using cURL
     $ch = curl_init("$api_base_url/payments");
     curl_setopt_array($ch, [
@@ -111,33 +111,33 @@ try {
             "Content-Type: application/json"
         ]
     ]);
-    
+
     $response_data = curl_exec($ch);
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $curl_error = curl_error($ch);
     curl_close($ch);
-    
+
     // Log the response and HTTP code for debugging
     error_log("Square API response (HTTP $http_code): " . $response_data);
-    
+
     if ($http_code >= 200 && $http_code < 300) {
         $payment_result = json_decode($response_data, true);
-        
+
         if (isset($payment_result['payment'])) {
             $payment = $payment_result['payment'];
             $transaction_id = $payment['id'];
             $status = $payment['status'];
             $amount = $payment['amount_money']['amount'] / 100; // Convert cents to dollars
             $currency = $payment['amount_money']['currency'];
-            
+
             error_log("Payment completed with status: $status, transaction ID: $transaction_id");
-            
+
             // Verify payment was approved
             if ($status === 'COMPLETED') {
                 // Create a new license key
                 $license_key = create_license_key($data['email']);
                 error_log("Generated license key: $license_key for email: " . $data['email']);
-                
+
                 if ($license_key) {
                     // Update the license key with transaction details
                     $stmt = $db->prepare('UPDATE license_keys SET 
@@ -147,17 +147,17 @@ try {
                         activated = 1,
                         activation_date = CURRENT_TIMESTAMP
                         WHERE license_key = :license_key');
-                    
+
                     $stmt->bindValue(':transaction_id', $transaction_id, SQLITE3_TEXT);
                     $stmt->bindValue(':order_id', $data['reference_id'] ?? '', SQLITE3_TEXT);
                     $stmt->bindValue(':payment_method', 'Square', SQLITE3_TEXT);
                     $stmt->bindValue(':license_key', $license_key, SQLITE3_TEXT);
                     $stmt->execute();
-                    
+
                     // Send license key via email
                     $email_sent = send_license_email($data['email'], $license_key);
                     error_log("License email sent to " . $data['email'] . ": " . ($email_sent ? 'Success' : 'Failed'));
-                    
+
                     $response = [
                         'success' => true,
                         'license_key' => $license_key,
@@ -166,13 +166,13 @@ try {
                         'email_sent' => $email_sent,
                         'message' => 'Payment processed successfully'
                     ];
-                    
+
                     // Log the transaction for record keeping
                     $stmt = $db->prepare('INSERT INTO payment_transactions 
                         (transaction_id, order_id, email, amount, currency, payment_method, status, license_key, created_at) 
                         VALUES 
                         (:transaction_id, :order_id, :email, :amount, :currency, :payment_method, :status, :license_key, CURRENT_TIMESTAMP)');
-                    
+
                     $stmt->bindValue(':transaction_id', $transaction_id, SQLITE3_TEXT);
                     $stmt->bindValue(':order_id', $data['reference_id'] ?? '', SQLITE3_TEXT);
                     $stmt->bindValue(':email', $data['email'], SQLITE3_TEXT);
@@ -182,7 +182,7 @@ try {
                     $stmt->bindValue(':status', $status, SQLITE3_TEXT);
                     $stmt->bindValue(':license_key', $license_key, SQLITE3_TEXT);
                     $stmt->execute();
-                    
+
                     error_log("Payment transaction recorded in database");
                 } else {
                     $response = [
@@ -209,7 +209,7 @@ try {
         $errors = json_decode($response_data, true);
         $error_msg = '';
         $detailed_error = 'Unknown error';
-        
+
         if (isset($errors['errors']) && is_array($errors['errors'])) {
             foreach ($errors['errors'] as $error) {
                 $error_msg .= isset($error['detail']) ? $error['detail'] . ' ' : '';
@@ -222,10 +222,10 @@ try {
             }
             $detailed_error = $response_data;
         }
-        
+
         error_log("Square payment error: $error_msg");
         error_log("Detailed error: $detailed_error");
-        
+
         $response = [
             'success' => false,
             'message' => 'Square payment error: ' . $error_msg,
@@ -239,7 +239,7 @@ try {
     $error_message = 'Square payment processing error: ' . $e->getMessage();
     error_log($error_message);
     error_log('Exception trace: ' . $e->getTraceAsString());
-    
+
     $response = [
         'success' => false,
         'message' => 'Server error: ' . $e->getMessage()

@@ -54,23 +54,21 @@ $db = get_db_connection();
 
 // Check if metadata column exists
 $metadata_exists = false;
-$result = $db->query("PRAGMA table_info(community_posts)");
-while ($col = $result->fetchArray(SQLITE3_ASSOC)) {
-    if ($col['name'] === 'metadata') {
-        $metadata_exists = true;
-        break;
-    }
-}
+$result = $db->query("SHOW COLUMNS FROM community_posts LIKE 'metadata'");
+$metadata_exists = ($result->num_rows > 0);
 
 if ($metadata_exists) {
     // Get metadata if it exists
-    $stmt = $db->prepare('SELECT metadata FROM community_posts WHERE id = :id');
-    $stmt->bindValue(':id', $post_id, SQLITE3_INTEGER);
-    $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+    $stmt = $db->prepare('SELECT metadata FROM community_posts WHERE id = ?');
+    $stmt->bind_param('i', $post_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
 
-    if ($result && !empty($result['metadata'])) {
-        $metadata = json_decode($result['metadata'], true);
+    if ($row && !empty($row['metadata'])) {
+        $metadata = json_decode($row['metadata'], true);
     }
+    $stmt->close();
 }
 
 // Process form submission
@@ -127,12 +125,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Check if metadata changed (for bug reports)
         if ($post_type === 'bug' && $metadata_exists) {
             $current_metadata = null;
-            $stmt = $db->prepare('SELECT metadata FROM community_posts WHERE id = :id');
-            $stmt->bindValue(':id', $post_id, SQLITE3_INTEGER);
-            $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+            $stmt = $db->prepare('SELECT metadata FROM community_posts WHERE id = ?');
+            $stmt->bind_param('i', $post_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $row = $result->fetch_assoc();
 
-            if ($result && !empty($result['metadata'])) {
-                $current_metadata = json_decode($result['metadata'], true);
+            if ($row && !empty($row['metadata'])) {
+                $current_metadata = json_decode($row['metadata'], true);
 
                 // Compare metadata fields
                 foreach ($bug_metadata as $key => $value) {
@@ -145,63 +145,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // If no previous metadata but new metadata has values
                 $has_changes = true;
             }
+            $stmt->close();
         }
 
         // Only proceed if there are actual changes
         if ($has_changes) {
-            // First, ensure the metadata column exists in post_edit_history
-            $result = $db->query("PRAGMA table_info(post_edit_history)");
-            $has_metadata_column = false;
-            while ($col = $result->fetchArray(SQLITE3_ASSOC)) {
-                if ($col['name'] === 'metadata') {
-                    $has_metadata_column = true;
-                    break;
-                }
-            }
-
-            // Add the column if it doesn't exist
-            if (!$has_metadata_column) {
-                $db->exec("ALTER TABLE post_edit_history ADD COLUMN metadata TEXT");
-            }
+            $result = $db->query("SHOW COLUMNS FROM post_edit_history LIKE 'metadata'");
 
             // Get the current metadata for history
             $previous_metadata = null;
             if ($metadata_exists) {
-                $stmt = $db->prepare('SELECT metadata FROM community_posts WHERE id = :id');
-                $stmt->bindValue(':id', $post_id, SQLITE3_INTEGER);
-                $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
-                if ($result && isset($result['metadata'])) {
-                    $previous_metadata = $result['metadata'];
+                $stmt = $db->prepare('SELECT metadata FROM community_posts WHERE id = ?');
+                $stmt->bind_param('i', $post_id);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                $row = $result->fetch_assoc();
+                if ($row && isset($row['metadata'])) {
+                    $previous_metadata = $row['metadata'];
                 }
+                $stmt->close();
             }
 
             // Save the current post to history
             $stmt = $db->prepare('INSERT INTO post_edit_history (post_id, user_id, title, content, metadata, edited_at) 
-                                VALUES (:post_id, :user_id, :title, :content, :metadata, CURRENT_TIMESTAMP)');
-            $stmt->bindValue(':post_id', $post_id, SQLITE3_INTEGER);
-            $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
-            $stmt->bindValue(':title', $post['title'], SQLITE3_TEXT);
-            $stmt->bindValue(':content', $post['content'], SQLITE3_TEXT);
-            $stmt->bindValue(':metadata', $previous_metadata, SQLITE3_TEXT);
+                                VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP)');
+            $stmt->bind_param('iisss', $post_id, $user_id, $post['title'], $post['content'], $previous_metadata);
             $stmt->execute();
+            $stmt->close();
 
             // Update the post
             $stmt = $db->prepare('UPDATE community_posts 
-                                SET title = :title, content = :content, post_type = :post_type, updated_at = CURRENT_TIMESTAMP 
-                                WHERE id = :id');
-            $stmt->bindValue(':title', $title, SQLITE3_TEXT);
-            $stmt->bindValue(':content', $content, SQLITE3_TEXT);
-            $stmt->bindValue(':post_type', $post_type, SQLITE3_TEXT);
-            $stmt->bindValue(':id', $post_id, SQLITE3_INTEGER);
-
-            $update_success = $stmt->execute() !== false;
+                                SET title = ?, content = ?, post_type = ?, updated_at = CURRENT_TIMESTAMP 
+                                WHERE id = ?');
+            $stmt->bind_param('sssi', $title, $content, $post_type, $post_id);
+            $update_success = $stmt->execute();
+            $stmt->close();
 
             // Save bug metadata if applicable
             if ($post_type === 'bug' && !empty($bug_metadata) && $metadata_exists) {
-                $stmt = $db->prepare('UPDATE community_posts SET metadata = :metadata WHERE id = :id');
-                $stmt->bindValue(':metadata', json_encode($bug_metadata), SQLITE3_TEXT);
-                $stmt->bindValue(':id', $post_id, SQLITE3_INTEGER);
+                $metadata_json = json_encode($bug_metadata);
+                $stmt = $db->prepare('UPDATE community_posts SET metadata = ? WHERE id = ?');
+                $stmt->bind_param('si', $metadata_json, $post_id);
                 $stmt->execute();
+                $stmt->close();
             }
 
             if ($update_success) {
@@ -219,27 +205,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Helper function to ensure metadata column exists in history table
-function ensure_metadata_column_in_history($db)
-{
-    // Check if the metadata column exists in post_edit_history
-    $result = $db->query("PRAGMA table_info(post_edit_history)");
-    $has_metadata_column = false;
-    while ($col = $result->fetchArray(SQLITE3_ASSOC)) {
-        if ($col['name'] === 'metadata') {
-            $has_metadata_column = true;
-            break;
-        }
-    }
-
-    // Add the column if it doesn't exist
-    if (!$has_metadata_column) {
-        $db->exec("ALTER TABLE post_edit_history ADD COLUMN metadata TEXT");
-    }
-    return $has_metadata_column;
-}
-
-// We no longer need to save history again here, removing the duplicate code
 ?>
 <!DOCTYPE html>
 <html lang="en">

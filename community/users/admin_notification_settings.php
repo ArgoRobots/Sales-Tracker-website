@@ -14,32 +14,14 @@ $user_id = $_SESSION['user_id'];
 $success_message = '';
 $error_message = '';
 
-// Ensure the table exists
 $db = get_db_connection();
-$db->exec("
-    CREATE TABLE IF NOT EXISTS admin_notification_settings (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER NOT NULL,
-        notify_new_posts INTEGER DEFAULT 1,
-        notify_new_comments INTEGER DEFAULT 1,
-        notification_email TEXT NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (user_id) REFERENCES community_users(id) ON DELETE CASCADE
-    )
-");
-
-// Create index if it doesn't exist
-$index_exists = $db->querySingle("SELECT COUNT(*) FROM sqlite_master WHERE type='index' AND name='idx_notification_settings_user_id'");
-if (!$index_exists) {
-    $db->exec("CREATE INDEX idx_notification_settings_user_id ON admin_notification_settings(user_id)");
-}
 
 // Load current notification settings
-$stmt = $db->prepare('SELECT * FROM admin_notification_settings WHERE user_id = :user_id');
-$stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
-$result = $stmt->execute();
-$settings = $result->fetchArray(SQLITE3_ASSOC);
+$stmt = $db->prepare('SELECT * FROM admin_notification_settings WHERE user_id = ?');
+$stmt->bind_param('i', $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$settings = $result->fetch_assoc();
 
 // If no settings exist, create default ones
 if (!$settings) {
@@ -52,11 +34,8 @@ if (!$settings) {
     // Create settings row
     $stmt = $db->prepare('INSERT INTO admin_notification_settings 
                          (user_id, notify_new_posts, notify_new_comments, notification_email) 
-                         VALUES (:user_id, :notify_new_posts, :notify_new_comments, :notification_email)');
-    $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
-    $stmt->bindValue(':notify_new_posts', $settings['notify_new_posts'], SQLITE3_INTEGER);
-    $stmt->bindValue(':notify_new_comments', $settings['notify_new_comments'], SQLITE3_INTEGER);
-    $stmt->bindValue(':notification_email', $settings['notification_email'], SQLITE3_TEXT);
+                         VALUES (?, ?, ?, ?)');
+    $stmt->bind_param('iiis', $user_id, $settings['notify_new_posts'], $settings['notify_new_comments'], $settings['notification_email']);
     $stmt->execute();
 }
 
@@ -73,15 +52,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         // Update settings
         $stmt = $db->prepare('UPDATE admin_notification_settings 
-                             SET notify_new_posts = :notify_new_posts, 
-                                 notify_new_comments = :notify_new_comments, 
-                                 notification_email = :notification_email,
+                             SET notify_new_posts = ?, 
+                                 notify_new_comments = ?, 
+                                 notification_email = ?,
                                  updated_at = CURRENT_TIMESTAMP 
-                             WHERE user_id = :user_id');
-        $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
-        $stmt->bindValue(':notify_new_posts', $notify_new_posts, SQLITE3_INTEGER);
-        $stmt->bindValue(':notify_new_comments', $notify_new_comments, SQLITE3_INTEGER);
-        $stmt->bindValue(':notification_email', $notification_email, SQLITE3_TEXT);
+                             WHERE user_id = ?');
+        $stmt->bind_param('iisi', $notify_new_posts, $notify_new_comments, $notification_email, $user_id);
 
         if ($stmt->execute()) {
             $success_message = 'Notification settings updated successfully.';
@@ -90,10 +66,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $settings['notify_new_comments'] = $notify_new_comments;
             $settings['notification_email'] = $notification_email;
         } else {
-            $error_message = 'Error updating notification settings.';
+            $error_message = 'Error updating notification settings: ' . $db->error;
         }
     }
 }
+
+$stmt->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">

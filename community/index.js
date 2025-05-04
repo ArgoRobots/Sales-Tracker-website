@@ -433,12 +433,9 @@ document.addEventListener("DOMContentLoaded", function () {
     isLoading = true;
     loadingIndicator.style.display = "block";
 
-    // Calculate which posts to show next
     const startIndex = postsPerPage;
     const endIndex = startIndex + postsPerPage;
-
-    // Get filtered posts based on current filters
-    const filteredPosts = getFilteredPosts();
+    const filteredPosts = filterAndSortPosts();
 
     // Show next batch of posts
     let visibleCount = 0;
@@ -498,98 +495,109 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  function getFilteredPosts() {
+  /**
+   * Filters and sorts the list of posts based on:
+   * - Search term (fuzzy match against title)
+   * - Selected category
+   * - Selected sort option (most voted, newest, or oldest)
+   *
+   * @returns {HTMLElement[]} Array of filtered and sorted post elements
+   */
+  function filterAndSortPosts() {
     const searchTerm = searchInput.value.toLowerCase().trim();
     const category = categoryFilter.value;
+    const sortBy = sortFilter?.value;
 
-    // First filter the posts
+    const similarityThreshold = 0.6; // 0.0 = no match, 1.0 = perfect match
+
     let filtered = allPosts.filter((post) => {
       // Filter by category
       if (category !== "all" && post.dataset.postType !== category) {
         return false;
       }
 
-      // Filter by search term
+      // Fuzzy filter by search term
       if (searchTerm) {
         const title = post
           .querySelector(".post-title")
           .textContent.toLowerCase();
-        const content = post
-          .querySelector(".post-body")
-          .textContent.toLowerCase();
-        const author = post
-          .querySelector(".post-author")
-          .textContent.toLowerCase();
 
-        return (
-          title.includes(searchTerm) ||
-          content.includes(searchTerm) ||
-          author.includes(searchTerm)
-        );
+        return getSimilarity(title, searchTerm) >= similarityThreshold;
       }
 
       return true;
     });
 
+    // Sort the filtered posts
+    if (sortBy) {
+      filtered.sort((a, b) => {
+        if (sortBy === "most_voted") {
+          const votesA = parseInt(
+            a.querySelector(".vote-count").textContent.trim()
+          );
+          const votesB = parseInt(
+            b.querySelector(".vote-count").textContent.trim()
+          );
+          return votesB - votesA;
+        } else {
+          const dateTextA = a.querySelector(".post-date").textContent.trim();
+          const dateTextB = b.querySelector(".post-date").textContent.trim();
+          const dateA = new Date(dateTextA);
+          const dateB = new Date(dateTextB);
+          return sortBy === "oldest" ? dateA - dateB : dateB - dateA;
+        }
+      });
+    }
+
+    // Remove and re-append posts in the sorted order
+    filtered.forEach((post) => post.remove());
+    filtered.forEach((post) => postsContainer.appendChild(post));
+
     return filtered;
   }
 
-  function sortPosts(posts) {
-    if (!sortFilter) return posts;
+  /**
+   * Returns a similarity score between 0 and 1 based on edit distance.
+   * Uses a normalized Levenshtein distance.
+   */
+  function getSimilarity(str1, str2) {
+    const longer = str1.length > str2.length ? str1 : str2;
+    const shorter = str1.length > str2.length ? str2 : str1;
+    const longerLength = longer.length;
 
-    const sortBy = sortFilter.value;
-    const postsArray = Array.from(posts);
+    if (longerLength === 0) return 1.0;
+    return (longerLength - getEditDistance(longer, shorter)) / longerLength;
+  }
 
-    // Sort the posts array
-    postsArray.sort((a, b) => {
-      if (sortBy === "most_voted") {
-        const votesA = parseInt(
-          a.querySelector(".vote-count").textContent.trim()
-        );
-        const votesB = parseInt(
-          b.querySelector(".vote-count").textContent.trim()
-        );
+  /**
+   * Basic Levenshtein distance (edit distance)
+   */
+  function getEditDistance(a, b) {
+    const matrix = Array.from({ length: b.length + 1 }, (_, i) =>
+      Array.from({ length: a.length + 1 }, (_, j) =>
+        i === 0 ? j : j === 0 ? i : 0
+      )
+    );
 
-        return votesB - votesA;
-      } else if (sortBy === "oldest") {
-        const dateTextA = a.querySelector(".post-date").textContent.trim();
-        const dateTextB = b.querySelector(".post-date").textContent.trim();
-
-        // Parse the dates
-        const dateA = new Date(dateTextA);
-        const dateB = new Date(dateTextB);
-
-        return dateA - dateB;
-      } else {
-        // Sort by date (newest first)
-        const dateTextA = a.querySelector(".post-date").textContent.trim();
-        const dateTextB = b.querySelector(".post-date").textContent.trim();
-
-        // Parse the dates
-        const dateA = new Date(dateTextA);
-        const dateB = new Date(dateTextB);
-
-        return dateB - dateA;
+    for (let i = 1; i <= b.length; i++) {
+      for (let j = 1; j <= a.length; j++) {
+        matrix[i][j] =
+          b[i - 1] === a[j - 1]
+            ? matrix[i - 1][j - 1]
+            : Math.min(
+                matrix[i - 1][j - 1] + 1, // substitution
+                matrix[i][j - 1] + 1, // insertion
+                matrix[i - 1][j] + 1 // deletion
+              );
       }
-    });
+    }
 
-    // Remove all posts from container
-    postsArray.forEach((post) => {
-      post.remove();
-    });
-
-    // Re-append in sorted order
-    postsArray.forEach((post) => {
-      postsContainer.appendChild(post);
-    });
-
-    return postsArray;
+    return matrix[b.length][a.length];
   }
 
   function applyFilters() {
     hasMorePosts = true;
-    let filteredPosts = getFilteredPosts();
-    filteredPosts = sortPosts(filteredPosts);
+    let filteredPosts = filterAndSortPosts();
 
     // Update the search/filter label
     updateSearchFilterLabel();
@@ -608,10 +616,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
-    // Update hasMorePosts flag
     hasMorePosts = filteredPosts.length > postsPerPage;
-
-    // Show/hide loading indicator
     loadingIndicator.style.display = hasMorePosts ? "block" : "none";
 
     // Show empty state if no posts match

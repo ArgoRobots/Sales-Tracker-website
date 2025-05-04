@@ -37,10 +37,10 @@ function check_rate_limit($user_id, $action_type)
     }
 
     // Delete existing rate limit records for a fresh start
-    $stmt = $db->prepare('DELETE FROM rate_limits WHERE user_id = :user_id AND action_type = :action_type');
-    $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
-    $stmt->bindValue(':action_type', $action_type, SQLITE3_TEXT);
+    $stmt = $db->prepare('DELETE FROM rate_limits WHERE user_id = ? AND action_type = ?');
+    $stmt->bind_param('is', $user_id, $action_type);
     $stmt->execute();
+    $stmt->close();
 
     // Check short-term limit (minutes)
     $table = $action_type === 'post' ? 'community_posts' : 'community_comments';
@@ -67,10 +67,10 @@ function check_rate_limit($user_id, $action_type)
 
     // User is within limits, insert a fresh record
     $stmt = $db->prepare('INSERT INTO rate_limits (user_id, action_type, count, period_start, last_action_at) 
-                         VALUES (:user_id, :action_type, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)');
-    $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
-    $stmt->bindValue(':action_type', $action_type, SQLITE3_TEXT);
+                         VALUES (?, ?, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)');
+    $stmt->bind_param('is', $user_id, $action_type);
     $stmt->execute();
+    $stmt->close();
 
     return false;
 }
@@ -78,7 +78,7 @@ function check_rate_limit($user_id, $action_type)
 /**
  * Check how many actions the user has performed in a time period
  * 
- * @param SQLite3 $db Database connection
+ * @param mysqli $db Database connection
  * @param string $table Table to check ('community_posts' or 'community_comments')
  * @param int $user_id User ID
  * @param int $time_value Time value (e.g., 5)
@@ -87,14 +87,24 @@ function check_rate_limit($user_id, $action_type)
  */
 function check_period_limit($db, $table, $user_id, $time_value, $time_unit)
 {
+    // Convert 'minutes' to 'MINUTE' and 'hours' to 'HOUR' for MySQL syntax
+    $mysql_time_unit = strtoupper(rtrim($time_unit, "s"));
+
     $sql = "SELECT COUNT(*) as count FROM {$table} 
-            WHERE user_id = :user_id 
-            AND datetime(created_at) > datetime('now', '-{$time_value} {$time_unit}')";
+            WHERE user_id = ? 
+            AND created_at > DATE_SUB(NOW(), INTERVAL {$time_value} {$mysql_time_unit})";
 
     $stmt = $db->prepare($sql);
-    $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
-    $result = $stmt->execute();
-    $row = $result->fetchArray(SQLITE3_ASSOC);
+    if (!$stmt) {
+        error_log("SQL Error in check_period_limit: " . $db->error);
+        return 0;
+    }
+
+    $stmt->bind_param('i', $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    $stmt->close();
 
     return $row['count'];
 }

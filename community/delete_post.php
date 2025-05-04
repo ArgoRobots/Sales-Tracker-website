@@ -34,12 +34,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Get the post to verify ownership
     $db = get_db_connection();
-    $stmt = $db->prepare('SELECT * FROM community_posts WHERE id = :id');
-    $stmt->bindValue(':id', $post_id, SQLITE3_INTEGER);
-    $post = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+    $stmt = $db->prepare('SELECT * FROM community_posts WHERE id = ?');
+    $stmt->bind_param('i', $post_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $post = $result->fetch_assoc();
 
     if (!$post) {
         $response['message'] = 'Post not found';
+        $stmt->close();
         echo json_encode($response);
         exit;
     }
@@ -50,13 +53,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!$can_delete) {
         $response['message'] = "You do not have permission to delete this post. User ID: $user_id, Post User ID: {$post['user_id']}";
+        $stmt->close();
         echo json_encode($response);
         exit;
     }
 
     // Delete the post
-    $stmt = $db->prepare('DELETE FROM community_posts WHERE id = :id');
-    $stmt->bindValue(':id', $post_id, SQLITE3_INTEGER);
+    $stmt = $db->prepare('DELETE FROM community_posts WHERE id = ?');
+    $stmt->bind_param('i', $post_id);
 
     if ($stmt->execute()) {
         $response = [
@@ -64,8 +68,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'message' => 'Post deleted successfully'
         ];
     } else {
-        $response['message'] = 'Error deleting post: ' . $db->lastErrorMsg();
+        $response['message'] = 'Error deleting post: ' . $db->error;
     }
+
+    $stmt->close();
 } else {
     $response['message'] = 'Invalid request method';
 }

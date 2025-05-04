@@ -22,9 +22,12 @@ error_log("User ID for verification: $user_id");
 
 // Check if the user exists in the database
 $db = get_db_connection();
-$stmt = $db->prepare('SELECT id, verification_code FROM community_users WHERE id = :id');
-$stmt->bindValue(':id', $user_id, SQLITE3_INTEGER);
-$user = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+$stmt = $db->prepare('SELECT id, verification_code FROM community_users WHERE id = ?');
+$stmt->bind_param('i', $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$user = $result->fetch_assoc();
+$stmt->close();
 
 if (!$user) {
     error_log("User with ID $user_id not found during verification page load");
@@ -46,25 +49,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Please enter a valid 6-digit verification code';
     } else {
         // Get the current verification code from database
-        $stmt = $db->prepare('SELECT verification_code FROM community_users WHERE id = :id');
-        $stmt->bindValue(':id', $user_id, SQLITE3_INTEGER);
-        $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+        $stmt = $db->prepare('SELECT verification_code FROM community_users WHERE id = ?');
+        $stmt->bind_param('i', $user_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $db_verification = $result->fetch_assoc();
+        $stmt->close();
 
-        if (!$result) {
+        if (!$db_verification) {
             error_log("User with ID $user_id not found during verification attempt");
             $error = 'User not found. Please register again.';
         } else {
             // Compare the codes directly
-            if ($result['verification_code'] === $verification_code) {
+            if ($db_verification['verification_code'] === $verification_code) {
                 // Update user as verified and clear verification code
-                $stmt = $db->prepare('UPDATE community_users SET email_verified = 1, verification_code = NULL WHERE id = :id');
-                $stmt->bindValue(':id', $user_id, SQLITE3_INTEGER);
+                $stmt = $db->prepare('UPDATE community_users SET email_verified = 1, verification_code = NULL WHERE id = ?');
+                $stmt->bind_param('i', $user_id);
+                $update_result = $stmt->execute();
+                $stmt->close();
 
-                if ($stmt->execute()) {
+                if ($update_result) {
                     // Get the full user details to populate the session
-                    $stmt = $db->prepare('SELECT id, username, email, role, avatar FROM community_users WHERE id = :id');
-                    $stmt->bindValue(':id', $user_id, SQLITE3_INTEGER);
-                    $verified_user = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+                    $stmt = $db->prepare('SELECT id, username, email, role, avatar FROM community_users WHERE id = ?');
+                    $stmt->bind_param('i', $user_id);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    $verified_user = $result->fetch_assoc();
+                    $stmt->close();
 
                     if ($verified_user) {
                         // Update session to mark user as logged in
@@ -108,6 +119,7 @@ if ($success) {
     header('Location: profile.php');
     exit;
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

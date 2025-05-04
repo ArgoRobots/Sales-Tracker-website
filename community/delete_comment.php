@@ -34,12 +34,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Get the comment to verify ownership
     $db = get_db_connection();
-    $stmt = $db->prepare('SELECT * FROM community_comments WHERE id = :id');
-    $stmt->bindValue(':id', $comment_id, SQLITE3_INTEGER);
-    $comment = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+    $stmt = $db->prepare('SELECT * FROM community_comments WHERE id = ?');
+    $stmt->bind_param('i', $comment_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $comment = $result->fetch_assoc();
 
     if (!$comment) {
         $response['message'] = 'Comment not found';
+        $stmt->close();
         echo json_encode($response);
         exit;
     }
@@ -50,13 +53,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!$can_delete) {
         $response['message'] = 'You do not have permission to delete this comment';
+        $stmt->close();
         echo json_encode($response);
         exit;
     }
 
     // Delete the comment
-    $stmt = $db->prepare('DELETE FROM community_comments WHERE id = :id');
-    $stmt->bindValue(':id', $comment_id, SQLITE3_INTEGER);
+    $stmt = $db->prepare('DELETE FROM community_comments WHERE id = ?');
+    $stmt->bind_param('i', $comment_id);
 
     if ($stmt->execute()) {
         $response = [
@@ -65,8 +69,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'post_id' => $comment['post_id']
         ];
     } else {
-        $response['message'] = 'Error deleting comment: ' . $db->lastErrorMsg();
+        $response['message'] = 'Error deleting comment: ' . $db->error;
     }
+
+    $stmt->close();
 } else {
     $response['message'] = 'Invalid request method';
 }

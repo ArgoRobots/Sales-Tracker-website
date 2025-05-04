@@ -1,8 +1,5 @@
 <?php
-// Set UTC timezone for consistent time handling
 date_default_timezone_set('UTC');
-
-// Include the TOTP implementation
 require_once __DIR__ . '/totp.php';
 
 /**
@@ -12,27 +9,31 @@ require_once __DIR__ . '/totp.php';
  * @param string $secret TOTP secret
  * @return bool Success status
  */
-function save_2fa_secret($username, $secret) {
+function save_2fa_secret($username, $secret)
+{
     $db = get_db_connection();
-    
+
     try {
         // Get the correct case username
-        $stmt = $db->prepare('SELECT username FROM admin_users WHERE LOWER(username) = LOWER(:username)');
-        $stmt->bindValue(':username', $username, SQLITE3_TEXT);
-        $result = $stmt->execute();
-        $user = $result->fetchArray(SQLITE3_ASSOC);
-        
+        $stmt = $db->prepare('SELECT username FROM admin_users WHERE LOWER(username) = LOWER(?)');
+        $stmt->bind_param('s', $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+        $stmt->close();
+
         if (!$user) {
             return false;
         }
-        
+
         // Update the user record
-        $stmt = $db->prepare('UPDATE admin_users SET two_factor_secret = :secret, two_factor_enabled = 1 WHERE username = :username');
-        $stmt->bindValue(':secret', $secret, SQLITE3_TEXT);
-        $stmt->bindValue(':username', $user['username'], SQLITE3_TEXT);
+        $stmt = $db->prepare('UPDATE admin_users SET two_factor_secret = ?, two_factor_enabled = 1 WHERE username = ?');
+        $stmt->bind_param('ss', $secret, $user['username']);
         $stmt->execute();
-        
-        return $db->changes() > 0;
+        $affected_rows = $stmt->affected_rows;
+        $stmt->close();
+
+        return $affected_rows > 0;
     } catch (Exception $e) {
         return false;
     }
@@ -44,26 +45,31 @@ function save_2fa_secret($username, $secret) {
  * @param string $username Username
  * @return bool Success status
  */
-function disable_2fa($username) {
+function disable_2fa($username)
+{
     $db = get_db_connection();
-    
+
     try {
         // Get the correct case username
-        $stmt = $db->prepare('SELECT username FROM admin_users WHERE LOWER(username) = LOWER(:username)');
-        $stmt->bindValue(':username', $username, SQLITE3_TEXT);
-        $result = $stmt->execute();
-        $user = $result->fetchArray(SQLITE3_ASSOC);
-        
+        $stmt = $db->prepare('SELECT username FROM admin_users WHERE LOWER(username) = LOWER(?)');
+        $stmt->bind_param('s', $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+        $stmt->close();
+
         if (!$user) {
             return false;
         }
-        
+
         // Update the user record
-        $stmt = $db->prepare('UPDATE admin_users SET two_factor_secret = NULL, two_factor_enabled = 0 WHERE username = :username');
-        $stmt->bindValue(':username', $user['username'], SQLITE3_TEXT);
+        $stmt = $db->prepare('UPDATE admin_users SET two_factor_secret = NULL, two_factor_enabled = 0 WHERE username = ?');
+        $stmt->bind_param('s', $user['username']);
         $stmt->execute();
-        
-        return $db->changes() > 0;
+        $affected_rows = $stmt->affected_rows;
+        $stmt->close();
+
+        return $affected_rows > 0;
     } catch (Exception $e) {
         return false;
     }
@@ -75,16 +81,19 @@ function disable_2fa($username) {
  * @param string $username Username
  * @return string|null 2FA secret or null if not found
  */
-function get_2fa_secret($username) {
+function get_2fa_secret($username)
+{
     $db = get_db_connection();
-    
+
     try {
         // Get the correct case username
-        $stmt = $db->prepare('SELECT username, two_factor_secret FROM admin_users WHERE LOWER(username) = LOWER(:username)');
-        $stmt->bindValue(':username', $username, SQLITE3_TEXT);
-        $result = $stmt->execute();
-        $user = $result->fetchArray(SQLITE3_ASSOC);
-        
+        $stmt = $db->prepare('SELECT username, two_factor_secret FROM admin_users WHERE LOWER(username) = LOWER(?)');
+        $stmt->bind_param('s', $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+        $stmt->close();
+
         return $user ? $user['two_factor_secret'] : null;
     } catch (Exception $e) {
         return null;
@@ -97,15 +106,19 @@ function get_2fa_secret($username) {
  * @param string $username Username
  * @return bool True if 2FA is enabled
  */
-function is_2fa_enabled($username) {
+function is_2fa_enabled($username)
+{
     $db = get_db_connection();
-    
+
     try {
-        $stmt = $db->prepare('SELECT two_factor_enabled FROM admin_users WHERE LOWER(username) = LOWER(:username)');
-        $stmt->bindValue(':username', $username, SQLITE3_TEXT);
-        $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
-        
-        return $result && $result['two_factor_enabled'] == 1;
+        $stmt = $db->prepare('SELECT two_factor_enabled FROM admin_users WHERE LOWER(username) = LOWER(?)');
+        $stmt->bind_param('s', $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        $stmt->close();
+
+        return $row && $row['two_factor_enabled'] == 1;
     } catch (Exception $e) {
         return false;
     }
@@ -116,7 +129,8 @@ function is_2fa_enabled($username) {
  * 
  * @return string New 2FA secret
  */
-function generate_2fa_secret() {
+function generate_2fa_secret()
+{
     return TOTP::generateSecret();
 }
 
@@ -127,11 +141,12 @@ function generate_2fa_secret() {
  * @param string $code Code to verify
  * @return bool True if code is valid
  */
-function verify_2fa_code($secret, $code) {
+function verify_2fa_code($secret, $code)
+{
     if (empty($secret)) {
         return false;
     }
-    
+
     return TOTP::verify($secret, $code);
 }
 
@@ -143,6 +158,7 @@ function verify_2fa_code($secret, $code) {
  * @param string $issuer Issuer name
  * @return string QR code URL
  */
-function get_qr_code_url($username, $secret, $issuer = 'Argo Sales Tracker Admin') {
-    return "otpauth://totp/".urlencode($issuer).":".urlencode($username)."?secret=".$secret."&issuer=".urlencode($issuer)."&algorithm=SHA1&digits=6&period=30";
+function get_qr_code_url($username, $secret, $issuer = 'Argo Sales Tracker Admin')
+{
+    return "otpauth://totp/" . urlencode($issuer) . ":" . urlencode($username) . "?secret=" . $secret . "&issuer=" . urlencode($issuer) . "&algorithm=SHA1&digits=6&period=30";
 }

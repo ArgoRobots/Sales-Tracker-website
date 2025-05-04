@@ -29,54 +29,43 @@ if (!$post) {
 
 // Check if metadata column exists in post_edit_history
 $db = get_db_connection();
-$metadata_column_exists = false;
-$result = $db->query("PRAGMA table_info(post_edit_history)");
-while ($col = $result->fetchArray(SQLITE3_ASSOC)) {
-    if ($col['name'] === 'metadata') {
-        $metadata_column_exists = true;
-        break;
-    }
-}
-
-// Add column if it doesn't exist
-if (!$metadata_column_exists) {
-    $db->exec("ALTER TABLE post_edit_history ADD COLUMN metadata TEXT");
-}
+$result = $db->query("SHOW COLUMNS FROM post_edit_history LIKE 'metadata'");
 
 // Fetch the current post metadata
 $current_metadata = null;
 $metadata_exists = false;
-$result = $db->query("PRAGMA table_info(community_posts)");
-while ($col = $result->fetchArray(SQLITE3_ASSOC)) {
-    if ($col['name'] === 'metadata') {
-        $metadata_exists = true;
-        break;
-    }
-}
+$result = $db->query("SHOW COLUMNS FROM community_posts LIKE 'metadata'");
+$metadata_exists = ($result->num_rows > 0);
 
 if ($metadata_exists) {
-    $stmt = $db->prepare('SELECT metadata FROM community_posts WHERE id = :id');
-    $stmt->bindValue(':id', $post_id, SQLITE3_INTEGER);
-    $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+    $stmt = $db->prepare('SELECT metadata FROM community_posts WHERE id = ?');
+    $stmt->bind_param('i', $post_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
 
-    if ($result && !empty($result['metadata'])) {
-        $current_metadata = $result['metadata'];
+    if ($row && !empty($row['metadata'])) {
+        $current_metadata = $row['metadata'];
     }
+    $stmt->close();
 }
 
 // Fetch edit history ordered by newest first
 $stmt = $db->prepare('SELECT h.*, u.username 
     FROM post_edit_history h
     LEFT JOIN community_users u ON h.user_id = u.id
-    WHERE h.post_id = :post_id
+    WHERE h.post_id = ?
     ORDER BY h.edited_at DESC');
-$stmt->bindValue(':post_id', $post_id, SQLITE3_INTEGER);
-$result = $stmt->execute();
+$stmt->bind_param('i', $post_id);
+$stmt->execute();
+$result = $stmt->get_result();
 
 $history = [];
-while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+while ($row = $result->fetch_assoc()) {
     $history[] = $row;
 }
+
+$stmt->close();
 
 // The current version is not in the edit history, so add it as the most current version
 $current_post = [

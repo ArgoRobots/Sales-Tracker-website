@@ -53,33 +53,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($post_id) {
                 // Connect post to user account
                 $db = get_db_connection();
-                $stmt = $db->prepare('UPDATE community_posts SET user_id = :user_id WHERE id = :post_id');
-                $stmt->bindValue(':user_id', $current_user['id'], SQLITE3_INTEGER);
-                $stmt->bindValue(':post_id', $post_id, SQLITE3_INTEGER);
+                $stmt = $db->prepare('UPDATE community_posts SET user_id = ? WHERE id = ?');
+                $stmt->bind_param('ii', $current_user['id'], $post_id);
                 $stmt->execute();
 
                 // Save bug metadata as JSON in a separate field or table if needed
                 if ($post_type === 'bug' && !empty($bug_metadata)) {
-                    // Check if the metadata column exists, if not create it
-                    $result = $db->query("PRAGMA table_info(community_posts)");
-                    $has_metadata_column = false;
-                    while ($col = $result->fetchArray(SQLITE3_ASSOC)) {
-                        if ($col['name'] === 'metadata') {
-                            $has_metadata_column = true;
-                            break;
-                        }
-                    }
-
-                    if (!$has_metadata_column) {
-                        $db->exec("ALTER TABLE community_posts ADD COLUMN metadata TEXT");
-                    }
-
                     // Save metadata as JSON
-                    $stmt = $db->prepare('UPDATE community_posts SET metadata = :metadata WHERE id = :post_id');
-                    $stmt->bindValue(':metadata', json_encode($bug_metadata), SQLITE3_TEXT);
-                    $stmt->bindValue(':post_id', $post_id, SQLITE3_INTEGER);
+                    $metadata_json = json_encode($bug_metadata);
+                    $stmt = $db->prepare('UPDATE community_posts SET metadata = ? WHERE id = ?');
+                    $stmt->bind_param('si', $metadata_json, $post_id);
                     $stmt->execute();
                 }
+
+                $stmt->close();
 
                 // Redirect immediately to view page with success message
                 header("Location: view_post.php?id=$post_id&created=1");

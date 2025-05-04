@@ -48,11 +48,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Verify token is valid
 $db = get_db_connection();
-$stmt = $db->prepare('SELECT id FROM community_users WHERE reset_token = :token AND reset_token_expiry > CURRENT_TIMESTAMP');
-$stmt->bindValue(':token', $token, SQLITE3_TEXT);
-$result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
-
-$valid_token = ($result !== false);
+$stmt = $db->prepare('SELECT id FROM community_users WHERE reset_token = ? AND reset_token_expiry > CURRENT_TIMESTAMP');
+$stmt->bind_param('s', $token);
+$stmt->execute();
+$result = $stmt->get_result();
+$valid_token = ($result->num_rows > 0);
+$stmt->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">

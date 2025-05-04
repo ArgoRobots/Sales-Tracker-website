@@ -28,12 +28,12 @@ $response = [
 
 try {
     $db = get_db_connection();
-    
+
     // Check if this transaction has already been processed
     $stmt = $db->prepare('SELECT license_key FROM license_keys WHERE transaction_id = :transaction_id LIMIT 1');
     $stmt->bindValue(':transaction_id', $data['payment_intent_id'], SQLITE3_TEXT);
     $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
-    
+
     if ($result) {
         // Transaction already processed, return existing license key
         $response = [
@@ -48,14 +48,14 @@ try {
                 'success' => false,
                 'message' => 'Payment status is not completed'
             ];
-        } 
+        }
         // Validate payment amount
         else if (!isset($data['amount']) || floatval($data['amount']) < 20.00) {
             $response = [
                 'success' => false,
                 'message' => 'Invalid payment amount'
             ];
-        } 
+        }
         // Process the payment and get/update license key
         else {
             // Check if we already created a license key for this payment intent
@@ -64,14 +64,14 @@ try {
                                  LIMIT 1');
             $stmt->bindValue(':payment_intent', $data['payment_intent_id'], SQLITE3_TEXT);
             $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
-            
+
             if ($result) {
                 $license_key = $result['license_key'];
             } else {
                 // Create a new license key if we didn't pre-generate one
                 $license_key = create_license_key($data['email']);
             }
-            
+
             if ($license_key) {
                 // Update the license key with transaction details
                 $stmt = $db->prepare('UPDATE license_keys SET 
@@ -81,29 +81,29 @@ try {
                     activated = 1,
                     activation_date = CURRENT_TIMESTAMP
                     WHERE license_key = :license_key');
-                
+
                 $stmt->bindValue(':transaction_id', $data['payment_intent_id'], SQLITE3_TEXT);
                 $stmt->bindValue(':order_id', $data['payment_method_id'] ?? '', SQLITE3_TEXT);
                 $stmt->bindValue(':payment_method', 'Stripe', SQLITE3_TEXT);
                 $stmt->bindValue(':license_key', $license_key, SQLITE3_TEXT);
                 $stmt->execute();
-                
+
                 // Send license key via email
                 $email_sent = send_license_email($data['email'], $license_key);
-                
+
                 $response = [
                     'success' => true,
                     'license_key' => $license_key,
                     'email_sent' => $email_sent,
                     'message' => 'Payment processed successfully'
                 ];
-                
+
                 // Log the transaction in a separate table for audit purposes
                 $stmt = $db->prepare('INSERT INTO payment_transactions 
                     (transaction_id, order_id, email, amount, currency, payment_method, status, license_key, created_at) 
                     VALUES 
                     (:transaction_id, :order_id, :email, :amount, :currency, :payment_method, :status, :license_key, CURRENT_TIMESTAMP)');
-                
+
                 $stmt->bindValue(':transaction_id', $data['payment_intent_id'], SQLITE3_TEXT);
                 $stmt->bindValue(':order_id', $data['payment_method_id'] ?? '', SQLITE3_TEXT);
                 $stmt->bindValue(':email', $data['email'], SQLITE3_TEXT);
@@ -126,7 +126,7 @@ try {
         'success' => false,
         'message' => 'Server error: ' . $e->getMessage()
     ];
-    
+
     // Log the error
     error_log('Stripe payment processing error: ' . $e->getMessage());
 }

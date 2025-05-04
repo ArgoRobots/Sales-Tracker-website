@@ -89,11 +89,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         // Connect vote to user account
                         if ($user_id > 0) {
                             // Update the vote record with user_id
-                            $stmt = $db->prepare('UPDATE community_votes SET user_id = :user_id WHERE post_id = :post_id AND user_email = :user_email');
-                            $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
-                            $stmt->bindValue(':post_id', $post_id, SQLITE3_INTEGER);
-                            $stmt->bindValue(':user_email', $email, SQLITE3_TEXT);
+                            $stmt = $db->prepare('UPDATE community_votes SET user_id = ? WHERE post_id = ? AND user_email = ?');
+                            $stmt->bind_param('iis', $user_id, $post_id, $email);
                             $stmt->execute();
+                            $stmt->close();
                         }
 
                         $response = [
@@ -110,9 +109,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif ($comment_id > 0) {
             // Voting on a comment
             // Verify comment exists and check if user is the author
-            $stmt = $db->prepare('SELECT id, user_id FROM community_comments WHERE id = :id');
-            $stmt->bindValue(':id', $comment_id, SQLITE3_INTEGER);
-            $comment = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+            $stmt = $db->prepare('SELECT id, user_id FROM community_comments WHERE id = ?');
+            $stmt->bind_param('i', $comment_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $comment = $result->fetch_assoc();
+            $stmt->close();
 
             if (!$comment) {
                 $response['message'] = 'Comment not found';
@@ -142,11 +144,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     // Connect vote to user account
                     if ($user_id > 0) {
                         // Update the vote record with user_id
-                        $stmt = $db->prepare('UPDATE comment_votes SET user_id = :user_id WHERE comment_id = :comment_id AND user_email = :user_email');
-                        $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
-                        $stmt->bindValue(':comment_id', $comment_id, SQLITE3_INTEGER);
-                        $stmt->bindValue(':user_email', $email, SQLITE3_TEXT);
+                        $stmt = $db->prepare('UPDATE comment_votes SET user_id = ? WHERE comment_id = ? AND user_email = ?');
+                        $stmt->bind_param('iis', $user_id, $comment_id, $email);
                         $stmt->execute();
+                        $stmt->close();
                     }
 
                     $response = [

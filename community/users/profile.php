@@ -29,9 +29,13 @@ if (empty($requested_username)) {
 } else {
     $db = get_db_connection();
 
-    $stmt = $db->prepare("SELECT * FROM community_users WHERE username = :username");
-    $stmt->bindValue(':username', $requested_username, SQLITE3_TEXT);
-    $user = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+    // MySQL prepared statement 
+    $stmt = $db->prepare("SELECT * FROM community_users WHERE username = ?");
+    $stmt->bind_param("s", $requested_username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
+    $stmt->close();
 
     if ($user) {
         $is_own_profile = ($user['id'] == $_SESSION['user_id']);
@@ -42,10 +46,9 @@ if (empty($requested_username)) {
 
 // If user found, get profile data
 if ($user) {
-    // Get user profile data (posts and comments count)
     $db = get_db_connection();
 
-    // Create profile data manually since get_user_profile might be failing
+    // MySQL prepared statement for getting post and comment counts
     $stmt = $db->prepare("
         SELECT 
             COUNT(DISTINCT p.id) AS post_count,
@@ -57,10 +60,13 @@ if ($user) {
         LEFT JOIN 
             community_comments c ON u.id = c.user_id
         WHERE 
-            u.id = :user_id
+            u.id = ?
     ");
-    $stmt->bindValue(':user_id', $user['id'], SQLITE3_INTEGER);
-    $profile = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+    $stmt->bind_param("i", $user['id']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $profile = $result->fetch_assoc();
+    $stmt->close();
 
     if (!$profile) {
         // Create default profile if query fails
@@ -86,11 +92,14 @@ if ($user) {
         LEFT JOIN 
             community_votes v ON p.id = v.post_id
         WHERE 
-            p.user_id = :user_id AND v.vote_type IS NOT NULL
+            p.user_id = ? AND v.vote_type IS NOT NULL
     ");
-    $stmt->bindValue(':user_id', $user['id'], SQLITE3_INTEGER);
-    $post_rep_result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+    $stmt->bind_param("i", $user['id']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $post_rep_result = $result->fetch_assoc();
     $post_reputation = isset($post_rep_result['post_vote_rep']) ? $post_rep_result['post_vote_rep'] : 0;
+    $stmt->close();
 
     // Calculate reputation from downvotes cast by user
     $stmt = $db->prepare("
@@ -99,19 +108,22 @@ if ($user) {
         FROM 
             community_votes
         WHERE 
-            user_id = :user_id AND vote_type = -1
+            user_id = ? AND vote_type = -1
     ");
-    $stmt->bindValue(':user_id', $user['id'], SQLITE3_INTEGER);
-    $downvote_result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+    $stmt->bind_param("i", $user['id']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $downvote_result = $result->fetch_assoc();
     $downvote_reputation = isset($downvote_result['downvote_cost']) ? $downvote_result['downvote_cost'] : 0;
+    $stmt->close();
 
-    // Calculate reputation from comment votes (if the table exists)
+    // Calculate reputation from comment votes
     $comment_reputation = 0;
     $comment_votes_exist = false;
 
     // Check if comment_votes table exists
-    $tables_result = $db->query("SELECT name FROM sqlite_master WHERE type='table' AND name='comment_votes'");
-    if ($tables_result->fetchArray(SQLITE3_ASSOC)) {
+    $result = $db->query("SHOW TABLES LIKE 'comment_votes'");
+    if ($result->num_rows > 0) {
         $comment_votes_exist = true;
 
         // Calculate comment upvote reputation (+2 each)
@@ -123,11 +135,14 @@ if ($user) {
             LEFT JOIN 
                 comment_votes cv ON c.id = cv.comment_id
             WHERE 
-                c.user_id = :user_id AND cv.vote_type IS NOT NULL
+                c.user_id = ? AND cv.vote_type IS NOT NULL
         ");
-        $stmt->bindValue(':user_id', $user['id'], SQLITE3_INTEGER);
-        $comment_rep_result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+        $stmt->bind_param("i", $user['id']);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $comment_rep_result = $result->fetch_assoc();
         $comment_reputation = isset($comment_rep_result['comment_vote_rep']) ? $comment_rep_result['comment_vote_rep'] : 0;
+        $stmt->close();
     }
 
     // Total reputation
@@ -140,11 +155,14 @@ if ($user) {
         FROM 
             community_posts
         WHERE 
-            user_id = :user_id
+            user_id = ?
     ");
-    $stmt->bindValue(':user_id', $user['id'], SQLITE3_INTEGER);
-    $impact_result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+    $stmt->bind_param("i", $user['id']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $impact_result = $result->fetch_assoc();
     $people_reached = isset($impact_result['people_reached']) ? $impact_result['people_reached'] : 0;
+    $stmt->close();
 
     // Get votes cast
     $stmt = $db->prepare("
@@ -153,11 +171,14 @@ if ($user) {
         FROM 
             community_votes
         WHERE 
-            user_id = :user_id
+            user_id = ?
     ");
-    $stmt->bindValue(':user_id', $user['id'], SQLITE3_INTEGER);
-    $votes_result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+    $stmt->bind_param("i", $user['id']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $votes_result = $result->fetch_assoc();
     $votes_cast = isset($votes_result['votes_cast']) ? $votes_result['votes_cast'] : 0;
+    $stmt->close();
 
     // Get reputation history (will need to calculate from existing data)
     $reputation_history = [];
@@ -177,15 +198,17 @@ if ($user) {
         JOIN 
             community_posts p ON v.post_id = p.id
         WHERE 
-            p.user_id = :user_id AND v.vote_type = 1
+            p.user_id = ? AND v.vote_type = 1
         ORDER BY 
             v.created_at DESC
     ");
-    $stmt->bindValue(':user_id', $user['id'], SQLITE3_INTEGER);
-    $result = $stmt->execute();
-    while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+    $stmt->bind_param("i", $user['id']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    while ($row = $result->fetch_assoc()) {
         $reputation_history[] = $row;
     }
+    $stmt->close();
 
     // Post downvotes received - each worth -5
     $stmt = $db->prepare("
@@ -202,15 +225,17 @@ if ($user) {
         JOIN 
             community_posts p ON v.post_id = p.id
         WHERE 
-            p.user_id = :user_id AND v.vote_type = -1
+            p.user_id = ? AND v.vote_type = -1
         ORDER BY 
             v.created_at DESC
     ");
-    $stmt->bindValue(':user_id', $user['id'], SQLITE3_INTEGER);
-    $result = $stmt->execute();
-    while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+    $stmt->bind_param("i", $user['id']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    while ($row = $result->fetch_assoc()) {
         $reputation_history[] = $row;
     }
+    $stmt->close();
 
     // Downvotes cast by user - each worth -2
     $stmt = $db->prepare("
@@ -227,15 +252,17 @@ if ($user) {
         JOIN 
             community_posts p ON v.post_id = p.id
         WHERE 
-            v.user_id = :user_id AND v.vote_type = -1
+            v.user_id = ? AND v.vote_type = -1
         ORDER BY 
             v.created_at DESC
     ");
-    $stmt->bindValue(':user_id', $user['id'], SQLITE3_INTEGER);
-    $result = $stmt->execute();
-    while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+    $stmt->bind_param("i", $user['id']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    while ($row = $result->fetch_assoc()) {
         $reputation_history[] = $row;
     }
+    $stmt->close();
 
     // Add comment votes if the table exists
     if ($comment_votes_exist) {
@@ -256,15 +283,17 @@ if ($user) {
             JOIN
                 community_posts p ON c.post_id = p.id
             WHERE 
-                c.user_id = :user_id AND cv.vote_type = 1
+                c.user_id = ? AND cv.vote_type = 1
             ORDER BY 
                 cv.created_at DESC
         ");
-        $stmt->bindValue(':user_id', $user['id'], SQLITE3_INTEGER);
-        $result = $stmt->execute();
-        while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+        $stmt->bind_param("i", $user['id']);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        while ($row = $result->fetch_assoc()) {
             $reputation_history[] = $row;
         }
+        $stmt->close();
 
         // Comment downvotes received - each worth -1
         $stmt = $db->prepare("
@@ -283,15 +312,17 @@ if ($user) {
             JOIN
                 community_posts p ON c.post_id = p.id
             WHERE 
-                c.user_id = :user_id AND cv.vote_type = -1
+                c.user_id = ? AND cv.vote_type = -1
             ORDER BY 
                 cv.created_at DESC
         ");
-        $stmt->bindValue(':user_id', $user['id'], SQLITE3_INTEGER);
-        $result = $stmt->execute();
-        while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+        $stmt->bind_param("i", $user['id']);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        while ($row = $result->fetch_assoc()) {
             $reputation_history[] = $row;
         }
+        $stmt->close();
     }
 
     // Sort reputation history by date (newest first)
@@ -316,7 +347,7 @@ if ($user) {
             break;
     }
 
-    $stmt = $db->prepare("
+    $query = "
         SELECT 
             p.id,
             p.title,
@@ -329,17 +360,20 @@ if ($user) {
         FROM 
             community_posts p
         WHERE 
-            p.user_id = :user_id
+            p.user_id = ?
         $sort_query
-    ");
+    ";
 
-    $stmt->bindValue(':user_id', $user['id'], SQLITE3_INTEGER);
-    $posts_result = $stmt->execute();
+    $stmt = $db->prepare($query);
+    $stmt->bind_param("i", $user['id']);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     $user_posts = [];
-    while ($row = $posts_result->fetchArray(SQLITE3_ASSOC)) {
+    while ($row = $result->fetch_assoc()) {
         $user_posts[] = $row;
     }
+    $stmt->close();
 
     // Get user's comments
     $comment_sort = isset($_GET['comment_sort']) ? $_GET['comment_sort'] : 'newest';
@@ -371,17 +405,18 @@ if ($user) {
         JOIN
             community_posts p ON c.post_id = p.id
         WHERE 
-            c.user_id = :user_id
+            c.user_id = ?
         $comment_sort_query
     ");
-
-    $stmt->bindValue(':user_id', $user['id'], SQLITE3_INTEGER);
-    $comments_result = $stmt->execute();
+    $stmt->bind_param("i", $user['id']);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     $user_comments = [];
-    while ($row = $comments_result->fetchArray(SQLITE3_ASSOC)) {
+    while ($row = $result->fetch_assoc()) {
         $user_comments[] = $row;
     }
+    $stmt->close();
 
     // Prepare data for reputation chart
     $rep_by_date = [];
@@ -793,15 +828,15 @@ if ($user) {
                     <!-- Posts and Comments Container -->
                     <div class="posts-comments-container">
                         <!-- User Posts Section -->
-                        <div id="posts-section" class="posts-section">
+                        <div class="posts-section">
                             <div class="section-header">
                                 <h3>Posts</h3>
                                 <div class="sort-controls">
                                     <span class="sort-label">Sort by:</span>
                                     <div class="sort-options">
-                                        <a href="?<?php echo !empty($requested_username) ? 'username=' . urlencode($requested_username) . '&' : ''; ?>sort=score#posts-section" class="sort-option <?php echo $sort === 'score' ? 'active' : ''; ?>">Score</a>
-                                        <a href="?<?php echo !empty($requested_username) ? 'username=' . urlencode($requested_username) . '&' : ''; ?>sort=newest#posts-section" class="sort-option <?php echo $sort === 'newest' ? 'active' : ''; ?>">Newest</a>
-                                        <a href="?<?php echo !empty($requested_username) ? 'username=' . urlencode($requested_username) . '&' : ''; ?>sort=oldest#posts-section" class="sort-option <?php echo $sort === 'oldest' ? 'active' : ''; ?>">Oldest</a>
+                                        <a href="?<?php echo !empty($requested_username) ? 'username=' . urlencode($requested_username) . '&' : ''; ?>sort=score" class="sort-option <?php echo $sort === 'score' ? 'active' : ''; ?>">Score</a>
+                                        <a href="?<?php echo !empty($requested_username) ? 'username=' . urlencode($requested_username) . '&' : ''; ?>sort=newest" class="sort-option <?php echo $sort === 'newest' ? 'active' : ''; ?>">Newest</a>
+                                        <a href="?<?php echo !empty($requested_username) ? 'username=' . urlencode($requested_username) . '&' : ''; ?>sort=oldest" class="sort-option <?php echo $sort === 'oldest' ? 'active' : ''; ?>">Oldest</a>
                                     </div>
                                 </div>
                             </div>

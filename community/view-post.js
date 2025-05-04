@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (timeLeft <= 0) {
         element.textContent = "now";
-        // If we're in a rate limit message, try to re-enable the submit button
+        // Re-enable the submit button
         const submitBtn = document.querySelector(
           ".comment-form button[type='submit']"
         );
@@ -531,24 +531,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Create and insert the edit form
         const formHtml = `
-        <form class="inline-edit-form" data-comment-id="${commentId}">
-          <div class="form-group">
-            <div class="formatting-toolbar">
-              <button type="button" class="format-btn" title="Bold (Ctrl+B)" onclick="applyFormatting(this.closest('form').querySelector('textarea'), '**', false, 'bold text')">B</button>
-              <button type="button" class="format-btn" title="Italic (Ctrl+I)" onclick="applyFormatting(this.closest('form').querySelector('textarea'), '_', false, 'italic text')">I</button>
-              <button type="button" class="format-btn" title="Bulleted List" onclick="applyFormatting(this.closest('form').querySelector('textarea'), '- ', true, 'list item')">• List</button>
-              <button type="button" class="format-btn" title="Numbered List" onclick="applyFormatting(this.closest('form').querySelector('textarea'), '1. ', true, 'list item')">1. List</button>
-              <button type="button" class="format-btn" title="Blockquote" onclick="applyFormatting(this.closest('form').querySelector('textarea'), '> ', true, 'quote')">Quote</button>
-              <button type="button" class="format-btn" title="Code" onclick="applyFormatting(this.closest('form').querySelector('textarea'), '\`', false, 'code')">Code</button>
+          <form class="inline-edit-form" data-comment-id="${commentId}">
+            <div class="form-group">
+              <textarea name="comment_content" rows="4" required>${commentText}</textarea>
             </div>
-            <textarea name="comment_content" rows="4" required class="formattable">${commentText}</textarea>
-          </div>
-          <div class="form-actions">
-            <button type="button" class="btn cancel-edit">Cancel</button>
-            <button type="submit" class="btn btn-gray">Save Changes</button>
-          </div>
-        </form>
-      `;
+            <div class="form-actions">
+              <button type="button" id="cancel-edit" class="btn btn-gray">Cancel</button>
+              <button type="submit" class="btn btn-gray">Save Changes</button>
+            </div>
+          </form>
+        `;
 
         // Replace the comment content with the form
         commentContent.innerHTML = formHtml;
@@ -560,7 +552,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Add event listeners for the form
         const form = commentContent.querySelector("form");
-        const cancelButton = form.querySelector(".cancel-edit");
+        const cancelButton = document.getElementById("cancel-edit");
 
         // Cancel button event
         cancelButton.addEventListener("click", function () {

@@ -79,10 +79,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $user_id = isset($current_user['id']) ? intval($current_user['id']) : 0;
 
                 if ($user_id > 0) {
-                    $stmt = $db->prepare('UPDATE community_comments SET user_id = :user_id WHERE id = :comment_id');
-                    $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
-                    $stmt->bindValue(':comment_id', $comment['id'], SQLITE3_INTEGER);
+                    $stmt = $db->prepare('UPDATE community_comments SET user_id = ? WHERE id = ?');
+                    $stmt->bind_param('ii', $user_id, $comment['id']);
                     $stmt->execute();
+                    $stmt->close();
                 }
 
                 $response = [

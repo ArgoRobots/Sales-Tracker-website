@@ -13,39 +13,41 @@ function register_user($username, $email, $password)
     $db = get_db_connection();
 
     // Check if username exists
-    $stmt = $db->prepare('SELECT id FROM community_users WHERE username = :username');
-    $stmt->bindValue(':username', $username, SQLITE3_TEXT);
-    $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+    $stmt = $db->prepare('SELECT id FROM community_users WHERE username = ?');
+    $stmt->bind_param('s', $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user_exists = $result->fetch_assoc();
+    $stmt->close();
 
-    if ($result) {
+    if ($user_exists) {
         return ['success' => false, 'message' => 'Username already exists'];
     }
 
     // Check if email exists
-    $stmt = $db->prepare('SELECT id FROM community_users WHERE email = :email');
-    $stmt->bindValue(':email', $email, SQLITE3_TEXT);
-    $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+    $stmt = $db->prepare('SELECT id FROM community_users WHERE email = ?');
+    $stmt->bind_param('s', $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $email_exists = $result->fetch_assoc();
+    $stmt->close();
 
-    if ($result) {
+    if ($email_exists) {
         return ['success' => false, 'message' => 'Email already exists'];
     }
 
-    // Generate verification code
     $verification_code = generate_verification_code();
-
-    // Generate password hash
     $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
     // Insert new user
     $stmt = $db->prepare('INSERT INTO community_users (username, email, password_hash, verification_code, email_verified) 
-                         VALUES (:username, :email, :password_hash, :verification_code, 0)');
-    $stmt->bindValue(':username', $username, SQLITE3_TEXT);
-    $stmt->bindValue(':email', $email, SQLITE3_TEXT);
-    $stmt->bindValue(':password_hash', $password_hash, SQLITE3_TEXT);
-    $stmt->bindValue(':verification_code', $verification_code, SQLITE3_TEXT);
+                         VALUES (?, ?, ?, ?, 0)');
+    $stmt->bind_param('ssss', $username, $email, $password_hash, $verification_code);
+    $success = $stmt->execute();
+    $stmt->close();
 
-    if ($stmt->execute()) {
-        $user_id = $db->lastInsertRowID();
+    if ($success) {
+        $user_id = $db->insert_id;
 
         // Send verification email with code
         send_verification_email($email, $verification_code, $username);
@@ -168,19 +170,24 @@ function verify_email($token)
     $db = get_db_connection();
 
     // Find user by verification token
-    $stmt = $db->prepare('SELECT id FROM community_users WHERE verification_token = :token');
-    $stmt->bindValue(':token', $token, SQLITE3_TEXT);
-    $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+    $stmt = $db->prepare('SELECT id FROM community_users WHERE verification_token = ?');
+    $stmt->bind_param('s', $token);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
+    $stmt->close();
 
-    if (!$result) {
+    if (!$user) {
         return false;
     }
 
     // Update user as verified
-    $stmt = $db->prepare('UPDATE community_users SET email_verified = 1, verification_token = NULL WHERE id = :id');
-    $stmt->bindValue(':id', $result['id'], SQLITE3_INTEGER);
+    $stmt = $db->prepare('UPDATE community_users SET email_verified = 1, verification_token = NULL WHERE id = ?');
+    $stmt->bind_param('i', $user['id']);
+    $success = $stmt->execute();
+    $stmt->close();
 
-    return $stmt->execute() !== false;
+    return $success;
 }
 
 /**
@@ -198,9 +205,12 @@ function login_user($login, $password)
     $field = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
 
     // Find user by login
-    $stmt = $db->prepare("SELECT * FROM community_users WHERE $field = :login");
-    $stmt->bindValue(':login', $login, SQLITE3_TEXT);
-    $user = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+    $stmt = $db->prepare("SELECT * FROM community_users WHERE $field = ?");
+    $stmt->bind_param('s', $login);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
+    $stmt->close();
 
     if (!$user) {
         return false;
@@ -209,11 +219,12 @@ function login_user($login, $password)
     // Verify password
     if (password_verify($password, $user['password_hash'])) {
         // Update last login time
-        $stmt = $db->prepare('UPDATE community_users SET last_login = CURRENT_TIMESTAMP WHERE id = :id');
-        $stmt->bindValue(':id', $user['id'], SQLITE3_INTEGER);
+        $stmt = $db->prepare('UPDATE community_users SET last_login = NOW() WHERE id = ?');
+        $stmt->bind_param('i', $user['id']);
         $stmt->execute();
+        $stmt->close();
 
-        // Don't return password hash
+        // Don't return sensitive data
         unset($user['password_hash']);
         unset($user['verification_token']);
         unset($user['reset_token']);
@@ -281,27 +292,19 @@ function generate_remember_token($user_id)
     $token = bin2hex(random_bytes(32));
     $expires = date('Y-m-d H:i:s', time() + (30 * 24 * 60 * 60)); // 30 days
 
-    // Check if table exists, create if not
-    $db->exec("CREATE TABLE IF NOT EXISTS remember_tokens (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER NOT NULL,
-        token TEXT NOT NULL,
-        expires_at TIMESTAMP NOT NULL,
-        FOREIGN KEY (user_id) REFERENCES community_users(id) ON DELETE CASCADE
-    )");
-
     // Remove any existing tokens for this user
-    $stmt = $db->prepare('DELETE FROM remember_tokens WHERE user_id = :user_id');
-    $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
+    $stmt = $db->prepare('DELETE FROM remember_tokens WHERE user_id = ?');
+    $stmt->bind_param('i', $user_id);
     $stmt->execute();
+    $stmt->close();
 
     // Store the new token
-    $stmt = $db->prepare('INSERT INTO remember_tokens (user_id, token, expires_at) VALUES (:user_id, :token, :expires_at)');
-    $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
-    $stmt->bindValue(':token', $token, SQLITE3_TEXT);
-    $stmt->bindValue(':expires_at', $expires, SQLITE3_TEXT);
+    $stmt = $db->prepare('INSERT INTO remember_tokens (user_id, token, expires_at) VALUES (?, ?, ?)');
+    $stmt->bind_param('iss', $user_id, $token, $expires);
+    $success = $stmt->execute();
+    $stmt->close();
 
-    if ($stmt->execute()) {
+    if ($success) {
         return $token;
     }
 
@@ -320,11 +323,12 @@ function validate_remember_token($token)
 
     $stmt = $db->prepare('SELECT rt.user_id, u.* FROM remember_tokens rt 
                          JOIN community_users u ON rt.user_id = u.id
-                         WHERE rt.token = :token AND rt.expires_at > CURRENT_TIMESTAMP');
-    $stmt->bindValue(':token', $token, SQLITE3_TEXT);
-    $result = $stmt->execute();
-
-    $user = $result->fetchArray(SQLITE3_ASSOC);
+                         WHERE rt.token = ? AND rt.expires_at > NOW()');
+    $stmt->bind_param('s', $token);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
+    $stmt->close();
 
     if ($user) {
         // Don't return sensitive data
@@ -348,9 +352,10 @@ function clear_remember_token($user_id)
 {
     $db = get_db_connection();
 
-    $stmt = $db->prepare('DELETE FROM remember_tokens WHERE user_id = :user_id');
-    $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
+    $stmt = $db->prepare('DELETE FROM remember_tokens WHERE user_id = ?');
+    $stmt->bind_param('i', $user_id);
     $stmt->execute();
+    $stmt->close();
 
     // Clear the cookie
     setcookie('remember_me', '', time() - 3600, '/');
@@ -366,13 +371,22 @@ function get_user($user_id)
 {
     $db = get_db_connection();
 
+    // Use a new database connection for each call
     $stmt = $db->prepare('SELECT id, username, email, bio, avatar, role, email_verified, created_at, last_login 
-                         FROM community_users WHERE id = :id');
-    $stmt->bindValue(':id', $user_id, SQLITE3_INTEGER);
+                        FROM community_users WHERE id = ?');
 
-    $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+    if (!$stmt) {
+        error_log("Database prepare error in get_user(): " . $db->error);
+        return false;
+    }
 
-    return $result ? $result : false;
+    $stmt->bind_param('i', $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
+    $stmt->close();
+
+    return $user ? $user : false;
 }
 
 /**
@@ -386,9 +400,12 @@ function request_password_reset($email)
     $db = get_db_connection();
 
     // Find user by email
-    $stmt = $db->prepare('SELECT id, username FROM community_users WHERE email = :email');
-    $stmt->bindValue(':email', $email, SQLITE3_TEXT);
-    $user = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+    $stmt = $db->prepare('SELECT id, username FROM community_users WHERE email = ?');
+    $stmt->bind_param('s', $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
+    $stmt->close();
 
     if (!$user) {
         return false;
@@ -401,13 +418,12 @@ function request_password_reset($email)
     $expiry = date('Y-m-d H:i:s', strtotime('+24 hours'));
 
     // Update user with reset token
-    $stmt = $db->prepare('UPDATE community_users SET reset_token = :reset_token, reset_token_expiry = :expiry WHERE id = :id');
-    $stmt->bindValue(':reset_token', $reset_token, SQLITE3_TEXT);
-    $stmt->bindValue(':expiry', $expiry, SQLITE3_TEXT);
-    $stmt->bindValue(':id', $user['id'], SQLITE3_INTEGER);
+    $stmt = $db->prepare('UPDATE community_users SET reset_token = ?, reset_token_expiry = ? WHERE id = ?');
+    $stmt->bind_param('ssi', $reset_token, $expiry, $user['id']);
+    $success = $stmt->execute();
+    $stmt->close();
 
-    if ($stmt->execute()) {
-        // Send password reset email
+    if ($success) {
         return send_password_reset_email($email, $reset_token, $user['username']);
     }
 
@@ -478,23 +494,26 @@ function reset_password($token, $new_password)
     $db = get_db_connection();
 
     // Find user by reset token and check expiry
-    $stmt = $db->prepare('SELECT id FROM community_users WHERE reset_token = :token AND reset_token_expiry > CURRENT_TIMESTAMP');
-    $stmt->bindValue(':token', $token, SQLITE3_TEXT);
-    $user = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+    $stmt = $db->prepare('SELECT id FROM community_users WHERE reset_token = ? AND reset_token_expiry > NOW()');
+    $stmt->bind_param('s', $token);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
+    $stmt->close();
 
     if (!$user) {
         return false;
     }
 
-    // Hash new password
     $password_hash = password_hash($new_password, PASSWORD_DEFAULT);
 
     // Update user with new password and clear reset token
-    $stmt = $db->prepare('UPDATE community_users SET password_hash = :password_hash, reset_token = NULL, reset_token_expiry = NULL WHERE id = :id');
-    $stmt->bindValue(':password_hash', $password_hash, SQLITE3_TEXT);
-    $stmt->bindValue(':id', $user['id'], SQLITE3_INTEGER);
+    $stmt = $db->prepare('UPDATE community_users SET password_hash = ?, reset_token = NULL, reset_token_expiry = NULL WHERE id = ?');
+    $stmt->bind_param('si', $password_hash, $user['id']);
+    $success = $stmt->execute();
+    $stmt->close();
 
-    return $stmt->execute() !== false;
+    return $success;
 }
 
 /**
@@ -507,29 +526,14 @@ function is_admin($user_id)
 {
     $db = get_db_connection();
 
-    $stmt = $db->prepare('SELECT role FROM community_users WHERE id = :id');
-    $stmt->bindValue(':id', $user_id, SQLITE3_INTEGER);
-    $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+    $stmt = $db->prepare('SELECT role FROM community_users WHERE id = ?');
+    $stmt->bind_param('i', $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
+    $stmt->close();
 
-    return $result && $result['role'] === 'admin';
-}
-
-/**
- * Get user profile with post and comment counts
- * 
- * @param int $user_id User ID
- * @return array|bool User profile data or false if not found
- */
-function get_user_profile($user_id)
-{
-    $db = get_db_connection();
-
-    $stmt = $db->prepare('SELECT * FROM community_user_profiles WHERE id = :id');
-    $stmt->bindValue(':id', $user_id, SQLITE3_INTEGER);
-
-    $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
-
-    return $result ? $result : false;
+    return $user && $user['role'] === 'admin';
 }
 
 /**
@@ -591,19 +595,38 @@ function upload_avatar($user_id, $file)
         // Set permissions for the file
         chmod($target_path, 0644);
 
-        // Update user record with new avatar path
         $db = get_db_connection();
-        $avatar_path = 'uploads/avatars/' . $filename;
-        $stmt = $db->prepare('UPDATE community_users SET avatar = :avatar, updated_at = CURRENT_TIMESTAMP WHERE id = :id');
-        $stmt->bindValue(':avatar', $avatar_path, SQLITE3_TEXT);
-        $stmt->bindValue(':id', $user_id, SQLITE3_INTEGER);
-        $stmt->execute();
 
-        // Update session with avatar path
-        $_SESSION['avatar'] = $avatar_path;
+        try {
+            // Begin transaction to reduce lock time
+            $db->begin_transaction();
 
-        error_log("Avatar successfully uploaded: " . $avatar_path);
-        return $avatar_path;
+            $avatar_path = 'uploads/avatars/' . $filename;
+            $stmt = $db->prepare('UPDATE community_users SET avatar = ?, updated_at = NOW() WHERE id = ?');
+            $stmt->bind_param('si', $avatar_path, $user_id);
+            $success = $stmt->execute();
+            $stmt->close();
+
+            if (!$success) {
+                $db->rollback();
+                error_log("Failed to update avatar in database: " . $db->error);
+                return false;
+            }
+
+            // Commit transaction
+            $db->commit();
+
+            // Update session with avatar path
+            $_SESSION['avatar'] = $avatar_path;
+
+            error_log("Avatar successfully uploaded: " . $avatar_path);
+            return $avatar_path;
+        } catch (Exception $e) {
+            // Rollback on exception
+            $db->rollback();
+            error_log("Exception in avatar upload: " . $e->getMessage());
+            return false;
+        }
     }
 
     error_log("Failed to move uploaded file to: " . $target_path);
@@ -631,23 +654,19 @@ function is_user_logged_in()
             return false;
         }
 
-        $stmt = $db->prepare('SELECT id FROM community_users WHERE id = :id');
+        $stmt = $db->prepare('SELECT id FROM community_users WHERE id = ?');
         if (!$stmt) {
-            error_log('Failed to prepare statement in is_user_logged_in: ' . $db->lastErrorMsg());
+            error_log('Failed to prepare statement in is_user_logged_in: ' . $db->error);
             return false;
         }
 
-        $stmt->bindValue(':id', $_SESSION['user_id'], SQLITE3_INTEGER);
-        $result = $stmt->execute();
+        $stmt->bind_param('i', $_SESSION['user_id']);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+        $stmt->close();
 
-        if (!$result) {
-            error_log('Failed to execute statement in is_user_logged_in: ' . $db->lastErrorMsg());
-            return false;
-        }
-
-        $user = $result->fetchArray(SQLITE3_ASSOC);
-
-        if ($user === false) {
+        if (!$user) {
             error_log('User with ID ' . $_SESSION['user_id'] . ' not found in database');
             return false;
         }
@@ -655,6 +674,8 @@ function is_user_logged_in()
         return true;
     } catch (Exception $e) {
         error_log('Exception in is_user_logged_in: ' . $e->getMessage());
+        if (isset($db)) {
+        }
         return false;
     }
 }
@@ -696,11 +717,14 @@ function get_current_user_ID()
     $db = get_db_connection();
 
     $stmt = $db->prepare('SELECT id, username, email, bio, avatar, role, email_verified, created_at, last_login 
-                         FROM community_users WHERE id = :id');
-    $stmt->bindValue(':id', $user_id, SQLITE3_INTEGER);
-    $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+                         FROM community_users WHERE id = ?');
+    $stmt->bind_param('i', $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
+    $stmt->close();
 
-    if (!$result) {
+    if (!$user) {
         // User ID in session but not found in database
         // Return basic info from session
         return [
@@ -713,7 +737,7 @@ function get_current_user_ID()
         ];
     }
 
-    return $result;
+    return $user;
 }
 
 /**
@@ -726,7 +750,6 @@ function generate_verification_code()
     return sprintf('%06d', mt_rand(100000, 999999));
 }
 
-
 /**
  * Resend verification code
  * 
@@ -738,9 +761,12 @@ function resend_verification_code($user_id)
     $db = get_db_connection();
 
     // Get user data
-    $stmt = $db->prepare('SELECT email, username FROM community_users WHERE id = :id');
-    $stmt->bindValue(':id', $user_id, SQLITE3_INTEGER);
-    $user = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+    $stmt = $db->prepare('SELECT email, username FROM community_users WHERE id = ?');
+    $stmt->bind_param('i', $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
+    $stmt->close();
 
     if (!$user) {
         return false;
@@ -750,11 +776,12 @@ function resend_verification_code($user_id)
     $verification_code = generate_verification_code();
 
     // Update user with new verification code
-    $stmt = $db->prepare('UPDATE community_users SET verification_code = :code WHERE id = :id');
-    $stmt->bindValue(':code', $verification_code, SQLITE3_TEXT);
-    $stmt->bindValue(':id', $user_id, SQLITE3_INTEGER);
+    $stmt = $db->prepare('UPDATE community_users SET verification_code = ? WHERE id = ?');
+    $stmt->bind_param('si', $verification_code, $user_id);
+    $success = $stmt->execute();
+    $stmt->close();
 
-    if ($stmt->execute()) {
+    if ($success) {
         // Send verification email
         return send_verification_email($user['email'], $verification_code, $user['username']);
     }
