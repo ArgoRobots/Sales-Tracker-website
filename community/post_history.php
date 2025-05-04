@@ -97,7 +97,6 @@ array_unshift($history, $current_post);
     <script src="post-history-diff.js" defer></script>
 
     <link rel="stylesheet" href="post-history.css">
-    <link rel="stylesheet" href="post-history-diff.css">
     <link rel="stylesheet" href="view-post.css">
     <link rel="stylesheet" href="../resources/styles/button.css">
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
