@@ -35,28 +35,10 @@ document.addEventListener("DOMContentLoaded", function () {
             }
           }
 
-          updateHeaderAvatar(e.target.result);
           avatarForm.submit();
         };
         reader.readAsDataURL(this.files[0]);
       }
     });
-  }
-
-  // Function to update header avatar
-  function updateHeaderAvatar(avatarSrc) {
-    const headerAvatar = document.querySelector("header .account-avatar");
-    if (headerAvatar) {
-      headerAvatar.innerHTML = `<img src="${avatarSrc}" alt="Profile">`;
-    }
-  }
-
-  // If success message is shown after avatar upload, update header avatar
-  const successMessage = document.querySelector(".success-message");
-  if (successMessage && document.getElementById("avatar-preview")) {
-    const avatarSrc = document
-      .getElementById("avatar-preview")
-      .getAttribute("src");
-    updateHeaderAvatar(avatarSrc);
   }
 });

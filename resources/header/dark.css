@@ -23,3 +23,25 @@ header .header-inner .menu-container ul li a {
 header .header-inner .menu-container ul li a:after {
   background: #000 !important;
 }
+
+.account-avatar {
+  background-color: white;
+  justify-content: center;
+  color: #333;
+  border: 2px solid #a3a3a3;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.account-button:hover .account-avatar {
+  transform: scale(1.05);
+  border-color: #656565;
+}
+
+.author-avatar-placeholder {
+  background-color: white;
+  color: #333;
+}
+
+.account-avatar svg {
+  stroke: #333;
+}

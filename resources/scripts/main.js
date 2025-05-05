@@ -6,7 +6,9 @@ function adjustLinksAndImages(containerSelector) {
   var linkPrefix = "";
 
   // Calculate path prefixes
-  for (var i = 0; i < linkDepth; i++) linkPrefix += "../";
+  for (var i = 0; i < linkDepth; i++) {
+    linkPrefix += "../";
+  }
 
   // Adjust relative links
   $(containerSelector + " a").each(function () {
@@ -25,46 +27,44 @@ function adjustLinksAndImages(containerSelector) {
   });
 }
 
-// Avatar handling
-document.addEventListener("DOMContentLoaded", function () {
+function setDefaultAvatar() {
   const accountAvatar = document.querySelector(".account-avatar");
-
-  function setDefaultAvatar() {
-    if (accountAvatar) {
-      accountAvatar.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-          <circle cx="12" cy="7" r="4"></circle>
-        </svg>`;
-    }
+  if (accountAvatar) {
+    accountAvatar.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+           viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+      </svg>`;
   }
-
-  fetch("/community/get_avatar_info.php")
-    .then((response) => response.json())
-    .then((data) => {
-      if (accountAvatar) {
-        if (data.logged_in) {
-          if (data.has_avatar) {
-            accountAvatar.innerHTML = `<img src="${data.avatar_url}" alt="Profile">`;
-          } else {
-            accountAvatar.innerHTML = `<span class="author-avatar-placeholder">${data.initial}</span>`;
-          }
-        } else {
-          setDefaultAvatar();
-        }
-      }
-    })
-    .catch((error) => {
-      console.error("Error fetching avatar info:", error);
-      setDefaultAvatar();
-    });
-});
+}
 
 // Apply adjustments to all pages
 $(document).ready(function () {
   $("#includeHeader").load("../../resources/header/index.html", function () {
     adjustLinksAndImages("#includeHeader");
+
+    // Load the avatar after the header is loaded
+    const accountAvatar = document.querySelector(".account-avatar");
+    fetch("/community/get_avatar_info.php")
+      .then((response) => response.json())
+      .then((data) => {
+        if (accountAvatar) {
+          if (data.logged_in) {
+            if (data.has_avatar) {
+              accountAvatar.innerHTML = `<img src="${data.avatar_url}" alt="Profile">`;
+            } else {
+              accountAvatar.innerHTML = `<span class="author-avatar-placeholder">${data.initial}</span>`;
+            }
+          } else {
+            setDefaultAvatar();
+          }
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching avatar info:", error);
+        setDefaultAvatar();
+      });
   });
 
   $("#includeFooter").load("../../resources/footer/index.html", function () {
