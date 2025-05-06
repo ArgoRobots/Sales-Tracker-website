@@ -277,7 +277,6 @@ td:nth-child(6) {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
 }
 
 .total-keys {

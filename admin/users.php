@@ -118,8 +118,8 @@ if (isset($_SESSION['message'])) {
 
     <script src="../resources/notifications/notifications.js" defer></script>
 
-    <link rel="stylesheet" href="index-style.css">
-    <link rel="stylesheet" href="users-style.css">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="users.css">
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../resources/notifications/notifications.css">
 </head>

@@ -195,7 +195,7 @@ if (isset($_SESSION['message'])) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <script src="../resources/notifications/notifications.js" defer></script>
 
-    <link rel="stylesheet" href="index-style.css">
+    <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../resources/notifications/notifications.css">
 </head>
