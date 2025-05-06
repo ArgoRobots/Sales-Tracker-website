@@ -1,5 +1,5 @@
 .btn {
-    padding: 8px 0;
+    padding: 10px 0;
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -43,7 +43,7 @@
     background: transparent;
     border: 2px solid black;
     color: black;
-    padding: 5px 0;
+    padding: 6px 0;
 }
 
 .btn-black:hover {

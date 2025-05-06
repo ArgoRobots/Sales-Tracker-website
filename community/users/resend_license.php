@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $license_key = $row['license_key'];
 
         // Send the existing license key via email
-        $email_sent = send_license_email($email, $license_key);
+        $email_sent = resend_license_email($email, $license_key);
 
         if ($email_sent) {
             $success_message = 'Your license key has been sent to your email address.';
