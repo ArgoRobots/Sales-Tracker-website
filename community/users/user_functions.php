@@ -125,7 +125,7 @@ function send_verification_email($email, $code, $username)
     <body>
         <div class='container'>
             <div class='header'>
-                <h2>Welcome to Argo Community!</h2>
+                <h2>Welcome to the Argo Community!</h2>
             </div>
             <div class='content'>
                 <p>Hello $username,</p>
@@ -748,43 +748,4 @@ function get_current_user_ID()
 function generate_verification_code()
 {
     return sprintf('%06d', mt_rand(100000, 999999));
-}
-
-/**
- * Resend verification code
- * 
- * @param int $user_id User ID
- * @return bool Success status
- */
-function resend_verification_code($user_id)
-{
-    $db = get_db_connection();
-
-    // Get user data
-    $stmt = $db->prepare('SELECT email, username FROM community_users WHERE id = ?');
-    $stmt->bind_param('i', $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $user = $result->fetch_assoc();
-    $stmt->close();
-
-    if (!$user) {
-        return false;
-    }
-
-    // Generate new verification code
-    $verification_code = generate_verification_code();
-
-    // Update user with new verification code
-    $stmt = $db->prepare('UPDATE community_users SET verification_code = ? WHERE id = ?');
-    $stmt->bind_param('si', $verification_code, $user_id);
-    $success = $stmt->execute();
-    $stmt->close();
-
-    if ($success) {
-        // Send verification email
-        return send_verification_email($user['email'], $verification_code, $user['username']);
-    }
-
-    return false;
 }

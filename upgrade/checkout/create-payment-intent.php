@@ -35,20 +35,22 @@ try {
         // If so, we'll reuse it rather than creating multiple keys
         $db = get_db_connection();
         $stmt = $db->prepare('SELECT license_key FROM license_keys 
-                             WHERE email = :email 
-                             AND created_at > datetime("now", "-1 hour")
+                             WHERE email = ? 
+                             AND created_at > DATE_SUB(NOW(), INTERVAL 1 HOUR)
                              AND activated = 0
                              AND transaction_id IS NULL
                              LIMIT 1');
-        $stmt->bindValue(':email', $customer_email, SQLITE3_TEXT);
-        $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+        $stmt->bind_param('s', $customer_email);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-        if ($result) {
-            $license_key = $result['license_key'];
+        if ($row = $result->fetch_assoc()) {
+            $license_key = $row['license_key'];
         } else {
             // Create a new license key
             $license_key = create_license_key($customer_email);
         }
+        $stmt->close();
     }
 
     // Create a PaymentIntent
@@ -67,13 +69,12 @@ try {
 
     // Store the payment intent ID in our database
     if (isset($license_key) && !empty($license_key)) {
-        $db = get_db_connection();
         $stmt = $db->prepare('UPDATE license_keys SET 
-                              payment_intent = :payment_intent
-                              WHERE license_key = :license_key');
-        $stmt->bindValue(':payment_intent', $payment_intent->id, SQLITE3_TEXT);
-        $stmt->bindValue(':license_key', $license_key, SQLITE3_TEXT);
+                              payment_intent = ?
+                              WHERE license_key = ?');
+        $stmt->bind_param('ss', $payment_intent->id, $license_key);
         $stmt->execute();
+        $stmt->close();
     }
 
     // Return the client secret
@@ -90,6 +91,7 @@ try {
     ]);
 
     // Close database connection if it exists
-    if (isset($db)) {
+    if (isset($db) && $db instanceof mysqli) {
+        $db->close();
     }
 }

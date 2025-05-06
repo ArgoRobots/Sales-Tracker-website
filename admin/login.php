@@ -36,8 +36,8 @@ if (isset($_SESSION['awaiting_2fa']) && $_SESSION['awaiting_2fa'] === true) {
 
                 // Update last login time
                 $db = get_db_connection();
-                $stmt = $db->prepare('UPDATE admin_users SET last_login = CURRENT_TIMESTAMP WHERE username = :username');
-                $stmt->bindValue(':username', $username, SQLITE3_TEXT);
+                $stmt = $db->prepare('UPDATE admin_users SET last_login = CURRENT_TIMESTAMP WHERE username = ?');
+                $stmt->bind_param('s', $username);
                 $stmt->execute();
 
                 header('Location: index.php');
@@ -57,12 +57,14 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
         $error = 'Please enter both username and password.';
     } else {
         $db = get_db_connection();
-        $stmt = $db->prepare('SELECT * FROM admin_users WHERE LOWER(username) = LOWER(:username)');
-        $stmt->bindValue(':username', $username, SQLITE3_TEXT);
-        $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+        $stmt = $db->prepare('SELECT * FROM admin_users WHERE LOWER(username) = LOWER(?)');
+        $stmt->bind_param('s', $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
 
-        if ($result && password_verify($password, $result['password_hash'])) {
-            $actual_username = $result['username']; // Get actual username with correct case
+        if ($user && password_verify($password, $user['password_hash'])) {
+            $actual_username = $user['username']; // Get actual username with correct case
 
             if (is_2fa_enabled($actual_username)) {
                 // 2FA is enabled, show the verification form
@@ -75,8 +77,8 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
                 $_SESSION['admin_username'] = $actual_username;
 
                 // Update last login time
-                $stmt = $db->prepare('UPDATE admin_users SET last_login = CURRENT_TIMESTAMP WHERE username = :username');
-                $stmt->bindValue(':username', $actual_username, SQLITE3_TEXT);
+                $stmt = $db->prepare('UPDATE admin_users SET last_login = CURRENT_TIMESTAMP WHERE username = ?');
+                $stmt->bind_param('s', $actual_username);
                 $stmt->execute();
 
                 header('Location: index.php');

@@ -44,5 +44,13 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
     message.dataset.processed = "true";
+
+    // Add event listener for animation end to remove the element
+    message.addEventListener("animationend", function () {
+      // Remove the element from the DOM when animation completes
+      if (message.parentNode) {
+        message.parentNode.removeChild(message);
+      }
+    });
   }
 });

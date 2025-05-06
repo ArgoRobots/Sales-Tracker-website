@@ -160,19 +160,6 @@ header .header-inner .menu-container .menu .community:after {
     min-width: 40px;
 }
 
-.post-select-label {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-
-.post-checkbox {
-    cursor: pointer;
-    width: 18px;
-    height: 18px;
-}
-
 /* Votes section */
 .post-votes {
     background-color: var(--whiteBackground);

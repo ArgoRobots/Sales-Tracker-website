@@ -1,18 +1,20 @@
 <?php
+
 /**
- * Send license key via email using direct PHP mail
+ * Send license key via email using PHP mail
  * 
  * @param string $to_email Recipient email address
  * @param string $license_key The license key to send
  * @return bool True if successful, false otherwise
  */
-function send_license_email($to_email, $license_key) {
+function send_license_email($to_email, $license_key)
+{
     // Email subject
     $subject = 'Your Argo Sales Tracker License Key';
-    
+
     // Get the email HTML content
     $email_html = get_license_email_template($to_email, $license_key);
-    
+
     // Email headers for HTML email
     $headers = [
         'MIME-Version: 1.0',
@@ -21,10 +23,10 @@ function send_license_email($to_email, $license_key) {
         'Reply-To: support@argorobots.com',
         'X-Mailer: PHP/' . phpversion()
     ];
-    
+
     // Send the email
     $mail_result = mail($to_email, $subject, $email_html, implode("\r\n", $headers));
-    
+
     return $mail_result;
 }
 
@@ -35,9 +37,8 @@ function send_license_email($to_email, $license_key) {
  * @param string $license_key The license key
  * @return string HTML email content
  */
-function get_license_email_template($email, $license_key) {
-    $base_url = 'https://argorobots.com';
-    
+function get_license_email_template($email, $license_key)
+{
     return <<<HTML
 <!DOCTYPE html>
 <html>
@@ -174,12 +175,11 @@ function get_license_email_template($email, $license_key) {
 <body>
     <div class="container">
         <div class="header">
-            <img src="{$base_url}/images/argo-logo/Argo-white.svg" alt="Argo Sales Tracker Logo">
+            <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Sales Tracker Logo">
         </div>
         
         <div class="content">
             <h1>Thank You for Your Purchase!</h1>
-            
             <p>Here is your Argo Sales Tracker license key:</p>
             
             <div class="license-key">{$license_key}</div>
@@ -195,11 +195,10 @@ function get_license_email_template($email, $license_key) {
             </div>
             
             <div class="button-container">
-                <a href="{$base_url}/documentation/index.html" class="button">View Documentation</a>
+                <a href="https://argorobots.com/documentation/index.html" class="button">View Documentation</a>
             </div>
             
-            <p>If you have any questions or need assistance, please don't hesitate to <a href="{$base_url}/contact-us/index.php" style="color: #2563eb;">contact our support team</a>.</p>
-            
+            <p>If you have any questions or need assistance, please don't hesitate to <a href="https://argorobots.com/contact-us/index.php" style="color: #2563eb;">contact our support team</a>.</p>
             <p>Thank you for choosing Argo Sales Tracker!</p>
         </div>
         

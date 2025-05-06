@@ -13,8 +13,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_user'])) {
     $user_id = $_POST['user_id'];
 
     $db = get_db_connection();
-    $stmt = $db->prepare('DELETE FROM community_users WHERE id = :id');
-    $stmt->bindValue(':id', $user_id, SQLITE3_INTEGER);
+    $stmt = $db->prepare('DELETE FROM community_users WHERE id = ?');
+    $stmt->bind_param('i', $user_id);
     $result = $stmt->execute();
 
     if ($result) {
@@ -34,21 +34,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_user'])) {
 function get_all_users($search = '')
 {
     $db = get_db_connection();
+    $users = [];
 
     if (!empty($search)) {
+        $search_param = '%' . $search . '%';
         $stmt = $db->prepare('SELECT * FROM community_users 
-                             WHERE username LIKE :search 
-                             OR email LIKE :search 
+                             WHERE username LIKE ? 
+                             OR email LIKE ? 
                              ORDER BY created_at DESC');
-        $stmt->bindValue(':search', '%' . $search . '%', SQLITE3_TEXT);
-        $result = $stmt->execute();
+        $stmt->bind_param('ss', $search_param, $search_param);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        while ($row = $result->fetch_assoc()) {
+            $users[] = $row;
+        }
     } else {
         $result = $db->query('SELECT * FROM community_users ORDER BY created_at DESC');
-    }
 
-    $users = [];
-    while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
-        $users[] = $row;
+        while ($row = $result->fetch_assoc()) {
+            $users[] = $row;
+        }
     }
 
     return $users;

@@ -29,6 +29,7 @@ $current_user = $is_logged_in ? get_current_user_ID() : null;
 
     <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
+    <link rel="stylesheet" href="../resources/styles/checkbox.css">
     <link rel="stylesheet" href="../resources/styles/button.css">
     <link rel="stylesheet" href="../resources/header/style.css">
     <link rel="stylesheet" href="../resources/footer/style.css">
@@ -93,10 +94,10 @@ $current_user = $is_logged_in ? get_current_user_ID() : null;
             <!-- Add bulk selection controls (admin only) -->
             <div class="bulk-actions" style="display: none;">
                 <div class="selection-controls">
-                    <label class="select-all-container">
+                    <div class="checkbox">
                         <input type="checkbox" id="select-all-posts">
                         <span class="checkbox-label">Select All</span>
-                    </label>
+                    </div>
                     <span class="selected-count">0 selected</span>
                 </div>
                 <button id="delete-selected" class="btn btn-delete" disabled>Delete Selected</button>

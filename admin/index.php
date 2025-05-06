@@ -18,18 +18,24 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 function get_license_keys($email_filter = '')
 {
     $db = get_db_connection();
+    $licenses = [];
 
     if (!empty($email_filter)) {
-        $stmt = $db->prepare('SELECT * FROM license_keys WHERE email LIKE :email ORDER BY created_at DESC');
-        $stmt->bindValue(':email', '%' . $email_filter . '%', SQLITE3_TEXT);
-        $result = $stmt->execute();
+        $search_param = '%' . $email_filter . '%';
+        $stmt = $db->prepare('SELECT * FROM license_keys WHERE email LIKE ? ORDER BY created_at DESC');
+        $stmt->bind_param('s', $search_param);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        while ($row = $result->fetch_assoc()) {
+            $licenses[] = $row;
+        }
     } else {
         $result = $db->query('SELECT * FROM license_keys ORDER BY created_at DESC');
-    }
 
-    $licenses = [];
-    while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
-        $licenses[] = $row;
+        while ($row = $result->fetch_assoc()) {
+            $licenses[] = $row;
+        }
     }
 
     return $licenses;
@@ -42,7 +48,7 @@ function get_chart_data()
     $result = $db->query("SELECT date(created_at) as date, COUNT(*) as count FROM license_keys GROUP BY date(created_at) ORDER BY date");
 
     $data = [];
-    while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+    while ($row = $result->fetch_assoc()) {
         $data[] = [
             'date' => $row['date'],
             'count' => $row['count']
@@ -78,8 +84,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $key_id = $_POST['key_id'];
 
         $db = get_db_connection();
-        $stmt = $db->prepare('UPDATE license_keys SET activated = 1, activation_date = CURRENT_TIMESTAMP WHERE id = :id');
-        $stmt->bindValue(':id', $key_id, SQLITE3_INTEGER);
+        $stmt = $db->prepare('UPDATE license_keys SET activated = 1, activation_date = CURRENT_TIMESTAMP WHERE id = ?');
+        $stmt->bind_param('i', $key_id);
         $stmt->execute();
 
         $_SESSION['message'] = 'License key activated successfully.';
@@ -92,8 +98,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $key_id = $_POST['key_id'];
 
         $db = get_db_connection();
-        $stmt = $db->prepare('UPDATE license_keys SET activated = 0, activation_date = NULL WHERE id = :id');
-        $stmt->bindValue(':id', $key_id, SQLITE3_INTEGER);
+        $stmt = $db->prepare('UPDATE license_keys SET activated = 0, activation_date = NULL WHERE id = ?');
+        $stmt->bind_param('i', $key_id);
         $stmt->execute();
 
         $_SESSION['message'] = 'License key deactivated successfully.';
@@ -106,8 +112,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $key_id = $_POST['key_id'];
 
         $db = get_db_connection();
-        $stmt = $db->prepare('DELETE FROM license_keys WHERE id = :id');
-        $stmt->bindValue(':id', $key_id, SQLITE3_INTEGER);
+        $stmt = $db->prepare('DELETE FROM license_keys WHERE id = ?');
+        $stmt->bind_param('i', $key_id);
         $stmt->execute();
 
         $_SESSION['message'] = 'License key deleted successfully.';
@@ -165,7 +171,8 @@ $chart_data = get_chart_data();
 // Count total registered users
 $db = get_db_connection();
 $result = $db->query('SELECT COUNT(*) as count FROM community_users');
-$user_count = $result->fetchArray(SQLITE3_ASSOC)['count'] ?? 0;
+$row = $result->fetch_assoc();
+$user_count = $row['count'] ?? 0;
 
 // Check for flash messages
 $message = '';

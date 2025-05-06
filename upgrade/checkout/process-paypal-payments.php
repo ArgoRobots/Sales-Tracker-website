@@ -156,33 +156,36 @@ function process_license($transaction_id, $order_id, $email, $amount, $currency,
     $db = get_db_connection();
 
     // Check for existing license
-    $stmt = $db->prepare('SELECT license_key FROM license_keys WHERE transaction_id = :transaction_id LIMIT 1');
-    $stmt->bindValue(':transaction_id', $transaction_id, SQLITE3_TEXT);
-    $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+    $stmt = $db->prepare('SELECT license_key FROM license_keys WHERE transaction_id = ? LIMIT 1');
+    $stmt->bind_param('s', $transaction_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-    if ($result) {
+    if ($row = $result->fetch_assoc()) {
         // Use existing license
-        $license_key = $result['license_key'];
+        $license_key = $row['license_key'];
         error_log("Using existing license: $license_key");
+        $stmt->close();
     } else {
+        $stmt->close();
+
         // Create new license
         $license_key = create_license_key($email);
         error_log("Created new license: $license_key");
 
         // Store transaction details
         $stmt = $db->prepare('UPDATE license_keys SET 
-            transaction_id = :transaction_id, 
-            order_id = :order_id, 
-            payment_method = :payment_method,
+            transaction_id = ?, 
+            order_id = ?, 
+            payment_method = ?,
             activated = 1,
             activation_date = CURRENT_TIMESTAMP
-            WHERE license_key = :license_key');
+            WHERE license_key = ?');
 
-        $stmt->bindValue(':transaction_id', $transaction_id, SQLITE3_TEXT);
-        $stmt->bindValue(':order_id', $order_id, SQLITE3_TEXT);
-        $stmt->bindValue(':payment_method', 'PayPal', SQLITE3_TEXT);
-        $stmt->bindValue(':license_key', $license_key, SQLITE3_TEXT);
+        $payment_method = 'PayPal';
+        $stmt->bind_param('ssss', $transaction_id, $order_id, $payment_method, $license_key);
         $stmt->execute();
+        $stmt->close();
 
         // Send license email
         send_license_email($email, $license_key);
@@ -191,17 +194,21 @@ function process_license($transaction_id, $order_id, $email, $amount, $currency,
         $stmt = $db->prepare('INSERT INTO payment_transactions 
             (transaction_id, order_id, email, amount, currency, payment_method, status, license_key, created_at) 
             VALUES 
-            (:transaction_id, :order_id, :email, :amount, :currency, :payment_method, :status, :license_key, CURRENT_TIMESTAMP)');
+            (?, ?, ?, ?, ?, ?, ?, ?, NOW())');
 
-        $stmt->bindValue(':transaction_id', $transaction_id, SQLITE3_TEXT);
-        $stmt->bindValue(':order_id', $order_id, SQLITE3_TEXT);
-        $stmt->bindValue(':email', $email, SQLITE3_TEXT);
-        $stmt->bindValue(':amount', $amount, SQLITE3_TEXT);
-        $stmt->bindValue(':currency', $currency, SQLITE3_TEXT);
-        $stmt->bindValue(':payment_method', 'PayPal', SQLITE3_TEXT);
-        $stmt->bindValue(':status', $status, SQLITE3_TEXT);
-        $stmt->bindValue(':license_key', $license_key, SQLITE3_TEXT);
+        $stmt->bind_param(
+            'ssssssss',
+            $transaction_id,
+            $order_id,
+            $email,
+            $amount,
+            $currency,
+            $payment_method,
+            $status,
+            $license_key
+        );
         $stmt->execute();
+        $stmt->close();
     }
 
     // Redirect to thank you page

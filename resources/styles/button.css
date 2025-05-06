@@ -41,15 +41,15 @@
 
 .btn-black {
     background: transparent;
-    border: 3px solid black;
+    border: 2px solid black;
     color: black;
+    padding: 5px 0;
 }
 
 .btn-black:hover {
     background: rgba(0, 0, 0, 0.05);
 }
 
-/* Back button */
 .back-button {
     display: inline-flex;
     align-items: center;
@@ -77,8 +77,8 @@
 
 .btn-gray {
     background-color: #f3f4f6;
-    color: #4b5563;
     border: 1px solid #d1d5db;
+    color: #414141;
     border: #6b7280 1px solid !important;
 }
 

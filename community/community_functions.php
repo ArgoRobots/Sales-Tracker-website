@@ -445,8 +445,7 @@ function get_user_comment_vote($comment_id, $user_email)
 }
 
 /**
- * Updated notification function for the community forum
- * Respects admin notification settings
+ * Community admin notification sender
  * 
  * @param string $type Notification type ('new_post', 'new_comment')
  * @param array $data Notification data

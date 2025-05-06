@@ -81,3 +81,31 @@
     margin-top: 4px;
     font-size: 0.85em;
 }
+
+.btn.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+input {
+    transition: border-color 0.3s;
+}
+
+.form-group.invalid input {
+    border-color: #ff3860;
+}
+
+.form-group.valid input {
+    border-color: #48c774;
+}
+
+.validation-feedback {
+    color: #ff3860;
+    font-size: 0.8em;
+    margin-top: 5px;
+    display: none;
+}
+
+.form-group.invalid .validation-feedback {
+    display: block;
+}

@@ -88,6 +88,7 @@ $stmt->close();
     <link rel="stylesheet" href="auth.css">
     <link rel="stylesheet" href="admin_notification_settings-style.css">
     <link rel="stylesheet" href="../../resources/styles/custom-colors.css">
+    <link rel="stylesheet" href="../../resources/styles/checkbox.css">
     <link rel="stylesheet" href="../../resources/styles/button.css">
     <link rel="stylesheet" href="../../resources/header/style.css">
     <link rel="stylesheet" href="../../resources/footer/style.css">
@@ -121,13 +122,13 @@ $stmt->close();
                 <div class="settings-section">
                     <h2>Email Notifications</h2>
 
-                    <div class="setting-option">
+                    <div class="checkbox">
                         <input type="checkbox" id="notify_new_posts" name="notify_new_posts" <?php echo $settings['notify_new_posts'] ? 'checked' : ''; ?>>
                         <label for="notify_new_posts">New Post Notifications</label>
                     </div>
                     <p class="setting-description">Receive an email notification when a new post is created in the community.</p>
 
-                    <div class="setting-option">
+                    <div class="checkbox">
                         <input type="checkbox" id="notify_new_comments" name="notify_new_comments" <?php echo $settings['notify_new_comments'] ? 'checked' : ''; ?>>
                         <label for="notify_new_comments">New Comment Notifications</label>
                     </div>

@@ -19,6 +19,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = isset($_POST['password']) ? $_POST['password'] : '';
     $password_confirm = isset($_POST['password_confirm']) ? $_POST['password_confirm'] : '';
 
+    // Define restricted terms for usernames
+    $restricted_terms = ['argo', 'admin', 'moderator', 'mod', 'staff', 'support', 'system'];
+
+    // Check if username contains any restricted terms
+    $contains_restricted = false;
+    foreach ($restricted_terms as $term) {
+        if (stripos($username, $term) !== false) {
+            $contains_restricted = true;
+            $error = 'Username cannot contain "' . $term . '"';
+            break;
+        }
+    }
+
     // Basic validation
     if (empty($username) || empty($email) || empty($password) || empty($password_confirm)) {
         $error = 'All fields are required';
@@ -28,6 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Username must be between 3 and 20 characters';
     } elseif (!preg_match('/^[a-zA-Z0-9_]+$/', $username)) {
         $error = 'Username can only contain letters, numbers, and underscores';
+    } elseif ($contains_restricted) {
+        // Error message already set
     } elseif (strlen($password) < 8) {
         $error = 'Password must be at least 8 characters long';
     } elseif (!preg_match('/[A-Z]/', $password)) {
@@ -93,25 +108,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <p class="auth-subtitle">Join Argo Community to share ideas and connect with other users</p>
 
             <?php if ($error): ?>
-                <div class="error-message">
+                <div class="error-message" id="server-error-message">
                     <?php echo htmlspecialchars($error); ?>
                 </div>
             <?php endif; ?>
 
             <form method="post" class="auth-form">
-                <div class="form-group">
+                <div class="form-group" id="username-group">
                     <label for="username">Username</label>
                     <input type="text" id="username" name="username" value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username']) : ''; ?>" required>
                     <small>Letters, numbers, and underscores only (3-20 characters)</small>
+                    <div class="validation-feedback" id="username-feedback"></div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" id="email-group">
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>" required>
                     <small>A verification code will be sent to this address</small>
+                    <div class="validation-feedback" id="email-feedback"></div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" id="password-group">
                     <label for="password">Password</label>
                     <div class="password-field-wrapper">
                         <input type="password" id="password-field" name="password" required>
@@ -137,13 +154,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" id="confirm-password-group">
                     <label for="password_confirm">Confirm Password</label>
-                    <input type="password" id="password_confirm" name="password_confirm" required>
+                    <div class="password-field-wrapper">
+                        <input type="password" id="password_confirm" name="password_confirm" required>
+                        <div class="toggle-password">
+                            <i class="fa fa-eye"></i>
+                            <i class="fa fa-eye-slash"></i>
+                        </div>
+                    </div>
+                    <div class="validation-feedback" id="confirm-password-feedback"></div>
                 </div>
 
                 <div class="form-actions">
-                    <button type="submit" class="btn btn-blue btn-block">Register</button>
+                    <button type="submit" id="submit-button" class="btn btn-blue btn-block">Register</button>
                 </div>
 
                 <div class="auth-links">
@@ -158,29 +182,129 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </footer>
 
     <script>
-        // Password validation functionality
         document.addEventListener('DOMContentLoaded', function() {
-            const togglePassword = document.querySelector('.toggle-password');
+            // Form elements
+            const usernameField = document.getElementById('username');
+            const emailField = document.getElementById('email');
             const passwordField = document.getElementById('password-field');
+            const passwordConfirm = document.getElementById('password_confirm');
+            const submitButton = document.getElementById('submit-button');
+            const registerForm = document.querySelector('.auth-form');
+            const serverErrorMessage = document.getElementById('server-error-message');
+
+            // Validation feedback elements
+            const usernameGroup = document.getElementById('username-group');
+            const emailGroup = document.getElementById('email-group');
+            const passwordGroup = document.getElementById('password-group');
+            const confirmPasswordGroup = document.getElementById('confirm-password-group');
+            const usernameFeedback = document.getElementById('username-feedback');
+            const emailFeedback = document.getElementById('email-feedback');
+            const confirmPasswordFeedback = document.getElementById('confirm-password-feedback');
             const passwordPolicies = document.querySelector('.password-policies');
 
-            // Toggle password visibility
+            // Toggle password visibility for password field
+            const togglePassword = document.querySelectorAll('.toggle-password')[0];
             togglePassword.addEventListener('click', function() {
                 togglePassword.classList.toggle('active');
-                if (passwordField.getAttribute('type') === 'password') {
-                    passwordField.setAttribute('type', 'text');
-                } else {
-                    passwordField.setAttribute('type', 'password');
-                }
+                const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordField.setAttribute('type', type);
             });
+
+            // Toggle password visibility for confirm password field
+            const confirmTogglePassword = document.querySelectorAll('.toggle-password')[1];
+            confirmTogglePassword.addEventListener('click', function() {
+                confirmTogglePassword.classList.toggle('active');
+                const type = passwordConfirm.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordConfirm.setAttribute('type', type);
+            });
+
+            // If there was a form error, restore password values
+            if (<?php echo !empty($error) ? 'true' : 'false'; ?>) {
+                passwordField.value = '<?php echo isset($_POST['password']) ? addslashes($_POST['password']) : ''; ?>';
+                passwordConfirm.value = '<?php echo isset($_POST['password_confirm']) ? addslashes($_POST['password_confirm']) : ''; ?>';
+
+                // Update password policy indicators
+                const event = new Event('keyup');
+                passwordField.dispatchEvent(event);
+            }
 
             // Show password policies on focus
             passwordField.addEventListener('focus', function() {
                 passwordPolicies.classList.add('active');
             });
 
-            // Update policy indicators in real-time
-            passwordField.addEventListener('keyup', function() {
+            // Username validation
+            function validateUsername() {
+                const username = usernameField.value.trim();
+                let usernameError = "";
+
+                if (username === "") {
+                    usernameFeedback.textContent = "";
+                    usernameGroup.classList.remove('invalid', 'valid');
+                    return false;
+                }
+
+                // Check username length
+                if (username.length < 3) {
+                    usernameError = "Username must be at least 3 characters";
+                } else if (username.length > 20) {
+                    usernameError = "Username cannot exceed 20 characters";
+                }
+                // Check username format
+                else if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+                    usernameError = "Only letters, numbers, and underscores";
+                }
+                // Check for restricted terms
+                else {
+                    const restrictedTerms = ['argo', 'admin', 'moderator', 'mod', 'staff', 'support', 'system'];
+                    for (const term of restrictedTerms) {
+                        if (username.toLowerCase().includes(term.toLowerCase())) {
+                            usernameError = `Cannot contain "${term}"`;
+                            break;
+                        }
+                    }
+                }
+
+                // Update username validation feedback
+                if (usernameError) {
+                    usernameFeedback.textContent = usernameError;
+                    usernameGroup.classList.add('invalid');
+                    usernameGroup.classList.remove('valid');
+                    return false;
+                } else {
+                    usernameFeedback.textContent = "";
+                    usernameGroup.classList.remove('invalid');
+                    usernameGroup.classList.add('valid');
+                    return true;
+                }
+            }
+
+            // Email validation
+            function validateEmail() {
+                const email = emailField.value.trim();
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                if (email === "") {
+                    emailFeedback.textContent = "";
+                    emailGroup.classList.remove('invalid', 'valid');
+                    return false;
+                }
+
+                if (!emailRegex.test(email)) {
+                    emailFeedback.textContent = "Please enter a valid email";
+                    emailGroup.classList.add('invalid');
+                    emailGroup.classList.remove('valid');
+                    return false;
+                } else {
+                    emailFeedback.textContent = "";
+                    emailGroup.classList.remove('invalid');
+                    emailGroup.classList.add('valid');
+                    return true;
+                }
+            }
+
+            // Password policies validation
+            function validatePasswordPolicy() {
                 const password = passwordField.value;
 
                 // Check password length
@@ -210,32 +334,98 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } else {
                     document.querySelector('.policy-special').classList.remove('active');
                 }
-            });
 
-            // Validate passwords match
-            const passwordConfirm = document.getElementById('password_confirm');
-            const registerForm = document.querySelector('.auth-form');
+                // Return true if all policies are met
+                return document.querySelectorAll('.password-policies > div.active').length === 4;
+            }
 
-            registerForm.addEventListener('submit', function(e) {
+            // Password confirmation validation
+            function validateConfirmPassword() {
                 const password = passwordField.value;
                 const confirmPassword = passwordConfirm.value;
 
-                // Check if all policies are met
-                const allPoliciesMet = document.querySelectorAll('.password-policies > div.active').length === 4;
-
-                if (!allPoliciesMet) {
-                    e.preventDefault();
-                    alert('Please ensure your password meets all the requirements.');
+                if (confirmPassword === "") {
+                    confirmPasswordFeedback.textContent = "";
+                    confirmPasswordGroup.classList.remove('invalid', 'valid');
                     return false;
                 }
 
-                // Check if passwords match
                 if (password !== confirmPassword) {
-                    e.preventDefault();
-                    alert('Passwords do not match.');
+                    confirmPasswordFeedback.textContent = "Passwords do not match";
+                    confirmPasswordGroup.classList.add('invalid');
+                    confirmPasswordGroup.classList.remove('valid');
                     return false;
+                } else {
+                    confirmPasswordFeedback.textContent = "";
+                    confirmPasswordGroup.classList.remove('invalid');
+                    confirmPasswordGroup.classList.add('valid');
+                    return true;
+                }
+            }
+
+            // Form validation
+            function validateForm() {
+                const usernameValid = validateUsername();
+                const emailValid = validateEmail();
+                const passwordPoliciesValid = validatePasswordPolicy();
+                const confirmPasswordValid = validateConfirmPassword();
+
+                // Enable or disable submit button
+                if (usernameValid && emailValid && passwordPoliciesValid && confirmPasswordValid) {
+                    submitButton.disabled = false;
+                    submitButton.classList.remove('disabled');
+                } else {
+                    submitButton.disabled = true;
+                    submitButton.classList.add('disabled');
+                }
+            }
+
+            // Add input event listeners
+            usernameField.addEventListener('input', function() {
+                validateUsername();
+                validateForm();
+
+                // Clear server error when username changes
+                if (serverErrorMessage) {
+                    serverErrorMessage.style.display = 'none';
                 }
             });
+
+            emailField.addEventListener('input', function() {
+                validateEmail();
+                validateForm();
+
+                // Clear server error when email changes
+                if (serverErrorMessage) {
+                    serverErrorMessage.style.display = 'none';
+                }
+            });
+
+            passwordField.addEventListener('input', function() {
+                validatePasswordPolicy();
+                validateConfirmPassword();
+                validateForm();
+            });
+
+            passwordField.addEventListener('keyup', validatePasswordPolicy);
+
+            passwordConfirm.addEventListener('input', function() {
+                validateConfirmPassword();
+                validateForm();
+            });
+
+            // Form submission
+            registerForm.addEventListener('submit', function(e) {
+                // Revalidate everything before submit
+                validateForm();
+
+                if (submitButton.disabled) {
+                    e.preventDefault();
+                }
+            });
+
+            // Initial validation
+            validateForm();
         });
     </script>
 </body>

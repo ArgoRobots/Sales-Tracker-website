@@ -32,7 +32,6 @@ document.addEventListener("DOMContentLoaded", function () {
   updateSearchFilterLabel();
 
   // Initialize countdowns for any rate limit messages on page load
-  // Find any countdown elements
   const countdownElements = document.querySelectorAll(".countdown-timer");
 
   countdownElements.forEach((element) => {
@@ -57,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function isUserAdmin() {
-    // Check if bulk actions div exists (which should only be created for admins)
+    // Check if bulk actions div exists (which are only created for admins)
     return bulkActionsDiv !== null;
   }
 
@@ -190,7 +189,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function addSelectionCheckbox(post) {
     // Create selection container
     const postSelect = document.createElement("div");
-    postSelect.className = "post-select";
+    postSelect.className = "post-select checkbox";
 
     // Create checkbox
     const checkbox = document.createElement("input");
