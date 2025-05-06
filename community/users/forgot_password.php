@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = request_password_reset($email);
 
         if ($result) {
-            $success = 'A password reset link has been sent to your email address.';
+            $success = 'A password reset link has been sent to your email address. If you don\'t see it in your inbox, please check your spam or junk folder.';
         } else {
             // Don't reveal if email exists for security reasons
             $success = 'If an account with that email exists, a password reset link has been sent.';
@@ -74,7 +74,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php if ($success): ?>
                 <div class="success-message">
                     <?php echo htmlspecialchars($success); ?>
-                    <p><a href="login.php" class="btn btn-blue">Return to Login</a></p>
                 </div>
             <?php else: ?>
                 <form method="post" class="auth-form">

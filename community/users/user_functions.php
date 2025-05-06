@@ -447,35 +447,162 @@ function send_password_reset_email($email, $token, $username)
     $host = $_SERVER['HTTP_HOST'];
     $base_url = $protocol . $host;
 
-    $reset_link = $base_url . "/community/reset_password.php?token=" . $token;
+    $reset_link = $base_url . "/community/users/reset_password.php?token=" . $token;
 
-    $message = "
-    <html>
-    <head>
-        <title>Reset Your Password</title>
-    </head>
-    <body>
-        <div style='max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;'>
-            <h2>Reset Your Password</h2>
-            <p>Hello $username,</p>
-            <p>We received a request to reset your password. Click the link below to create a new password:</p>
-            <p><a href='$reset_link' style='display: inline-block; background-color: #2563eb; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px;'>Reset Password</a></p>
-            <p>Or copy and paste this link in your browser:</p>
-            <p>$reset_link</p>
-            <p>This link will expire in 24 hours.</p>
-            <p>If you did not request a password reset, you can ignore this email.</p>
-            <p>Regards,<br>The Argo Team</p>
-        </div>
-    </body>
-    </html>
-    ";
+    $message = <<<HTML
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+            <title>Reset Your Password</title>
+            <style>
+                /* Base styles */
+                body {
+                    background-color: #f6f9fc;
+                    font-family: 'Segoe UI', Arial, sans-serif;
+                    font-size: 14px;
+                    line-height: 1.6;
+                    margin: 0;
+                    padding: 0;
+                    -webkit-font-smoothing: antialiased;
+                }
+                
+                /* Container styles */
+                .container {
+                    max-width: 600px;
+                    margin: 0 auto;
+                    background-color: #ffffff;
+                    border-radius: 8px;
+                    overflow: hidden;
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                    margin-top: 20px;
+                    margin-bottom: 20px;
+                }
+                
+                /* Header styles */
+                .header {
+                    background-color: #1e3a8a;
+                    padding: 20px;
+                    text-align: center;
+                }
+                
+                .header img {
+                    width: 100px;
+                    height: auto;
+                }
+                
+                /* Content styles */
+                .content {
+                    padding: 30px;
+                    color: #333;
+                }
+                
+                h1 {
+                    color: #1e3a8a;
+                    font-size: 24px;
+                    margin-top: 0;
+                    text-align: center;
+                }
+                
+                /* Button styles */
+                .button {
+                    background-color: #2563eb;
+                    border-radius: 4px;
+                    color: #ffffff;
+                    display: inline-block;
+                    font-weight: bold;
+                    margin-top: 15px;
+                    padding: 12px 24px;
+                    text-decoration: none;
+                    text-align: center;
+                }
+                
+                .button-container {
+                    text-align: center;
+                    margin: 30px 0;
+                }
+                
+                /* Reset link display */
+                .reset-link {
+                    background-color: #f8fafc;
+                    border: 1px solid #e2e8f0;
+                    border-radius: 4px;
+                    font-family: monospace;
+                    font-size: 14px;
+                    margin: 25px auto;
+                    max-width: 80%;
+                    padding: 12px;
+                    text-align: center;
+                    word-break: break-all;
+                }
+                
+                /* Footer styles */
+                .footer {
+                    background-color: #f8fafc;
+                    border-top: 1px solid #e2e8f0;
+                    color: #64748b;
+                    font-size: 12px;
+                    padding: 20px;
+                    text-align: center;
+                }
+                
+                /* Mobile responsive */
+                @media only screen and (max-width: 620px) {
+                    .container {
+                        width: 100% !important;
+                        margin-top: 0;
+                        margin-bottom: 0;
+                        border-radius: 0;
+                    }
+                    
+                    .content {
+                        padding: 20px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo">
+                </div>
+                
+                <div class="content">
+                    <h1>Password Reset Request</h1>
+                    <p>Hello {$username},</p>
+                    <p>We received a request to reset your password for your Argo Community account. To complete the password reset process, please click the button below:</p>
+                    
+                    <div class="button-container">
+                        <a href="{$reset_link}" class="button">Reset Password</a>
+                    </div>
+                    
+                    <p>If the button above doesn't work, you can also copy and paste the following link into your browser:</p>
+                    <div class="reset-link">{$reset_link}</div>
+                    
+                    <p>This password reset link will expire in 24 hours.</p>
+                    
+                    <p>If you did not request a password reset, you can safely ignore this email - your account is secure.</p>
+                    
+                    <p>Regards,<br>The Argo Team</p>
+                </div>
+                
+                <div class="footer">
+                    <p>Argo Sales Tracker &copy; 2025. All rights reserved.</p>
+                    <p>This email was sent to {$email}</p>
+                </div>
+            </div>
+        </body>
+        </html>
+    HTML;
 
     // Email headers
     $headers = [
         'MIME-Version: 1.0',
         'Content-Type: text/html; charset=UTF-8',
         'From: Argo Community <noreply@argorobots.com>',
-        'Reply-To: no-reply@argorobots.com'
+        'Reply-To: no-reply@argorobots.com',
+        'X-Mailer: PHP/' . phpversion()
     ];
 
     // Send email

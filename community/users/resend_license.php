@@ -83,14 +83,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="success-message">
                     <?php echo htmlspecialchars($success_message); ?>
                 </div>
-                <div class="auth-links centered">
+                <div class="centered">
                     <a href="profile.php" class="btn btn-blue">Back to Profile</a>
                 </div>
             <?php elseif ($error_message): ?>
                 <div class="error-message">
                     <?php echo htmlspecialchars($error_message); ?>
                 </div>
-                <div class="auth-links centered">
+                <div class="centered">
                     <a href="profile.php" class="btn btn-blue">Back to Profile</a>
                 </div>
             <?php else: ?>

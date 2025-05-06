@@ -33,11 +33,14 @@ if (!function_exists('generate_license_key')) {
     function license_key_exists($key)
     {
         $db = get_db_connection();
-        $stmt = $db->prepare('SELECT COUNT(*) as count FROM license_keys WHERE license_key = :key');
-        $stmt->bindValue(':key', $key, SQLITE3_TEXT);
-        $result = $stmt->execute()->fetchArray();
+        $stmt = $db->prepare('SELECT COUNT(*) as count FROM license_keys WHERE license_key = ?');
+        $stmt->bind_param('s', $key);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        $stmt->close();
 
-        return $result['count'] > 0;
+        return $row['count'] > 0;
     }
 
     /**
@@ -53,13 +56,13 @@ if (!function_exists('generate_license_key')) {
         // Generate a unique key
         do {
             $key = generate_license_key();
-        } while (license_key_exists($key));  // This will open and close a connection for each check
+        } while (license_key_exists($key));
 
         // Store the key in the database
-        $stmt = $db->prepare('INSERT INTO license_keys (license_key, email) VALUES (:key, :email)');
-        $stmt->bindValue(':key', $key, SQLITE3_TEXT);
-        $stmt->bindValue(':email', $email, SQLITE3_TEXT);
+        $stmt = $db->prepare('INSERT INTO license_keys (license_key, email) VALUES (?, ?)');
+        $stmt->bind_param('ss', $key, $email);
         $stmt->execute();
+        $stmt->close();
 
         return $key;
     }
@@ -73,11 +76,14 @@ if (!function_exists('generate_license_key')) {
     function verify_license_key($key)
     {
         $db = get_db_connection();
-        $stmt = $db->prepare('SELECT * FROM license_keys WHERE license_key = :key');
-        $stmt->bindValue(':key', $key, SQLITE3_TEXT);
-        $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+        $stmt = $db->prepare('SELECT * FROM license_keys WHERE license_key = ?');
+        $stmt->bind_param('s', $key);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        $stmt->close();
 
-        return $result !== false;
+        return $row !== null;
     }
 
     /**
@@ -90,12 +96,13 @@ if (!function_exists('generate_license_key')) {
     function activate_license_key($key, $ip_address)
     {
         $db = get_db_connection();
-        $stmt = $db->prepare('UPDATE license_keys SET activated = 1, activation_date = CURRENT_TIMESTAMP, ip_address = :ip WHERE license_key = :key');
-        $stmt->bindValue(':key', $key, SQLITE3_TEXT);
-        $stmt->bindValue(':ip', $ip_address, SQLITE3_TEXT);
-        $result = $stmt->execute();
+        $stmt = $db->prepare('UPDATE license_keys SET activated = 1, activation_date = NOW(), ip_address = ? WHERE license_key = ?');
+        $stmt->bind_param('ss', $ip_address, $key);
+        $stmt->execute();
+        $affected_rows = $stmt->affected_rows;
+        $stmt->close();
 
-        return $result !== false;
+        return $affected_rows > 0;
     }
 
     /**
@@ -107,10 +114,13 @@ if (!function_exists('generate_license_key')) {
     function get_license_details($key)
     {
         $db = get_db_connection();
-        $stmt = $db->prepare('SELECT * FROM license_keys WHERE license_key = :key');
-        $stmt->bindValue(':key', $key, SQLITE3_TEXT);
-        $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+        $stmt = $db->prepare('SELECT * FROM license_keys WHERE license_key = ?');
+        $stmt->bind_param('s', $key);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        $stmt->close();
 
-        return $result;
+        return $row;
     }
 }

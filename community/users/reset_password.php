@@ -67,10 +67,12 @@ $stmt->close();
     <script src="../../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../../resources/scripts/main.js"></script>
 
-    <link rel="stylesheet" href="../../resources/styles/button.css">
-    <link rel="stylesheet" href="../../resources/header/style.css">
-    <link rel="stylesheet" href="../../resources/footer/style.css">
     <link rel="stylesheet" href="auth.css">
+    <link rel="stylesheet" href="../../resources/styles/button.css">
+    <link rel="stylesheet" href="../../resources/styles/custom-colors.css">
+    <link rel="stylesheet" href="../../resources/header/style.css">
+    <link rel="stylesheet" href="../../resources/header/dark.css">
+    <link rel="stylesheet" href="../../resources/footer/style.css">
 </head>
 
 <body>
@@ -81,7 +83,6 @@ $stmt->close();
     <div class="auth-container">
         <div class="auth-card">
             <h1>Reset Password</h1>
-            <p class="auth-subtitle">Enter your new password</p>
 
             <?php if ($error): ?>
                 <div class="error-message">
@@ -92,7 +93,9 @@ $stmt->close();
             <?php if ($success): ?>
                 <div class="success-message">
                     <?php echo htmlspecialchars($success); ?>
-                    <p><a href="login.php" class="btn btn-blue">Proceed to Login</a></p>
+                    <div class="centered">
+                        <a href="login.php" class="btn btn-blue">Proceed to Login</a>
+                    </div>
                 </div>
             <?php elseif ($valid_token): ?>
                 <form method="post" class="auth-form">
