@@ -128,6 +128,31 @@ $combinedExample = "- **Bold list item**\n- _Italic list item_\n- List item with
             </div>
         </div>
 
+        <!-- Hyperlinks Section -->
+        <div class="formatting-section">
+            <h3>Hyperlinks</h3>
+            <div class="example example-wide">
+                <h4>Creating Links</h4>
+                <div class="example-input">
+                    [Link text](https://argorobots.com)
+                </div>
+                <div class="example-output">
+                    <?= render_formatted_text("[Link text](https://argorobots.com)") ?>
+                </div>
+                <div class="shortcut-tip">Shortcut: <kbd>Ctrl</kbd> + <kbd>K</kbd></div>
+            </div>
+            <p class="note"><strong>Note:</strong> For security reasons, only links to argorobots.com and Wikipedia domains are permitted. Links to other domains will be displayed as text only.</p>
+            <div class="example example-wide">
+                <h4>Link to Disallowed Domain (Example)</h4>
+                <div class="example-input">
+                    [Disallowed Link](https://example.com)
+                </div>
+                <div class="example-output">
+                    <?= render_formatted_text("[Disallowed Link](https://example.com)") ?>
+                </div>
+            </div>
+        </div>
+
         <!-- Combined Formatting -->
         <div class="formatting-section">
             <h3>Combining Formats</h3>
@@ -190,11 +215,12 @@ $combinedExample = "- **Bold list item**\n- _Italic list item_\n- List item with
         <div class="formatting-section">
             <h3>Tips for Better Formatting</h3>
             <ul class="tips-list">
-                <li><b>Use formatting sparingly -</b> Too much formatting can make your post harder to read.</li>
-                <li><b>Break up long paragraphs -</b> Use lists and line breaks to improve readability.</li>
-                <li><b>Emphasize important points -</b> Use bold for key information.</li>
-                <li><b>Use code formatting for code -</b> Share code snippets clearly.</li>
-                <li><b>Quote properly -</b> Use blockquotes for referencing other content.</li>
+                <li><strong>Use formatting sparingly -</strong> Too much formatting can make your post harder to read.</li>
+                <li><strong>Break up long paragraphs -</strong> Use lists and line breaks to improve readability.</li>
+                <li><strong>Emphasize important points -</strong> Use bold for key information.</li>
+                <li><strong>Use code formatting for code -</strong> Share code snippets clearly.</li>
+                <li><strong>Quote properly -</strong> Use blockquotes for referencing other content.</li>
+                <li><strong>Create descriptive links -</strong> Use meaningful text for your hyperlinks instead of "click here".</li>
             </ul>
         </div>
     </div>
