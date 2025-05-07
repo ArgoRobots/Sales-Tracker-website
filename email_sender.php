@@ -366,3 +366,80 @@ HTML;
 
     return $success;
 }
+
+/**
+ * Send password reset email
+ * 
+ * @param string $email User's email address
+ * @param string $token Reset token
+ * @param string $username Username
+ * @return bool Success status
+ */
+function send_password_reset_email($email, $token, $username)
+{
+    $css = file_get_contents(__DIR__ . '/email.css');
+    $subject = 'Password Reset - Argo Community';
+
+    // Get the base URL
+    $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
+    $host = $_SERVER['HTTP_HOST'];
+    $base_url = $protocol . $host;
+
+    $reset_link = $base_url . "/community/users/reset_password.php?token=" . $token;
+
+    $email_html = <<<HTML
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+            <title>Reset Your Password</title>
+            <style>
+                {$css}  /* Needs to be embedded for PHP mail() */
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo">
+                </div>
+                
+                <div class="content">
+                    <h1>Password Reset Request</h1>
+                    <p>Hello {$username},</p>
+                    <p>We received a request to reset your password for your Argo Community account. To complete the password reset process, please click the button below:</p>
+                    
+                    <div class="button-container">
+                        <a href="{$reset_link}" class="button">Reset Password</a>
+                    </div>
+                    
+                    <p>If the button above doesn't work, you can also copy and paste the following link into your browser:</p>
+                    <div class="reset-link">{$reset_link}</div>
+                    
+                    <p>This password reset link will expire in 24 hours.</p>
+                    
+                    <p>If you did not request a password reset, you can safely ignore this email - your account is secure.</p>
+                    
+                    <p>Regards,<br>The Argo Team</p>
+                </div>
+                
+                <div class="footer">
+                    <p>Argo Sales Tracker &copy; 2025. All rights reserved.</p>
+                    <p>This email was sent to {$email}</p>
+                </div>
+            </div>
+        </body>
+        </html>
+    HTML;
+
+    $headers = [
+        'MIME-Version: 1.0',
+        'Content-Type: text/html; charset=UTF-8',
+        'From: Argo Community <noreply@argorobots.com>',
+        'Reply-To: support@argorobots.com',
+        'X-Mailer: PHP/' . phpversion()
+    ];
+
+    $mail_result = mail($email, $subject, $email_html, implode("\r\n", $headers));
+    return $mail_result;
+}

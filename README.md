@@ -9,7 +9,7 @@ This is the website for [Argo Sales Tracker](https://github.com/ArgoRobots/Sales
 - **HTML5 and CSS3** Structure and styling
 - **jQuery**: Dynamic content loading and interactivity
 - **PHP**: Backend license management
-- **SQLite**: Database for storing license information
+- **MySQL**: Database for storing license information
 
 ## Admin System
 

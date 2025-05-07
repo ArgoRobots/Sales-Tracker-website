@@ -474,14 +474,6 @@
 }
 
 /* Reputation section */
-.reputation-help-link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: #6b7280;
-    transition: color 0.2s ease;
-}
-
 .reputation-help-link svg {
     color: var(--button);
 }

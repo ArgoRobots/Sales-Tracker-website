@@ -41,4 +41,19 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
+
+  // Check if we need to restore the scroll position
+  if (sessionStorage.getItem("scrollPosition")) {
+    // Restore the scroll position
+    window.scrollTo(0, sessionStorage.getItem("scrollPosition"));
+    sessionStorage.removeItem("scrollPosition");
+  }
+
+  // Store the current scroll position when clicking on sort links
+  document.querySelectorAll(".sort-option").forEach(function (link) {
+    link.addEventListener("click", function () {
+      // Store current scroll position
+      sessionStorage.setItem("scrollPosition", window.scrollY);
+    });
+  });
 });

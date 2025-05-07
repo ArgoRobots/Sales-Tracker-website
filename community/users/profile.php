@@ -682,7 +682,7 @@ if ($is_own_profile && isset($user['email'])) {
                     <div class="reputation-chart-section">
                         <h3>Reputation Overview
                             <a href="reputation_help.php" class="reputation-help-link" title="Learn about the reputation system">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <circle cx="12" cy="12" r="10"></circle>
                                     <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
                                     <line x1="12" y1="17" x2="12.01" y2="17"></line>
@@ -918,9 +918,9 @@ if ($is_own_profile && isset($user['email'])) {
                                 <div class="sort-controls">
                                     <span class="sort-label">Sort by:</span>
                                     <div class="sort-options">
-                                        <a href="?<?php echo !empty($requested_username) ? 'username=' . urlencode($requested_username) . '&' : ''; ?><?php echo !empty($sort) ? 'sort=' . $sort . '&' : ''; ?>comment_sort=score#comments-section" class="sort-option <?php echo $comment_sort === 'score' ? 'active' : ''; ?>">Score</a>
-                                        <a href="?<?php echo !empty($requested_username) ? 'username=' . urlencode($requested_username) . '&' : ''; ?><?php echo !empty($sort) ? 'sort=' . $sort . '&' : ''; ?>comment_sort=newest#comments-section" class="sort-option <?php echo $comment_sort === 'newest' ? 'active' : ''; ?>">Newest</a>
-                                        <a href="?<?php echo !empty($requested_username) ? 'username=' . urlencode($requested_username) . '&' : ''; ?><?php echo !empty($sort) ? 'sort=' . $sort . '&' : ''; ?>comment_sort=oldest#comments-section" class="sort-option <?php echo $comment_sort === 'oldest' ? 'active' : ''; ?>">Oldest</a>
+                                        <a href="?<?php echo !empty($requested_username) ? 'username=' . urlencode($requested_username) . '&' : ''; ?><?php echo !empty($sort) ? 'sort=' . $sort . '&' : ''; ?>comment_sort=score" class="sort-option <?php echo $comment_sort === 'score' ? 'active' : ''; ?>">Score</a>
+                                        <a href="?<?php echo !empty($requested_username) ? 'username=' . urlencode($requested_username) . '&' : ''; ?><?php echo !empty($sort) ? 'sort=' . $sort . '&' : ''; ?>comment_sort=newest" class="sort-option <?php echo $comment_sort === 'newest' ? 'active' : ''; ?>">Newest</a>
+                                        <a href="?<?php echo !empty($requested_username) ? 'username=' . urlencode($requested_username) . '&' : ''; ?><?php echo !empty($sort) ? 'sort=' . $sort . '&' : ''; ?>comment_sort=oldest" class="sort-option <?php echo $comment_sort === 'oldest' ? 'active' : ''; ?>">Oldest</a>
                                     </div>
                                 </div>
                             </div>
