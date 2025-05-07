@@ -38,6 +38,7 @@ function process_formatting($text)
     }, $text);
 
     $text = process_lists($text);
+    $text = process_links($text);
     return $text;
 }
 
@@ -62,6 +63,60 @@ function process_lists($text)
 }
 
 /**
+ * Process links with Markdown syntax [text](url)
+ * 
+ * @param string $text The text to process
+ * @return string Text with processed links
+ */
+function process_links($text)
+{
+    // Process links with Markdown syntax [text](url)
+    $text = preg_replace_callback('/\[([^\]]+)\]\(([^)]+)\)/', function ($matches) {
+        $link_text = $matches[1];
+        $url = $matches[2];
+
+        if (is_allowed_url($url)) {
+            return '<a href="' . htmlspecialchars($url) . '" target="_blank" rel="noopener noreferrer">' . htmlspecialchars($link_text) . '</a>';
+        } else {
+            // Return just the text if link is not allowed
+            return htmlspecialchars($link_text) . ' <span class="invalid-link-warning">(Link to disallowed domain removed)</span>';
+        }
+    }, $text);
+
+    return $text;
+}
+
+/**
+ * Validates if a URL is allowed (only argorobots.com and Wikipedia domains)
+ *
+ * @param string $url The URL to validate
+ * @return bool True if URL is allowed, false otherwise
+ */
+function is_allowed_url($url)
+{
+    // Parse the URL to get the host
+    $parsed_url = parse_url($url);
+
+    if (!isset($parsed_url['host'])) {
+        return false;
+    }
+
+    $host = strtolower($parsed_url['host']);
+
+    // Check if it's from argorobots.com (including subdomains)
+    if ($host === 'argorobots.com' || strpos($host, '.argorobots.com') !== false) {
+        return true;
+    }
+
+    // Check if it's from Wikipedia
+    if ($host === 'wikipedia.org' || strpos($host, '.wikipedia.org') !== false) {
+        return true;
+    }
+
+    return false;
+}
+
+/**
  * Restore our formatting tags after HTML escaping
  */
 function restore_formatting_tags($text)
@@ -80,7 +135,12 @@ function restore_formatting_tags($text)
         '&lt;li&gt;' => '<li>',
         '&lt;/li&gt;' => '</li>',
         '&lt;code&gt;' => '<code>',
-        '&lt;/code&gt;' => '</code>'
+        '&lt;/code&gt;' => '</code>',
+        '&lt;a href=&quot;' => '<a href="',
+        '&quot; target=&quot;_blank&quot; rel=&quot;noopener noreferrer&quot;&gt;' => '" target="_blank" rel="noopener noreferrer">',
+        '&lt;/a&gt;' => '</a>',
+        '&lt;span class=&quot;invalid-link-warning&quot;&gt;' => '<span class="invalid-link-warning">',
+        '&lt;/span&gt;' => '</span>'
     ];
 
     return str_replace(array_keys($replacements), array_values($replacements), $text);
@@ -111,7 +171,7 @@ function final_cleanup($text)
                 $consecutiveEmptyLines++;
             }
             // If we already have a blank line, skip this one
-        } else if (preg_match('/^<(blockquote|ul|ol|li|code|p|h[1-6]|hr)/i', $trimmedLine)) {
+        } else if (preg_match('/^<(blockquote|ul|ol|li|code|p|h[1-6]|hr|a)/i', $trimmedLine)) {
             // Don't wrap in <p>
             $output[] = $line;
             // Reset consecutive empty lines counter

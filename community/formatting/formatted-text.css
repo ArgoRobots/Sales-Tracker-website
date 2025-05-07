@@ -101,3 +101,25 @@
 .formatted-text li {
     margin: 0.25em 0;
 }
+
+/* Link styles */
+.formatted-text a {
+    color: #3b82f6;
+    text-decoration: none;
+}
+
+.formatted-text a:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+.invalid-link-warning {
+    color: #dc2626;
+    font-size: 0.9em;
+    font-style: italic;
+}
+
+/* Link button styles */
+.format-btn.link-btn svg {
+    stroke: #3b82f6;
+}

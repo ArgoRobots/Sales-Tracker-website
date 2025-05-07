@@ -105,6 +105,14 @@ function createToolbar(textarea) {
       placeholder: "code",
     },
     {
+      icon: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>`,
+      title: "Insert Link",
+      class: "format-btn link-btn",
+      handler: function (textarea) {
+        insertLink(textarea);
+      },
+    },
+    {
       icon: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12" y2="17"></line></svg>`,
       title: "Formatting Help",
       url: "formatting/help.php",
@@ -115,7 +123,7 @@ function createToolbar(textarea) {
   buttons.forEach((btn) => {
     const button = document.createElement("button");
     button.type = "button";
-    button.className = btn.class ? ` ${btn.class}` : "format-btn";
+    button.className = btn.class ? btn.class : "format-btn";
     button.innerHTML = btn.icon;
     button.title = btn.title;
 
@@ -123,6 +131,8 @@ function createToolbar(textarea) {
       e.preventDefault();
       if (btn.url) {
         window.open(btn.url, "_blank");
+      } else if (btn.handler) {
+        btn.handler(textarea);
       } else {
         applyFormatting(textarea, btn.format, btn.multiline, btn.placeholder);
       }
@@ -195,6 +205,50 @@ function applyFormatting(
 }
 
 /**
+ * Insert a link into the textarea, Stack Overflow style
+ * @param {HTMLTextAreaElement} textarea
+ */
+function insertLink(textarea) {
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
+  const selectedText = textarea.value.substring(start, end);
+
+  // If text is selected, use it as the link text
+  const linkText = selectedText ? selectedText : prompt("Enter the link text:");
+  if (!linkText) return; // User cancelled
+
+  const linkUrl = prompt(
+    "Enter URL (only argorobots.com and Wikipedia are allowed):"
+  );
+  if (!linkUrl) return; // User cancelled
+
+  // Basic client-side validation as a UX enhancement
+  if (!isAllowedUrl(linkUrl)) {
+    alert("Only URLs from argorobots.com and Wikipedia are allowed.");
+    return;
+  }
+
+  // Insert markdown link format
+  const markdownLink = `[${linkText}](${linkUrl})`;
+
+  // Insert at cursor position or replace selected text
+  const textBefore = textarea.value.substring(0, start);
+  const textAfter = textarea.value.substring(end);
+  textarea.value = textBefore + markdownLink + textAfter;
+
+  // Place cursor after the inserted link
+  textarea.selectionStart = start + markdownLink.length;
+  textarea.selectionEnd = start + markdownLink.length;
+
+  // Focus the textarea
+  textarea.focus();
+
+  // Trigger input event to notify any listeners (like auto-resize or preview)
+  const event = new Event("input", { bubbles: true });
+  textarea.dispatchEvent(event);
+}
+
+/**
  * Set up keyboard shortcuts for formatting
  * @param {HTMLTextAreaElement} textarea
  */
@@ -210,5 +264,37 @@ function setupKeyboardShortcuts(textarea) {
       e.preventDefault();
       applyFormatting(textarea, "_", false, "italic text");
     }
+    // Ctrl+K for link (common shortcut in many editors)
+    else if (e.ctrlKey && e.key === "k") {
+      e.preventDefault();
+      insertLink(textarea);
+    }
   });
+}
+
+/**
+ * Check if a URL is allowed (only argorobots.com and Wikipedia domains)
+ * @param {string} url The URL to check
+ * @returns {boolean} True if URL is allowed, false otherwise
+ */
+function isAllowedUrl(url) {
+  try {
+    const urlObj = new URL(url);
+    const host = urlObj.hostname.toLowerCase();
+
+    // Check if it's from argorobots.com (including subdomains)
+    if (host === "argorobots.com" || host.endsWith(".argorobots.com")) {
+      return true;
+    }
+
+    // Check if it's from Wikipedia
+    if (host === "wikipedia.org" || host.endsWith(".wikipedia.org")) {
+      return true;
+    }
+
+    return false;
+  } catch (e) {
+    // Invalid URL
+    return false;
+  }
 }
