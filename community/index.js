@@ -515,13 +515,23 @@ document.addEventListener("DOMContentLoaded", function () {
         return false;
       }
 
-      // Fuzzy filter by search term
+      // Filter by search term
       if (searchTerm) {
         const title = post
           .querySelector(".post-title")
           .textContent.toLowerCase();
 
-        return getSimilarity(title, searchTerm) >= similarityThreshold;
+        const words = title.split(/\s+/);
+
+        // Check if any word in the title is similar to the search term
+        return words.some((word) => {
+          if (word.includes(searchTerm)) {
+            return true;
+          }
+
+          // Otherwise check similarity using Levenshtein distance
+          return getSimilarity(word, searchTerm) >= similarityThreshold;
+        });
       }
 
       return true;
@@ -554,7 +564,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     return filtered;
   }
-
   /**
    * Returns a similarity score between 0 and 1 based on edit distance.
    * Uses a normalized Levenshtein distance.
@@ -569,7 +578,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /**
-   * Basic Levenshtein distance (edit distance)
+   * Levenshtein distance
    */
   function getEditDistance(a, b) {
     const matrix = Array.from({ length: b.length + 1 }, (_, i) =>

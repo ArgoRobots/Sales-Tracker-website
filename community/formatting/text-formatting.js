@@ -66,7 +66,7 @@ function createToolbar(textarea) {
   // Add formatting buttons
   const buttons = [
     {
-      icon: "B",
+      icon: "<strong>B</strong>",
       title: "Bold (Ctrl+B)",
       format: "**",
       placeholder: "bold text",
@@ -99,7 +99,7 @@ function createToolbar(textarea) {
       placeholder: "quote",
     },
     {
-      icon: "Code",
+      icon: "<code>Code</code>",
       title: "Code",
       format: "`",
       placeholder: "code",
