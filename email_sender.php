@@ -9,10 +9,9 @@
  */
 function send_license_email($to_email, $license_key)
 {
-    // Email subject
+    $css = file_get_contents(__DIR__ . '/email.css');
     $subject = 'Your Argo Sales Tracker License Key';
 
-    // Email HTML content
     $email_html = <<<HTML
         <!DOCTYPE html>
         <html>
@@ -21,129 +20,7 @@ function send_license_email($to_email, $license_key)
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
             <title>Your Argo Sales Tracker License</title>
             <style>
-                /* Base styles */
-                body {
-                    background-color: #f6f9fc;
-                    font-family: 'Segoe UI', Arial, sans-serif;
-                    font-size: 14px;
-                    line-height: 1.6;
-                    margin: 0;
-                    padding: 0;
-                    -webkit-font-smoothing: antialiased;
-                }
-                
-                /* Container styles */
-                .container {
-                    max-width: 600px;
-                    margin: 0 auto;
-                    background-color: #ffffff;
-                    border-radius: 8px;
-                    overflow: hidden;
-                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-                    margin-top: 20px;
-                    margin-bottom: 20px;
-                }
-                
-                /* Header styles */
-                .header {
-                    background-color: #1e3a8a;
-                    padding: 20px;
-                    text-align: center;
-                }
-                
-                .header img {
-                    width: 100px;
-                    height: auto;
-                }
-                
-                /* Content styles */
-                .content {
-                    padding: 30px;
-                    color: #333;
-                }
-                
-                h1 {
-                    color: #1e3a8a;
-                    font-size: 24px;
-                    margin-top: 0;
-                    text-align: center;
-                }
-                
-                .license-key {
-                    background-color: #f8fafc;
-                    border: 1px solid #e2e8f0;
-                    border-radius: 4px;
-                    font-family: monospace;
-                    font-size: 18px;
-                    letter-spacing: 1px;
-                    margin: 25px auto;
-                    max-width: 400px;
-                    padding: 16px;
-                    text-align: center;
-                }
-                
-                /* Steps section */
-                .steps {
-                    margin: 25px 0;
-                }
-                
-                .steps h2 {
-                    color: #1e3a8a;
-                    font-size: 18px;
-                    margin-bottom: 15px;
-                    text-align: center;
-                }
-                
-                .steps ol {
-                    margin-left: 20px;
-                    padding-left: 0;
-                }
-                
-                .steps li {
-                    margin-bottom: 10px;
-                }
-                
-                /* Button styles */
-                .button {
-                    background-color: #2563eb;
-                    border-radius: 4px;
-                    color: #ffffff;
-                    display: inline-block;
-                    font-weight: bold;
-                    margin-top: 15px;
-                    padding: 12px 24px;
-                    text-decoration: none;
-                    text-align: center;
-                }
-                
-                .button-container {
-                    text-align: center;
-                    margin: 30px 0;
-                }
-                
-                /* Footer styles */
-                .footer {
-                    background-color: #f8fafc;
-                    border-top: 1px solid #e2e8f0;
-                    color: #64748b;
-                    font-size: 12px;
-                    padding: 20px;
-                    text-align: center;
-                }
-                
-                /* Mobile responsive */
-                @media only screen and (max-width: 620px) {
-                    .container {
-                        width: 100% !important;
-                        margin-top: 0;
-                        margin-bottom: 0;
-                        border-radius: 0;
-                    }
-                    
-                    .content {
-                        padding: 20px;
-                    }
-                }
+                 {$css}  /* Needs to be embedded for PHP mail() */
             </style>
         </head>
         <body>
@@ -185,7 +62,6 @@ function send_license_email($to_email, $license_key)
         </html>
     HTML;
 
-    // Email headers for HTML email
     $headers = [
         'MIME-Version: 1.0',
         'Content-Type: text/html; charset=UTF-8',
@@ -194,9 +70,7 @@ function send_license_email($to_email, $license_key)
         'X-Mailer: PHP/' . phpversion()
     ];
 
-    // Send the email
     $mail_result = mail($to_email, $subject, $email_html, implode("\r\n", $headers));
-
     return $mail_result;
 }
 
@@ -209,10 +83,9 @@ function send_license_email($to_email, $license_key)
  */
 function resend_license_email($to_email, $license_key)
 {
-    // Email subject
+    $css = file_get_contents(__DIR__ . '/email.css');
     $subject = 'Your Requested Argo Sales Tracker License Key';
 
-    // Email HTML content
     $email_html = <<<HTML
         <!DOCTYPE html>
         <html>
@@ -221,145 +94,7 @@ function resend_license_email($to_email, $license_key)
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
             <title>Your Argo Sales Tracker License</title>
             <style>
-                /* Base styles */
-                body {
-                    background-color: #f6f9fc;
-                    font-family: 'Segoe UI', Arial, sans-serif;
-                    font-size: 14px;
-                    line-height: 1.6;
-                    margin: 0;
-                    padding: 0;
-                    -webkit-font-smoothing: antialiased;
-                }
-                
-                /* Container styles */
-                .container {
-                    max-width: 600px;
-                    margin: 0 auto;
-                    background-color: #ffffff;
-                    border-radius: 8px;
-                    overflow: hidden;
-                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-                    margin-top: 20px;
-                    margin-bottom: 20px;
-                }
-                
-                /* Header styles */
-                .header {
-                    background-color: #1e3a8a;
-                    padding: 20px;
-                    text-align: center;
-                }
-                
-                .header img {
-                    width: 100px;
-                    height: auto;
-                }
-                
-                /* Content styles */
-                .content {
-                    padding: 30px;
-                    color: #333;
-                    text-align: center;
-                }
-
-                h1 {
-                    color: #1e3a8a;
-                    font-size: 24px;
-                    margin-top: 0;
-                    text-align: center;
-                }
-                
-                .license-key {
-                    background-color: #f8fafc;
-                    border: 1px solid #e2e8f0;
-                    border-radius: 4px;
-                    font-family: monospace;
-                    font-size: 18px;
-                    letter-spacing: 1px;
-                    margin: 25px auto;
-                    max-width: 400px;
-                    padding: 16px;
-                    text-align: center;
-                }
-                
-                /* Steps section */
-                .steps {
-                    margin: 25px auto;
-                    max-width: 450px;
-                    text-align: left;
-                }
-                
-                .steps h2 {
-                    color: #1e3a8a;
-                    font-size: 18px;
-                    margin-bottom: 15px;
-                    text-align: center;
-                }
-                
-                .steps ol {
-                    margin: 0 auto;
-                    padding-left: 2em;
-                    counter-reset: item;
-                    list-style-position: inside;
-                    display: table;
-                }
-                
-                .steps li {
-                    margin-bottom: 10px;
-                    display: table-row;
-                }
-                
-                .steps li:before {
-                    content: counter(item) ".";
-                    counter-increment: item;
-                    display: table-cell;
-                    padding-right: 15px;
-                    text-align: right;
-                    width: 1em;
-                }
-                
-                /* Button styles */
-                .button {
-                    background-color: #2563eb;
-                    border-radius: 4px;
-                    color: #ffffff;
-                    display: inline-block;
-                    font-weight: bold;
-                    margin-top: 15px;
-                    padding: 10px 24px;
-                    text-decoration: none;
-                    text-align: center;
-                }
-                
-                .button-container {
-                    text-align: center;
-                    margin: 30px 0;
-                }
-                
-                /* Footer styles */
-                .footer {
-                    background-color: #f8fafc;
-                    border-top: 1px solid #e2e8f0;
-                    color: #64748b;
-                    font-size: 12px;
-                    padding: 20px;
-                    text-align: center;
-                }
-                
-                /* Mobile responsive */
-                @media only screen and (max-width: 620px) {
-                    .container {
-                        width: 100% !important;
-                        margin-top: 0;
-                        margin-bottom: 0;
-                        border-radius: 0;
-                    }
-                    
-                    .content {
-                        padding: 20px;
-                    }
-                }
+                {$css}  /* Needs to be embedded for PHP mail() */
             </style>
         </head>
         <body>
@@ -368,13 +103,13 @@ function resend_license_email($to_email, $license_key)
                     <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Sales Tracker Logo">
                 </div>
                 
-                <div class="content">
+                <div class="content content-centered">
                     <h1>Your License Key</h1>
                     <p>As requested, here is your Argo Sales Tracker license key:</p>
                     
                     <div class="license-key">{$license_key}</div>
                     
-                    <div class="steps">
+                    <div class="steps steps-centered">
                         <h2>How to Activate Your License</h2>
                         <ol>
                             <li>Open Argo Sales Tracker on your computer</li>
@@ -385,7 +120,7 @@ function resend_license_email($to_email, $license_key)
                     </div>
                     
                     <div class="button-container">
-                        <a href="https://argorobots.com/documentation/index.html" class="button">View Documentation</a>
+                        <a href="https://argorobots.com/documentation/index.html" class="button button-resend">View Documentation</a>
                     </div>
                     
                     <p>If you have any questions or need assistance, please don't hesitate to <a href="https://argorobots.com/contact-us/index.php" style="color: #2563eb;">contact our support team</a>.</p>
@@ -401,7 +136,6 @@ function resend_license_email($to_email, $license_key)
         </html>
     HTML;
 
-    // Email headers for HTML email
     $headers = [
         'MIME-Version: 1.0',
         'Content-Type: text/html; charset=UTF-8',
@@ -410,8 +144,225 @@ function resend_license_email($to_email, $license_key)
         'X-Mailer: PHP/' . phpversion()
     ];
 
-    // Send the email
     $mail_result = mail($to_email, $subject, $email_html, implode("\r\n", $headers));
-
     return $mail_result;
+}
+
+/**
+ * Send verification email with code
+ * 
+ * @param string $email User's email address
+ * @param string $code Verification code
+ * @param string $username Username
+ * @return bool Success status
+ */
+function send_verification_email($email, $code, $username)
+{
+    $css = file_get_contents(__DIR__ . '/email.css');
+    $subject = 'Verify Your Account - Argo Sales Tracker';
+
+    $email_html = <<<HTML
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+            <title>Verify Your Account</title>
+            <style>
+                {$css}  /* Needs to be embedded for PHP mail() */
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <h2>Welcome to the Argo Community!</h2>
+                </div>
+                <div class="content">
+                    <p>Hello {$username},</p>
+                    <p>Thank you for registering. <strong>Email verification is required</strong> to activate your account and access your license key.</p>
+                    
+                    <p>Please use the following verification code to complete your registration:</p>
+                    <div class="verification-code">{$code}</div>
+                    
+                    <p>This code will expire in 24 hours.</p>
+                    
+                    <p>If you did not sign up for an account, you can ignore this email.</p>
+                    <p>Regards,<br>The Argo Team</p>
+                </div>
+                <div class="footer">
+                    <p>Argo Sales Tracker &copy; 2025. All rights reserved.</p>
+                    <p>This email was sent to {$email}</p>
+                </div>
+            </div>
+        </body>
+        </html>
+    HTML;
+
+    $headers = [
+        'MIME-Version: 1.0',
+        'Content-Type: text/html; charset=UTF-8',
+        'From: Argo Sales Tracker <noreply@argorobots.com>',
+        'Reply-To: support@argorobots.com',
+        'X-Mailer: PHP/' . phpversion()
+    ];
+
+    $mail_result = mail($email, $subject, $email_html, implode("\r\n", $headers));
+    return $mail_result;
+}
+
+/**
+ * Community admin notification sender
+ * 
+ * @param string $type Notification type ('new_post', 'new_comment')
+ * @param array $data Notification data
+ * @return bool Success status
+ */
+function send_notification_email($type, $data)
+{
+    $db = get_db_connection();
+
+    // Get all admins with the corresponding notification enabled
+    $notification_column = ($type === 'new_post') ? 'notify_new_posts' : 'notify_new_comments';
+
+    $stmt = $db->prepare("SELECT u.username, ans.notification_email 
+                         FROM admin_notification_settings ans
+                         JOIN community_users u ON ans.user_id = u.id
+                         WHERE u.role = 'admin' AND ans.$notification_column = 1");
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $recipients = [];
+    while ($row = $result->fetch_assoc()) {
+        $recipients[] = $row;
+    }
+
+    $stmt->close();
+
+    // If no admins have notifications enabled, exit early
+    if (empty($recipients)) {
+        return true;
+    }
+
+    // Load CSS for email template
+    $css = file_get_contents(__DIR__ . '/email.css');
+
+    // Prepare email content
+    $subject = '';
+    $site_url = get_site_url();
+
+    if ($type === 'new_post') {
+        $post_type_text = $data['post_type'] === 'bug' ? 'Bug Report' : 'Feature Request';
+        $subject = "[Argo Community] New $post_type_text: " . $data['title'];
+        $post_url = "$site_url/community/view_post.php?id=" . $data['id'];
+
+        $email_template = <<<HTML
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+            <title>New Community Post</title>
+            <style>
+                {$css}  /* Needs to be embedded for PHP mail() */
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Sales Tracker Logo">
+                </div>
+                
+                <div class="content">
+                    <h2>New {$post_type_text} Posted</h2>
+                    <p>A new {$post_type_text} has been posted on the Argo Community:</p>
+                    
+                    <p><strong>Title:</strong> {$data['title']}</p>
+                    <p><strong>Posted by:</strong> {$data['user_name']} ({$data['user_email']})</p>
+                    
+                    <div class="button-container">
+                        <a href="{$post_url}" class="button">View Post</a>
+                    </div>
+                </div>
+                
+                <div class="footer">
+                    <p>This is an automated notification from the Argo Community system.</p>
+                    <p>You received this message because you're an administrator of the Argo Community. 
+                    You can adjust your notification settings <a href="$site_url/community/users/admin_notification_settings.php">here</a>.</p>
+                    <p>Argo Sales Tracker &copy; 2025. All rights reserved.</p>
+                </div>
+            </div>
+        </body>
+        </html>
+HTML;
+    } elseif ($type === 'new_comment') {
+        $subject = "[Argo Community] New Comment on: " . $data['post_title'];
+        $post_url = "$site_url/community/view_post.php?id=" . $data['post_id'];
+
+        $email_template = <<<HTML
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+            <title>New Community Comment</title>
+            <style>
+                {$css}  /* Needs to be embedded for PHP mail() */
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Sales Tracker Logo">
+                </div>
+                
+                <div class="content">
+                    <h2>New Comment Posted</h2>
+                    <p>A new comment has been posted on "{$data['post_title']}":</p>
+                    
+                    <p><strong>Posted by:</strong> {$data['user_name']} ({$data['user_email']})</p>
+                    
+                    <div class="button-container">
+                        <a href="{$post_url}" class="button">View Comment</a>
+                    </div>
+                </div>
+                
+                <div class="footer">
+                    <p>This is an automated notification from the Argo Community system.</p>
+                    <p>You received this message because you're an administrator of the Argo Community. 
+                    You can adjust your notification settings <a href="$site_url/community/users/admin_notification_settings.php">here</a>.</p>
+                    <p>Argo Sales Tracker &copy; 2025. All rights reserved.</p>
+                </div>
+            </div>
+        </body>
+        </html>
+HTML;
+    } else {
+        return false; // Unknown notification type
+    }
+
+    // Email headers
+    $headers = [
+        'MIME-Version: 1.0',
+        'Content-Type: text/html; charset=UTF-8',
+        'From: Argo Community <noreply@argorobots.com>',
+        'Reply-To: support@argorobots.com',
+        'X-Mailer: PHP/' . phpversion()
+    ];
+
+    // Send emails to all recipients
+    $success = true;
+    foreach ($recipients as $recipient) {
+        $personal_email = str_replace(
+            "You're an administrator of the Argo Community.",
+            "You're an administrator ({$recipient['username']}) of the Argo Community.",
+            $email_template
+        );
+
+        $mail_success = mail($recipient['notification_email'], $subject, $personal_email, implode("\r\n", $headers));
+        if (!$mail_success) {
+            $success = false;
+        }
+    }
+
+    return $success;
 }

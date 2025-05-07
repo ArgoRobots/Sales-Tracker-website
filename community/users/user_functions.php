@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../email_sender.php';
 
 /**
  * Register a new user with verification code
@@ -60,103 +61,6 @@ function register_user($username, $email, $password)
     }
 
     return ['success' => false, 'message' => 'Registration failed'];
-}
-
-/**
- * Send verification email with code
- * 
- * @param string $email User's email address
- * @param string $code Verification code
- * @param string $username Username
- * @return bool Success status
- */
-function send_verification_email($email, $code, $username)
-{
-    $subject = 'Verify Your Account - Argo Sales Tracker';
-
-    $message = "
-    <html>
-    <head>
-        <title>Verify Your Account</title>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                line-height: 1.6;
-                color: #333;
-                max-width: 600px;
-                margin: 0 auto;
-            }
-            .container {
-                padding: 20px;
-                background-color: #f9f9f9;
-                border-radius: 5px;
-            }
-            .header {
-                background-color: #1e3a8a;
-                color: white;
-                padding: 15px;
-                text-align: center;
-                border-radius: 5px 5px 0 0;
-            }
-            .content {
-                padding: 20px;
-                background-color: white;
-                border: 1px solid #ddd;
-            }
-            .verification-code {
-                font-size: 32px;
-                font-weight: bold;
-                letter-spacing: 5px;
-                text-align: center;
-                color: #1e3a8a;
-                margin: 20px 0;
-                padding: 10px;
-                background-color: #f0f4ff;
-                border-radius: 5px;
-            }
-            .footer {
-                margin-top: 20px;
-                font-size: 12px;
-                color: #666;
-                text-align: center;
-            }
-        </style>
-    </head>
-    <body>
-        <div class='container'>
-            <div class='header'>
-                <h2>Welcome to the Argo Community!</h2>
-            </div>
-            <div class='content'>
-                <p>Hello $username,</p>
-                <p>Thank you for registering. <strong>Email verification is required</strong> to activate your account and access your license key.</p>
-                
-                <p>Please use the following verification code to complete your registration:</p>
-                <div class='verification-code'>$code</div>
-                
-                <p>This code will expire in 24 hours.</p>
-                
-                <p>If you did not sign up for an account, you can ignore this email.</p>
-                <p>Regards,<br>The Argo Team</p>
-            </div>
-            <div class='footer'>
-                <p>© Argo. All rights reserved.</p>
-            </div>
-        </div>
-    </body>
-    </html>
-    ";
-
-    // Email headers
-    $headers = [
-        'MIME-Version: 1.0',
-        'Content-Type: text/html; charset=UTF-8',
-        'From: Argo Community <noreply@argorobots.com>',
-        'Reply-To: no-reply@argorobots.com'
-    ];
-
-    // Send email
-    return mail($email, $subject, $message, implode("\r\n", $headers));
 }
 
 /**
