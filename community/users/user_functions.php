@@ -437,6 +437,15 @@ function upload_avatar($user_id, $file)
         chmod($upload_dir, 0755); // Ensure correct permissions
     }
 
+    // Get current avatar path before updating
+    $db = get_db_connection();
+    $stmt = $db->prepare('SELECT avatar FROM community_users WHERE id = ?');
+    $stmt->bind_param('i', $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $old_avatar = $result->fetch_assoc()['avatar'] ?? '';
+    $stmt->close();
+
     // Generate unique filename
     $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
     $filename = 'avatar_' . $user_id . '_' . time() . '.' . $extension;
@@ -446,8 +455,6 @@ function upload_avatar($user_id, $file)
     if (move_uploaded_file($file['tmp_name'], $target_path)) {
         // Set permissions for the file
         chmod($target_path, 0644);
-
-        $db = get_db_connection();
 
         try {
             // Begin transaction to reduce lock time
@@ -470,6 +477,15 @@ function upload_avatar($user_id, $file)
 
             // Update session with avatar path
             $_SESSION['avatar'] = $avatar_path;
+
+            // Delete old avatar file if it exists
+            if (!empty($old_avatar)) {
+                $old_file_path = dirname(__DIR__) . '/' . $old_avatar;
+                if (file_exists($old_file_path)) {
+                    unlink($old_file_path);
+                    error_log("Deleted old avatar: " . $old_file_path);
+                }
+            }
 
             error_log("Avatar successfully uploaded: " . $avatar_path);
             return $avatar_path;
