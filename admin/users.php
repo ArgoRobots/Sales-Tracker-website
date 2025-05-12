@@ -130,6 +130,7 @@ if (isset($_SESSION['message'])) {
             <h1>User Account Management</h1>
             <div class="header-buttons">
                 <a href="index.php" class="btn">License Keys</a>
+                <a href="statistics.php" class="btn">Statistics</a>
                 <a href="2fa-setup.php" class="btn">2FA Settings</a>
                 <a href="logout.php" class="btn logout-btn">Logout</a>
             </div>

@@ -205,6 +205,7 @@ if (isset($_SESSION['message'])) {
         <div class="header">
             <h1>License Key Administration</h1>
             <div class="header-buttons">
+                <a href="statistics.php" class="btn">Statistics</a>
                 <a href="users.php" class="btn">User Accounts</a>
                 <a href="2fa-setup.php" class="btn">2FA Settings</a>
                 <a href="logout.php" class="btn logout-btn">Logout</a>

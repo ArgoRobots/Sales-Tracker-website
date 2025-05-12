@@ -179,14 +179,28 @@ SELECT
     u.created_at,
     COUNT(DISTINCT p.id) AS post_count,
     COUNT(DISTINCT c.id) AS comment_count
-FROM 
+FROM
     community_users u
-LEFT JOIN 
+LEFT JOIN
     community_posts p ON u.id = p.user_id
-LEFT JOIN 
+LEFT JOIN
     community_comments c ON u.id = c.user_id
-GROUP BY 
+GROUP BY
     u.id, u.username, u.email, u.bio, u.avatar, u.role, u.created_at;
+
+-- Create statistics table for more detailed tracking
+CREATE TABLE IF NOT EXISTS statistics (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    event_type VARCHAR(50) NOT NULL, -- 'download', 'page_view', etc.
+    event_data VARCHAR(255), -- Additional data like version, page, etc.
+    ip_address VARCHAR(45),
+    user_agent VARCHAR(255),
+    country_code VARCHAR(2),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_event_type (event_type),
+    INDEX idx_created_at (created_at),
+    INDEX idx_country_code (country_code)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Add indexes for license_keys table
 CREATE INDEX idx_license_keys_transaction_id ON license_keys(transaction_id);
