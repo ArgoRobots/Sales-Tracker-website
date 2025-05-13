@@ -86,7 +86,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enable_2fa'])) {
         <div class="header">
             <h1>Two-Factor Authentication Setup</h1>
             <a href="index.php" class="btn">Back to Dashboard</a>
-            <a href="statistics.php" class="btn">Statistics</a>
         </div>
 
         <?php if ($error): ?>

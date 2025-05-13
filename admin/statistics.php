@@ -34,14 +34,13 @@ function get_downloads_by_period($period = 'month', $limit = 12)
             break;
     }
 
-    // For demonstration, using the license_keys table for download stats
-    // In practice, you would use the statistics table we'll create
     $query = "
         SELECT 
             $sql_period as period, 
             $display_format as display_period,
             COUNT(*) as count 
-        FROM license_keys 
+        FROM statistics 
+        WHERE event_type = 'download'
         GROUP BY period 
         ORDER BY period DESC 
         LIMIT ?";
@@ -528,12 +527,6 @@ foreach ($user_agents as $agent) {
             </div>
         </div>
 
-        <!-- Downloads, registrations and page views chart -->
-        <div class="chart-container">
-            <h2>Downloads, Registrations & Page Views (<?php echo ucfirst($period); ?>ly)</h2>
-            <canvas id="combinedChart"></canvas>
-        </div>
-
         <!-- More charts -->
         <div class="chart-row">
             <div class="chart-container half">
@@ -641,80 +634,10 @@ foreach ($user_agents as $agent) {
                 growthData.push(growth.toFixed(1));
             }
 
-            // Combined chart - Downloads, Registrations and Page Views
-            const ctxCombined = document.getElementById('combinedChart').getContext('2d');
-            new Chart(ctxCombined, {
-                type: 'bar',
-                data: {
-                    labels: chartLabels,
-                    datasets: [{
-                            label: 'Downloads',
-                            backgroundColor: 'rgba(37, 99, 235, 0.2)',
-                            borderColor: 'rgba(37, 99, 235, 1)',
-                            borderWidth: 2,
-                            data: downloadsData,
-                            borderRadius: 4,
-                        },
-                        {
-                            label: 'Registrations',
-                            backgroundColor: 'rgba(16, 185, 129, 0.2)',
-                            borderColor: 'rgba(16, 185, 129, 1)',
-                            borderWidth: 2,
-                            data: registrationsData,
-                            borderRadius: 4,
-                        },
-                        {
-                            label: 'Page Views',
-                            backgroundColor: 'rgba(245, 158, 11, 0.2)',
-                            borderColor: 'rgba(245, 158, 11, 1)',
-                            borderWidth: 2,
-                            data: pageViewsData,
-                            borderRadius: 4,
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                precision: 0
-                            }
-                        },
-                        x: {
-                            ticks: {
-                                padding: 10
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        },
-                        tooltip: {
-                            mode: 'index',
-                            intersect: false
-                        }
-                    },
-                    interaction: {
-                        mode: 'nearest',
-                        axis: 'x',
-                        intersect: false
-                    },
-                    layout: {
-                        padding: {
-                            bottom: 60
-                        }
-                    }
-                }
-            });
-
-            // Activation rate chart (doughnut)
+            // Activation rate chart
             const ctxActivation = document.getElementById('activationChart').getContext('2d');
             new Chart(ctxActivation, {
-                type: 'doughnut',
+                type: 'pie',
                 data: {
                     labels: ['Activated', 'Not Activated'],
                     datasets: [{
@@ -733,7 +656,6 @@ foreach ($user_agents as $agent) {
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    cutout: '60%',
                     plugins: {
                         legend: {
                             position: 'right',
@@ -814,7 +736,7 @@ foreach ($user_agents as $agent) {
                 }
             });
 
-            // Post Type chart (pie)
+            // Post Type chart
             const ctxPostType = document.getElementById('postTypeChart').getContext('2d');
             new Chart(ctxPostType, {
                 type: 'pie',
@@ -864,7 +786,7 @@ foreach ($user_agents as $agent) {
                 }
             });
 
-            // Post Views by Type chart (bar)
+            // Post Views by Type chart
             const ctxPostViews = document.getElementById('postViewsChart').getContext('2d');
             new Chart(ctxPostViews, {
                 type: 'bar',
@@ -913,7 +835,7 @@ foreach ($user_agents as $agent) {
                 }
             });
 
-            // Country chart (horizontal bar)
+            // Country chart
             const ctxCountry = document.getElementById('countryChart').getContext('2d');
             new Chart(ctxCountry, {
                 type: 'bar',
@@ -953,10 +875,10 @@ foreach ($user_agents as $agent) {
                 }
             });
 
-            // Browser chart (doughnut)
+            // Browser chart
             const ctxBrowser = document.getElementById('browserChart').getContext('2d');
             new Chart(ctxBrowser, {
-                type: 'doughnut',
+                type: 'pie',
                 data: {
                     labels: browserLabels,
                     datasets: [{
@@ -983,7 +905,6 @@ foreach ($user_agents as $agent) {
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    cutout: '50%',
                     plugins: {
                         legend: {
                             position: 'right',
@@ -1010,19 +931,67 @@ foreach ($user_agents as $agent) {
 
             // Export functions
             document.getElementById('exportCSV').addEventListener('click', function() {
-                // Create CSV content
+                // Helper function to sum arrays since array_sum is a PHP function
+                const sumArray = (arr) => arr.reduce((sum, val) => sum + (Number(val) || 0), 0);
+
+                // Create CSV content for time series data
                 let csvContent = 'data:text/csv;charset=utf-8,';
-                csvContent += 'Period,Downloads,Registrations,PageViews\n';
+
+                // Add header for time series
+                csvContent += 'TIME SERIES DATA\n';
+                csvContent += 'Period,Downloads,Registrations,Page Views,Growth Rate (%)\n';
 
                 for (let i = 0; i < chartLabels.length; i++) {
                     const row = [
                         chartLabels[i],
                         downloadsData[i] || 0,
                         registrationsData[i] || 0,
-                        pageViewsData[i] || 0
+                        pageViewsData[i] || 0,
+                        i > 0 ? (growthData[i - 1] || 0) : 'N/A'
                     ].join(',');
                     csvContent += row + '\n';
                 }
+
+                // Add summary data
+                csvContent += '\nSUMMARY DATA\n';
+                csvContent += 'Metric,Value\n';
+                csvContent += `Total Downloads,${sumArray(downloadsData)}\n`;
+                csvContent += `Total Registrations,${sumArray(registrationsData)}\n`;
+                csvContent += `Total Page Views,${sumArray(pageViewsData)}\n`;
+                csvContent += `Activation Rate,${<?php echo $activation_percentage; ?>}%\n`;
+                csvContent += `Latest Growth Rate,${<?php echo $latest_growth; ?>}%\n`;
+                csvContent += `Total Post Views,${<?php echo str_replace(',', '', $total_post_views); ?>}\n`;
+                csvContent += `Average Views per Post,${<?php echo $avg_post_views; ?>}\n`;
+                csvContent += `Most Viewed Post,${<?php echo str_replace(',', '', $most_viewed); ?>}\n`;
+
+                // Add post type data
+                csvContent += '\nPOST TYPE DATA\n';
+                csvContent += 'Post Type,Count,Total Views\n';
+                for (let i = 0; i < postTypeLabels.length; i++) {
+                    csvContent += `${postTypeLabels[i]},${postTypeCounts[i]},${postTypeViews[i]}\n`;
+                }
+
+                // Add country data
+                csvContent += '\nUSER COUNTRIES\n';
+                csvContent += 'Country Code,User Count\n';
+                for (let i = 0; i < countryLabels.length; i++) {
+                    csvContent += `${countryLabels[i]},${countryCounts[i]}\n`;
+                }
+
+                // Add browser data
+                csvContent += '\nBROWSER DISTRIBUTION\n';
+                csvContent += 'Browser,User Count\n';
+                for (let i = 0; i < browserLabels.length; i++) {
+                    csvContent += `${browserLabels[i]},${browserCounts[i]}\n`;
+                }
+
+                // Add most active users data
+                csvContent += '\nMOST ACTIVE USERS\n';
+                csvContent += 'Username,Email,Posts,Comments,Total Views,Activity Score\n';
+
+                <?php foreach ($active_users as $user): ?>
+                    csvContent += `<?php echo str_replace('"', '""', $user['username']); ?>,<?php echo str_replace('"', '""', $user['email']); ?>,<?php echo $user['post_count']; ?>,<?php echo $user['comment_count']; ?>,<?php echo isset($user['total_views']) ? (int)$user['total_views'] : 0; ?>,<?php echo $user['activity_score']; ?>\n`;
+                <?php endforeach; ?>
 
                 // Create download link
                 const encodedUri = encodeURI(csvContent);
@@ -1035,13 +1004,28 @@ foreach ($user_agents as $agent) {
             });
 
             document.getElementById('exportJSON').addEventListener('click', function() {
-                // Create JSON content
+                // Helper function to sum arrays since array_sum is a PHP function
+                const sumArray = (arr) => arr.reduce((sum, val) => sum + (Number(val) || 0), 0);
+
+                // Create comprehensive JSON content with all dashboard data
                 const jsonData = {
+                    summary: {
+                        total_downloads: sumArray(downloadsData),
+                        total_registrations: sumArray(registrationsData),
+                        total_page_views: sumArray(pageViewsData),
+                        activation_rate: <?php echo $activation_percentage; ?>,
+                        growth_rate: <?php echo $latest_growth; ?>,
+                        post_views: {
+                            total: <?php echo str_replace(',', '', $total_post_views); ?>,
+                            average_per_post: <?php echo $avg_post_views; ?>,
+                            most_viewed: <?php echo str_replace(',', '', $most_viewed); ?>
+                        }
+                    },
                     time_series: [],
-                    activation: {
+                    growth_trends: [],
+                    license_activation: {
                         activated: activationData[0],
-                        not_activated: activationData[1],
-                        percentage: <?php echo $activation_percentage; ?>
+                        not_activated: activationData[1]
                     },
                     post_types: [],
                     countries: [],
@@ -1050,7 +1034,9 @@ foreach ($user_agents as $agent) {
                         downloads: conversionData[0],
                         registrations: conversionData[1],
                         purchases: conversionData[2],
-                    }
+                        registration_to_purchase_rate: <?php echo $conversion_data['registration_to_purchase']; ?>
+                    },
+                    most_active_users: []
                 };
 
                 // Add time series data
@@ -1061,6 +1047,14 @@ foreach ($user_agents as $agent) {
                         registrations: registrationsData[i] || 0,
                         page_views: pageViewsData[i] || 0
                     });
+
+                    // Add growth data starting from the second period
+                    if (i > 0) {
+                        jsonData.growth_trends.push({
+                            period: chartLabels[i],
+                            growth_rate: parseFloat(growthData[i - 1])
+                        });
+                    }
                 }
 
                 // Add post type data
@@ -1087,6 +1081,18 @@ foreach ($user_agents as $agent) {
                         count: browserCounts[i]
                     });
                 }
+
+                // Add most active users data
+                <?php foreach ($active_users as $user): ?>
+                    jsonData.most_active_users.push({
+                        username: "<?php echo addslashes($user['username']); ?>",
+                        email: "<?php echo addslashes($user['email']); ?>",
+                        post_count: <?php echo isset($user['post_count']) ? (int)$user['post_count'] : 0; ?>,
+                        comment_count: <?php echo isset($user['comment_count']) ? (int)$user['comment_count'] : 0; ?>,
+                        total_views: <?php echo isset($user['total_views']) ? (int)$user['total_views'] : 0; ?>,
+                        activity_score: <?php echo isset($user['activity_score']) ? (int)$user['activity_score'] : 0; ?>
+                    });
+                <?php endforeach; ?>
 
                 const jsonString = JSON.stringify(jsonData, null, 2);
                 const blob = new Blob([jsonString], {

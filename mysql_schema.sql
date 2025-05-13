@@ -167,7 +167,7 @@ CREATE TABLE IF NOT EXISTS admin_notification_settings (
     FOREIGN KEY (user_id) REFERENCES community_users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Create a view for user profiles (Converting SQLite VIEW to MySQL VIEW)
+-- Create a view for user profiles
 CREATE OR REPLACE VIEW community_user_profiles AS
 SELECT 
     u.id,
@@ -202,48 +202,6 @@ CREATE TABLE IF NOT EXISTS statistics (
     INDEX idx_country_code (country_code)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- STATISTICS TABLES
-CREATE TABLE IF NOT EXISTS detailed_statistics (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    event_type VARCHAR(50) NOT NULL,
-    event_data JSON,
-    user_id INT,
-    session_id VARCHAR(100),
-    referrer VARCHAR(255),
-    path VARCHAR(255),
-    ip_address VARCHAR(45),
-    user_agent VARCHAR(255),
-    country_code VARCHAR(2),
-    browser VARCHAR(50),
-    os VARCHAR(50),
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    
-    INDEX idx_det_stat_event_type (event_type),
-    INDEX idx_det_stat_user_id (user_id),
-    INDEX idx_det_stat_session (session_id),
-    INDEX idx_det_stat_created (created_at),
-    INDEX idx_det_stat_path (path),
-    INDEX idx_det_stat_country (country_code)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Create user_activity table for tracking detailed user engagement
-CREATE TABLE IF NOT EXISTS user_activity (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id INT NOT NULL,
-    activity_type VARCHAR(50) NOT NULL,
-    object_id INT,
-    object_type VARCHAR(50),
-    details JSON,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    
-    INDEX idx_user_activity_user (user_id),
-    INDEX idx_user_activity_type (activity_type),
-    INDEX idx_user_activity_object (object_id, object_type),
-    INDEX idx_user_activity_created (created_at),
-    
-    FOREIGN KEY (user_id) REFERENCES community_users(id) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 -- Create version_history table to track software versions
 CREATE TABLE IF NOT EXISTS version_history (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -255,107 +213,6 @@ CREATE TABLE IF NOT EXISTS version_history (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     
     UNIQUE INDEX idx_version_number (version)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Create error_logs table for better error tracking
-CREATE TABLE IF NOT EXISTS error_logs (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    error_type VARCHAR(50) NOT NULL,
-    error_message TEXT NOT NULL,
-    stack_trace TEXT,
-    user_id INT,
-    ip_address VARCHAR(45),
-    user_agent VARCHAR(255),
-    page VARCHAR(255),
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    
-    INDEX idx_error_logs_type (error_type),
-    INDEX idx_error_logs_user (user_id),
-    INDEX idx_error_logs_created (created_at)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Create traffic_sources table
-CREATE TABLE IF NOT EXISTS traffic_sources (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    source VARCHAR(100) NOT NULL,
-    referrer VARCHAR(255),
-    visit_count INT DEFAULT 0,
-    conversion_count INT DEFAULT 0,
-    first_seen DATETIME DEFAULT CURRENT_TIMESTAMP,
-    last_seen DATETIME DEFAULT CURRENT_TIMESTAMP,
-    
-    UNIQUE INDEX idx_traffic_source (source),
-    INDEX idx_traffic_first_seen (first_seen),
-    INDEX idx_traffic_last_seen (last_seen)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Create page_analytics table for detailed page performance tracking
-CREATE TABLE IF NOT EXISTS page_analytics (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    page_path VARCHAR(255) NOT NULL,
-    page_title VARCHAR(255),
-    view_count INT DEFAULT 0,
-    avg_time_on_page INT DEFAULT 0, -- in seconds
-    bounce_rate DECIMAL(5,2) DEFAULT 0, -- as percentage
-    exit_rate DECIMAL(5,2) DEFAULT 0, -- as percentage
-    last_updated DATETIME DEFAULT CURRENT_TIMESTAMP,
-    
-    UNIQUE INDEX idx_page_analytics_path (page_path),
-    INDEX idx_page_analytics_views (view_count)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Create sessions table for tracking user sessions
-CREATE TABLE IF NOT EXISTS user_sessions (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    session_id VARCHAR(100) NOT NULL,
-    user_id INT,
-    ip_address VARCHAR(45),
-    user_agent VARCHAR(255),
-    referrer VARCHAR(255),
-    landing_page VARCHAR(255),
-    country_code VARCHAR(2),
-    start_time DATETIME DEFAULT CURRENT_TIMESTAMP,
-    end_time DATETIME,
-    duration INT, -- in seconds
-    page_count INT DEFAULT 1,
-    
-    UNIQUE INDEX idx_session_id (session_id),
-    INDEX idx_user_sessions_user (user_id),
-    INDEX idx_user_sessions_start (start_time)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Create conversion_events table for tracking conversion funnel
-CREATE TABLE IF NOT EXISTS conversion_events (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    event_type VARCHAR(50) NOT NULL, -- 'visit', 'download', 'registration', etc.
-    user_id INT,
-    session_id VARCHAR(100),
-    previous_event_id INT,
-    details JSON,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    
-    INDEX idx_conversion_type (event_type),
-    INDEX idx_conversion_user (user_id),
-    INDEX idx_conversion_session (session_id),
-    INDEX idx_conversion_previous (previous_event_id),
-    INDEX idx_conversion_created (created_at)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Create ab_testing table for A/B test tracking
-CREATE TABLE IF NOT EXISTS ab_testing (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    test_name VARCHAR(100) NOT NULL,
-    variant VARCHAR(50) NOT NULL, -- 'A', 'B', etc.
-    user_id INT,
-    session_id VARCHAR(100),
-    conversion BOOLEAN DEFAULT 0,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    
-    INDEX idx_ab_test_name (test_name),
-    INDEX idx_ab_variant (variant),
-    INDEX idx_ab_user (user_id),
-    INDEX idx_ab_session (session_id),
-    INDEX idx_ab_created (created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Add indexes for license_keys table
