@@ -216,25 +216,30 @@ function get_community_post_types()
 }
 
 // Function to get geographic distribution of users
-function get_user_countries()
+function get_user_countries($limit = 10)
 {
     $db = get_db_connection();
     $query = "
         SELECT 
             country_code,
-            COUNT(*) as count
+            COUNT(DISTINCT ip_address) as count
         FROM statistics
         WHERE country_code IS NOT NULL AND country_code != ''
         GROUP BY country_code
         ORDER BY count DESC
-        LIMIT 10";
+        LIMIT ?";
 
-    $result = $db->query($query);
+    $stmt = $db->prepare($query);
+    $stmt->bind_param('i', $limit);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     $data = [];
     while ($row = $result->fetch_assoc()) {
         $data[] = $row;
     }
+
+    $stmt->close();
 
     return $data;
 }
