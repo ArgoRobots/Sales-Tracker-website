@@ -1,29 +1,42 @@
 # Argo Sales Tracker Website
-
 ## Introduction
-
-This is the website for [Argo Sales Tracker](https://github.com/ArgoRobots/Sales-Tracker), a WinForms application designed to track the sales and purchases of products.
+This is the website for [Argo Sales Tracker](https://github.com/ArgoRobots/Sales-Tracker), a WinForms application designed to track the sales and purchases of products. This website serves as a platform for users to download the software, purchase license keys, access documentation, and has an administrative system for managing licenses, user accounts, and analytics.
 
 ## Technologies used
+### Frontend:
+- **HTML5/CSS3**: Structure and styling
+- **JavaScript/jQuery**: Interactive elements and dynamic content loading
+- **Chart.js**: Data visualization for analytics dashboard
 
-- **HTML5 and CSS3** Structure and styling
-- **jQuery**: Dynamic content loading and interactivity
-- **PHP**: Backend license management
-- **MySQL**: Database for storing license information
+### Backend:
+- **PHP**: Server-side processing
+- **MySQL**: Database for storing licenses, user accounts, and analytics data
+- **Two-factor authentication (TOTP)**: Enhanced security for admin access
 
-## Admin System
+## Core Features
+### Public Website
+- Product information and marketing pages
+- Free version download
+- License key purchase system
+- Comprehensive documentation
+- Support/contact system
+- About us and legal information
 
-Backend administration system for managing license keys:
-
-- Protected by password and two factor authentication
+### Admin System
+- Secure admin dashboard with two-factor authentication
 - License key generation and management
-- Email system for sending license keys to customers
-- License validation API endpoint
+- User account administration
+- Statistics tracking and analytics dashboard
+
+## Security Features
+- Password hashing and secure storage
+- Two-factor authentication for admin access
+- Session management and protection
+- Rate limiting for login attempts
+- Input sanitization and validation
 
 ## Installation
-
 ### Step 1: Install PHP
-
 1. Download the latest version of PHP from [https://windows.php.net/download](https://windows.php.net/download).
 2. Choose the "Non Thread Safe" `.zip` version for your system (x64 or x86).
 3. Extract the contents to a folder, for example: `C:\php`
@@ -33,12 +46,10 @@ Backend administration system for managing license keys:
 5. Open Command Prompt and run `php -v` to make sure PHP is installed correctly.
 
 ### Step 2: Install Composer
-
 1. Download and install Composer from [https://getcomposer.org/](https://getcomposer.org/)
 2. During installation, make sure it detects your `php.exe` from `C:\php`
 
 ### Step 3: Set Up the Project
-
 1. Create a folder for the project, e.g., `C:\ArgoSalesTracker`
 2. Copy or unzip the project files into that folder
 3. Open Command Prompt and navigate to that directory:
