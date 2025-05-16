@@ -162,7 +162,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enable_2fa'])) {
         document.addEventListener('DOMContentLoaded', function() {
             // QR Code generation
             const qrContainer = document.getElementById('qr-code-container');
-            const otpauthUrl = "";
+            let otpauthUrl = "";
 
             <?php if (!empty($qr_code_data)): ?>
                 otpauthUrl = <?php echo json_encode($qr_code_data); ?>;
