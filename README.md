@@ -48,6 +48,7 @@ This is the website for [Argo Sales Tracker](https://github.com/ArgoRobots/Sales
 ### Step 2: Install Composer
 1. Download and install Composer from [https://getcomposer.org/](https://getcomposer.org/)
 2. During installation, make sure it detects your `php.exe` from `C:\php`
+3. Restart your computer to finish installing Composer
 
 ### Step 3: Set Up the Project
 1. Create a folder for the project, e.g., `C:\ArgoSalesTracker`
