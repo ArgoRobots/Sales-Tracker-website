@@ -50,6 +50,11 @@
     min-width: 300px;
 }
 
+.chart-container h2 {
+    text-align: center;
+    margin-top: 0;
+}
+
 .export-section {
     background: white;
     border-radius: 8px;
