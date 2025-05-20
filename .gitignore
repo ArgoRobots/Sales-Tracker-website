@@ -1,5 +1,5 @@
-.env
-.exe
+*.env
+*.exe
 .VSCodeCounter
 error_log.txt
 /vendor/
