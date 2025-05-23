@@ -136,8 +136,8 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                         </svg>
                     </div>
                     <div class="text-container">
-                        <h3>Easily add new purchases and sales</h3>
-                        <p>Add new sales and purchases with fields for quantities, shipping costs, taxes, and fees.</p>
+                        <h3>Easily add new transactions</h3>
+                        <p>Add new purchases and sales with fields for quantities, shipping costs, taxes, fees and more.</p>
                     </div>
                 </div>
                 <div class="feature-card">
@@ -268,12 +268,12 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                     </ul>
                 </div>
 
-                <img src="images/export-receitps.png" alt="Receipt manager">
+                <img src="images/export-receipts.png" alt="Receipt manager">
             </div>
 
             <!-- Spreadsheet manager -->
             <div class="showcase-item">
-                <img src="images/speadsheet-manager.png" alt="Speadsheet manager">
+                <img src="images/import-spreadsheet.png" alt="Spreadsheet manager">
 
                 <div class="showcase-content">
                     <h3 class="showcase-title">Import and export spreadsheets</h3>

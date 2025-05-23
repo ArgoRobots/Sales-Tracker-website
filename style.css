@@ -139,9 +139,9 @@ body {
   padding: 40px;
   max-width: 1200px;
   margin: 0 auto;
-  }
+}
 
-  .feature-card {
+.feature-card {
   background: white;
   padding: 32px;
   border-radius: 12px;
@@ -151,33 +151,32 @@ body {
   flex-direction: column;
   gap: 24px;
   text-align: center;
-  }
+}
 
-  .feature-card:hover {
+.feature-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-  }
+}
 
-  .image-container {
+.image-container {
   height: 200px;
   display: flex;
   justify-content: center;
   align-items: center;
   background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
   border-radius: 8px;
-  }
+}
 
-  .feature-card h3 {
+.feature-card h3 {
   font-size: 20px;
   margin: 0;
   color: #1e3a8a;
-  }
+}
 
-  .feature-card p {
-  color: #4b5563;
+.feature-card p {
   margin: 0;
   line-height: 1.5;
-  }
+}
 
 /* Showcase section */
 .bg-gray {
@@ -229,7 +228,6 @@ body {
 
 .showcase-description {
   font-size: 20px;
-  color: #4b5563;
 }
 
 /* Comparison Section */
@@ -299,7 +297,6 @@ body {
 }
 
 .comparison-content p {
-  color: #4b5563;
   font-size: 16px;
   line-height: 1.5;
 }
@@ -343,7 +340,6 @@ body {
 }
 
 .mobile-content p {
-  color: #4b5563;
   font-size: 15px;
   line-height: 1.4;
 }
@@ -491,7 +487,7 @@ body {
 .section img {
   max-width: 100%;
   height: auto;
-  border-radius: 12px;
+  border-radius: 5px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
