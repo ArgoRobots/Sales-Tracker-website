@@ -420,8 +420,8 @@ $post_type_views = [];
 
 foreach ($post_types as $type) {
     $post_type_labels[] = ucfirst($type['post_type']);
-    $post_type_counts[] = $type['count'];
-    $post_type_views[] = $type['total_views'];
+    $post_type_counts[] = (int)$type['count'];
+    $post_type_views[] = (int)$type['total_views']; 
 }
 
 // Prepare country data for charts
@@ -431,6 +431,15 @@ $country_counts = [];
 foreach ($user_countries as $country) {
     $country_labels[] = $country['country_code'];
     $country_counts[] = $country['count'];
+}
+
+// Prepare browser data for charts
+$browser_labels = [];
+$browser_counts = [];
+
+foreach ($user_agents as $browser) {
+    $browser_labels[] = $browser['browser'];
+    $browser_counts[] = (int)$browser['count'];
 }
 
 // Map all ISO 3166-1 alpha-2 codes to full country names
@@ -682,9 +691,9 @@ foreach ($user_countries as $country) {
             const registrationsData = <?php echo json_encode($registrations_data); ?>;
             const pageViewsData = <?php echo json_encode($page_views_data); ?>;
             const activationData = <?php echo json_encode([
-                                        $activation_rate['activated'],
-                                        $activation_rate['total'] - $activation_rate['activated']
-                                    ]); ?>;
+                (int)$activation_rate['activated'],
+                (int)($activation_rate['total'] - $activation_rate['activated'])
+            ]); ?>;
             const postTypeLabels = <?php echo json_encode($post_type_labels); ?>;
             const postTypeCounts = <?php echo json_encode($post_type_counts); ?>;
             const postTypeViews = <?php echo json_encode($post_type_views); ?>;
@@ -693,10 +702,10 @@ foreach ($user_countries as $country) {
             const browserLabels = <?php echo json_encode($browser_labels); ?>;
             const browserCounts = <?php echo json_encode($browser_counts); ?>;
             const conversionData = <?php echo json_encode([
-                                        $conversion_data['downloads'],
-                                        $conversion_data['registrations'],
-                                        $conversion_data['licenses']
-                                    ]); ?>;
+                $conversion_data['downloads'],
+                $conversion_data['registrations'],
+                $conversion_data['licenses']
+            ]); ?>;
 
             // Calculate growth data
             const growthData = [];
@@ -737,10 +746,10 @@ foreach ($user_countries as $country) {
                             callbacks: {
                                 label: function(context) {
                                     const label = context.label || '';
-                                    const value = context.raw || 0;
-                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                    const percentage = Math.round((value / total) * 100);
-                                    return `${label}: ${value} (${percentage}%)`;
+                                    const value = Number(context.raw) || 0;
+                                    const total = context.dataset.data.reduce((a, b) => Number(a) + Number(b), 0);
+                                    const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
+                                    return `${label}: ${value} licenses (${percentage}%)`;
                                 }
                             }
                         }
@@ -843,10 +852,10 @@ foreach ($user_countries as $country) {
                             callbacks: {
                                 label: function(context) {
                                     const label = context.label || '';
-                                    const value = context.raw || 0;
-                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const value = Number(context.raw) || 0;
+                                    const total = context.dataset.data.reduce((a, b) => Number(a) + Number(b), 0);
                                     const percentage = Math.round((value / total) * 100);
-                                    return `${label}: ${value} (${percentage}%)`;
+                                    return `${label}: ${value} posts (${percentage}%)`;
                                 }
                             }
                         }
@@ -898,6 +907,17 @@ foreach ($user_countries as $country) {
                     plugins: {
                         legend: {
                             position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = Number(context.raw) || 0;
+                                    const total = context.dataset.data.reduce((a, b) => Number(a) + Number(b), 0);
+                                    const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
+                                    return `${label}: ${value.toLocaleString()} views (${percentage}%)`;
+                                }
+                            }
                         }
                     },
                     layout: {
@@ -938,6 +958,17 @@ foreach ($user_countries as $country) {
                     plugins: {
                         legend: {
                             position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = Number(context.raw) || 0;
+                                    const total = context.dataset.data.reduce((a, b) => Number(a) + Number(b), 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: ${value} users (${percentage}%)`;
+                                }
+                            }
                         }
                     },
                     layout: {
