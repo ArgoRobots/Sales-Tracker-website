@@ -184,6 +184,7 @@ h2 {
   .first .container .wrapper .input-container,
   .first .container .wrapper .question-container {
     width: 100%;
+    margin: 0;
   }
 
   .first .container .wrapper .question-container .input-message {

@@ -3,14 +3,18 @@ header .header-inner .menu-container .menu .whats-new:after {
     transform: translateX(-50%) scaleX(1);
 }
 
+.description-container{
+    padding: 0 24px;
+}
+
+.description-container,
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 24px;
     display: flex;
     flex-direction: column;
     align-items: center;
-}
+} 
 
 .hero {
     padding: 90px 0;
@@ -97,7 +101,7 @@ header .header-inner .menu-container .menu .whats-new:after {
 }
 
 .date-tag {
-    color: #6b7280;
+    color: #55585f;
 }
 
 .feature-list {
