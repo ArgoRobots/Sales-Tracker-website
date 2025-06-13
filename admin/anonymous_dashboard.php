@@ -153,6 +153,22 @@ include 'admin_header.php';
             </div>
         </div>
 
+        <!-- Export Types Charts -->
+        <div class="chart-row">
+            <div class="chart-container">
+                <h3>Average Duration by Export Type</h3>
+                <div class="chart-canvas">
+                    <canvas id="exportDurationByTypeChart"></canvas>
+                </div>
+            </div>
+            <div class="chart-container">
+                <h3>Average File Size by Export Type</h3>
+                <div class="chart-canvas">
+                    <canvas id="exportFileSizeByTypeChart"></canvas>
+                </div>
+            </div>
+        </div>
+
         <!-- Charts Row 1 -->
         <div class="chart-row">
             <div class="chart-container">
@@ -170,29 +186,33 @@ include 'admin_header.php';
         </div>
 
         <!-- Charts Row 2 -->
-        <div class="chart-row">
-            <div class="chart-container">
-                <h3>OpenAI API Usage</h3>
-                <div class="chart-canvas">
-                    <canvas id="openaiChart"></canvas>
+        <?php if (count($aggregatedData['dataPoints']['OpenAI']) > 0): ?>
+            <div class="chart-row">
+                <div class="chart-container">
+                    <h3>OpenAI API Usage</h3>
+                    <div class="chart-canvas">
+                        <canvas id="openaiChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <h3>OpenAI Token Usage</h3>
+                    <div class="chart-canvas">
+                        <canvas id="openaiTokenChart"></canvas>
+                    </div>
                 </div>
             </div>
-            <div class="chart-container">
-                <h3>OpenAI Token Usage</h3>
-                <div class="chart-canvas">
-                    <canvas id="openaiTokenChart"></canvas>
-                </div>
-            </div>
-        </div>
+        <?php endif; ?>
 
         <!-- Charts Row 3 -->
         <div class="chart-row">
-            <div class="chart-container">
-                <h3>Exchange Rates API Usage</h3>
-                <div class="chart-canvas">
-                    <canvas id="exchangeRatesChart"></canvas>
+            <?php if (count($aggregatedData['dataPoints']['OpenExchangeRates']) > 0): ?>
+                <div class="chart-container">
+                    <h3>Exchange Rates API Usage</h3>
+                    <div class="chart-canvas">
+                        <canvas id="exchangeRatesChart"></canvas>
+                    </div>
                 </div>
-            </div>
+            <?php endif; ?>
             <div class="chart-container">
                 <h3>Data Points Over Time</h3>
                 <div class="chart-canvas">
@@ -214,6 +234,14 @@ include 'admin_header.php';
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const rawData = <?= $jsonData ?>;
+        const exportTypes = ['ExcelSheetsChart', 'GoogleSheetsChart', 'Backup', 'XLSX', 'Receipts'];
+        const typeColors = {
+            'ExcelSheetsChart': '#3b82f6',
+            'GoogleSheetsChart': '#10b981',
+            'Backup': '#f59e0b',
+            'XLSX': '#ef4444',
+            'Receipts': '#8b5cf6'
+        };
 
         if (!rawData.dataPoints) {
             console.log('No data points available');
@@ -239,11 +267,20 @@ include 'admin_header.php';
         generateExportTypesBreakdown(exportData);
 
         // Generate charts
+        generateExportDurationByTypeChart(exportData);
+        generateExportFileSizeByTypeChart(exportData);
         generateExportDurationChart(exportData);
         generateExportFileSizeChart(exportData);
-        generateOpenAIChart(openaiData);
-        generateOpenAITokenChart(openaiData);
-        generateExchangeRatesChart(exchangeRatesData);
+        
+        if (openaiData.length > 0) {
+            generateOpenAIChart(openaiData);
+            generateOpenAITokenChart(openaiData);
+        }
+        
+        if (exchangeRatesData.length > 0) {
+            generateExchangeRatesChart(exchangeRatesData);
+        }
+        
         generateOverallActivityChart(exportData, openaiData, exchangeRatesData, googleSheetsData);
         generateFileSourcesChart(exportData, openaiData, exchangeRatesData, googleSheetsData);
 
@@ -264,7 +301,6 @@ include 'admin_header.php';
 
             const totalTokens = openaiData.reduce((sum, item) => sum + parseInt(item.TokensUsed || 0), 0);
 
-            // Calculate file diversity
             const uniqueFiles = new Set();
             [...exportData, ...openaiData, ...exchangeRatesData, ...googleSheetsData]
             .forEach(item => {
@@ -278,7 +314,8 @@ include 'admin_header.php';
                 },
                 {
                     title: 'OpenAI Calls',
-                    value: totalOpenAI.toLocaleString()
+                    value: totalOpenAI.toLocaleString(),
+                    subtext: openaiData.length > 0 ? '' : 'No data'
                 },
                 {
                     title: 'Exchange Rate Calls',
@@ -286,19 +323,20 @@ include 'admin_header.php';
                 },
                 {
                     title: 'Google Sheets',
-                    value: totalGoogleSheets.toLocaleString()
+                    value: totalGoogleSheets.toLocaleString(),
+                    subtext: googleSheetsData.length > 0 ? '' : 'No data'
                 },
                 {
                     title: 'Avg Export Time',
-                    value: Math.round(avgExportDuration) + 'ms'
+                    value: Math.round(avgExportDuration) + ' ms'
                 },
                 {
                     title: 'Avg OpenAI Time',
-                    value: Math.round(avgOpenAIDuration) + 'ms'
+                    value: openaiData.length > 0 ? Math.round(avgOpenAIDuration) + ' ms' : 'No data'
                 },
                 {
                     title: 'Total Tokens',
-                    value: totalTokens.toLocaleString()
+                    value: openaiData.length > 0 ? totalTokens.toLocaleString() : 'No data'
                 },
                 {
                     title: 'Source Files',
@@ -310,6 +348,7 @@ include 'admin_header.php';
             <div class="stat-card">
                 <h3>${stat.title}</h3>
                 <div class="value">${stat.value}</div>
+                ${stat.subtext ? `<div class="subtext">${stat.subtext}</div>` : ''}
             </div>
         `).join('');
         }
@@ -333,11 +372,175 @@ include 'admin_header.php';
                 .sort(([, a], [, b]) => b - a);
 
             typesGrid.innerHTML = sortedTypes.map(([type, count]) => `
-            <div class="export-type-card">
+            <div class="export-type-card" style="border-left: 4px solid ${typeColors[type] || '#9ca3af'}">
                 <div class="type-name">${type}</div>
                 <div class="count">${count}</div>
             </div>
         `).join('');
+        }
+
+        function generateExportDurationByTypeChart(exportData) {
+            if (exportData.length === 0) {
+                document.getElementById('exportDurationByTypeChart').parentElement.innerHTML =
+                    '<div class="chart-no-data">No export data available</div>';
+                return;
+            }
+
+            // Group data by export type and calculate average duration
+            const typeAverages = {};
+            const typeCounts = {};
+            
+            exportData.forEach(item => {
+                const type = item.ExportType || 'Unknown';
+                const duration = item.DurationMS;
+                const durationValue = typeof duration === 'string' ? 
+                    parseFloat(duration.replace(/[^\d.]/g, '')) : 
+                    parseInt(duration) || 0;
+                
+                if (!typeAverages[type]) {
+                    typeAverages[type] = 0;
+                    typeCounts[type] = 0;
+                }
+                
+                typeAverages[type] += durationValue;
+                typeCounts[type]++;
+            });
+
+            // Calculate averages
+            const labels = [];
+            const averages = [];
+            const colors = [];
+            
+            for (const type in typeAverages) {
+                if (typeCounts[type] > 0) {
+                    labels.push(type);
+                    averages.push(Math.round(typeAverages[type] / typeCounts[type]));
+                    colors.push(typeColors[type] || '#9ca3af');
+                }
+            }
+
+            new Chart(document.getElementById("exportDurationByTypeChart"), {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Average Duration (ms)',
+                        data: averages,
+                        backgroundColor: colors,
+                        borderColor: colors.map(c => c.replace('0.6', '1')),
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Average duration by export type'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Duration (ms)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function generateExportFileSizeByTypeChart(exportData) {
+            const filteredData = exportData
+                .filter(d => d.FileSize && d.FileSize !== 'null' && d.FileSize !== null)
+                .map(d => ({
+                    type: d.ExportType || 'Unknown',
+                    size: parseInt(d.FileSize) || 0
+                }))
+                .filter(item => item.size > 0);
+
+            if (filteredData.length === 0) {
+                document.getElementById('exportFileSizeByTypeChart').parentElement.innerHTML =
+                    '<div class="chart-no-data">No file size data available</div>';
+                return;
+            }
+
+            // Group data by export type and calculate average file size
+            const typeAverages = {};
+            const typeCounts = {};
+            
+            filteredData.forEach(item => {
+                const type = item.type;
+                if (!typeAverages[type]) {
+                    typeAverages[type] = 0;
+                    typeCounts[type] = 0;
+                }
+                
+                typeAverages[type] += item.size;
+                typeCounts[type]++;
+            });
+
+            // Calculate averages
+            const labels = [];
+            const averages = [];
+            const colors = [];
+            
+            for (const type in typeAverages) {
+                if (typeCounts[type] > 0) {
+                    labels.push(type);
+                    averages.push(Math.round(typeAverages[type] / typeCounts[type]));
+                    colors.push(typeColors[type] || '#9ca3af');
+                }
+            }
+
+            new Chart(document.getElementById("exportFileSizeByTypeChart"), {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Average File Size (bytes)',
+                        data: averages,
+                        backgroundColor: colors,
+                        borderColor: colors.map(c => c.replace('0.6', '1')),
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Average file size by export type'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'File Size (bytes)'
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    if (value >= 1048576) return (value / 1048576).toFixed(1) + 'MB';
+                                    if (value >= 1024) return (value / 1024).toFixed(1) + 'KB';
+                                    return value + 'B';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
         }
 
         function generateExportDurationChart(exportData) {
@@ -367,6 +570,11 @@ include 'admin_header.php';
                     return parseFloat(duration.replace(/[^\d.]/g, ''));
                 }
                 return parseInt(duration) || 0;
+            });
+
+            const backgroundColors = recentData.map(d => {
+                const type = d.ExportType || 'Unknown';
+                return typeColors[type] || '#9ca3af';
             });
 
             new Chart(document.getElementById("exportDurationChart"), {
@@ -419,8 +627,11 @@ include 'admin_header.php';
         function generateExportFileSizeChart(exportData) {
             const fileSizes = exportData
                 .filter(d => d.FileSize && d.FileSize !== 'null' && d.FileSize !== null)
-                .map(d => parseInt(d.FileSize) || 0)
-                .filter(size => size > 0);
+                .map(d => ({
+                    size: parseInt(d.FileSize) || 0,
+                    type: d.ExportType || 'Unknown'
+                }))
+                .filter(item => item.size > 0);
 
             if (fileSizes.length === 0) {
                 document.getElementById('exportFileSizeChart').parentElement.innerHTML =
@@ -428,26 +639,35 @@ include 'admin_header.php';
                 return;
             }
 
+            // Group by type for better visualization
+            const datasets = [];
+            const types = [...new Set(fileSizes.map(item => item.type))];
+            
+            types.forEach(type => {
+                const typeData = fileSizes.filter(item => item.type === type);
+                datasets.push({
+                    label: type,
+                    data: typeData.map((item, index) => ({
+                        x: index + 1,
+                        y: item.size
+                    })),
+                    backgroundColor: typeColors[type] || '#9ca3af',
+                    borderColor: typeColors[type] || '#9ca3af',
+                    pointRadius: 4
+                });
+            });
+
             new Chart(document.getElementById("exportFileSizeChart"), {
                 type: 'scatter',
                 data: {
-                    datasets: [{
-                        label: 'File Size (bytes)',
-                        data: fileSizes.map((size, index) => ({
-                            x: index + 1,
-                            y: size
-                        })),
-                        backgroundColor: '#10b981',
-                        borderColor: '#059669',
-                        pointRadius: 4
-                    }]
+                    datasets: datasets
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
                         legend: {
-                            display: false
+                            position: 'bottom'
                         },
                         title: {
                             display: true,
@@ -698,6 +918,9 @@ include 'admin_header.php';
                 }
             ];
 
+            // Only include datasets that have data
+            const activeDatasets = datasets.filter(dataset => dataset.data.some(value => value > 0));
+
             new Chart(document.getElementById("overallActivityChart"), {
                 type: 'bar',
                 data: {
@@ -705,7 +928,7 @@ include 'admin_header.php';
                         const d = new Date(date);
                         return `${d.getMonth() + 1}/${d.getDate()}`;
                     }),
-                    datasets: datasets.filter(dataset => dataset.data.some(value => value > 0))
+                    datasets: activeDatasets
                 },
                 options: {
                     responsive: true,
@@ -802,11 +1025,14 @@ include 'admin_header.php';
                 }
             ];
 
+            // Only include datasets that have data
+            const activeDatasets = datasets.filter(dataset => dataset.data.some(value => value > 0));
+
             new Chart(document.getElementById("fileSourcesChart"), {
                 type: 'bar',
                 data: {
                     labels: fileNames.map(name => name.length > 20 ? name.substring(0, 17) + '...' : name),
-                    datasets: datasets.filter(dataset => dataset.data.some(value => value > 0))
+                    datasets: activeDatasets
                 },
                 options: {
                     responsive: true,
