@@ -20,7 +20,8 @@ $aggregatedData = [
         'Export' => [],
         'OpenAI' => [],
         'OpenExchangeRates' => [],
-        'GoogleSheets' => []
+        'GoogleSheets' => [],
+        'Session' => []
     ]
 ];
 $fileInfo = [];
@@ -115,7 +116,8 @@ include 'admin_header.php';
         (count($aggregatedData['dataPoints']['Export']) == 0 &&
             count($aggregatedData['dataPoints']['OpenAI']) == 0 &&
             count($aggregatedData['dataPoints']['OpenExchangeRates']) == 0 &&
-            count($aggregatedData['dataPoints']['GoogleSheets']) == 0)
+            count($aggregatedData['dataPoints']['GoogleSheets']) == 0 &&
+            count($aggregatedData['dataPoints']['Session']) == 0)
     ): ?>
         <div class="no-data">
             <h3>No Data Available</h3>
@@ -145,15 +147,23 @@ include 'admin_header.php';
             <!-- Will be populated by JavaScript -->
         </div>
 
-        <!-- Export Types Breakdown -->
-        <div class="chart-container">
-            <h3>Export Types Distribution</h3>
-            <div class="export-types-grid" id="exportTypesGrid">
-                <!-- Will be populated by JavaScript -->
+        <!-- Charts row 1 -->
+        <div class="chart-row">
+            <div class="chart-container">
+                <h3>User Session Duration</h3>
+                <div class="chart-canvas">
+                    <canvas id="sessionDurationChart"></canvas>
+                </div>
+            </div>
+            <div class="chart-container">
+                <h3>Export Types Distribution</h3>
+                <div class="export-types-grid" id="exportTypesGrid">
+                    <!-- Will be populated by JavaScript -->
+                </div>
             </div>
         </div>
 
-        <!-- Export Types Charts -->
+        <!-- Charts row 2 -->
         <div class="chart-row">
             <div class="chart-container">
                 <h3>Average Duration by Export Type</h3>
@@ -169,7 +179,7 @@ include 'admin_header.php';
             </div>
         </div>
 
-        <!-- Charts Row 1 -->
+        <!-- Charts row 3 -->
         <div class="chart-row">
             <div class="chart-container">
                 <h3>Export Durations Over Time</h3>
@@ -185,47 +195,35 @@ include 'admin_header.php';
             </div>
         </div>
 
-        <!-- Charts Row 2 -->
-        <?php if (count($aggregatedData['dataPoints']['OpenAI']) > 0): ?>
-            <div class="chart-row">
-                <div class="chart-container">
-                    <h3>OpenAI API Usage</h3>
-                    <div class="chart-canvas">
-                        <canvas id="openaiChart"></canvas>
-                    </div>
-                </div>
-                <div class="chart-container">
-                    <h3>OpenAI Token Usage</h3>
-                    <div class="chart-canvas">
-                        <canvas id="openaiTokenChart"></canvas>
-                    </div>
+        <!-- Charts Row 4 -->
+        <div class="chart-row">
+            <div class="chart-container">
+                <h3>OpenAI API Usage</h3>
+                <div class="chart-canvas">
+                    <canvas id="openaiChart"></canvas>
                 </div>
             </div>
-        <?php endif; ?>
-
-        <!-- Charts Row 3 -->
-        <div class="chart-row">
-            <?php if (count($aggregatedData['dataPoints']['OpenExchangeRates']) > 0): ?>
-                <div class="chart-container">
-                    <h3>Exchange Rates API Usage</h3>
-                    <div class="chart-canvas">
-                        <canvas id="exchangeRatesChart"></canvas>
-                    </div>
+            <div class="chart-container">
+                <h3>OpenAI Token Usage</h3>
+                <div class="chart-canvas">
+                    <canvas id="openaiTokenChart"></canvas>
                 </div>
-            <?php endif; ?>
+            </div>
+        </div>
+
+        <!-- Charts Row 5 -->
+        <div class="chart-row">
+            <div class="chart-container">
+                <h3>Exchange Rates API Usage</h3>
+                <div class="chart-canvas">
+                    <canvas id="exchangeRatesChart"></canvas>
+                </div>
+            </div>
             <div class="chart-container">
                 <h3>Data Points Over Time</h3>
                 <div class="chart-canvas">
                     <canvas id="overallActivityChart"></canvas>
                 </div>
-            </div>
-        </div>
-
-        <!-- File Sources Analysis -->
-        <div class="chart-container">
-            <h3>Data Sources Timeline</h3>
-            <div class="chart-canvas">
-                <canvas id="fileSourcesChart"></canvas>
             </div>
         </div>
     <?php endif; ?>
@@ -234,7 +232,6 @@ include 'admin_header.php';
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const rawData = <?= $jsonData ?>;
-        const exportTypes = ['ExcelSheetsChart', 'GoogleSheetsChart', 'Backup', 'XLSX', 'Receipts'];
         const typeColors = {
             'ExcelSheetsChart': '#3b82f6',
             'GoogleSheetsChart': '#10b981',
@@ -252,39 +249,32 @@ include 'admin_header.php';
         const openaiData = rawData.dataPoints.OpenAI || [];
         const exchangeRatesData = rawData.dataPoints.OpenExchangeRates || [];
         const googleSheetsData = rawData.dataPoints.GoogleSheets || [];
+        const sessionData = rawData.dataPoints.Session || [];
 
         console.log('Data loaded:', {
             exports: exportData.length,
             openai: openaiData.length,
             exchangeRates: exchangeRatesData.length,
-            googleSheets: googleSheetsData.length
+            googleSheets: googleSheetsData.length,
+            sessions: sessionData.length
         });
 
         // Generate statistics
-        generateStatistics(exportData, openaiData, exchangeRatesData, googleSheetsData);
-
-        // Generate export types breakdown
-        generateExportTypesBreakdown(exportData);
+        generateStatistics(exportData, openaiData, exchangeRatesData, googleSheetsData, sessionData);
 
         // Generate charts
+        generateSessionDurationChart(sessionData);
+        generateExportTypesBreakdown(exportData);
         generateExportDurationByTypeChart(exportData);
         generateExportFileSizeByTypeChart(exportData);
         generateExportDurationChart(exportData);
         generateExportFileSizeChart(exportData);
-        
-        if (openaiData.length > 0) {
-            generateOpenAIChart(openaiData);
-            generateOpenAITokenChart(openaiData);
-        }
-        
-        if (exchangeRatesData.length > 0) {
-            generateExchangeRatesChart(exchangeRatesData);
-        }
-        
-        generateOverallActivityChart(exportData, openaiData, exchangeRatesData, googleSheetsData);
-        generateFileSourcesChart(exportData, openaiData, exchangeRatesData, googleSheetsData);
+        generateOpenAIChart(openaiData);
+        generateOpenAITokenChart(openaiData);
+        generateExchangeRatesChart(exchangeRatesData);
+        generateOverallActivityChart(exportData, openaiData, exchangeRatesData, googleSheetsData, sessionData);
 
-        function generateStatistics(exportData, openaiData, exchangeRatesData, googleSheetsData) {
+        function generateStatistics(exportData, openaiData, exchangeRatesData, googleSheetsData, sessionData) {
             const statsGrid = document.getElementById('statsGrid');
 
             // Calculate statistics
@@ -292,6 +282,9 @@ include 'admin_header.php';
             const totalOpenAI = openaiData.length;
             const totalExchangeRates = exchangeRatesData.length;
             const totalGoogleSheets = googleSheetsData.length;
+
+            // Fixed: Use sessionData.length directly since each record is a completed session
+            const totalSessions = sessionData.length;
 
             const avgExportDuration = exportData.length > 0 ?
                 exportData.reduce((sum, item) => sum + parseFloat(item.DurationMS || 0), 0) / exportData.length : 0;
@@ -301,8 +294,13 @@ include 'admin_header.php';
 
             const totalTokens = openaiData.reduce((sum, item) => sum + parseInt(item.TokensUsed || 0), 0);
 
+            // Fixed: Use sessionData directly since each record has duration
+            const sessionDurations = sessionData.map(d => parseFloat(d.duration || 0));
+            const avgSessionDuration = sessionDurations.length > 0 ?
+                sessionDurations.reduce((sum, duration) => sum + duration, 0) / sessionDurations.length : 0;
+
             const uniqueFiles = new Set();
-            [...exportData, ...openaiData, ...exchangeRatesData, ...googleSheetsData]
+            [...exportData, ...openaiData, ...exchangeRatesData, ...googleSheetsData, ...sessionData]
             .forEach(item => {
                 if (item.source_file) uniqueFiles.add(item.source_file);
             });
@@ -327,6 +325,11 @@ include 'admin_header.php';
                     subtext: googleSheetsData.length > 0 ? '' : 'No data'
                 },
                 {
+                    title: 'User Sessions',
+                    value: totalSessions.toLocaleString(),
+                    subtext: sessionData.length > 0 ? '' : 'No data'
+                },
+                {
                     title: 'Avg Export Time',
                     value: Math.round(avgExportDuration) + ' ms'
                 },
@@ -345,12 +348,97 @@ include 'admin_header.php';
             ];
 
             statsGrid.innerHTML = stats.map(stat => `
-            <div class="stat-card">
-                <h3>${stat.title}</h3>
-                <div class="value">${stat.value}</div>
-                ${stat.subtext ? `<div class="subtext">${stat.subtext}</div>` : ''}
-            </div>
-        `).join('');
+                <div class="stat-card">
+                    <h3>${stat.title}</h3>
+                    <div class="value">${stat.value}</div>
+                    ${stat.subtext ? `<div class="subtext">${stat.subtext}</div>` : ''}
+                </div>
+            `).join('');
+        }
+
+        function generateSessionDurationChart(sessionData) {
+            if (sessionData.length === 0) {
+                document.getElementById('sessionDurationChart').parentElement.innerHTML =
+                    '<div class="chart-no-data">No session data available</div>';
+                return;
+            }
+
+            // Since sessions already have duration calculated, we can use them directly
+            const sessions = sessionData.map(item => ({
+                date: item.timestamp.split(' ')[0], // Extract date part
+                duration: parseFloat(item.duration || 0),
+                timestamp: item.timestamp
+            }));
+
+            if (sessions.length === 0) {
+                document.getElementById('sessionDurationChart').parentElement.innerHTML =
+                    '<div class="chart-no-data">No completed sessions available</div>';
+                return;
+            }
+
+            // Group by date and calculate average duration
+            const dailyStats = {};
+            sessions.forEach(session => {
+                if (!dailyStats[session.date]) {
+                    dailyStats[session.date] = {
+                        totalDuration: 0,
+                        count: 0,
+                        sessions: []
+                    };
+                }
+                dailyStats[session.date].totalDuration += session.duration;
+                dailyStats[session.date].count++;
+                dailyStats[session.date].sessions.push(session);
+            });
+
+            const dates = Object.keys(dailyStats).sort();
+            const avgDurations = dates.map(date => {
+                return Math.round(dailyStats[date].totalDuration / dailyStats[date].count);
+            });
+
+            new Chart(document.getElementById("sessionDurationChart"), {
+                type: 'bar',
+                data: {
+                    labels: dates.map(date => {
+                        const d = new Date(date);
+                        return `${d.getMonth()+1}/${d.getDate()}/${d.getFullYear().toString().slice(-2)}`;
+                    }),
+                    datasets: [{
+                        label: 'Average Session Duration (seconds)',
+                        data: avgDurations,
+                        backgroundColor: '#3b82f6',
+                        borderColor: '#2563eb',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: `Average session duration (${sessions.length} sessions)`
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Duration (seconds)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                maxRotation: 45
+                            }
+                        }
+                    }
+                }
+            });
         }
 
         function generateExportTypesBreakdown(exportData) {
@@ -389,19 +477,19 @@ include 'admin_header.php';
             // Group data by export type and calculate average duration
             const typeAverages = {};
             const typeCounts = {};
-            
+
             exportData.forEach(item => {
                 const type = item.ExportType || 'Unknown';
                 const duration = item.DurationMS;
-                const durationValue = typeof duration === 'string' ? 
-                    parseFloat(duration.replace(/[^\d.]/g, '')) : 
+                const durationValue = typeof duration === 'string' ?
+                    parseFloat(duration.replace(/[^\d.]/g, '')) :
                     parseInt(duration) || 0;
-                
+
                 if (!typeAverages[type]) {
                     typeAverages[type] = 0;
                     typeCounts[type] = 0;
                 }
-                
+
                 typeAverages[type] += durationValue;
                 typeCounts[type]++;
             });
@@ -410,7 +498,7 @@ include 'admin_header.php';
             const labels = [];
             const averages = [];
             const colors = [];
-            
+
             for (const type in typeAverages) {
                 if (typeCounts[type] > 0) {
                     labels.push(type);
@@ -474,14 +562,14 @@ include 'admin_header.php';
             // Group data by export type and calculate average file size
             const typeAverages = {};
             const typeCounts = {};
-            
+
             filteredData.forEach(item => {
                 const type = item.type;
                 if (!typeAverages[type]) {
                     typeAverages[type] = 0;
                     typeCounts[type] = 0;
                 }
-                
+
                 typeAverages[type] += item.size;
                 typeCounts[type]++;
             });
@@ -490,7 +578,7 @@ include 'admin_header.php';
             const labels = [];
             const averages = [];
             const colors = [];
-            
+
             for (const type in typeAverages) {
                 if (typeCounts[type] > 0) {
                     labels.push(type);
@@ -642,7 +730,7 @@ include 'admin_header.php';
             // Group by type for better visualization
             const datasets = [];
             const types = [...new Set(fileSizes.map(item => item.type))];
-            
+
             types.forEach(type => {
                 const typeData = fileSizes.filter(item => item.type === type);
                 datasets.push({
@@ -953,113 +1041,6 @@ include 'admin_header.php';
                         title: {
                             display: true,
                             text: `Activity overview (${sortedDates.length} days total)`
-                        }
-                    }
-                }
-            });
-        }
-
-        function generateFileSourcesChart(exportData, openaiData, exchangeRatesData, googleSheetsData) {
-            // Combine all data to analyze file sources
-            const allData = [
-                ...exportData.map(d => ({
-                    ...d,
-                    type: 'Export'
-                })),
-                ...openaiData.map(d => ({
-                    ...d,
-                    type: 'OpenAI'
-                })),
-                ...exchangeRatesData.map(d => ({
-                    ...d,
-                    type: 'Exchange Rates'
-                })),
-                ...googleSheetsData.map(d => ({
-                    ...d,
-                    type: 'Google Sheets'
-                }))
-            ];
-
-            // Group by source file
-            const fileCounts = {};
-            allData.forEach(item => {
-                const file = item.source_file || 'Unknown';
-                if (!fileCounts[file]) {
-                    fileCounts[file] = {
-                        Export: 0,
-                        OpenAI: 0,
-                        'Exchange Rates': 0,
-                        'Google Sheets': 0
-                    };
-                }
-                fileCounts[file][item.type]++;
-            });
-
-            const fileNames = Object.keys(fileCounts).sort();
-
-            if (fileNames.length === 0) {
-                document.getElementById('fileSourcesChart').parentElement.innerHTML =
-                    '<div class="chart-no-data">No file source data available</div>';
-                return;
-            }
-
-            const datasets = [{
-                    label: 'Exports',
-                    data: fileNames.map(file => fileCounts[file].Export),
-                    backgroundColor: '#3b82f6'
-                },
-                {
-                    label: 'OpenAI',
-                    data: fileNames.map(file => fileCounts[file].OpenAI),
-                    backgroundColor: '#8b5cf6'
-                },
-                {
-                    label: 'Exchange Rates',
-                    data: fileNames.map(file => fileCounts[file]['Exchange Rates']),
-                    backgroundColor: '#f59e0b'
-                },
-                {
-                    label: 'Google Sheets',
-                    data: fileNames.map(file => fileCounts[file]['Google Sheets']),
-                    backgroundColor: '#10b981'
-                }
-            ];
-
-            // Only include datasets that have data
-            const activeDatasets = datasets.filter(dataset => dataset.data.some(value => value > 0));
-
-            new Chart(document.getElementById("fileSourcesChart"), {
-                type: 'bar',
-                data: {
-                    labels: fileNames.map(name => name.length > 20 ? name.substring(0, 17) + '...' : name),
-                    datasets: activeDatasets
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        x: {
-                            stacked: true,
-                            ticks: {
-                                maxRotation: 45
-                            }
-                        },
-                        y: {
-                            stacked: true,
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Operations Count'
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            position: 'bottom'
-                        },
-                        title: {
-                            display: true,
-                            text: `Data distribution across ${fileNames.length} source files`
                         }
                     }
                 }

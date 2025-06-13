@@ -10,7 +10,7 @@ header('Content-Type: application/json');
 // Configuration
 define('MAX_FILE_SIZE', 10 * 1024 * 1024); // 10MB max
 define('ALLOWED_MIME_TYPES', ['application/json', 'text/plain']);
-define('DATA_DIR', 'data_logs');
+define('DATA_DIR', 'admin/data_logs');
 define('MAX_UPLOADS_PER_HOUR', 100); // Rate limiting
 define('MAX_FILENAME_LENGTH', 255);
 
@@ -55,11 +55,6 @@ function validateJsonContent($content)
         return false;
     }
 
-    // Validate expected structure for anonymous data
-    if (!isset($data['exportTime']) || !isset($data['dataPoints'])) {
-        return false;
-    }
-
     // Check for potentially malicious content
     $dangerous_patterns = [
         '/<script[^>]*>.*?<\/script>/is',
@@ -81,12 +76,6 @@ function validateJsonContent($content)
             error_log("Malicious content detected in upload: " . $pattern);
             return false;
         }
-    }
-
-    // Check for excessively large arrays or deeply nested structures
-    if (json_encode($data) !== $content) {
-        // Content was modified during decode/encode, might be malformed
-        return false;
     }
 
     return true;
