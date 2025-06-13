@@ -1,0 +1,316 @@
+/* Remove extra padding from admin content for this page */
+.admin-content {
+    padding: 0 !important;
+}
+
+/* Container with better spacing */
+.container {
+    max-width: 100%;
+    margin: 0;
+    padding: 1rem;
+}
+
+/* Statistics grid with better responsive design */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.25rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card h3 {
+    margin: 0 0 0.5rem 0;
+    color: #6b7280;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    line-height: 1.2;
+}
+
+.stat-card .value {
+    font-size: 1.75rem;
+    font-weight: bold;
+    color: #1f2937;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.stat-card .subtext {
+    color: #9ca3af;
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+    line-height: 1.2;
+}
+
+/* Chart containers with improved spacing */
+.chart-container {
+    background: white;
+    border-radius: 8px;
+    padding: 1.25rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
+    margin-bottom: 1.5rem;
+}
+
+.chart-container h3 {
+    margin: 0 0 1rem 0;
+    color: #374151;
+    font-size: 1.125rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.chart-canvas {
+    position: relative;
+    height: 350px;
+    width: 100%;
+}
+
+/* Chart rows with better responsive behavior */
+.chart-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Export types grid improvements */
+.export-types-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+    margin-bottom: 0;
+}
+
+.export-type-card {
+    background: #f8fafc;
+    border-radius: 6px;
+    padding: 1rem;
+    border: 1px solid #e2e8f0;
+    text-align: center;
+    transition: background-color 0.2s ease;
+}
+
+.export-type-card:hover {
+    background: #f1f5f9;
+}
+
+.export-type-card .type-name {
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.export-type-card .count {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #3b82f6;
+}
+
+/* Data info styling */
+.data-info {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: #475569;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+/* Error message improvements */
+.error-message {
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+    color: #991b1b;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-left: 4px solid #ef4444;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.1);
+}
+
+/* No data state improvements */
+.no-data {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: #6b7280;
+    background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+    border-radius: 12px;
+    border: 2px dashed #d1d5db;
+    margin: 2rem 0;
+}
+
+.no-data h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.5rem;
+    color: #374151;
+    font-weight: 600;
+}
+
+.no-data p {
+    margin: 0.5rem 0;
+    line-height: 1.6;
+}
+
+.no-data code {
+    background: #e5e7eb;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-family: 'Monaco', 'Consolas', monospace;
+    font-size: 0.875rem;
+    color: #374151;
+}
+
+/* Page header improvements */
+.page-header {
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border-bottom: none;
+}
+
+.page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0 0 0.5rem 0;
+    text-align: center;
+}
+
+.page-description {
+    color: #6b7280;
+    font-size: 1rem;
+    margin: 0;
+    text-align: center;
+    line-height: 1.5;
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+    .container {
+        padding: 0.75rem;
+    }
+    
+    .chart-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .chart-canvas {
+        height: 280px;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 0.75rem;
+    }
+    
+    .stat-card {
+        padding: 1rem;
+    }
+    
+    .stat-card .value {
+        font-size: 1.5rem;
+    }
+    
+    .export-types-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 0.75rem;
+    }
+    
+    .page-title {
+        font-size: 1.75rem;
+    }
+    
+    .chart-container {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0.5rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .stat-card h3 {
+        font-size: 0.75rem;
+    }
+    
+    .stat-card .value {
+        font-size: 1.25rem;
+    }
+    
+    .chart-canvas {
+        height: 250px;
+    }
+    
+    .page-title {
+        font-size: 1.5rem;
+    }
+}
+
+/* Loading states */
+.chart-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+    color: #6b7280;
+    font-style: italic;
+}
+
+/* Better chart no-data states */
+.chart-no-data {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+    color: #6b7280;
+    text-align: center;
+}
+
+.chart-no-data svg {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+/* Print styles */
+@media print {
+    .container {
+        max-width: none;
+        padding: 0;
+    }
+    
+    .chart-container {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+    
+    .stats-grid {
+        break-inside: avoid;
+    }
+}

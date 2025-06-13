@@ -8,6 +8,11 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
     exit;
 }
 
+// Set page variables for the header
+$page_title = "Statistics Dashboard";
+$page_description = "View comprehensive analytics, user statistics, and performance metrics";
+$additional_css = ['statistics.css'];
+
 // Function to get download statistics by period
 function get_downloads_by_period($period = 'month', $limit = 12)
 {
@@ -421,7 +426,7 @@ $post_type_views = [];
 foreach ($post_types as $type) {
     $post_type_labels[] = ucfirst($type['post_type']);
     $post_type_counts[] = (int)$type['count'];
-    $post_type_views[] = (int)$type['total_views']; 
+    $post_type_views[] = (int)$type['total_views'];
 }
 
 // Prepare country data for charts
@@ -444,68 +449,253 @@ foreach ($user_agents as $browser) {
 
 // Map all ISO 3166-1 alpha-2 codes to full country names
 $country_name_map = [
-    'AF' => 'Afghanistan', 'AX' => 'Åland Islands', 'AL' => 'Albania', 'DZ' => 'Algeria',
-    'AS' => 'American Samoa', 'AD' => 'Andorra', 'AO' => 'Angola', 'AI' => 'Anguilla',
-    'AQ' => 'Antarctica', 'AG' => 'Antigua and Barbuda', 'AR' => 'Argentina', 'AM' => 'Armenia',
-    'AW' => 'Aruba', 'AU' => 'Australia', 'AT' => 'Austria', 'AZ' => 'Azerbaijan',
-    'BS' => 'Bahamas', 'BH' => 'Bahrain', 'BD' => 'Bangladesh', 'BB' => 'Barbados',
-    'BY' => 'Belarus', 'BE' => 'Belgium', 'BZ' => 'Belize', 'BJ' => 'Benin',
-    'BM' => 'Bermuda', 'BT' => 'Bhutan', 'BO' => 'Bolivia', 'BQ' => 'Bonaire',
-    'BA' => 'Bosnia and Herzegovina', 'BW' => 'Botswana', 'BV' => 'Bouvet Island', 'BR' => 'Brazil',
-    'IO' => 'British Indian Ocean Territory', 'BN' => 'Brunei', 'BG' => 'Bulgaria', 'BF' => 'Burkina Faso',
-    'BI' => 'Burundi', 'KH' => 'Cambodia', 'CM' => 'Cameroon', 'CA' => 'Canada',
-    'CV' => 'Cape Verde', 'KY' => 'Cayman Islands', 'CF' => 'Central African Republic', 'TD' => 'Chad',
-    'CL' => 'Chile', 'CN' => 'China', 'CX' => 'Christmas Island', 'CC' => 'Cocos (Keeling) Islands',
-    'CO' => 'Colombia', 'KM' => 'Comoros', 'CD' => 'Congo (DRC)', 'CG' => 'Congo (Republic)',
-    'CK' => 'Cook Islands', 'CR' => 'Costa Rica', 'CI' => "Côte d'Ivoire", 'HR' => 'Croatia',
-    'CU' => 'Cuba', 'CW' => 'Curaçao', 'CY' => 'Cyprus', 'CZ' => 'Czech Republic',
-    'DK' => 'Denmark', 'DJ' => 'Djibouti', 'DM' => 'Dominica', 'DO' => 'Dominican Republic',
-    'EC' => 'Ecuador', 'EG' => 'Egypt', 'SV' => 'El Salvador', 'GQ' => 'Equatorial Guinea',
-    'ER' => 'Eritrea', 'EE' => 'Estonia', 'SZ' => 'Eswatini', 'ET' => 'Ethiopia',
-    'FK' => 'Falkland Islands', 'FO' => 'Faroe Islands', 'FJ' => 'Fiji', 'FI' => 'Finland',
-    'FR' => 'France', 'GF' => 'French Guiana', 'PF' => 'French Polynesia', 'TF' => 'French Southern Territories',
-    'GA' => 'Gabon', 'GM' => 'Gambia', 'GE' => 'Georgia', 'DE' => 'Germany',
-    'GH' => 'Ghana', 'GI' => 'Gibraltar', 'GR' => 'Greece', 'GL' => 'Greenland',
-    'GD' => 'Grenada', 'GP' => 'Guadeloupe', 'GU' => 'Guam', 'GT' => 'Guatemala',
-    'GG' => 'Guernsey', 'GN' => 'Guinea', 'GW' => 'Guinea-Bissau', 'GY' => 'Guyana',
-    'HT' => 'Haiti', 'HM' => 'Heard Island and McDonald Islands', 'VA' => 'Vatican City',
-    'HN' => 'Honduras', 'HK' => 'Hong Kong', 'HU' => 'Hungary', 'IS' => 'Iceland',
-    'IN' => 'India', 'ID' => 'Indonesia', 'IR' => 'Iran', 'IQ' => 'Iraq',
-    'IE' => 'Ireland', 'IM' => 'Isle of Man', 'IL' => 'Israel', 'IT' => 'Italy',
-    'JM' => 'Jamaica', 'JP' => 'Japan', 'JE' => 'Jersey', 'JO' => 'Jordan',
-    'KZ' => 'Kazakhstan', 'KE' => 'Kenya', 'KI' => 'Kiribati', 'KP' => 'North Korea',
-    'KR' => 'South Korea', 'KW' => 'Kuwait', 'KG' => 'Kyrgyzstan', 'LA' => 'Laos',
-    'LV' => 'Latvia', 'LB' => 'Lebanon', 'LS' => 'Lesotho', 'LR' => 'Liberia',
-    'LY' => 'Libya', 'LI' => 'Liechtenstein', 'LT' => 'Lithuania', 'LU' => 'Luxembourg',
-    'MO' => 'Macau', 'MG' => 'Madagascar', 'MW' => 'Malawi', 'MY' => 'Malaysia',
-    'MV' => 'Maldives', 'ML' => 'Mali', 'MT' => 'Malta', 'MH' => 'Marshall Islands',
-    'MQ' => 'Martinique', 'MR' => 'Mauritania', 'MU' => 'Mauritius', 'YT' => 'Mayotte',
-    'MX' => 'Mexico', 'FM' => 'Micronesia', 'MD' => 'Moldova', 'MC' => 'Monaco',
-    'MN' => 'Mongolia', 'ME' => 'Montenegro', 'MS' => 'Montserrat', 'MA' => 'Morocco',
-    'MZ' => 'Mozambique', 'MM' => 'Myanmar', 'NA' => 'Namibia', 'NR' => 'Nauru',
-    'NP' => 'Nepal', 'NL' => 'Netherlands', 'NC' => 'New Caledonia', 'NZ' => 'New Zealand',
-    'NI' => 'Nicaragua', 'NE' => 'Niger', 'NG' => 'Nigeria', 'NU' => 'Niue',
-    'NF' => 'Norfolk Island', 'MK' => 'North Macedonia', 'MP' => 'Northern Mariana Islands', 'NO' => 'Norway',
-    'OM' => 'Oman', 'PK' => 'Pakistan', 'PW' => 'Palau', 'PS' => 'Palestine',
-    'PA' => 'Panama', 'PG' => 'Papua New Guinea', 'PY' => 'Paraguay', 'PE' => 'Peru',
-    'PH' => 'Philippines', 'PN' => 'Pitcairn Islands', 'PL' => 'Poland', 'PT' => 'Portugal',
-    'PR' => 'Puerto Rico', 'QA' => 'Qatar', 'RE' => 'Réunion', 'RO' => 'Romania',
-    'RU' => 'Russia', 'RW' => 'Rwanda', 'BL' => 'Saint Barthélemy', 'SH' => 'Saint Helena',
-    'KN' => 'Saint Kitts and Nevis', 'LC' => 'Saint Lucia', 'MF' => 'Saint Martin', 'PM' => 'Saint Pierre and Miquelon',
-    'VC' => 'Saint Vincent and the Grenadines', 'WS' => 'Samoa', 'SM' => 'San Marino', 'ST' => 'São Tomé and Príncipe',
-    'SA' => 'Saudi Arabia', 'SN' => 'Senegal', 'RS' => 'Serbia', 'SC' => 'Seychelles',
-    'SL' => 'Sierra Leone', 'SG' => 'Singapore', 'SX' => 'Sint Maarten', 'SK' => 'Slovakia',
-    'SI' => 'Slovenia', 'SB' => 'Solomon Islands', 'SO' => 'Somalia', 'ZA' => 'South Africa',
-    'GS' => 'South Georgia and the South Sandwich Islands', 'SS' => 'South Sudan', 'ES' => 'Spain', 'LK' => 'Sri Lanka',
-    'SD' => 'Sudan', 'SR' => 'Suriname', 'SJ' => 'Svalbard and Jan Mayen', 'SE' => 'Sweden',
-    'CH' => 'Switzerland', 'SY' => 'Syria', 'TW' => 'Taiwan', 'TJ' => 'Tajikistan',
-    'TZ' => 'Tanzania', 'TH' => 'Thailand', 'TL' => 'Timor-Leste', 'TG' => 'Togo',
-    'TK' => 'Tokelau', 'TO' => 'Tonga', 'TT' => 'Trinidad and Tobago', 'TN' => 'Tunisia',
-    'TR' => 'Turkey', 'TM' => 'Turkmenistan', 'TC' => 'Turks and Caicos Islands', 'TV' => 'Tuvalu',
-    'UG' => 'Uganda', 'UA' => 'Ukraine', 'AE' => 'United Arab Emirates', 'GB' => 'United Kingdom',
-    'US' => 'United States', 'UY' => 'Uruguay', 'UZ' => 'Uzbekistan', 'VU' => 'Vanuatu',
-    'VE' => 'Venezuela', 'VN' => 'Vietnam', 'VG' => 'British Virgin Islands', 'VI' => 'U.S. Virgin Islands',
-    'WF' => 'Wallis and Futuna', 'EH' => 'Western Sahara', 'YE' => 'Yemen', 'ZM' => 'Zambia',
+    'AF' => 'Afghanistan',
+    'AX' => 'Åland Islands',
+    'AL' => 'Albania',
+    'DZ' => 'Algeria',
+    'AS' => 'American Samoa',
+    'AD' => 'Andorra',
+    'AO' => 'Angola',
+    'AI' => 'Anguilla',
+    'AQ' => 'Antarctica',
+    'AG' => 'Antigua and Barbuda',
+    'AR' => 'Argentina',
+    'AM' => 'Armenia',
+    'AW' => 'Aruba',
+    'AU' => 'Australia',
+    'AT' => 'Austria',
+    'AZ' => 'Azerbaijan',
+    'BS' => 'Bahamas',
+    'BH' => 'Bahrain',
+    'BD' => 'Bangladesh',
+    'BB' => 'Barbados',
+    'BY' => 'Belarus',
+    'BE' => 'Belgium',
+    'BZ' => 'Belize',
+    'BJ' => 'Benin',
+    'BM' => 'Bermuda',
+    'BT' => 'Bhutan',
+    'BO' => 'Bolivia',
+    'BQ' => 'Bonaire',
+    'BA' => 'Bosnia and Herzegovina',
+    'BW' => 'Botswana',
+    'BV' => 'Bouvet Island',
+    'BR' => 'Brazil',
+    'IO' => 'British Indian Ocean Territory',
+    'BN' => 'Brunei',
+    'BG' => 'Bulgaria',
+    'BF' => 'Burkina Faso',
+    'BI' => 'Burundi',
+    'KH' => 'Cambodia',
+    'CM' => 'Cameroon',
+    'CA' => 'Canada',
+    'CV' => 'Cape Verde',
+    'KY' => 'Cayman Islands',
+    'CF' => 'Central African Republic',
+    'TD' => 'Chad',
+    'CL' => 'Chile',
+    'CN' => 'China',
+    'CX' => 'Christmas Island',
+    'CC' => 'Cocos (Keeling) Islands',
+    'CO' => 'Colombia',
+    'KM' => 'Comoros',
+    'CD' => 'Congo (DRC)',
+    'CG' => 'Congo (Republic)',
+    'CK' => 'Cook Islands',
+    'CR' => 'Costa Rica',
+    'CI' => "Côte d'Ivoire",
+    'HR' => 'Croatia',
+    'CU' => 'Cuba',
+    'CW' => 'Curaçao',
+    'CY' => 'Cyprus',
+    'CZ' => 'Czech Republic',
+    'DK' => 'Denmark',
+    'DJ' => 'Djibouti',
+    'DM' => 'Dominica',
+    'DO' => 'Dominican Republic',
+    'EC' => 'Ecuador',
+    'EG' => 'Egypt',
+    'SV' => 'El Salvador',
+    'GQ' => 'Equatorial Guinea',
+    'ER' => 'Eritrea',
+    'EE' => 'Estonia',
+    'SZ' => 'Eswatini',
+    'ET' => 'Ethiopia',
+    'FK' => 'Falkland Islands',
+    'FO' => 'Faroe Islands',
+    'FJ' => 'Fiji',
+    'FI' => 'Finland',
+    'FR' => 'France',
+    'GF' => 'French Guiana',
+    'PF' => 'French Polynesia',
+    'TF' => 'French Southern Territories',
+    'GA' => 'Gabon',
+    'GM' => 'Gambia',
+    'GE' => 'Georgia',
+    'DE' => 'Germany',
+    'GH' => 'Ghana',
+    'GI' => 'Gibraltar',
+    'GR' => 'Greece',
+    'GL' => 'Greenland',
+    'GD' => 'Grenada',
+    'GP' => 'Guadeloupe',
+    'GU' => 'Guam',
+    'GT' => 'Guatemala',
+    'GG' => 'Guernsey',
+    'GN' => 'Guinea',
+    'GW' => 'Guinea-Bissau',
+    'GY' => 'Guyana',
+    'HT' => 'Haiti',
+    'HM' => 'Heard Island and McDonald Islands',
+    'VA' => 'Vatican City',
+    'HN' => 'Honduras',
+    'HK' => 'Hong Kong',
+    'HU' => 'Hungary',
+    'IS' => 'Iceland',
+    'IN' => 'India',
+    'ID' => 'Indonesia',
+    'IR' => 'Iran',
+    'IQ' => 'Iraq',
+    'IE' => 'Ireland',
+    'IM' => 'Isle of Man',
+    'IL' => 'Israel',
+    'IT' => 'Italy',
+    'JM' => 'Jamaica',
+    'JP' => 'Japan',
+    'JE' => 'Jersey',
+    'JO' => 'Jordan',
+    'KZ' => 'Kazakhstan',
+    'KE' => 'Kenya',
+    'KI' => 'Kiribati',
+    'KP' => 'North Korea',
+    'KR' => 'South Korea',
+    'KW' => 'Kuwait',
+    'KG' => 'Kyrgyzstan',
+    'LA' => 'Laos',
+    'LV' => 'Latvia',
+    'LB' => 'Lebanon',
+    'LS' => 'Lesotho',
+    'LR' => 'Liberia',
+    'LY' => 'Libya',
+    'LI' => 'Liechtenstein',
+    'LT' => 'Lithuania',
+    'LU' => 'Luxembourg',
+    'MO' => 'Macau',
+    'MG' => 'Madagascar',
+    'MW' => 'Malawi',
+    'MY' => 'Malaysia',
+    'MV' => 'Maldives',
+    'ML' => 'Mali',
+    'MT' => 'Malta',
+    'MH' => 'Marshall Islands',
+    'MQ' => 'Martinique',
+    'MR' => 'Mauritania',
+    'MU' => 'Mauritius',
+    'YT' => 'Mayotte',
+    'MX' => 'Mexico',
+    'FM' => 'Micronesia',
+    'MD' => 'Moldova',
+    'MC' => 'Monaco',
+    'MN' => 'Mongolia',
+    'ME' => 'Montenegro',
+    'MS' => 'Montserrat',
+    'MA' => 'Morocco',
+    'MZ' => 'Mozambique',
+    'MM' => 'Myanmar',
+    'NA' => 'Namibia',
+    'NR' => 'Nauru',
+    'NP' => 'Nepal',
+    'NL' => 'Netherlands',
+    'NC' => 'New Caledonia',
+    'NZ' => 'New Zealand',
+    'NI' => 'Nicaragua',
+    'NE' => 'Niger',
+    'NG' => 'Nigeria',
+    'NU' => 'Niue',
+    'NF' => 'Norfolk Island',
+    'MK' => 'North Macedonia',
+    'MP' => 'Northern Mariana Islands',
+    'NO' => 'Norway',
+    'OM' => 'Oman',
+    'PK' => 'Pakistan',
+    'PW' => 'Palau',
+    'PS' => 'Palestine',
+    'PA' => 'Panama',
+    'PG' => 'Papua New Guinea',
+    'PY' => 'Paraguay',
+    'PE' => 'Peru',
+    'PH' => 'Philippines',
+    'PN' => 'Pitcairn Islands',
+    'PL' => 'Poland',
+    'PT' => 'Portugal',
+    'PR' => 'Puerto Rico',
+    'QA' => 'Qatar',
+    'RE' => 'Réunion',
+    'RO' => 'Romania',
+    'RU' => 'Russia',
+    'RW' => 'Rwanda',
+    'BL' => 'Saint Barthélemy',
+    'SH' => 'Saint Helena',
+    'KN' => 'Saint Kitts and Nevis',
+    'LC' => 'Saint Lucia',
+    'MF' => 'Saint Martin',
+    'PM' => 'Saint Pierre and Miquelon',
+    'VC' => 'Saint Vincent and the Grenadines',
+    'WS' => 'Samoa',
+    'SM' => 'San Marino',
+    'ST' => 'São Tomé and Príncipe',
+    'SA' => 'Saudi Arabia',
+    'SN' => 'Senegal',
+    'RS' => 'Serbia',
+    'SC' => 'Seychelles',
+    'SL' => 'Sierra Leone',
+    'SG' => 'Singapore',
+    'SX' => 'Sint Maarten',
+    'SK' => 'Slovakia',
+    'SI' => 'Slovenia',
+    'SB' => 'Solomon Islands',
+    'SO' => 'Somalia',
+    'ZA' => 'South Africa',
+    'GS' => 'South Georgia and the South Sandwich Islands',
+    'SS' => 'South Sudan',
+    'ES' => 'Spain',
+    'LK' => 'Sri Lanka',
+    'SD' => 'Sudan',
+    'SR' => 'Suriname',
+    'SJ' => 'Svalbard and Jan Mayen',
+    'SE' => 'Sweden',
+    'CH' => 'Switzerland',
+    'SY' => 'Syria',
+    'TW' => 'Taiwan',
+    'TJ' => 'Tajikistan',
+    'TZ' => 'Tanzania',
+    'TH' => 'Thailand',
+    'TL' => 'Timor-Leste',
+    'TG' => 'Togo',
+    'TK' => 'Tokelau',
+    'TO' => 'Tonga',
+    'TT' => 'Trinidad and Tobago',
+    'TN' => 'Tunisia',
+    'TR' => 'Turkey',
+    'TM' => 'Turkmenistan',
+    'TC' => 'Turks and Caicos Islands',
+    'TV' => 'Tuvalu',
+    'UG' => 'Uganda',
+    'UA' => 'Ukraine',
+    'AE' => 'United Arab Emirates',
+    'GB' => 'United Kingdom',
+    'US' => 'United States',
+    'UY' => 'Uruguay',
+    'UZ' => 'Uzbekistan',
+    'VU' => 'Vanuatu',
+    'VE' => 'Venezuela',
+    'VN' => 'Vietnam',
+    'VG' => 'British Virgin Islands',
+    'VI' => 'U.S. Virgin Islands',
+    'WF' => 'Wallis and Futuna',
+    'EH' => 'Western Sahara',
+    'YE' => 'Yemen',
+    'ZM' => 'Zambia',
     'ZW' => 'Zimbabwe'
 ];
 
@@ -518,717 +708,689 @@ foreach ($user_countries as $country) {
     $country_labels[] = $country_name_map[$code] ?? $code;
     $country_counts[] = $country['count'];
 }
+
+include 'admin_header.php';
 ?>
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
-    <title>Statistics - Argo Sales Tracker</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <script src="../resources/notifications/notifications.js" defer></script>
+<div class="container">
+    <!-- Period selection -->
+    <div class="period-selection">
+        <span>Time Period:</span>
+        <div class="period-buttons">
+            <?php
+            // Define all periods with their display names
+            $periods = [
+                'day' => 'Daily',
+                'week' => 'Weekly',
+                'month' => 'Monthly',
+                'year' => 'Yearly'
+            ];
 
-    <link rel="stylesheet" href="index.css">
-    <link rel="stylesheet" href="statistics.css">
-    <link rel="stylesheet" href="../resources/styles/custom-colors.css">
-    <link rel="stylesheet" href="../resources/notifications/notifications.css">
-</head>
-
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>Enhanced Statistics Dashboard</h1>
-            <div class="header-buttons">
-                <a href="index.php" class="btn">License Keys</a>
-                <a href="users.php" class="btn">User Accounts</a>
-                <a href="2fa-setup.php" class="btn">2FA Settings</a>
-                <a href="logout.php" class="btn logout-btn">Logout</a>
-            </div>
-        </div>
-
-        <!-- Period selection -->
-        <div class="period-selection">
-            <span>Time Period:</span>
-            <div class="period-buttons">
-                <?php
-                // Define all periods with their display names
-                $periods = [
-                    'day' => 'Daily',
-                    'week' => 'Weekly',
-                    'month' => 'Monthly',
-                    'year' => 'Yearly'
-                ];
-
-                // Loop through periods and create buttons
-                foreach ($periods as $periodKey => $periodName) {
-                    $activeClass = ($period === $periodKey) ? 'active' : '';
-                    echo "<a href=\"?period={$periodKey}\" class=\"period-btn {$activeClass}\">{$periodName}</a>";
-                }
-                ?>
-            </div>
-        </div>
-
-        <!-- Statistics cards -->
-        <div class="stats-row">
-            <div class="stat-card">
-                <h3>Total Downloads</h3>
-                <div class="stat-value"><?php echo array_sum($downloads_data); ?></div>
-            </div>
-            <div class="stat-card">
-                <h3>Registrations</h3>
-                <div class="stat-value"><?php echo array_sum($registrations_data); ?></div>
-            </div>
-            <div class="stat-card">
-                <h3>Activation Rate</h3>
-                <div class="stat-value"><?php echo $activation_percentage; ?>%</div>
-            </div>
-            <div class="stat-card">
-                <h3>Growth Rate</h3>
-                <div class="stat-value"><?php echo ($latest_growth >= 0 ? '+' : '') . $latest_growth; ?>%</div>
-            </div>
-        </div>
-
-        <div class="stats-row">
-            <div class="stat-card">
-                <h3>Page Views</h3>
-                <div class="stat-value"><?php echo array_sum($page_views_data); ?></div>
-            </div>
-            <div class="stat-card">
-                <h3>Post Views</h3>
-                <div class="stat-value"><?php echo $total_post_views; ?></div>
-            </div>
-            <div class="stat-card">
-                <h3>Avg Views/Post</h3>
-                <div class="stat-value"><?php echo $avg_post_views; ?></div>
-            </div>
-            <div class="stat-card">
-                <h3>Most Viewed Post</h3>
-                <div class="stat-value"><?php echo $most_viewed; ?></div>
-            </div>
-        </div>
-
-        <!-- More charts -->
-        <div class="chart-row">
-            <div class="chart-container half">
-                <h2>License Activation Rate</h2>
-                <canvas id="activationChart"></canvas>
-            </div>
-            <div class="chart-container half">
-                <h2>Growth Trends</h2>
-                <canvas id="growthChart"></canvas>
-            </div>
-        </div>
-
-        <div class="chart-row">
-            <div class="chart-container half">
-                <h2>Community Post Types</h2>
-                <canvas id="postTypeChart"></canvas>
-            </div>
-            <div class="chart-container half">
-                <h2>Post Views by Type</h2>
-                <canvas id="postViewsChart"></canvas>
-            </div>
-        </div>
-
-        <div class="chart-row">
-            <div class="chart-container half">
-                <h2>Top 10 User Countries</h2>
-                <canvas id="countryChart"></canvas>
-            </div>
-            <div class="chart-container half">
-                <h2>Browser Distribution</h2>
-                <canvas id="browserChart"></canvas>
-            </div>
-        </div>
-
-        <!-- Most active users table -->
-        <div class="table-container">
-            <h2>Most Active Community Users</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Username</th>
-                        <th>Email</th>
-                        <th>Posts</th>
-                        <th>Comments</th>
-                        <th>Total Views</th>
-                        <th>Activity Score</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($active_users as $user): ?>
-                        <tr>
-                            <td><?php echo htmlspecialchars($user['username']); ?></td>
-                            <td><?php echo htmlspecialchars($user['email']); ?></td>
-                            <td><?php echo $user['post_count']; ?></td>
-                            <td><?php echo $user['comment_count']; ?></td>
-                            <td><?php echo number_format($user['total_views']); ?></td>
-                            <td><?php echo $user['activity_score']; ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Export options -->
-        <div class="export-section">
-            <h2>Export Statistics</h2>
-            <p>Download statistics data for your records or further analysis.</p>
-            <div class="export-buttons">
-                <button id="exportCSV" class="btn">Export as CSV</button>
-                <button id="exportJSON" class="btn">Export as JSON</button>
-            </div>
+            // Loop through periods and create buttons
+            foreach ($periods as $periodKey => $periodName) {
+                $activeClass = ($period === $periodKey) ? 'active' : '';
+                echo "<a href=\"?period={$periodKey}\" class=\"period-btn {$activeClass}\">{$periodName}</a>";
+            }
+            ?>
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Chart data
-            const chartLabels = <?php echo json_encode($chart_labels); ?>;
-            const downloadsData = <?php echo json_encode($downloads_data); ?>;
-            const registrationsData = <?php echo json_encode($registrations_data); ?>;
-            const pageViewsData = <?php echo json_encode($page_views_data); ?>;
-            const activationData = <?php echo json_encode([
-                (int)$activation_rate['activated'],
-                (int)($activation_rate['total'] - $activation_rate['activated'])
-            ]); ?>;
-            const postTypeLabels = <?php echo json_encode($post_type_labels); ?>;
-            const postTypeCounts = <?php echo json_encode($post_type_counts); ?>;
-            const postTypeViews = <?php echo json_encode($post_type_views); ?>;
-            const countryLabels = <?php echo json_encode($country_labels); ?>;
-            const countryCounts = <?php echo json_encode($country_counts); ?>;
-            const browserLabels = <?php echo json_encode($browser_labels); ?>;
-            const browserCounts = <?php echo json_encode($browser_counts); ?>;
-            const conversionData = <?php echo json_encode([
-                $conversion_data['downloads'],
-                $conversion_data['registrations'],
-                $conversion_data['licenses']
-            ]); ?>;
+    <!-- Statistics cards -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <h3>Total Downloads</h3>
+            <div class="stat-value"><?php echo array_sum($downloads_data); ?></div>
+        </div>
+        <div class="stat-card">
+            <h3>Registrations</h3>
+            <div class="stat-value"><?php echo array_sum($registrations_data); ?></div>
+        </div>
+        <div class="stat-card">
+            <h3>Activation Rate</h3>
+            <div class="stat-value"><?php echo $activation_percentage; ?>%</div>
+        </div>
+        <div class="stat-card">
+            <h3>Growth Rate</h3>
+            <div class="stat-value"><?php echo ($latest_growth >= 0 ? '+' : '') . $latest_growth; ?>%</div>
+        </div>
+    </div>
 
-            // Calculate growth data
-            const growthData = [];
-            for (let i = 1; i < downloadsData.length; i++) {
-                const previous = downloadsData[i - 1];
-                const current = downloadsData[i];
-                const growth = previous > 0 ? ((current - previous) / previous) * 100 : 0;
-                growthData.push(growth.toFixed(1));
+    <div class="stats-row">
+        <div class="stat-card">
+            <h3>Page Views</h3>
+            <div class="stat-value"><?php echo array_sum($page_views_data); ?></div>
+        </div>
+        <div class="stat-card">
+            <h3>Post Views</h3>
+            <div class="stat-value"><?php echo $total_post_views; ?></div>
+        </div>
+        <div class="stat-card">
+            <h3>Avg Views/Post</h3>
+            <div class="stat-value"><?php echo $avg_post_views; ?></div>
+        </div>
+        <div class="stat-card">
+            <h3>Most Viewed Post</h3>
+            <div class="stat-value"><?php echo $most_viewed; ?></div>
+        </div>
+    </div>
+
+    <!-- More charts -->
+    <div class="chart-row">
+        <div class="chart-container half">
+            <h2>License Activation Rate</h2>
+            <canvas id="activationChart"></canvas>
+        </div>
+        <div class="chart-container half">
+            <h2>Growth Trends</h2>
+            <canvas id="growthChart"></canvas>
+        </div>
+    </div>
+
+    <div class="chart-row">
+        <div class="chart-container half">
+            <h2>Community Post Types</h2>
+            <canvas id="postTypeChart"></canvas>
+        </div>
+        <div class="chart-container half">
+            <h2>Post Views by Type</h2>
+            <canvas id="postViewsChart"></canvas>
+        </div>
+    </div>
+
+    <div class="chart-row">
+        <div class="chart-container half">
+            <h2>Top 10 User Countries</h2>
+            <canvas id="countryChart"></canvas>
+        </div>
+        <div class="chart-container half">
+            <h2>Browser Distribution</h2>
+            <canvas id="browserChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Most active users table -->
+    <div class="table-container">
+        <h2>Most Active Community Users</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Posts</th>
+                    <th>Comments</th>
+                    <th>Total Views</th>
+                    <th>Activity Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($active_users as $user): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($user['username']); ?></td>
+                        <td><?php echo htmlspecialchars($user['email']); ?></td>
+                        <td><?php echo $user['post_count']; ?></td>
+                        <td><?php echo $user['comment_count']; ?></td>
+                        <td><?php echo number_format($user['total_views']); ?></td>
+                        <td><?php echo $user['activity_score']; ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Export options -->
+    <div class="export-section">
+        <h2>Export Statistics</h2>
+        <p>Download statistics data for your records or further analysis.</p>
+        <div class="export-buttons">
+            <button id="exportCSV" class="btn">Export as CSV</button>
+            <button id="exportJSON" class="btn">Export as JSON</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Chart data
+        const chartLabels = <?php echo json_encode($chart_labels); ?>;
+        const downloadsData = <?php echo json_encode($downloads_data); ?>;
+        const registrationsData = <?php echo json_encode($registrations_data); ?>;
+        const pageViewsData = <?php echo json_encode($page_views_data); ?>;
+        const activationData = <?php echo json_encode([
+                                    (int)$activation_rate['activated'],
+                                    (int)($activation_rate['total'] - $activation_rate['activated'])
+                                ]); ?>;
+        const postTypeLabels = <?php echo json_encode($post_type_labels); ?>;
+        const postTypeCounts = <?php echo json_encode($post_type_counts); ?>;
+        const postTypeViews = <?php echo json_encode($post_type_views); ?>;
+        const countryLabels = <?php echo json_encode($country_labels); ?>;
+        const countryCounts = <?php echo json_encode($country_counts); ?>;
+        const browserLabels = <?php echo json_encode($browser_labels); ?>;
+        const browserCounts = <?php echo json_encode($browser_counts); ?>;
+        const conversionData = <?php echo json_encode([
+                                    $conversion_data['downloads'],
+                                    $conversion_data['registrations'],
+                                    $conversion_data['licenses']
+                                ]); ?>;
+
+        // Calculate growth data
+        const growthData = [];
+        for (let i = 1; i < downloadsData.length; i++) {
+            const previous = downloadsData[i - 1];
+            const current = downloadsData[i];
+            const growth = previous > 0 ? ((current - previous) / previous) * 100 : 0;
+            growthData.push(growth.toFixed(1));
+        }
+
+        // Activation rate chart
+        const ctxActivation = document.getElementById('activationChart').getContext('2d');
+        new Chart(ctxActivation, {
+            type: 'pie',
+            data: {
+                labels: ['Activated', 'Not Activated'],
+                datasets: [{
+                    data: activationData,
+                    backgroundColor: [
+                        'rgba(16, 185, 129, 0.8)',
+                        'rgba(239, 68, 68, 0.8)'
+                    ],
+                    borderColor: [
+                        'rgba(16, 185, 129, 1)',
+                        'rgba(239, 68, 68, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = Number(context.raw) || 0;
+                                const total = context.dataset.data.reduce((a, b) => Number(a) + Number(b), 0);
+                                const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
+                                return `${label}: ${value} licenses (${percentage}%)`;
+                            }
+                        }
+                    }
+                },
+                layout: {
+                    padding: {
+                        bottom: 80
+                    }
+                }
+            }
+        });
+
+        // Growth chart
+        const ctxGrowth = document.getElementById('growthChart').getContext('2d');
+        new Chart(ctxGrowth, {
+            type: 'line',
+            data: {
+                labels: chartLabels.slice(1), // Remove first label
+                datasets: [{
+                    label: 'Growth Rate (%)',
+                    data: growthData,
+                    backgroundColor: 'rgba(37, 99, 235, 0.2)',
+                    borderColor: 'rgba(37, 99, 235, 1)',
+                    borderWidth: 2,
+                    tension: 0.3,
+                    fill: true,
+                    pointRadius: 4,
+                    pointBackgroundColor: 'rgba(37, 99, 235, 1)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        ticks: {
+                            precision: 0,
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            padding: 10
+                        }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `Growth: ${context.raw}%`;
+                            }
+                        }
+                    },
+                    legend: {
+                        position: 'top',
+                    }
+                },
+                layout: {
+                    padding: {
+                        bottom: 80
+                    }
+                }
+            }
+        });
+
+        // Post Type chart
+        const ctxPostType = document.getElementById('postTypeChart').getContext('2d');
+        new Chart(ctxPostType, {
+            type: 'pie',
+            data: {
+                labels: postTypeLabels,
+                datasets: [{
+                    data: postTypeCounts,
+                    backgroundColor: [
+                        'rgba(37, 99, 235, 0.8)',
+                        'rgba(245, 158, 11, 0.8)',
+                        'rgba(16, 185, 129, 0.8)',
+                        'rgba(99, 102, 241, 0.8)'
+                    ],
+                    borderColor: [
+                        'rgba(37, 99, 235, 1)',
+                        'rgba(245, 158, 11, 1)',
+                        'rgba(16, 185, 129, 1)',
+                        'rgba(99, 102, 241, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = Number(context.raw) || 0;
+                                const total = context.dataset.data.reduce((a, b) => Number(a) + Number(b), 0);
+                                const percentage = Math.round((value / total) * 100);
+                                return `${label}: ${value} posts (${percentage}%)`;
+                            }
+                        }
+                    }
+                },
+                layout: {
+                    padding: {
+                        bottom: 80
+                    }
+                }
+            }
+        });
+
+        // Post Views by Type chart
+        const ctxPostViews = document.getElementById('postViewsChart').getContext('2d');
+        new Chart(ctxPostViews, {
+            type: 'bar',
+            data: {
+                labels: postTypeLabels,
+                datasets: [{
+                    label: 'Views',
+                    data: postTypeViews,
+                    backgroundColor: [
+                        'rgba(37, 99, 235, 0.7)',
+                        'rgba(245, 158, 11, 0.7)',
+                        'rgba(16, 185, 129, 0.7)',
+                        'rgba(99, 102, 241, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(37, 99, 235, 1)',
+                        'rgba(245, 158, 11, 1)',
+                        'rgba(16, 185, 129, 1)',
+                        'rgba(99, 102, 241, 1)'
+                    ],
+                    borderWidth: 1,
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = Number(context.raw) || 0;
+                                const total = context.dataset.data.reduce((a, b) => Number(a) + Number(b), 0);
+                                const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
+                                return `${label}: ${value.toLocaleString()} views (${percentage}%)`;
+                            }
+                        }
+                    }
+                },
+                layout: {
+                    padding: {
+                        bottom: 60
+                    }
+                }
+            }
+        });
+
+        // Country chart
+        const ctxCountry = document.getElementById('countryChart').getContext('2d');
+        new Chart(ctxCountry, {
+            type: 'bar',
+            data: {
+                labels: countryLabels,
+                datasets: [{
+                    label: 'Users',
+                    data: countryCounts,
+                    backgroundColor: 'rgba(99, 102, 241, 0.7)',
+                    borderColor: 'rgba(99, 102, 241, 1)',
+                    borderWidth: 1,
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = Number(context.raw) || 0;
+                                const total = context.dataset.data.reduce((a, b) => Number(a) + Number(b), 0);
+                                const percentage = Math.round((value / total) * 100);
+                                return `${label}: ${value} users (${percentage}%)`;
+                            }
+                        }
+                    }
+                },
+                layout: {
+                    padding: {
+                        bottom: 60
+                    }
+                }
+            }
+        });
+
+        // Browser chart
+        const ctxBrowser = document.getElementById('browserChart').getContext('2d');
+        new Chart(ctxBrowser, {
+            type: 'pie',
+            data: {
+                labels: browserLabels,
+                datasets: [{
+                    data: browserCounts,
+                    backgroundColor: [
+                        'rgba(37, 99, 235, 0.7)',
+                        'rgba(245, 158, 11, 0.7)',
+                        'rgba(16, 185, 129, 0.7)',
+                        'rgba(99, 102, 241, 0.7)',
+                        'rgba(239, 68, 68, 0.7)',
+                        'rgba(107, 114, 128, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(37, 99, 235, 1)',
+                        'rgba(245, 158, 11, 1)',
+                        'rgba(16, 185, 129, 1)',
+                        'rgba(99, 102, 241, 1)',
+                        'rgba(239, 68, 68, 1)',
+                        'rgba(107, 114, 128, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.raw || 0;
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = Math.round((value / total) * 100);
+                                return `${label}: ${value} (${percentage}%)`;
+                            }
+                        }
+                    }
+                },
+                layout: {
+                    padding: {
+                        bottom: 80
+                    }
+                }
+            }
+        });
+
+        // Export functions
+        document.getElementById('exportCSV').addEventListener('click', function() {
+            // Helper function to sum arrays since array_sum is a PHP function
+            const sumArray = (arr) => arr.reduce((sum, val) => sum + (Number(val) || 0), 0);
+
+            // Create CSV content for time series data
+            let csvContent = 'data:text/csv;charset=utf-8,';
+
+            // Add header for time series
+            csvContent += 'TIME SERIES DATA\n';
+            csvContent += 'Period,Downloads,Registrations,Page Views,Growth Rate (%)\n';
+
+            for (let i = 0; i < chartLabels.length; i++) {
+                const row = [
+                    chartLabels[i],
+                    downloadsData[i] || 0,
+                    registrationsData[i] || 0,
+                    pageViewsData[i] || 0,
+                    i > 0 ? (growthData[i - 1] || 0) : 'N/A'
+                ].join(',');
+                csvContent += row + '\n';
             }
 
-            // Activation rate chart
-            const ctxActivation = document.getElementById('activationChart').getContext('2d');
-            new Chart(ctxActivation, {
-                type: 'pie',
-                data: {
-                    labels: ['Activated', 'Not Activated'],
-                    datasets: [{
-                        data: activationData,
-                        backgroundColor: [
-                            'rgba(16, 185, 129, 0.8)',
-                            'rgba(239, 68, 68, 0.8)'
-                        ],
-                        borderColor: [
-                            'rgba(16, 185, 129, 1)',
-                            'rgba(239, 68, 68, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'right',
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    const label = context.label || '';
-                                    const value = Number(context.raw) || 0;
-                                    const total = context.dataset.data.reduce((a, b) => Number(a) + Number(b), 0);
-                                    const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
-                                    return `${label}: ${value} licenses (${percentage}%)`;
-                                }
-                            }
-                        }
-                    },
-                    layout: {
-                        padding: {
-                            bottom: 80
-                        }
+            // Add summary data
+            csvContent += '\nSUMMARY DATA\n';
+            csvContent += 'Metric,Value\n';
+            csvContent += `Total Downloads,${sumArray(downloadsData)}\n`;
+            csvContent += `Total Registrations,${sumArray(registrationsData)}\n`;
+            csvContent += `Total Page Views,${sumArray(pageViewsData)}\n`;
+            csvContent += `Activation Rate,${<?php echo $activation_percentage; ?>}%\n`;
+            csvContent += `Latest Growth Rate,${<?php echo $latest_growth; ?>}%\n`;
+            csvContent += `Total Post Views,${<?php echo str_replace(',', '', $total_post_views); ?>}\n`;
+            csvContent += `Average Views per Post,${<?php echo $avg_post_views; ?>}\n`;
+            csvContent += `Most Viewed Post,${<?php echo str_replace(',', '', $most_viewed); ?>}\n`;
+
+            // Add post type data
+            csvContent += '\nPOST TYPE DATA\n';
+            csvContent += 'Post Type,Count,Total Views\n';
+            for (let i = 0; i < postTypeLabels.length; i++) {
+                csvContent += `${postTypeLabels[i]},${postTypeCounts[i]},${postTypeViews[i]}\n`;
+            }
+
+            // Add country data
+            csvContent += '\nUSER COUNTRIES\n';
+            csvContent += 'Country Code,User Count\n';
+            for (let i = 0; i < countryLabels.length; i++) {
+                csvContent += `${countryLabels[i]},${countryCounts[i]}\n`;
+            }
+
+            // Add browser data
+            csvContent += '\nBROWSER DISTRIBUTION\n';
+            csvContent += 'Browser,User Count\n';
+            for (let i = 0; i < browserLabels.length; i++) {
+                csvContent += `${browserLabels[i]},${browserCounts[i]}\n`;
+            }
+
+            // Add most active users data
+            csvContent += '\nMOST ACTIVE USERS\n';
+            csvContent += 'Username,Email,Posts,Comments,Total Views,Activity Score\n';
+
+            <?php foreach ($active_users as $user): ?>
+                csvContent += `<?php echo str_replace('"', '""', $user['username']); ?>,<?php echo str_replace('"', '""', $user['email']); ?>,<?php echo $user['post_count']; ?>,<?php echo $user['comment_count']; ?>,<?php echo isset($user['total_views']) ? (int)$user['total_views'] : 0; ?>,<?php echo $user['activity_score']; ?>\n`;
+            <?php endforeach; ?>
+
+            // Create download link
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement('a');
+            link.setAttribute('href', encodedUri);
+            link.setAttribute('download', 'argo_statistics.csv');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+
+        document.getElementById('exportJSON').addEventListener('click', function() {
+            // Helper function to sum arrays since array_sum is a PHP function
+            const sumArray = (arr) => arr.reduce((sum, val) => sum + (Number(val) || 0), 0);
+
+            // Create comprehensive JSON content with all dashboard data
+            const jsonData = {
+                summary: {
+                    total_downloads: sumArray(downloadsData),
+                    total_registrations: sumArray(registrationsData),
+                    total_page_views: sumArray(pageViewsData),
+                    activation_rate: <?php echo $activation_percentage; ?>,
+                    growth_rate: <?php echo $latest_growth; ?>,
+                    post_views: {
+                        total: <?php echo str_replace(',', '', $total_post_views); ?>,
+                        average_per_post: <?php echo $avg_post_views; ?>,
+                        most_viewed: <?php echo str_replace(',', '', $most_viewed); ?>
                     }
-                }
-            });
-
-            // Growth chart
-            const ctxGrowth = document.getElementById('growthChart').getContext('2d');
-            new Chart(ctxGrowth, {
-                type: 'line',
-                data: {
-                    labels: chartLabels.slice(1), // Remove first label
-                    datasets: [{
-                        label: 'Growth Rate (%)',
-                        data: growthData,
-                        backgroundColor: 'rgba(37, 99, 235, 0.2)',
-                        borderColor: 'rgba(37, 99, 235, 1)',
-                        borderWidth: 2,
-                        tension: 0.3,
-                        fill: true,
-                        pointRadius: 4,
-                        pointBackgroundColor: 'rgba(37, 99, 235, 1)'
-                    }]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            ticks: {
-                                precision: 0,
-                                callback: function(value) {
-                                    return value + '%';
-                                }
-                            }
-                        },
-                        x: {
-                            ticks: {
-                                padding: 10
-                            }
-                        }
-                    },
-                    plugins: {
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return `Growth: ${context.raw}%`;
-                                }
-                            }
-                        },
-                        legend: {
-                            position: 'top',
-                        }
-                    },
-                    layout: {
-                        padding: {
-                            bottom: 80
-                        }
-                    }
-                }
-            });
-
-            // Post Type chart
-            const ctxPostType = document.getElementById('postTypeChart').getContext('2d');
-            new Chart(ctxPostType, {
-                type: 'pie',
-                data: {
-                    labels: postTypeLabels,
-                    datasets: [{
-                        data: postTypeCounts,
-                        backgroundColor: [
-                            'rgba(37, 99, 235, 0.8)',
-                            'rgba(245, 158, 11, 0.8)',
-                            'rgba(16, 185, 129, 0.8)',
-                            'rgba(99, 102, 241, 0.8)'
-                        ],
-                        borderColor: [
-                            'rgba(37, 99, 235, 1)',
-                            'rgba(245, 158, 11, 1)',
-                            'rgba(16, 185, 129, 1)',
-                            'rgba(99, 102, 241, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
+                time_series: [],
+                growth_trends: [],
+                license_activation: {
+                    activated: activationData[0],
+                    not_activated: activationData[1]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'right',
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    const label = context.label || '';
-                                    const value = Number(context.raw) || 0;
-                                    const total = context.dataset.data.reduce((a, b) => Number(a) + Number(b), 0);
-                                    const percentage = Math.round((value / total) * 100);
-                                    return `${label}: ${value} posts (${percentage}%)`;
-                                }
-                            }
-                        }
-                    },
-                    layout: {
-                        padding: {
-                            bottom: 80
-                        }
-                    }
-                }
-            });
-
-            // Post Views by Type chart
-            const ctxPostViews = document.getElementById('postViewsChart').getContext('2d');
-            new Chart(ctxPostViews, {
-                type: 'bar',
-                data: {
-                    labels: postTypeLabels,
-                    datasets: [{
-                        label: 'Views',
-                        data: postTypeViews,
-                        backgroundColor: [
-                            'rgba(37, 99, 235, 0.7)',
-                            'rgba(245, 158, 11, 0.7)',
-                            'rgba(16, 185, 129, 0.7)',
-                            'rgba(99, 102, 241, 0.7)'
-                        ],
-                        borderColor: [
-                            'rgba(37, 99, 235, 1)',
-                            'rgba(245, 158, 11, 1)',
-                            'rgba(16, 185, 129, 1)',
-                            'rgba(99, 102, 241, 1)'
-                        ],
-                        borderWidth: 1,
-                        borderRadius: 5
-                    }]
+                post_types: [],
+                countries: [],
+                browsers: [],
+                conversion: {
+                    downloads: conversionData[0],
+                    registrations: conversionData[1],
+                    purchases: conversionData[2],
+                    registration_to_purchase_rate: <?php echo $conversion_data['registration_to_purchase']; ?>
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                precision: 0
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    const label = context.label || '';
-                                    const value = Number(context.raw) || 0;
-                                    const total = context.dataset.data.reduce((a, b) => Number(a) + Number(b), 0);
-                                    const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
-                                    return `${label}: ${value.toLocaleString()} views (${percentage}%)`;
-                                }
-                            }
-                        }
-                    },
-                    layout: {
-                        padding: {
-                            bottom: 60
-                        }
-                    }
-                }
-            });
+                most_active_users: []
+            };
 
-            // Country chart
-            const ctxCountry = document.getElementById('countryChart').getContext('2d');
-            new Chart(ctxCountry, {
-                type: 'bar',
-                data: {
-                    labels: countryLabels,
-                    datasets: [{
-                        label: 'Users',
-                        data: countryCounts,
-                        backgroundColor: 'rgba(99, 102, 241, 0.7)',
-                        borderColor: 'rgba(99, 102, 241, 1)',
-                        borderWidth: 1,
-                        borderRadius: 5
-                    }]
-                },
-                options: {
-                    indexAxis: 'y',
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        x: {
-                            beginAtZero: true,
-                            ticks: {
-                                precision: 0
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    const label = context.label || '';
-                                    const value = Number(context.raw) || 0;
-                                    const total = context.dataset.data.reduce((a, b) => Number(a) + Number(b), 0);
-                                    const percentage = Math.round((value / total) * 100);
-                                    return `${label}: ${value} users (${percentage}%)`;
-                                }
-                            }
-                        }
-                    },
-                    layout: {
-                        padding: {
-                            bottom: 60
-                        }
-                    }
-                }
-            });
+            // Add time series data
+            for (let i = 0; i < chartLabels.length; i++) {
+                jsonData.time_series.push({
+                    period: chartLabels[i],
+                    downloads: downloadsData[i] || 0,
+                    registrations: registrationsData[i] || 0,
+                    page_views: pageViewsData[i] || 0
+                });
 
-            // Browser chart
-            const ctxBrowser = document.getElementById('browserChart').getContext('2d');
-            new Chart(ctxBrowser, {
-                type: 'pie',
-                data: {
-                    labels: browserLabels,
-                    datasets: [{
-                        data: browserCounts,
-                        backgroundColor: [
-                            'rgba(37, 99, 235, 0.7)',
-                            'rgba(245, 158, 11, 0.7)',
-                            'rgba(16, 185, 129, 0.7)',
-                            'rgba(99, 102, 241, 0.7)',
-                            'rgba(239, 68, 68, 0.7)',
-                            'rgba(107, 114, 128, 0.7)'
-                        ],
-                        borderColor: [
-                            'rgba(37, 99, 235, 1)',
-                            'rgba(245, 158, 11, 1)',
-                            'rgba(16, 185, 129, 1)',
-                            'rgba(99, 102, 241, 1)',
-                            'rgba(239, 68, 68, 1)',
-                            'rgba(107, 114, 128, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'right',
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    const label = context.label || '';
-                                    const value = context.raw || 0;
-                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                    const percentage = Math.round((value / total) * 100);
-                                    return `${label}: ${value} (${percentage}%)`;
-                                }
-                            }
-                        }
-                    },
-                    layout: {
-                        padding: {
-                            bottom: 80
-                        }
-                    }
-                }
-            });
-
-            // Export functions
-            document.getElementById('exportCSV').addEventListener('click', function() {
-                // Helper function to sum arrays since array_sum is a PHP function
-                const sumArray = (arr) => arr.reduce((sum, val) => sum + (Number(val) || 0), 0);
-
-                // Create CSV content for time series data
-                let csvContent = 'data:text/csv;charset=utf-8,';
-
-                // Add header for time series
-                csvContent += 'TIME SERIES DATA\n';
-                csvContent += 'Period,Downloads,Registrations,Page Views,Growth Rate (%)\n';
-
-                for (let i = 0; i < chartLabels.length; i++) {
-                    const row = [
-                        chartLabels[i],
-                        downloadsData[i] || 0,
-                        registrationsData[i] || 0,
-                        pageViewsData[i] || 0,
-                        i > 0 ? (growthData[i - 1] || 0) : 'N/A'
-                    ].join(',');
-                    csvContent += row + '\n';
-                }
-
-                // Add summary data
-                csvContent += '\nSUMMARY DATA\n';
-                csvContent += 'Metric,Value\n';
-                csvContent += `Total Downloads,${sumArray(downloadsData)}\n`;
-                csvContent += `Total Registrations,${sumArray(registrationsData)}\n`;
-                csvContent += `Total Page Views,${sumArray(pageViewsData)}\n`;
-                csvContent += `Activation Rate,${<?php echo $activation_percentage; ?>}%\n`;
-                csvContent += `Latest Growth Rate,${<?php echo $latest_growth; ?>}%\n`;
-                csvContent += `Total Post Views,${<?php echo str_replace(',', '', $total_post_views); ?>}\n`;
-                csvContent += `Average Views per Post,${<?php echo $avg_post_views; ?>}\n`;
-                csvContent += `Most Viewed Post,${<?php echo str_replace(',', '', $most_viewed); ?>}\n`;
-
-                // Add post type data
-                csvContent += '\nPOST TYPE DATA\n';
-                csvContent += 'Post Type,Count,Total Views\n';
-                for (let i = 0; i < postTypeLabels.length; i++) {
-                    csvContent += `${postTypeLabels[i]},${postTypeCounts[i]},${postTypeViews[i]}\n`;
-                }
-
-                // Add country data
-                csvContent += '\nUSER COUNTRIES\n';
-                csvContent += 'Country Code,User Count\n';
-                for (let i = 0; i < countryLabels.length; i++) {
-                    csvContent += `${countryLabels[i]},${countryCounts[i]}\n`;
-                }
-
-                // Add browser data
-                csvContent += '\nBROWSER DISTRIBUTION\n';
-                csvContent += 'Browser,User Count\n';
-                for (let i = 0; i < browserLabels.length; i++) {
-                    csvContent += `${browserLabels[i]},${browserCounts[i]}\n`;
-                }
-
-                // Add most active users data
-                csvContent += '\nMOST ACTIVE USERS\n';
-                csvContent += 'Username,Email,Posts,Comments,Total Views,Activity Score\n';
-
-                <?php foreach ($active_users as $user): ?>
-                    csvContent += `<?php echo str_replace('"', '""', $user['username']); ?>,<?php echo str_replace('"', '""', $user['email']); ?>,<?php echo $user['post_count']; ?>,<?php echo $user['comment_count']; ?>,<?php echo isset($user['total_views']) ? (int)$user['total_views'] : 0; ?>,<?php echo $user['activity_score']; ?>\n`;
-                <?php endforeach; ?>
-
-                // Create download link
-                const encodedUri = encodeURI(csvContent);
-                const link = document.createElement('a');
-                link.setAttribute('href', encodedUri);
-                link.setAttribute('download', 'argo_statistics.csv');
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            });
-
-            document.getElementById('exportJSON').addEventListener('click', function() {
-                // Helper function to sum arrays since array_sum is a PHP function
-                const sumArray = (arr) => arr.reduce((sum, val) => sum + (Number(val) || 0), 0);
-
-                // Create comprehensive JSON content with all dashboard data
-                const jsonData = {
-                    summary: {
-                        total_downloads: sumArray(downloadsData),
-                        total_registrations: sumArray(registrationsData),
-                        total_page_views: sumArray(pageViewsData),
-                        activation_rate: <?php echo $activation_percentage; ?>,
-                        growth_rate: <?php echo $latest_growth; ?>,
-                        post_views: {
-                            total: <?php echo str_replace(',', '', $total_post_views); ?>,
-                            average_per_post: <?php echo $avg_post_views; ?>,
-                            most_viewed: <?php echo str_replace(',', '', $most_viewed); ?>
-                        }
-                    },
-                    time_series: [],
-                    growth_trends: [],
-                    license_activation: {
-                        activated: activationData[0],
-                        not_activated: activationData[1]
-                    },
-                    post_types: [],
-                    countries: [],
-                    browsers: [],
-                    conversion: {
-                        downloads: conversionData[0],
-                        registrations: conversionData[1],
-                        purchases: conversionData[2],
-                        registration_to_purchase_rate: <?php echo $conversion_data['registration_to_purchase']; ?>
-                    },
-                    most_active_users: []
-                };
-
-                // Add time series data
-                for (let i = 0; i < chartLabels.length; i++) {
-                    jsonData.time_series.push({
+                // Add growth data starting from the second period
+                if (i > 0) {
+                    jsonData.growth_trends.push({
                         period: chartLabels[i],
-                        downloads: downloadsData[i] || 0,
-                        registrations: registrationsData[i] || 0,
-                        page_views: pageViewsData[i] || 0
-                    });
-
-                    // Add growth data starting from the second period
-                    if (i > 0) {
-                        jsonData.growth_trends.push({
-                            period: chartLabels[i],
-                            growth_rate: parseFloat(growthData[i - 1])
-                        });
-                    }
-                }
-
-                // Add post type data
-                for (let i = 0; i < postTypeLabels.length; i++) {
-                    jsonData.post_types.push({
-                        type: postTypeLabels[i],
-                        count: postTypeCounts[i],
-                        views: postTypeViews[i]
+                        growth_rate: parseFloat(growthData[i - 1])
                     });
                 }
-
-                // Add country data
-                for (let i = 0; i < countryLabels.length; i++) {
-                    jsonData.countries.push({
-                        country_code: countryLabels[i],
-                        count: countryCounts[i]
-                    });
-                }
-
-                // Add browser data
-                for (let i = 0; i < browserLabels.length; i++) {
-                    jsonData.browsers.push({
-                        browser: browserLabels[i],
-                        count: browserCounts[i]
-                    });
-                }
-
-                // Add most active users data
-                <?php foreach ($active_users as $user): ?>
-                    jsonData.most_active_users.push({
-                        username: "<?php echo addslashes($user['username']); ?>",
-                        email: "<?php echo addslashes($user['email']); ?>",
-                        post_count: <?php echo isset($user['post_count']) ? (int)$user['post_count'] : 0; ?>,
-                        comment_count: <?php echo isset($user['comment_count']) ? (int)$user['comment_count'] : 0; ?>,
-                        total_views: <?php echo isset($user['total_views']) ? (int)$user['total_views'] : 0; ?>,
-                        activity_score: <?php echo isset($user['activity_score']) ? (int)$user['activity_score'] : 0; ?>
-                    });
-                <?php endforeach; ?>
-
-                const jsonString = JSON.stringify(jsonData, null, 2);
-                const blob = new Blob([jsonString], {
-                    type: 'application/json'
-                });
-                const url = URL.createObjectURL(blob);
-
-                // Create download link
-                const link = document.createElement('a');
-                link.setAttribute('href', url);
-                link.setAttribute('download', 'argo_statistics.json');
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                URL.revokeObjectURL(url);
-            });
-
-            // Restore scroll position if it exists in sessionStorage
-            if (sessionStorage.getItem('scrollPosition')) {
-                window.scrollTo(0, sessionStorage.getItem('scrollPosition'));
-                sessionStorage.removeItem('scrollPosition');
             }
 
-            // Save scroll position when clicking links
-            const links = document.querySelectorAll('a[href^="?period="]');
-            links.forEach(link => {
-                link.addEventListener('click', function() {
-                    sessionStorage.setItem('scrollPosition', window.scrollY);
+            // Add post type data
+            for (let i = 0; i < postTypeLabels.length; i++) {
+                jsonData.post_types.push({
+                    type: postTypeLabels[i],
+                    count: postTypeCounts[i],
+                    views: postTypeViews[i]
                 });
+            }
+
+            // Add country data
+            for (let i = 0; i < countryLabels.length; i++) {
+                jsonData.countries.push({
+                    country_code: countryLabels[i],
+                    count: countryCounts[i]
+                });
+            }
+
+            // Add browser data
+            for (let i = 0; i < browserLabels.length; i++) {
+                jsonData.browsers.push({
+                    browser: browserLabels[i],
+                    count: browserCounts[i]
+                });
+            }
+
+            // Add most active users data
+            <?php foreach ($active_users as $user): ?>
+                jsonData.most_active_users.push({
+                    username: "<?php echo addslashes($user['username']); ?>",
+                    email: "<?php echo addslashes($user['email']); ?>",
+                    post_count: <?php echo isset($user['post_count']) ? (int)$user['post_count'] : 0; ?>,
+                    comment_count: <?php echo isset($user['comment_count']) ? (int)$user['comment_count'] : 0; ?>,
+                    total_views: <?php echo isset($user['total_views']) ? (int)$user['total_views'] : 0; ?>,
+                    activity_score: <?php echo isset($user['activity_score']) ? (int)$user['activity_score'] : 0; ?>
+                });
+            <?php endforeach; ?>
+
+            const jsonString = JSON.stringify(jsonData, null, 2);
+            const blob = new Blob([jsonString], {
+                type: 'application/json'
+            });
+            const url = URL.createObjectURL(blob);
+
+            // Create download link
+            const link = document.createElement('a');
+            link.setAttribute('href', url);
+            link.setAttribute('download', 'argo_statistics.json');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        });
+
+        // Restore scroll position if it exists in sessionStorage
+        if (sessionStorage.getItem('scrollPosition')) {
+            window.scrollTo(0, sessionStorage.getItem('scrollPosition'));
+            sessionStorage.removeItem('scrollPosition');
+        }
+
+        // Save scroll position when clicking links
+        const links = document.querySelectorAll('a[href^="?period="]');
+        links.forEach(link => {
+            link.addEventListener('click', function() {
+                sessionStorage.setItem('scrollPosition', window.scrollY);
             });
         });
-    </script>
-</body>
-
-</html>
+    });
+</script>

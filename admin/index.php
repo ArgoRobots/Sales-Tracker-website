@@ -14,6 +14,10 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
     exit;
 }
 
+// Set page variables for the header
+$page_title = "License Key Administration";
+$page_description = "Manage license keys, view statistics, and administer user accounts";
+
 // Function to get all license keys with optional email filter
 function get_license_keys($email_filter = '')
 {
@@ -183,298 +187,271 @@ if (isset($_SESSION['message'])) {
     unset($_SESSION['message']);
     unset($_SESSION['message_type']);
 }
+
+include 'admin_header.php';
 ?>
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
-    <title>Argo Sales Tracker - Admin</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <script src="../resources/notifications/notifications.js" defer></script>
-
-    <link rel="stylesheet" href="index.css">
-    <link rel="stylesheet" href="../resources/styles/custom-colors.css">
-    <link rel="stylesheet" href="../resources/notifications/notifications.css">
-</head>
-
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>License Key Administration</h1>
-            <div class="header-buttons">
-                <a href="statistics.php" class="btn">Statistics</a>
-                <a href="users.php" class="btn">User Accounts</a>
-                <a href="2fa-setup.php" class="btn">2FA Settings</a>
-                <a href="logout.php" class="btn logout-btn">Logout</a>
-            </div>
+<div class="container">
+    <!-- Statistics Cards -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <h3>Total License Keys</h3>
+            <div class="stat-value"><?php echo count($licenses); ?></div>
         </div>
-
-        <!-- Statistics Cards -->
-        <div class="stats-row">
-            <div class="stat-card">
-                <h3>Total License Keys</h3>
-                <div class="stat-value"><?php echo count($licenses); ?></div>
-            </div>
-            <div class="stat-card">
-                <h3>Active Keys</h3>
-                <div class="stat-value">
-                    <?php
-                    $active_count = 0;
-                    foreach ($licenses as $license) {
-                        if ($license['activated']) {
-                            $active_count++;
-                        }
+        <div class="stat-card">
+            <h3>Active Keys</h3>
+            <div class="stat-value">
+                <?php
+                $active_count = 0;
+                foreach ($licenses as $license) {
+                    if ($license['activated']) {
+                        $active_count++;
                     }
-                    echo $active_count;
-                    ?>
-                </div>
-            </div>
-            <div class="stat-card">
-                <h3>Pending Keys</h3>
-                <div class="stat-value"><?php echo count($licenses) - $active_count; ?></div>
-            </div>
-            <div class="stat-card">
-                <h3>Registered Users</h3>
-                <div class="stat-value"><?php echo $user_count; ?></div>
+                }
+                echo $active_count;
+                ?>
             </div>
         </div>
-
-        <?php if (!empty($message)): ?>
-            <div class="<?php echo $message_type === 'success' ? 'success-message' : 'error-message'; ?>">
-                <?php echo htmlspecialchars($message); ?>
-            </div>
-        <?php endif; ?>
-
-        <!-- Chart -->
-        <div class="chart-container">
-            <h2>License Keys Generated Over Time</h2>
-            <canvas id="keysChart"></canvas>
+        <div class="stat-card">
+            <h3>Pending Keys</h3>
+            <div class="stat-value"><?php echo count($licenses) - $active_count; ?></div>
         </div>
-
-        <div class="form-container">
-            <h2>Generate New License Key</h2>
-            <?php if ($generated_key): ?>
-                <div class="success-message">
-                    New key generated: <?php echo htmlspecialchars($generated_key); ?>
-                </div>
-
-                <?php if ($email_status !== null): ?>
-                    <div class="<?php echo $email_status ? 'success-message' : 'error-message'; ?>">
-                        <?php if ($email_status): ?>
-                            <span>Email with license key was successfully sent to <strong><?php echo htmlspecialchars($customer_email); ?></strong></span>
-                        <?php else: ?>
-                            <span>Failed to send email with license key. Please check your server configuration or try again.</span>
-                        <?php endif; ?>
-                    </div>
-                <?php endif; ?>
-            <?php endif; ?>
-
-            <?php if ($email_message): ?>
-                <div class="<?php echo strpos($email_message, 'Failed') === false ? 'success-message' : 'error-message'; ?>">
-                    <span><?php echo htmlspecialchars($email_message); ?></span>
-                </div>
-            <?php endif; ?>
-
-            <form method="post">
-                <div class="form-group">
-                    <label for="email">Customer Email:</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <button type="submit" name="generate_key" class="btn">Generate License Key</button>
-            </form>
-        </div>
-
-        <div class="search-container">
-            <form method="get" action="index.php">
-                <input type="text" name="search" placeholder="Search by email..." value="<?php echo htmlspecialchars($search); ?>">
-                <button type="submit" class="btn">Search</button>
-                <?php if (!empty($search)): ?>
-                    <a href="index.php" class="btn" style="background: #6b7280;">Clear</a>
-                <?php endif; ?>
-            </form>
-        </div>
-
-        <div class="table-container">
-            <div class="table-header">
-                <h2>License Keys</h2>
-                <span class="total-keys">Total: <?php echo count($licenses); ?></span>
-            </div>
-
-            <?php if (!empty($search)): ?>
-                <div class="search-results">
-                    Showing results for: "<?php echo htmlspecialchars($search); ?>" (<?php echo count($licenses); ?> results)
-                </div>
-            <?php endif; ?>
-
-            <?php if (empty($licenses)): ?>
-                <p>No license keys found.</p>
-            <?php else: ?>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>License Key</th>
-                            <th>Email</th>
-                            <th>Created</th>
-                            <th>Status</th>
-                            <th>Activation Date</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($licenses as $license): ?>
-                            <tr>
-                                <td class="key-field"><?php echo htmlspecialchars($license['license_key']); ?></td>
-                                <td><?php echo htmlspecialchars($license['email']); ?></td>
-                                <td><?php echo htmlspecialchars($license['created_at']); ?></td>
-                                <td>
-                                    <?php if ($license['activated']): ?>
-                                        <span class="badge badge-success">Active</span>
-                                    <?php else: ?>
-                                        <span class="badge badge-pending">Pending</span>
-                                    <?php endif; ?>
-                                </td>
-                                <td><?php echo $license['activation_date'] ? htmlspecialchars($license['activation_date']) : 'N/A'; ?></td>
-                                <td class="action-buttons">
-                                    <!-- Resend Email Button -->
-                                    <form method="post" onsubmit="return confirm('Are you sure you want to resend the license key email?');">
-                                        <input type="hidden" name="key_id" value="<?php echo htmlspecialchars($license['id']); ?>">
-                                        <input type="hidden" name="email" value="<?php echo htmlspecialchars($license['email']); ?>">
-                                        <input type="hidden" name="key" value="<?php echo htmlspecialchars($license['license_key']); ?>">
-                                        <button type="submit" name="resend_email" class="btn btn-small btn-email">Send Email</button>
-                                    </form>
-
-                                    <?php if (!$license['activated']): ?>
-                                        <form method="post" onsubmit="return confirm('Are you sure you want to activate this license key?');">
-                                            <input type="hidden" name="key_id" value="<?php echo htmlspecialchars($license['id']); ?>">
-                                            <input type="hidden" name="key" value="<?php echo htmlspecialchars($license['license_key']); ?>">
-                                            <button type="submit" name="activate_key" class="btn btn-small btn-activate">Activate</button>
-                                        </form>
-                                    <?php else: ?>
-                                        <form method="post" onsubmit="return confirm('Are you sure you want to deactivate this license key?');">
-                                            <input type="hidden" name="key_id" value="<?php echo htmlspecialchars($license['id']); ?>">
-                                            <button type="submit" name="deactivate_key" class="btn btn-small btn-deactivate">Deactivate</button>
-                                        </form>
-                                    <?php endif; ?>
-                                    <form method="post" onsubmit="return confirm('Are you sure you want to delete this license key? This action cannot be undone.');">
-                                        <input type="hidden" name="key_id" value="<?php echo htmlspecialchars($license['id']); ?>">
-                                        <button type="submit" name="delete_key" class="btn btn-small btn-delete">Delete</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            <?php endif; ?>
+        <div class="stat-card">
+            <h3>Registered Users</h3>
+            <div class="stat-value"><?php echo $user_count; ?></div>
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Chart initialization
-            const chartData = <?php echo json_encode($chart_data); ?>;
-            const labels = chartData.map(item => item.date);
-            const counts = chartData.map(item => item.count);
+    <?php if (!empty($message)): ?>
+        <div class="<?php echo $message_type === 'success' ? 'success-message' : 'error-message'; ?>">
+            <?php echo htmlspecialchars($message); ?>
+        </div>
+    <?php endif; ?>
 
-            const ctx = document.getElementById('keysChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'License Keys Generated',
-                        data: counts,
-                        backgroundColor: 'rgba(37, 99, 235, 0.2)',
-                        borderColor: 'rgba(37, 99, 235, 1)',
-                        borderWidth: 2,
-                        tension: 0.3,
-                        pointRadius: 4,
-                        pointBackgroundColor: 'rgba(37, 99, 235, 1)'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                precision: 0
-                            }
-                        },
-                        x: {
-                            ticks: {
-                                padding: 10
-                            }
+    <!-- Chart -->
+    <div class="chart-container">
+        <h2>License Keys Generated Over Time</h2>
+        <canvas id="keysChart"></canvas>
+    </div>
+
+    <div class="form-container">
+        <h2>Generate New License Key</h2>
+        <?php if ($generated_key): ?>
+            <div class="success-message">
+                New key generated: <?php echo htmlspecialchars($generated_key); ?>
+            </div>
+
+            <?php if ($email_status !== null): ?>
+                <div class="<?php echo $email_status ? 'success-message' : 'error-message'; ?>">
+                    <?php if ($email_status): ?>
+                        <span>Email with license key was successfully sent to <strong><?php echo htmlspecialchars($customer_email); ?></strong></span>
+                    <?php else: ?>
+                        <span>Failed to send email with license key. Please check your server configuration or try again.</span>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
+        <?php endif; ?>
+
+        <?php if ($email_message): ?>
+            <div class="<?php echo strpos($email_message, 'Failed') === false ? 'success-message' : 'error-message'; ?>">
+                <span><?php echo htmlspecialchars($email_message); ?></span>
+            </div>
+        <?php endif; ?>
+
+        <form method="post">
+            <div class="form-group">
+                <label for="email">Customer Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <button type="submit" name="generate_key" class="btn">Generate License Key</button>
+        </form>
+    </div>
+
+    <div class="search-container">
+        <form method="get" action="index.php">
+            <input type="text" name="search" placeholder="Search by email..." value="<?php echo htmlspecialchars($search); ?>">
+            <button type="submit" class="btn">Search</button>
+            <?php if (!empty($search)): ?>
+                <a href="index.php" class="btn" style="background: #6b7280;">Clear</a>
+            <?php endif; ?>
+        </form>
+    </div>
+
+    <div class="table-container">
+        <div class="table-header">
+            <h2>License Keys</h2>
+            <span class="total-keys">Total: <?php echo count($licenses); ?></span>
+        </div>
+
+        <?php if (!empty($search)): ?>
+            <div class="search-results">
+                Showing results for: "<?php echo htmlspecialchars($search); ?>" (<?php echo count($licenses); ?> results)
+            </div>
+        <?php endif; ?>
+
+        <?php if (empty($licenses)): ?>
+            <p>No license keys found.</p>
+        <?php else: ?>
+            <table>
+                <thead>
+                    <tr>
+                        <th>License Key</th>
+                        <th>Email</th>
+                        <th>Created</th>
+                        <th>Status</th>
+                        <th>Activation Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($licenses as $license): ?>
+                        <tr>
+                            <td class="key-field"><?php echo htmlspecialchars($license['license_key']); ?></td>
+                            <td><?php echo htmlspecialchars($license['email']); ?></td>
+                            <td><?php echo htmlspecialchars($license['created_at']); ?></td>
+                            <td>
+                                <?php if ($license['activated']): ?>
+                                    <span class="badge badge-success">Active</span>
+                                <?php else: ?>
+                                    <span class="badge badge-pending">Pending</span>
+                                <?php endif; ?>
+                            </td>
+                            <td><?php echo $license['activation_date'] ? htmlspecialchars($license['activation_date']) : 'N/A'; ?></td>
+                            <td class="action-buttons">
+                                <!-- Resend Email Button -->
+                                <form method="post" onsubmit="return confirm('Are you sure you want to resend the license key email?');">
+                                    <input type="hidden" name="key_id" value="<?php echo htmlspecialchars($license['id']); ?>">
+                                    <input type="hidden" name="email" value="<?php echo htmlspecialchars($license['email']); ?>">
+                                    <input type="hidden" name="key" value="<?php echo htmlspecialchars($license['license_key']); ?>">
+                                    <button type="submit" name="resend_email" class="btn btn-small btn-email">Send Email</button>
+                                </form>
+
+                                <?php if (!$license['activated']): ?>
+                                    <form method="post" onsubmit="return confirm('Are you sure you want to activate this license key?');">
+                                        <input type="hidden" name="key_id" value="<?php echo htmlspecialchars($license['id']); ?>">
+                                        <input type="hidden" name="key" value="<?php echo htmlspecialchars($license['license_key']); ?>">
+                                        <button type="submit" name="activate_key" class="btn btn-small btn-activate">Activate</button>
+                                    </form>
+                                <?php else: ?>
+                                    <form method="post" onsubmit="return confirm('Are you sure you want to deactivate this license key?');">
+                                        <input type="hidden" name="key_id" value="<?php echo htmlspecialchars($license['id']); ?>">
+                                        <button type="submit" name="deactivate_key" class="btn btn-small btn-deactivate">Deactivate</button>
+                                    </form>
+                                <?php endif; ?>
+                                <form method="post" onsubmit="return confirm('Are you sure you want to delete this license key? This action cannot be undone.');">
+                                    <input type="hidden" name="key_id" value="<?php echo htmlspecialchars($license['id']); ?>">
+                                    <button type="submit" name="delete_key" class="btn btn-small btn-delete">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php endif; ?>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Chart initialization
+        const chartData = <?php echo json_encode($chart_data); ?>;
+        const labels = chartData.map(item => item.date);
+        const counts = chartData.map(item => item.count);
+
+        const ctx = document.getElementById('keysChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'License Keys Generated',
+                    data: counts,
+                    backgroundColor: 'rgba(37, 99, 235, 0.2)',
+                    borderColor: 'rgba(37, 99, 235, 1)',
+                    borderWidth: 2,
+                    tension: 0.3,
+                    pointRadius: 4,
+                    pointBackgroundColor: 'rgba(37, 99, 235, 1)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
                         }
                     },
-                    plugins: {
-                        title: {
-                            display: false
-                        },
-                        legend: {
-                            position: 'top',
-                        }
-                    },
-                    layout: {
-                        padding: {
-                            bottom: 60
+                    x: {
+                        ticks: {
+                            padding: 10
                         }
                     }
+                },
+                plugins: {
+                    title: {
+                        display: false
+                    },
+                    legend: {
+                        position: 'top',
+                    }
+                },
+                layout: {
+                    padding: {
+                        bottom: 60
+                    }
+                }
+            }
+        });
+
+        // Restore scroll position if it exists in sessionStorage
+        if (sessionStorage.getItem('scrollPosition')) {
+            window.scrollTo(0, sessionStorage.getItem('scrollPosition'));
+            sessionStorage.removeItem('scrollPosition');
+        }
+
+        // Save scroll position when submitting forms
+        const forms = document.querySelectorAll('form');
+        forms.forEach(form => {
+            form.addEventListener('submit', function() {
+                sessionStorage.setItem('scrollPosition', window.scrollY);
+            });
+        });
+
+        // Also save position when clicking links (for the "Clear" button)
+        const links = document.querySelectorAll('a[href^="index.php"]');
+        links.forEach(link => {
+            link.addEventListener('click', function() {
+                sessionStorage.setItem('scrollPosition', window.scrollY);
+            });
+        });
+
+        // Auto-clear search when textbox is emptied, preserving scroll position
+        const searchInput = document.querySelector('input[name="search"]');
+        if (searchInput) {
+            let typingTimer;
+
+            searchInput.addEventListener('input', function() {
+                clearTimeout(typingTimer);
+
+                if (this.value.trim() === '') {
+                    // Save current scroll position before redirecting
+                    sessionStorage.setItem('scrollPosition', window.scrollY);
+                    window.location.href = 'index.php';
                 }
             });
 
-            // Restore scroll position if it exists in sessionStorage
-            if (sessionStorage.getItem('scrollPosition')) {
-                window.scrollTo(0, sessionStorage.getItem('scrollPosition'));
-                sessionStorage.removeItem('scrollPosition');
-            }
-
-            // Save scroll position when submitting forms
-            const forms = document.querySelectorAll('form');
-            forms.forEach(form => {
-                form.addEventListener('submit', function() {
+            // Add ability to press Escape key to clear search
+            searchInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    // Save current scroll position before redirecting
                     sessionStorage.setItem('scrollPosition', window.scrollY);
-                });
+                    this.value = '';
+                    window.location.href = 'index.php';
+                }
             });
-
-            // Also save position when clicking links (for the "Clear" button)
-            const links = document.querySelectorAll('a[href^="index.php"]');
-            links.forEach(link => {
-                link.addEventListener('click', function() {
-                    sessionStorage.setItem('scrollPosition', window.scrollY);
-                });
-            });
-
-            // Auto-clear search when textbox is emptied, preserving scroll position
-            const searchInput = document.querySelector('input[name="search"]');
-            if (searchInput) {
-                let typingTimer;
-
-                searchInput.addEventListener('input', function() {
-                    clearTimeout(typingTimer);
-
-                    if (this.value.trim() === '') {
-                        // Save current scroll position before redirecting
-                        sessionStorage.setItem('scrollPosition', window.scrollY);
-                        window.location.href = 'index.php';
-                    }
-                });
-
-                // Add ability to press Escape key to clear search
-                searchInput.addEventListener('keydown', function(e) {
-                    if (e.key === 'Escape') {
-                        // Save current scroll position before redirecting
-                        sessionStorage.setItem('scrollPosition', window.scrollY);
-                        this.value = '';
-                        window.location.href = 'index.php';
-                    }
-                });
-            }
-        });
-    </script>
-</body>
-
-</html>
+        }
+    });
+</script>
