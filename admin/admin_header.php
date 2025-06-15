@@ -30,13 +30,25 @@ if (!isset($page_title)) {
     <div class="admin-wrapper">
         <!-- Admin Header -->
         <header class="admin-header">
+            <!-- BURGER MENU -->
+            <input class="menu-btn" type="checkbox" id="menu-btn" onclick="headerToggleMenu()">
+            <label class="menu-icon" id="menu-icon" for="menu-btn"><span class="nav-icon"></span></label>
+
             <div class="header-container">
+                <a href="../index.php" class="btn-small btn-home" title="Go to Main Site">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                    </svg>
+                    <span class="home-text">Home</span>
+                </a>
+
                 <div class="logo-section">
                     <img src="../images/argo-logo/A-logo.ico" alt="Argo Logo" class="header-logo">
                     <span class="header-title">Admin Dashboard</span>
                 </div>
 
-                <nav class="header-nav">
+                <!-- Desktop Navigation -->
+                <nav class="header-nav desktop-nav">
                     <a href="index.php" class="header-link <?php echo $current_page === 'index.php' ? 'active' : ''; ?>">
                         License Keys
                     </a>
@@ -54,10 +66,36 @@ if (!isset($page_title)) {
                     </a>
                 </nav>
 
-                <div class="header-actions">
+                <!-- Desktop Actions -->
+                <div class="header-actions desktop-actions">
                     <span class="user-name"><?php echo htmlspecialchars($_SESSION['admin_username'] ?? 'Admin'); ?></span>
                     <a href="logout.php" class="btn btn-small btn-red">Logout</a>
                 </div>
+
+                <!-- Mobile User Name (right side) -->
+                <div class="mobile-user">
+                    <span class="user-name"><?php echo htmlspecialchars($_SESSION['admin_username'] ?? 'Admin'); ?></span>
+                </div>
+            </div>
+
+            <!-- Mobile Dropdown Menu -->
+            <div id="menu" class="hamburger-nav-menu">
+                <ul>
+                    <li>
+                        <a href="../index.php" class="home-link">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                            </svg>
+                            Home
+                        </a>
+                    </li>
+                    <li><a href="index.php" class="<?php echo $current_page === 'index.php' ? 'active' : ''; ?>">License Keys</a></li>
+                    <li><a href="statistics.php" class="<?php echo $current_page === 'statistics.php' ? 'active' : ''; ?>">Statistics</a></li>
+                    <li><a href="anonymous_dashboard.php" class="<?php echo $current_page === 'anonymous_dashboard.php' ? 'active' : ''; ?>">Anonymous Data</a></li>
+                    <li><a href="users.php" class="<?php echo $current_page === 'users.php' ? 'active' : ''; ?>">Users</a></li>
+                    <li><a href="2fa-setup.php" class="<?php echo $current_page === '2fa-setup.php' ? 'active' : ''; ?>">2FA Settings</a></li>
+                    <li><a href="logout.php" class="logout-link">Logout</a></li>
+                </ul>
             </div>
         </header>
 
@@ -87,3 +125,56 @@ if (!isset($page_title)) {
                     ?>
                 </div>
             <?php endif; ?>
+
+            <script>
+                const menu = document.getElementById('menu');
+                const menuHeight = menu.scrollHeight;
+                const header = document.querySelector('.admin-header');
+                const menuBtn = document.getElementById('menu-btn');
+                const menuIcon = document.getElementById('menu-icon');
+
+                function headerToggleMenu() {
+                    if (!menu.classList.contains('active')) {
+                        // Opening the menu
+                        menu.classList.add('active');
+                        menu.style.height = menuHeight + 'px';
+                        document.body.classList.add('menu-open');
+                    } else {
+                        // Closing the menu
+                        menu.classList.remove('active');
+                        menu.style.height = '0';
+                        document.body.classList.remove('menu-open');
+                    }
+                }
+
+                // Close menu when clicking outside
+                document.addEventListener('click', (e) => {
+                    // Don't close if clicking menu icon
+                    if (menuIcon.contains(e.target)) {
+                        return;
+                    }
+
+                    // Close only if menu is active and click is outside header
+                    if (menu.classList.contains('active') && !header.contains(e.target)) {
+                        menuBtn.checked = false;
+                        headerToggleMenu();
+                    }
+                });
+
+                // Close menu when clicking on a link
+                const mobileNavLinks = menu.querySelectorAll('a');
+                mobileNavLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        menuBtn.checked = false;
+                        headerToggleMenu();
+                    });
+                });
+
+                // Close menu on escape key
+                document.addEventListener('keydown', function(event) {
+                    if (event.key === 'Escape' && menu.classList.contains('active')) {
+                        menuBtn.checked = false;
+                        headerToggleMenu();
+                    }
+                });
+            </script>

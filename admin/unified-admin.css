@@ -6,6 +6,36 @@ body {
   padding: 0;
 }
 
+/* Body overlay for mobile menu */
+body::after {
+  content: "";
+  position: fixed;
+  top: 50px;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 50px);
+  z-index: 90;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+body.menu-open::after {
+  content: "";
+  position: fixed;
+  top: 50px;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 50px);
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 90;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
 /* Layout */
 .admin-wrapper {
   min-height: 100vh;
@@ -36,6 +66,137 @@ body {
   background: #ffffff;
   border-bottom: 1px solid #ddd;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  position: relative;
+  height: 50px;
+  z-index: 1000;
+}
+
+/* Burger Menu Icon */
+.menu-icon {
+  cursor: pointer;
+  padding: 25px 18px;
+  position: absolute;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  left: 10px;
+  top: 0;
+  display: none;
+  z-index: 1001;
+}
+
+.menu-icon .nav-icon {
+  background: #333;
+  display: block;
+  height: 1px;
+  position: relative;
+  width: 24px;
+  transition: all 0.2s ease-in-out;
+}
+
+.menu-icon .nav-icon:before,
+.menu-icon .nav-icon:after {
+  background: #333;
+  content: "";
+  display: block;
+  height: 100%;
+  position: absolute;
+  transition: all 0.2s ease-out;
+  width: 100%;
+}
+
+.menu-icon .nav-icon:before {
+  top: 8px;
+}
+
+.menu-icon .nav-icon:after {
+  top: -8px;
+}
+
+.menu-btn {
+  display: none;
+}
+
+.menu-btn:checked ~ .menu-icon .nav-icon {
+  background: transparent;
+}
+
+.menu-btn:checked ~ .menu-icon .nav-icon:before {
+  transform: rotate(-45deg);
+  top: 0;
+}
+
+.menu-btn:checked ~ .menu-icon .nav-icon:after {
+  transform: rotate(45deg);
+  top: 0;
+}
+
+/* Mobile Dropdown Menu */
+.hamburger-nav-menu {
+  background: #fff;
+  overflow: hidden;
+  position: absolute;
+  top: 50px;
+  width: 100%;
+  height: 0;
+  transition: all 0.3s ease-in-out;
+  opacity: 0;
+  z-index: 99;
+}
+
+.hamburger-nav-menu.active {
+  opacity: 1;
+}
+
+.hamburger-nav-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.hamburger-nav-menu ul li {
+  border-top: 1px solid rgb(225, 225, 225);
+  transform: translateY(-20px);
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
+}
+
+.hamburger-nav-menu.active ul li {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.hamburger-nav-menu ul li:last-of-type {
+  border-bottom: 1px solid rgb(225, 225, 225);
+}
+
+.hamburger-nav-menu ul li a {
+  text-decoration: none;
+  color: #000;
+  padding: 20px 30px;
+  display: block;
+  transition: background-color 0.2s ease;
+}
+
+.hamburger-nav-menu ul li a:hover {
+  background-color: #f8f9fa;
+}
+
+.hamburger-nav-menu ul li a.active {
+  background-color: #e6f3ff;
+  color: #0066cc;
+  font-weight: 500;
+}
+
+.hamburger-nav-menu ul li a.home-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hamburger-nav-menu ul li a.logout-link {
+  color: #dc2626;
+  font-weight: 500;
 }
 
 .header-container {
@@ -45,12 +206,16 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 1rem;
+  height: 50px;
+  box-sizing: border-box;
 }
 
 .logo-section {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  flex-shrink: 0;
 }
 
 .header-logo {
@@ -64,10 +229,13 @@ body {
   color: #333;
 }
 
-.header-nav {
+/* Desktop Navigation */
+.desktop-nav {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  flex: 1;
+  justify-content: center;
 }
 
 .header-link {
@@ -78,6 +246,7 @@ body {
   font-size: 0.9rem;
   border-radius: 4px;
   transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .header-link:hover {
@@ -90,16 +259,53 @@ body {
   background: #e6f3ff;
 }
 
-.header-actions {
+.desktop-actions {
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex-shrink: 0;
+}
+
+.mobile-user {
+  display: none;
 }
 
 .user-name {
   font-size: 0.9rem;
   color: #666;
   font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Home Button */
+.btn-home {
+  display: block;
+  align-items: center;
+  gap: 0.5rem;
+  background: #f3f4f6;
+  color: #6b7280;
+  text-decoration: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  border: 1px solid #cccfd5;
+  cursor: pointer;
+  font-weight: bold;
+  text-align: center;
+}
+
+.btn-home:hover {
+  background: #e5e7eb;
+  color: #374151;
+  border-color: #d1d5db;
+}
+
+.btn-home svg {
+  width: 16px;
+  height: 16px;
+  position: relative;
+  top: 3px;
 }
 
 /* Main Content */
@@ -705,21 +911,45 @@ tbody tr:hover {
   }
 }
 
-@media (max-width: 768px) {
+/* Mobile Navigation - Hide desktop nav and show mobile nav */
+@media (max-width: 1100px) {
+  .desktop-nav {
+    display: none;
+  }
+
+  .desktop-actions {
+    display: none;
+  }
+
+  .btn-home {
+    display: none;
+  }
+
+  .mobile-user {
+    display: block;
+  }
+
+  .menu-icon {
+    display: block;
+  }
+
   .header-container {
-    flex-direction: column;
-    gap: 0.75rem;
     padding: 0.75rem;
+    position: relative;
   }
 
-  .header-nav {
-    order: 2;
-    flex-wrap: wrap;
-    justify-content: center;
+  .logo-section {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
   }
 
-  .header-actions {
-    order: 3;
+  .mobile-user {
+    margin-left: auto;
+  }
+
+  .home-text {
+    display: none;
   }
 
   .admin-content {
@@ -755,14 +985,18 @@ tbody tr:hover {
   }
 }
 
+/* Small mobile breakpoint */
 @media (max-width: 480px) {
-  .header-link {
-    padding: 0.4rem 0.6rem;
-    font-size: 0.85rem;
+  .header-container {
+    gap: 0.5rem;
+  }
+
+  .header-title {
+    font-size: 1.1rem;
   }
 
   .user-name {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
   }
 
   .container {
@@ -782,6 +1016,17 @@ tbody tr:hover {
   }
 
   .page-title {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
+  }
+}
+
+/* Hide mobile dropdown on desktop */
+@media (min-width: 1100px) {
+  .hamburger-nav-menu {
+    display: none !important;
+  }
+
+  body.menu-open::after {
+    display: none !important;
   }
 }
