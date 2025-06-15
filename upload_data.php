@@ -14,11 +14,38 @@ define('DATA_DIR', 'admin/data_logs');
 define('MAX_UPLOADS_PER_HOUR', 100); // Rate limiting
 define('MAX_FILENAME_LENGTH', 255);
 
-// Rate limiting check
+// Authentication configuration
+define('API_KEY', 'ArgoST_9k8h3n2m4x7q1w5e6r8t0y9u2i3o5p8a7s6d4f1g3h5j7k9l'); // Must match UPLOAD_API_KEY in .env
+define('ALLOWED_USER_AGENT', 'ArgoSalesTracker'); // Expected User-Agent prefix
+
+// Authenticate request
+function authenticateRequest()
+{
+    // Check API key in header
+    $provided_key = $_SERVER['HTTP_X_API_KEY'] ?? '';
+    if (empty($provided_key) || !hash_equals(API_KEY, $provided_key)) {
+        logSecurityEvent('invalid_api_key', $provided_key);
+        return false;
+    }
+
+    // Check User-Agent
+    $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+    if (strpos($user_agent, ALLOWED_USER_AGENT) !== 0) {
+        logSecurityEvent('invalid_user_agent', $user_agent);
+        return false;
+    }
+
+    return true;
+}
+
+// Rate limiting check (enhanced with authentication)
 function checkRateLimit()
 {
+    // Use API key in rate limiting to prevent API key sharing abuse
+    $api_key = $_SERVER['HTTP_X_API_KEY'] ?? 'unknown';
     $ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
-    $rate_file = sys_get_temp_dir() . '/upload_rate_' . md5($ip);
+    $rate_key = md5($api_key . $ip); // Combine API key and IP for rate limiting
+    $rate_file = sys_get_temp_dir() . '/upload_rate_' . $rate_key;
 
     $current_time = time();
     $uploads = [];
@@ -105,6 +132,7 @@ function logSecurityEvent($event, $details = '')
         'timestamp' => date('Y-m-d H:i:s'),
         'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown',
         'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? 'unknown',
+        'api_key_provided' => !empty($_SERVER['HTTP_X_API_KEY']),
         'event' => $event,
         'details' => $details
     ];
@@ -119,6 +147,13 @@ try {
         http_response_code(405);
         echo json_encode(['error' => 'Only POST method allowed']);
         logSecurityEvent('invalid_method', $_SERVER['REQUEST_METHOD']);
+        exit;
+    }
+
+    // Authenticate request FIRST
+    if (!authenticateRequest()) {
+        http_response_code(401);
+        echo json_encode(['error' => 'Unauthorized']);
         exit;
     }
 
@@ -202,7 +237,7 @@ try {
     // Generate secure filename
     $timestamp = date('Ymd_His');
     $random_suffix = bin2hex(random_bytes(4));
-    $filename = DATA_DIR . "/anonymous_data_{$timestamp}_{$random_suffix}.json";
+    $filename = DATA_DIR . "/argo_data_{$timestamp}_{$random_suffix}.json";
 
     // Ensure filename doesn't already exist
     $counter = 1;
@@ -243,7 +278,7 @@ try {
     echo json_encode($response);
 
     // Log successful upload
-    error_log("SUCCESS: Anonymous data uploaded - " . basename($filename) . " ({$bytes_written} bytes)");
+    error_log("SUCCESS: Argo Sales Tracker data uploaded - " . basename($filename) . " ({$bytes_written} bytes)");
 } catch (Exception $e) {
     http_response_code(500);
     echo json_encode(['error' => 'Internal server error']);
