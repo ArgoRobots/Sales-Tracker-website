@@ -954,7 +954,7 @@ include 'admin_header.php';
                 },
                 layout: {
                     padding: {
-                        bottom: 80
+                        bottom: 40
                     }
                 }
             }
@@ -1010,7 +1010,7 @@ include 'admin_header.php';
                 },
                 layout: {
                     padding: {
-                        bottom: 80
+                        bottom: 40
                     }
                 }
             }
@@ -1060,7 +1060,7 @@ include 'admin_header.php';
                 },
                 layout: {
                     padding: {
-                        bottom: 80
+                        bottom: 40
                     }
                 }
             }
@@ -1225,7 +1225,7 @@ include 'admin_header.php';
                 },
                 layout: {
                     padding: {
-                        bottom: 80
+                        bottom: 40
                     }
                 }
             }

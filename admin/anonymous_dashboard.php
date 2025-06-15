@@ -411,6 +411,11 @@ include 'admin_header.php';
                                 maxRotation: 45
                             }
                         }
+                    },
+                    layout: {
+                        padding: {
+                            bottom: 40
+                        }
                     }
                 }
             });
@@ -465,6 +470,11 @@ include 'admin_header.php';
                                     return `${label}: ${value} exports (${percentage}%)`;
                                 }
                             }
+                        }
+                    },
+                    layout: {
+                        padding: {
+                            bottom: 40
                         }
                     }
                 }
@@ -538,6 +548,11 @@ include 'admin_header.php';
                                 display: true,
                                 text: 'Duration (ms)'
                             }
+                        }
+                    },
+                    layout: {
+                        padding: {
+                            bottom: 40
                         }
                     }
                 }
@@ -622,6 +637,11 @@ include 'admin_header.php';
                                 }
                             }
                         }
+                    },
+                    layout: {
+                        padding: {
+                            bottom: 40
+                        }
                     }
                 }
             });
@@ -699,6 +719,11 @@ include 'admin_header.php';
                                 text: 'Duration (milliseconds)'
                             }
                         }
+                    },
+                    layout: {
+                        padding: {
+                            bottom: 40
+                        }
                     }
                 }
             });
@@ -771,6 +796,11 @@ include 'admin_header.php';
                                 }
                             }
                         }
+                    },
+                    layout: {
+                        padding: {
+                            bottom: 40
+                        }
                     }
                 }
             });
@@ -813,6 +843,11 @@ include 'admin_header.php';
                         legend: {
                             position: 'bottom'
                         },
+                    },
+                    layout: {
+                        padding: {
+                            bottom: 40
+                        }
                     }
                 }
             });
@@ -856,6 +891,11 @@ include 'admin_header.php';
                                 display: true,
                                 text: 'Tokens'
                             }
+                        }
+                    },
+                    layout: {
+                        padding: {
+                            bottom: 40
                         }
                     }
                 }
@@ -904,6 +944,11 @@ include 'admin_header.php';
                                 display: true,
                                 text: 'Duration (ms)'
                             }
+                        }
+                    },
+                    layout: {
+                        padding: {
+                            bottom: 40
                         }
                     }
                 }
@@ -1014,6 +1059,11 @@ include 'admin_header.php';
                         legend: {
                             position: 'bottom'
                         },
+                    },
+                    layout: {
+                        padding: {
+                            bottom: 40
+                        }
                     }
                 }
             });
