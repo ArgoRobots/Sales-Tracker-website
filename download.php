@@ -8,7 +8,7 @@ function get_current_version()
 }
 
 // Set the file to download
-$file = 'resources/downloads/Argo Sales Tracker Installer V.1.0.1.exe';
+$file = 'resources/downloads/Argo Sales Tracker Installer V.1.0.2.exe';
 $version = get_current_version();
 
 // Check if file exists

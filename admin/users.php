@@ -141,7 +141,7 @@ include 'admin_header.php';
         </div>
     <?php endif; ?>
 
-    <div class="search-container">
+    <div class="search-container box-shadow">
         <form method="get" action="users.php">
             <input type="text" name="search" placeholder="Search by username or email..." value="<?php echo htmlspecialchars($search); ?>">
             <button type="submit" class="btn btn-blue">Search</button>
