@@ -504,7 +504,6 @@ body {
 .check-icon {
   color: var(--blue);
   flex-shrink: 0;
-  margin-right: 12px;
   margin-top: 3px;
 }
 

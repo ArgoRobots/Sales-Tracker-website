@@ -57,6 +57,12 @@
   color: #1f2937;
 }
 
+.last-updated {
+  text-align: center;
+  font-style: italic;
+  margin-top: 40px;
+}
+
 @media (max-width: 768px) {
   .legal-container {
     padding: 20px 15px 40px;
