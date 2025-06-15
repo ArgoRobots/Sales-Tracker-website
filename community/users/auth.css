@@ -1,218 +1,218 @@
 /* Underline current page */
 header .header-inner .menu-container .menu .community:after {
-    transform: translateX(-50%) scaleX(1);
+  transform: translateX(-50%) scaleX(1);
 }
 
 /* Auth container */
 .auth-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 40px 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
 .auth-card {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    padding: 30px;
-    width: 100%;
-    max-width: 450px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  width: 100%;
+  max-width: 450px;
 }
 
 .auth-card h1 {
-    margin-bottom: 10px;
-    color: var(--blueHeader);
-    font-size: 24px;
-    text-align: center;
+  margin-bottom: 10px;
+  color: var(--blueText);
+  font-size: 24px;
+  text-align: center;
 }
 
 .auth-subtitle {
-    text-align: center;
-    margin-bottom: 25px;
+  text-align: center;
+  margin-bottom: 25px;
 }
 
 /* Form elements */
 .auth-form {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 .form-group {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 500;
-    color: #374151;
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #374151;
 }
 
 .form-group small {
-    display: block;
-    color: #6b7280;
-    margin-top: 4px;
-    font-size: 0.85em;
+  display: block;
+  color: #6b7280;
+  margin-top: 4px;
+  font-size: 0.85em;
 }
 
 .form-group input {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-    background-color: var(--whiteBackground);
-    font-size: 16px;
-    transition: border-color 0.2s, box-shadow 0.2s;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background-color: var(--whiteBackground);
+  font-size: 16px;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .form-group input:focus {
-    border-color: #60a5fa;
-    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
-    outline: none;
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+  outline: none;
 }
 
 /* Checkbox styling */
 .checkbox-group {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 25px;
 }
 
 .checkbox-group input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    margin: 0;
-    cursor: pointer;
-    accent-color: var(--button);
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  cursor: pointer;
+  accent-color: var(--blue);
 }
 
 .checkbox-group label {
-    font-weight: 400;
-    cursor: pointer;
-    display: inline;
-    margin: 0;
-    color: #4b5563;
-    font-size: 15px;
-    user-select: none;
+  font-weight: 400;
+  cursor: pointer;
+  display: inline;
+  margin: 0;
+  color: #4b5563;
+  font-size: 15px;
+  user-select: none;
 }
 
 .checkbox-group:hover label {
-    color: var(--button);
+  color: var(--blue);
 }
 
 /* Button styling */
 .form-actions {
-    margin-top: 25px;
+  margin-top: 25px;
 }
 
 .btn-block {
-    width: 100% !important;
-    padding: 12px 0 !important;
+  width: 100% !important;
+  padding: 12px 0 !important;
 }
 
 /* Link styling */
 .auth-links {
-    text-align: center;
-    margin-top: 10px;
+  text-align: center;
+  margin-top: 10px;
 }
 
 a {
-    color: var(--button);
-    text-decoration: none;
+  color: var(--blue);
+  text-decoration: none;
 }
 
 a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 /* Center aligned elements */
 .centered {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    margin-top: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
 }
 
 .centered .btn {
-    min-width: 120px;
+  min-width: 120px;
 }
 
 /* Responsive adjustments */
 @media (max-width: 500px) {
-    .auth-card {
-        padding: 20px;
-    }
+  .auth-card {
+    padding: 20px;
+  }
 
-    .auth-container {
-        padding: 20px 15px;
-    }
+  .auth-container {
+    padding: 20px 15px;
+  }
 }
 
 /* License info section on verification page */
 .license-info {
-    background-color: #f0f9ff;
-    border: 1px solid #bae6fd;
-    color: #0369a1;
-    border-radius: 6px;
-    padding: 15px 20px;
-    margin: 20px 0;
+  background-color: #f0f9ff;
+  border: 1px solid #bae6fd;
+  color: #0369a1;
+  border-radius: 6px;
+  padding: 15px 20px;
+  margin: 20px 0;
 }
 
 .license-info h3 {
-    margin-top: 0;
-    margin-bottom: 10px;
-    color: #0369a1;
-    font-size: 18px;
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #0369a1;
+  font-size: 18px;
 }
 
 .license-info p {
-    margin: 0;
-    line-height: 1.6;
+  margin: 0;
+  line-height: 1.6;
 }
 
 /* Styling for verification messages */
 .success-message {
-    background-color: #d1fae5;
-    color: #065f46;
-    border: 1px solid #10b981;
-    border-radius: 6px;
-    padding: 15px 20px;
-    margin-bottom: 20px;
-    text-align: center;
+  background-color: #d1fae5;
+  color: #065f46;
+  border: 1px solid #10b981;
+  border-radius: 6px;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 .error-message {
-    background-color: #fee2e2;
-    color: #b91c1c;
-    border: 1px solid #ef4444;
-    border-radius: 6px;
-    padding: 15px 20px;
-    margin-bottom: 20px;
-    text-align: center;
+  background-color: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #ef4444;
+  border-radius: 6px;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 /* Update auth-links styling for multiple buttons */
 .auth-links {
-    text-align: center;
-    margin-top: 20px;
+  text-align: center;
+  margin-top: 20px;
 }
 
 .auth-links a {
-    color: var(--button);
-    text-decoration: none;
+  color: var(--blue);
+  text-decoration: none;
 }
 
 .auth-links a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .auth-links .btn {
-    margin: 5px;
-    display: inline-block;
+  margin: 5px;
+  display: inline-block;
 }

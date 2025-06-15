@@ -16,26 +16,14 @@ if (!isset($page_title)) {
     <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
     <title><?php echo htmlspecialchars($page_title); ?> - Argo Sales Tracker</title>
 
-    <!-- Chart.js for visualizations -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-
-    <!-- Notification system -->
     <script src="../resources/notifications/notifications.js" defer></script>
 
-    <!-- Core Stylesheets -->
-    <link rel="stylesheet" href="index.css">
-    <link rel="stylesheet" href="admin_header.css">
+    <link rel="stylesheet" href="unified-admin.css">
+    <link rel="stylesheet" href="../resources/styles/link.css">
+    <link rel="stylesheet" href="../resources/styles/button.css">
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../resources/notifications/notifications.css">
-
-    <?php
-    // Include additional CSS files if specified
-    if (isset($additional_css) && is_array($additional_css)) {
-        foreach ($additional_css as $css_file) {
-            echo '<link rel="stylesheet" href="' . htmlspecialchars($css_file) . '">' . "\n    ";
-        }
-    }
-    ?>
 </head>
 
 <body>
@@ -49,26 +37,26 @@ if (!isset($page_title)) {
                 </div>
 
                 <nav class="header-nav">
-                    <a href="index.php" class="nav-link <?php echo $current_page === 'index.php' ? 'active' : ''; ?>">
+                    <a href="index.php" class="header-link <?php echo $current_page === 'index.php' ? 'active' : ''; ?>">
                         License Keys
                     </a>
-                    <a href="statistics.php" class="nav-link <?php echo $current_page === 'statistics.php' ? 'active' : ''; ?>">
+                    <a href="statistics.php" class="header-link <?php echo $current_page === 'statistics.php' ? 'active' : ''; ?>">
                         Statistics
                     </a>
-                    <a href="anonymous_dashboard.php" class="nav-link <?php echo $current_page === 'anonymous_dashboard.php' ? 'active' : ''; ?>">
+                    <a href="anonymous_dashboard.php" class="header-link <?php echo $current_page === 'anonymous_dashboard.php' ? 'active' : ''; ?>">
                         Anonymous Data
                     </a>
-                    <a href="users.php" class="nav-link <?php echo $current_page === 'users.php' ? 'active' : ''; ?>">
+                    <a href="users.php" class="header-link <?php echo $current_page === 'users.php' ? 'active' : ''; ?>">
                         Users
                     </a>
-                    <a href="2fa-setup.php" class="nav-link <?php echo $current_page === '2fa-setup.php' ? 'active' : ''; ?>">
+                    <a href="2fa-setup.php" class="header-link <?php echo $current_page === '2fa-setup.php' ? 'active' : ''; ?>">
                         2FA Settings
                     </a>
                 </nav>
 
                 <div class="header-actions">
                     <span class="user-name"><?php echo htmlspecialchars($_SESSION['admin_username'] ?? 'Admin'); ?></span>
-                    <a href="logout.php" class="logout-btn">Logout</a>
+                    <a href="logout.php" class="btn btn-small btn-red">Logout</a>
                 </div>
             </div>
         </header>

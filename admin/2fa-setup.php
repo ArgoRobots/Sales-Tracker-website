@@ -12,7 +12,6 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 // Set page variables for the header
 $page_title = "Two-Factor Authentication Setup";
 $page_description = "Configure two-factor authentication for enhanced account security";
-$additional_css = ['2fa-setup.css', '2fa.css'];
 
 $username = $_SESSION['admin_username'];
 $error = '';
@@ -84,22 +83,21 @@ include 'admin_header.php';
         </div>
     <?php endif; ?>
 
-    <div class="setup-container">
+    <div class="center">
         <?php if ($is_enabled): ?>
-            <h2>Two-Factor Authentication is Enabled</h2>
-            <p>Your account is currently protected with two-factor authentication.</p>
+            <h2>Your account is currently protected with 2FA</h2>
 
             <form method="post" onsubmit="return confirm('Are you sure you want to disable two-factor authentication? This will make your account less secure.');">
-                <button type="submit" name="disable_2fa" class="btn btn-red">Disable Two-Factor Authentication</button>
+                <div class="center">
+                    <button type="submit" name="disable_2fa" class="btn btn-red">Disable 2FA</button>
+                </div>
             </form>
         <?php elseif (isset($_GET['setup'])): ?>
-            <h2>Set Up Two-Factor Authentication</h2>
-
             <ol class="steps">
                 <li>Download and install Google Authenticator app on your mobile device
                     <ul>
-                        <li><a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2" target="_blank">Android - Google Play Store</a></li>
-                        <li><a href="https://apps.apple.com/us/app/google-authenticator/id388497605" target="_blank">iOS - App Store</a></li>
+                        <li><a class="link" href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2" target="_blank">Android - Google Play Store</a></li>
+                        <li><a class="link" href="https://apps.apple.com/us/app/google-authenticator/id388497605" target="_blank">iOS - App Store</a></li>
                     </ul>
                 </li>
                 <li>Scan the QR code below with the app</li>
@@ -117,22 +115,19 @@ include 'admin_header.php';
                 </div>
             </div>
 
-            <form method="post" class="verification-form" id="verification-form">
+            <form method="post" class="verification-form center" id="verification-form">
                 <div class="verification-heading">Enter the 6-digit code from your authenticator app</div>
 
                 <input type="number" id="verification_code" name="verification_code" class="verification-input" required autofocus placeholder="000000" min="0" max="999999">
 
-                <div class="nav-buttons">
-                    <a href="2fa-setup.php" class="btn">Cancel</a>
-                    <button type="button" onclick="submitVerificationForm()" id="verify-button" class="btn btn-green">Verify and Enable</button>
-                    <input type="hidden" name="enable_2fa" value="1">
-                </div>
+                <button type="button" onclick="submitVerificationForm()" id="verify-button" class="btn btn-green">Verify and Enable</button>
+                <input type="hidden" name="enable_2fa" value="1">
             </form>
         <?php else: ?>
             <h2>Enhance Your Account Security</h2>
             <p>Two-factor authentication adds an extra layer of security to your account. After enabling, you'll need both your password and a verification code from your mobile device to sign in.</p>
 
-            <a href="2fa-setup.php?setup=1" class="btn">Set Up Two-Factor Authentication</a>
+            <a href="2fa-setup.php?setup=1" class="btn btn-blue">Set Up 2FA</a>
         <?php endif; ?>
     </div>
 </div>
@@ -146,16 +141,16 @@ include 'admin_header.php';
     document.addEventListener('DOMContentLoaded', function() {
         // QR Code generation
         const qrContainer = document.getElementById('qr-code-container');
-        let otpauthUrl = "";
+        let otpAuthUrl = "";
 
         <?php if (!empty($qr_code_data)): ?>
-            otpauthUrl = <?php echo json_encode($qr_code_data); ?>;
+            otpAuthUrl = <?php echo json_encode($qr_code_data); ?>;
         <?php endif; ?>
 
-        if (qrContainer && otpauthUrl) {
+        if (qrContainer && otpAuthUrl) {
             try {
                 new QRCode(qrContainer, {
-                    text: otpauthUrl,
+                    text: otpAuthUrl,
                     width: 200,
                     height: 200,
                     colorDark: "#000000",

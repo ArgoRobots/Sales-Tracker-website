@@ -3,6 +3,24 @@ date_default_timezone_set('UTC');
 require_once __DIR__ . '/totp.php';
 
 /**
+ * Get user by username (case-insensitive)
+ * 
+ * @param string $username Username
+ * @return array|null User data or null if not found
+ */
+function get_user_by_username($username)
+{
+    $db = get_db_connection();
+    $stmt = $db->prepare('SELECT * FROM admin_users WHERE LOWER(username) = LOWER(?)');
+    $stmt->bind_param('s', $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
+    $stmt->close();
+    return $user;
+}
+
+/**
  * Save a 2FA secret for a user
  * 
  * @param string $username Username
@@ -11,29 +29,16 @@ require_once __DIR__ . '/totp.php';
  */
 function save_2fa_secret($username, $secret)
 {
-    $db = get_db_connection();
+    $user = get_user_by_username($username);
+    if (!$user) return false;
 
     try {
-        // Get the correct case username
-        $stmt = $db->prepare('SELECT username FROM admin_users WHERE LOWER(username) = LOWER(?)');
-        $stmt->bind_param('s', $username);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $user = $result->fetch_assoc();
-        $stmt->close();
-
-        if (!$user) {
-            return false;
-        }
-
-        // Update the user record
+        $db = get_db_connection();
         $stmt = $db->prepare('UPDATE admin_users SET two_factor_secret = ?, two_factor_enabled = 1 WHERE username = ?');
         $stmt->bind_param('ss', $secret, $user['username']);
-        $stmt->execute();
-        $affected_rows = $stmt->affected_rows;
+        $success = $stmt->execute() && $stmt->affected_rows > 0;
         $stmt->close();
-
-        return $affected_rows > 0;
+        return $success;
     } catch (Exception $e) {
         return false;
     }
@@ -47,29 +52,16 @@ function save_2fa_secret($username, $secret)
  */
 function disable_2fa($username)
 {
-    $db = get_db_connection();
+    $user = get_user_by_username($username);
+    if (!$user) return false;
 
     try {
-        // Get the correct case username
-        $stmt = $db->prepare('SELECT username FROM admin_users WHERE LOWER(username) = LOWER(?)');
-        $stmt->bind_param('s', $username);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $user = $result->fetch_assoc();
-        $stmt->close();
-
-        if (!$user) {
-            return false;
-        }
-
-        // Update the user record
+        $db = get_db_connection();
         $stmt = $db->prepare('UPDATE admin_users SET two_factor_secret = NULL, two_factor_enabled = 0 WHERE username = ?');
         $stmt->bind_param('s', $user['username']);
-        $stmt->execute();
-        $affected_rows = $stmt->affected_rows;
+        $success = $stmt->execute() && $stmt->affected_rows > 0;
         $stmt->close();
-
-        return $affected_rows > 0;
+        return $success;
     } catch (Exception $e) {
         return false;
     }
@@ -83,17 +75,8 @@ function disable_2fa($username)
  */
 function get_2fa_secret($username)
 {
-    $db = get_db_connection();
-
     try {
-        // Get the correct case username
-        $stmt = $db->prepare('SELECT username, two_factor_secret FROM admin_users WHERE LOWER(username) = LOWER(?)');
-        $stmt->bind_param('s', $username);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $user = $result->fetch_assoc();
-        $stmt->close();
-
+        $user = get_user_by_username($username);
         return $user ? $user['two_factor_secret'] : null;
     } catch (Exception $e) {
         return null;
@@ -108,17 +91,9 @@ function get_2fa_secret($username)
  */
 function is_2fa_enabled($username)
 {
-    $db = get_db_connection();
-
     try {
-        $stmt = $db->prepare('SELECT two_factor_enabled FROM admin_users WHERE LOWER(username) = LOWER(?)');
-        $stmt->bind_param('s', $username);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
-        $stmt->close();
-
-        return $row && $row['two_factor_enabled'] == 1;
+        $user = get_user_by_username($username);
+        return $user && $user['two_factor_enabled'] == 1;
     } catch (Exception $e) {
         return false;
     }
@@ -143,11 +118,7 @@ function generate_2fa_secret()
  */
 function verify_2fa_code($secret, $code)
 {
-    if (empty($secret)) {
-        return false;
-    }
-
-    return TOTP::verify($secret, $code);
+    return !empty($secret) && TOTP::verify($secret, $code);
 }
 
 /**
@@ -160,5 +131,13 @@ function verify_2fa_code($secret, $code)
  */
 function get_qr_code_url($username, $secret, $issuer = 'Argo Sales Tracker Admin')
 {
-    return "otpauth://totp/" . urlencode($issuer) . ":" . urlencode($username) . "?secret=" . $secret . "&issuer=" . urlencode($issuer) . "&algorithm=SHA1&digits=6&period=30";
+    $params = [
+        'secret' => $secret,
+        'issuer' => $issuer,
+        'algorithm' => 'SHA1',
+        'digits' => '6',
+        'period' => '30'
+    ];
+
+    return "otpauth://totp/" . urlencode($issuer) . ":" . urlencode($username) . "?" . http_build_query($params);
 }

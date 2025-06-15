@@ -100,7 +100,7 @@ $current_user = $is_logged_in ? get_current_user_ID() : null;
                     </div>
                     <span class="selected-count">0 selected</span>
                 </div>
-                <button id="delete-selected" class="btn btn-delete" disabled>Delete Selected</button>
+                <button id="delete-selected" class="btn btn-red" disabled>Delete Selected</button>
             </div>
         <?php endif; ?>
 

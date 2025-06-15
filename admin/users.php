@@ -11,7 +11,6 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 // Set page variables for the header
 $page_title = "User Account Management";
 $page_description = "Manage community user accounts, view user statistics, and moderate users";
-$additional_css = ['users.css'];
 
 // Handle user deletion
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_user'])) {
@@ -117,7 +116,7 @@ include 'admin_header.php';
 
 <div class="container">
     <!-- Statistics Cards -->
-    <div class="stats-row">
+    <div class="stats-grid">
         <div class="stat-card">
             <h3>Total Users</h3>
             <div class="stat-value"><?php echo $total_users; ?></div>
@@ -145,10 +144,7 @@ include 'admin_header.php';
     <div class="search-container">
         <form method="get" action="users.php">
             <input type="text" name="search" placeholder="Search by username or email..." value="<?php echo htmlspecialchars($search); ?>">
-            <button type="submit" class="btn">Search</button>
-            <?php if (!empty($search)): ?>
-                <a href="users.php" class="btn" style="background: #6b7280;">Clear</a>
-            <?php endif; ?>
+            <button type="submit" class="btn btn-blue">Search</button>
         </form>
     </div>
 
@@ -201,7 +197,7 @@ include 'admin_header.php';
                             <td class="action-buttons">
                                 <form method="post" onsubmit="return confirm('Are you sure you want to delete this user? This action cannot be undone.');">
                                     <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($user['id']); ?>">
-                                    <button type="submit" name="delete_user" class="btn btn-small btn-delete">Delete</button>
+                                    <button type="submit" name="delete_user" class="btn btn-small btn-red">Delete</button>
                                 </form>
                             </td>
                         </tr>

@@ -11,7 +11,6 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 // Set page variables for the header
 $page_title = "Statistics Dashboard";
 $page_description = "View comprehensive analytics, user statistics, and performance metrics";
-$additional_css = ['statistics.css'];
 
 // Function to get download statistics by period
 function get_downloads_by_period($period = 'month', $limit = 12)
@@ -735,74 +734,40 @@ include 'admin_header.php';
         </div>
     </div>
 
-    <!-- Statistics cards -->
-    <div class="stats-row">
-        <div class="stat-card">
-            <h3>Total Downloads</h3>
-            <div class="stat-value"><?php echo array_sum($downloads_data); ?></div>
-        </div>
-        <div class="stat-card">
-            <h3>Registrations</h3>
-            <div class="stat-value"><?php echo array_sum($registrations_data); ?></div>
-        </div>
-        <div class="stat-card">
-            <h3>Activation Rate</h3>
-            <div class="stat-value"><?php echo $activation_percentage; ?>%</div>
-        </div>
-        <div class="stat-card">
-            <h3>Growth Rate</h3>
-            <div class="stat-value"><?php echo ($latest_growth >= 0 ? '+' : '') . $latest_growth; ?>%</div>
-        </div>
+    <!-- Statistics Cards -->
+    <div class="stats-grid" id="statsGrid">
+        <!-- Will be populated by JavaScript -->
     </div>
 
-    <div class="stats-row">
-        <div class="stat-card">
-            <h3>Page Views</h3>
-            <div class="stat-value"><?php echo array_sum($page_views_data); ?></div>
-        </div>
-        <div class="stat-card">
-            <h3>Post Views</h3>
-            <div class="stat-value"><?php echo $total_post_views; ?></div>
-        </div>
-        <div class="stat-card">
-            <h3>Avg Views/Post</h3>
-            <div class="stat-value"><?php echo $avg_post_views; ?></div>
-        </div>
-        <div class="stat-card">
-            <h3>Most Viewed Post</h3>
-            <div class="stat-value"><?php echo $most_viewed; ?></div>
-        </div>
-    </div>
-
-    <!-- More charts -->
+    <!-- Charts -->
     <div class="chart-row">
-        <div class="chart-container half">
+        <div class="chart-container">
             <h2>License Activation Rate</h2>
             <canvas id="activationChart"></canvas>
         </div>
-        <div class="chart-container half">
+        <div class="chart-container">
             <h2>Growth Trends</h2>
             <canvas id="growthChart"></canvas>
         </div>
     </div>
 
     <div class="chart-row">
-        <div class="chart-container half">
+        <div class="chart-container">
             <h2>Community Post Types</h2>
             <canvas id="postTypeChart"></canvas>
         </div>
-        <div class="chart-container half">
+        <div class="chart-container">
             <h2>Post Views by Type</h2>
             <canvas id="postViewsChart"></canvas>
         </div>
     </div>
 
     <div class="chart-row">
-        <div class="chart-container half">
+        <div class="chart-container">
             <h2>Top 10 User Countries</h2>
             <canvas id="countryChart"></canvas>
         </div>
-        <div class="chart-container half">
+        <div class="chart-container">
             <h2>Browser Distribution</h2>
             <canvas id="browserChart"></canvas>
         </div>
@@ -842,13 +807,16 @@ include 'admin_header.php';
         <h2>Export Statistics</h2>
         <p>Download statistics data for your records or further analysis.</p>
         <div class="export-buttons">
-            <button id="exportCSV" class="btn">Export as CSV</button>
-            <button id="exportJSON" class="btn">Export as JSON</button>
+            <button id="exportCSV" class="btn btn-blue">Export as CSV</button>
+            <button id="exportJSON" class="btn btn-blue">Export as JSON</button>
         </div>
     </div>
 </div>
 
 <script>
+    // Helper function to sum arrays since array_sum is a PHP function
+    const sumArray = (arr) => arr.reduce((sum, val) => sum + (Number(val) || 0), 0);
+
     document.addEventListener('DOMContentLoaded', function() {
         // Chart data
         const chartLabels = <?php echo json_encode($chart_labels); ?>;
@@ -872,6 +840,8 @@ include 'admin_header.php';
                                     $conversion_data['licenses']
                                 ]); ?>;
 
+        generateStatistics();
+
         // Calculate growth data
         const growthData = [];
         for (let i = 1; i < downloadsData.length; i++) {
@@ -879,6 +849,69 @@ include 'admin_header.php';
             const current = downloadsData[i];
             const growth = previous > 0 ? ((current - previous) / previous) * 100 : 0;
             growthData.push(growth.toFixed(1));
+        }
+
+        function generateStatistics() {
+            const statsGrid = document.getElementById('statsGrid');
+
+            const totalDownloads = sumArray(downloadsData);
+            const totalRegistrations = sumArray(registrationsData);
+            const totalPageViews = sumArray(pageViewsData);
+            const activationRate = <?php echo $activation_percentage; ?>;
+            const growthRate = <?php echo $latest_growth; ?>;
+            const postViews = <?php echo str_replace(',', '', $total_post_views); ?>;
+            const avgViewsPerPost = <?php echo $avg_post_views; ?>;
+            const mostViewed = <?php echo str_replace(',', '', $most_viewed); ?>;
+
+            const stats = [{
+                    title: 'Total Downloads',
+                    value: totalDownloads.toLocaleString(),
+                    subtext: 'operations'
+                },
+                {
+                    title: 'Registrations',
+                    value: totalRegistrations.toLocaleString(),
+                    subtext: 'users'
+                },
+                {
+                    title: 'Activation Rate',
+                    value: activationRate + '%',
+                    subtext: 'license activation'
+                },
+                {
+                    title: 'Growth Rate',
+                    value: (growthRate >= 0 ? '+' : '') + growthRate + '%',
+                    subtext: 'period over period'
+                },
+                {
+                    title: 'Page Views',
+                    value: totalPageViews.toLocaleString(),
+                    subtext: 'total views'
+                },
+                {
+                    title: 'Post Views',
+                    value: postViews.toLocaleString(),
+                    subtext: 'community posts'
+                },
+                {
+                    title: 'Avg Views/Post',
+                    value: avgViewsPerPost.toLocaleString(),
+                    subtext: 'average engagement'
+                },
+                {
+                    title: 'Most Viewed Post',
+                    value: mostViewed.toLocaleString(),
+                    subtext: 'single post views'
+                }
+            ];
+
+            statsGrid.innerHTML = stats.map(stat => `
+                <div class="stat-card">
+                    <h3>${stat.title}</h3>
+                    <div class="value">${stat.value}</div>
+                    ${stat.subtext ? `<div class="subtext">${stat.subtext}</div>` : ''}
+                </div>
+            `).join('');
         }
 
         // Activation rate chart
@@ -1200,9 +1233,6 @@ include 'admin_header.php';
 
         // Export functions
         document.getElementById('exportCSV').addEventListener('click', function() {
-            // Helper function to sum arrays since array_sum is a PHP function
-            const sumArray = (arr) => arr.reduce((sum, val) => sum + (Number(val) || 0), 0);
-
             // Create CSV content for time series data
             let csvContent = 'data:text/csv;charset=utf-8,';
 
@@ -1273,9 +1303,6 @@ include 'admin_header.php';
         });
 
         document.getElementById('exportJSON').addEventListener('click', function() {
-            // Helper function to sum arrays since array_sum is a PHP function
-            const sumArray = (arr) => arr.reduce((sum, val) => sum + (Number(val) || 0), 0);
-
             // Create comprehensive JSON content with all dashboard data
             const jsonData = {
                 summary: {

@@ -1,106 +1,106 @@
 .wrapper {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .admin-settings-container {
-    max-width: 700px;
-    position: relative;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    padding: 30px;
+  max-width: 700px;
+  position: relative;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 30px;
 }
 
 .admin-settings-header {
-    margin-bottom: 30px;
-    text-align: center;
+  margin-bottom: 30px;
+  text-align: center;
 }
 
 .admin-settings-header h1 {
-    font-size: 24px;
-    color: var(--blueHeader);
+  font-size: 24px;
+  color: var(--blueText);
 }
 
 .admin-settings-form {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 .settings-section {
-    margin-bottom: 30px;
+  margin-bottom: 30px;
 }
 
 .settings-section h2 {
-    font-size: 18px;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #e5e7eb;
-    color: var(--blueHeader);
+  font-size: 18px;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e5e7eb;
+  color: var(--blueText);
 }
 
 .checkbox {
-    margin-top: 20px;
-    display: flex;
-    align-items: center;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
 }
 
 .setting-description {
-    margin-left: 28px;
-    font-size: 14px;
+  margin-left: 28px;
+  font-size: 14px;
 }
 
 .form-actions {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
 }
 
 .success-message {
-    background-color: #d1fae5;
-    color: #065f46;
-    padding: 15px;
-    border-radius: 6px;
-    margin-bottom: 20px;
-    text-align: center;
+  background-color: #d1fae5;
+  color: #065f46;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 .error-message {
-    background-color: #fee2e2;
-    color: #b91c1c;
-    padding: 15px;
-    border-radius: 6px;
-    margin-bottom: 20px;
-    text-align: center;
+  background-color: #fee2e2;
+  color: #b91c1c;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 .email-field {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 .email-field label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 500;
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
 }
 
 .email-field input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-    font-size: 16px;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 16px;
 }
 
 .email-field input:focus {
-    outline: none;
-    border-color: var(--button);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
 .email-field .hint {
-    font-size: 14px;
-    color: #6b7280;
-    margin-top: 6px;
+  font-size: 14px;
+  color: #6b7280;
+  margin-top: 6px;
 }

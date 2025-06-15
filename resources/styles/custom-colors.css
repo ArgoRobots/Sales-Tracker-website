@@ -1,7 +1,9 @@
 :root {
-    --button: #2563eb;
-    --buttonHover: #1d4ed8;
-    --whiteBackground: #f9fafb;
-    --green: #4ade80;
-    --blueHeader: #1e3a8a;
+  --blue: #2563eb;
+  --blueHover: #1d4ed8;
+  --whiteBackground: #f9fafb;
+  --green: #4ade80;
+  --blueText: #1e3a8a;
+  --red: #ef4444;
+  --redHover: #dc2626;
 }

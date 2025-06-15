@@ -3,11 +3,6 @@ session_start();
 require_once '../db_connect.php';
 require_once '../email_sender.php';
 
-$email_message = isset($_SESSION['email_message']) ? $_SESSION['email_message'] : '';
-if (isset($_SESSION['email_message'])) {
-    unset($_SESSION['email_message']); // Clear it after use
-}
-
 // Check if user is logged in
 if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
     header('Location: login.php');
@@ -19,15 +14,16 @@ $page_title = "License Key Administration";
 $page_description = "Manage license keys, view statistics, and administer user accounts";
 
 // Function to get all license keys with optional email filter
-function get_license_keys($email_filter = '')
+function get_license_keys($search_filter = '')
 {
     $db = get_db_connection();
     $licenses = [];
 
-    if (!empty($email_filter)) {
-        $search_param = '%' . $email_filter . '%';
-        $stmt = $db->prepare('SELECT * FROM license_keys WHERE email LIKE ? ORDER BY created_at DESC');
-        $stmt->bind_param('s', $search_param);
+    if (!empty($search_filter)) {
+        $search_param = '%' . $search_filter . '%';
+        // Search both email and license_key fields
+        $stmt = $db->prepare('SELECT * FROM license_keys WHERE email LIKE ? OR license_key LIKE ? ORDER BY created_at DESC');
+        $stmt->bind_param('ss', $search_param, $search_param);
         $stmt->execute();
         $result = $stmt->get_result();
 
@@ -157,11 +153,8 @@ if (isset($_SESSION['email_status'])) {
 }
 
 // Check for customer email from previous submission
-$customer_email = '';
-if (isset($_SESSION['customer_email'])) {
-    $customer_email = $_SESSION['customer_email'];
-    unset($_SESSION['customer_email']);
-}
+$customer_email = $_SESSION['customer_email'] ?? '';
+unset($_SESSION['customer_email']);
 
 // Get search parameter
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
@@ -193,7 +186,7 @@ include 'admin_header.php';
 
 <div class="container">
     <!-- Statistics Cards -->
-    <div class="stats-row">
+    <div class="stats-grid">
         <div class="stat-card">
             <h3>Total License Keys</h3>
             <div class="stat-value"><?php echo count($licenses); ?></div>
@@ -252,36 +245,28 @@ include 'admin_header.php';
             <?php endif; ?>
         <?php endif; ?>
 
-        <?php if ($email_message): ?>
-            <div class="<?php echo strpos($email_message, 'Failed') === false ? 'success-message' : 'error-message'; ?>">
-                <span><?php echo htmlspecialchars($email_message); ?></span>
-            </div>
-        <?php endif; ?>
-
         <form method="post">
             <div class="form-group">
                 <label for="email">Customer Email:</label>
-                <input type="email" id="email" name="email" required>
+                <div class="input-button-wrapper">
+                    <input type="email" id="email" name="email" required>
+                    <button type="submit" name="generate_key" class="btn btn-blue">Generate Key</button>
+                </div>
             </div>
-            <button type="submit" name="generate_key" class="btn">Generate License Key</button>
-        </form>
-    </div>
-
-    <div class="search-container">
-        <form method="get" action="index.php">
-            <input type="text" name="search" placeholder="Search by email..." value="<?php echo htmlspecialchars($search); ?>">
-            <button type="submit" class="btn">Search</button>
-            <?php if (!empty($search)): ?>
-                <a href="index.php" class="btn" style="background: #6b7280;">Clear</a>
-            <?php endif; ?>
         </form>
     </div>
 
     <div class="table-container">
-        <div class="table-header">
-            <h2>License Keys</h2>
-            <span class="total-keys">Total: <?php echo count($licenses); ?></span>
+        <h2>License Keys</h2>
+
+        <div class="search-container">
+            <form method="get" action="index.php">
+                <input type="text" name="search" placeholder="Search by email..." value="<?php echo htmlspecialchars($search); ?>">
+                <button type="submit" class="btn btn-blue">Search</button>
+            </form>
         </div>
+
+        <span class="total-keys">Total: <?php echo count($licenses); ?></span>
 
         <?php if (!empty($search)): ?>
             <div class="search-results">
@@ -330,7 +315,7 @@ include 'admin_header.php';
                                     <form method="post" onsubmit="return confirm('Are you sure you want to activate this license key?');">
                                         <input type="hidden" name="key_id" value="<?php echo htmlspecialchars($license['id']); ?>">
                                         <input type="hidden" name="key" value="<?php echo htmlspecialchars($license['license_key']); ?>">
-                                        <button type="submit" name="activate_key" class="btn btn-small btn-activate">Activate</button>
+                                        <button type="submit" name="activate_key" class="btn btn-small btn-green">Activate</button>
                                     </form>
                                 <?php else: ?>
                                     <form method="post" onsubmit="return confirm('Are you sure you want to deactivate this license key?');">
@@ -340,7 +325,7 @@ include 'admin_header.php';
                                 <?php endif; ?>
                                 <form method="post" onsubmit="return confirm('Are you sure you want to delete this license key? This action cannot be undone.');">
                                     <input type="hidden" name="key_id" value="<?php echo htmlspecialchars($license['id']); ?>">
-                                    <button type="submit" name="delete_key" class="btn btn-small btn-delete">Delete</button>
+                                    <button type="submit" name="delete_key" class="btn btn-small btn-red">Delete</button>
                                 </form>
                             </td>
                         </tr>

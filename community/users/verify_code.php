@@ -159,7 +159,7 @@ if ($success) {
         }
 
         .verification-digit:focus {
-            border-color: var(--button);
+            border-color: var(--blue);
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
             outline: none;
         }

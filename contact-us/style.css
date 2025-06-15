@@ -69,7 +69,7 @@ h2 {
 
 .first .container .contact-us-container .description a {
   transition: 0.33s all ease;
-  color: var(--button);
+  color: var(--blue);
   text-decoration: underline;
 }
 
@@ -129,7 +129,7 @@ h2 {
 
 .first .container .wrapper .question-container button {
   position: relative;
-  background: var(--button);
+  background: var(--blue);
   color: #fff;
   border: none;
   border-radius: 40px;
@@ -143,7 +143,7 @@ h2 {
 }
 
 .first .container .wrapper .question-container button:hover {
-  background: var(--buttonHover);
+  background: var(--blueHover);
 }
 
 .error-message {
@@ -164,7 +164,6 @@ h2 {
 }
 
 @media (max-width: 850px) {
-
   .first .container .contact-us-container .support-container,
   .first .container .contact-us-container .support-container-2 {
     width: 100%;
@@ -180,7 +179,6 @@ h2 {
 }
 
 @media (max-width: 700px) {
-
   .first .container .wrapper .input-container,
   .first .container .wrapper .question-container {
     width: 100%;

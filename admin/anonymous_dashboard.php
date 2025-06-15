@@ -11,7 +11,6 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 // Set page variables for header
 $page_title = "Anonymous Data Dashboard";
 $page_description = "View and analyze anonymous user data from the Sales Tracker application";
-$additional_css = ['anonymous_dashboard.css'];
 
 $dataDir = 'data_logs/';
 $errorMessage = '';
@@ -150,80 +149,60 @@ include 'admin_header.php';
         <!-- Charts row 1 -->
         <div class="chart-row">
             <div class="chart-container">
-                <h3>User Session Duration</h3>
-                <div class="chart-canvas">
-                    <canvas id="sessionDurationChart"></canvas>
-                </div>
+                <h2>Average user Session Duration</h2>
+                <canvas id="sessionDurationChart"></canvas>
             </div>
             <div class="chart-container">
-                <h3>Export Types Distribution</h3>
-                <div class="export-types-grid" id="exportTypesGrid">
-                    <!-- Will be populated by JavaScript -->
-                </div>
+                <h2>Export Types Distribution</h2>
+                <canvas id="exportTypesGrid"></canvas>
             </div>
         </div>
 
         <!-- Charts row 2 -->
         <div class="chart-row">
             <div class="chart-container">
-                <h3>Average Duration by Export Type</h3>
-                <div class="chart-canvas">
-                    <canvas id="exportDurationByTypeChart"></canvas>
-                </div>
+                <h2>Average Duration by Export Type</h2>
+                <canvas id="exportDurationByTypeChart"></canvas>
             </div>
             <div class="chart-container">
-                <h3>Average File Size by Export Type</h3>
-                <div class="chart-canvas">
-                    <canvas id="exportFileSizeByTypeChart"></canvas>
-                </div>
+                <h2>Average File Size by Export Type</h2>
+                <canvas id="exportFileSizeByTypeChart"></canvas>
             </div>
         </div>
 
         <!-- Charts row 3 -->
         <div class="chart-row">
             <div class="chart-container">
-                <h3>Export Durations Over Time</h3>
-                <div class="chart-canvas">
-                    <canvas id="exportDurationChart"></canvas>
-                </div>
+                <h2>Export Durations Over Time</h2>
+                <canvas id="exportDurationChart"></canvas>
             </div>
             <div class="chart-container">
-                <h3>Export File Sizes</h3>
-                <div class="chart-canvas">
-                    <canvas id="exportFileSizeChart"></canvas>
-                </div>
+                <h2>Export File Sizes</h2>
+                <canvas id="exportFileSizeChart"></canvas>
             </div>
         </div>
 
         <!-- Charts Row 4 -->
         <div class="chart-row">
             <div class="chart-container">
-                <h3>OpenAI API Usage</h3>
-                <div class="chart-canvas">
-                    <canvas id="openaiChart"></canvas>
-                </div>
+                <h2>OpenAI API Usage</h2>
+                <canvas id="openaiChart"></canvas>
             </div>
             <div class="chart-container">
-                <h3>OpenAI Token Usage</h3>
-                <div class="chart-canvas">
-                    <canvas id="openaiTokenChart"></canvas>
-                </div>
+                <h2>OpenAI Token Usage</h2>
+                <canvas id="openaiTokenChart"></canvas>
             </div>
         </div>
 
         <!-- Charts Row 5 -->
         <div class="chart-row">
             <div class="chart-container">
-                <h3>Exchange Rates API Usage</h3>
-                <div class="chart-canvas">
-                    <canvas id="exchangeRatesChart"></canvas>
-                </div>
+                <h2>Exchange Rates API Usage</h2>
+                <canvas id="exchangeRatesChart"></canvas>
             </div>
             <div class="chart-container">
-                <h3>Data Points Over Time</h3>
-                <div class="chart-canvas">
-                    <canvas id="overallActivityChart"></canvas>
-                </div>
+                <h2>Data Points Over Time</h2>
+                <canvas id="overallActivityChart"></canvas>
             </div>
         </div>
     <?php endif; ?>
@@ -359,7 +338,7 @@ include 'admin_header.php';
         function generateSessionDurationChart(sessionData) {
             if (sessionData.length === 0) {
                 document.getElementById('sessionDurationChart').parentElement.innerHTML =
-                    '<div class="chart-no-data">No session data available</div>';
+                    '<div class="chart-no-data">No data available</div>';
                 return;
             }
 
@@ -372,7 +351,7 @@ include 'admin_header.php';
 
             if (sessions.length === 0) {
                 document.getElementById('sessionDurationChart').parentElement.innerHTML =
-                    '<div class="chart-no-data">No completed sessions available</div>';
+                    '<div class="chart-no-data">No data available</div>';
                 return;
             }
 
@@ -418,10 +397,6 @@ include 'admin_header.php';
                         legend: {
                             display: false
                         },
-                        title: {
-                            display: true,
-                            text: `Average session duration (${sessions.length} sessions)`
-                        }
                     },
                     scales: {
                         y: {
@@ -442,10 +417,9 @@ include 'admin_header.php';
         }
 
         function generateExportTypesBreakdown(exportData) {
-            const typesGrid = document.getElementById('exportTypesGrid');
-
             if (exportData.length === 0) {
-                typesGrid.innerHTML = '<div class="export-type-card"><div class="type-name">No Data</div><div class="count">0</div></div>';
+                document.getElementById('exportTypesGrid').parentElement.innerHTML =
+                    '<div class="chart-no-data">No data available</div>';
                 return;
             }
 
@@ -459,18 +433,48 @@ include 'admin_header.php';
             const sortedTypes = Object.entries(typeCounts)
                 .sort(([, a], [, b]) => b - a);
 
-            typesGrid.innerHTML = sortedTypes.map(([type, count]) => `
-            <div class="export-type-card" style="border-left: 4px solid ${typeColors[type] || '#9ca3af'}">
-                <div class="type-name">${type}</div>
-                <div class="count">${count}</div>
-            </div>
-        `).join('');
+            const labels = sortedTypes.map(([type]) => type);
+            const data = sortedTypes.map(([, count]) => count);
+            const colors = labels.map(type => typeColors[type] || '#9ca3af');
+
+            new Chart(document.getElementById("exportTypesGrid"), {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: colors,
+                        borderColor: colors.map(c => c.replace('0.8', '1')),
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: ${value} exports (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
         }
 
         function generateExportDurationByTypeChart(exportData) {
             if (exportData.length === 0) {
                 document.getElementById('exportDurationByTypeChart').parentElement.innerHTML =
-                    '<div class="chart-no-data">No export data available</div>';
+                    '<div class="chart-no-data">No data available</div>';
                 return;
             }
 
@@ -526,10 +530,6 @@ include 'admin_header.php';
                         legend: {
                             display: false
                         },
-                        title: {
-                            display: true,
-                            text: 'Average duration by export type'
-                        }
                     },
                     scales: {
                         y: {
@@ -555,7 +555,7 @@ include 'admin_header.php';
 
             if (filteredData.length === 0) {
                 document.getElementById('exportFileSizeByTypeChart').parentElement.innerHTML =
-                    '<div class="chart-no-data">No file size data available</div>';
+                    '<div class="chart-no-data">No data available</div>';
                 return;
             }
 
@@ -606,10 +606,6 @@ include 'admin_header.php';
                         legend: {
                             display: false
                         },
-                        title: {
-                            display: true,
-                            text: 'Average file size by export type'
-                        }
                     },
                     scales: {
                         y: {
@@ -634,7 +630,7 @@ include 'admin_header.php';
         function generateExportDurationChart(exportData) {
             if (exportData.length === 0) {
                 document.getElementById('exportDurationChart').parentElement.innerHTML =
-                    '<div class="chart-no-data">No export data available</div>';
+                    '<div class="chart-no-data">No data available</div>';
                 return;
             }
 
@@ -687,10 +683,6 @@ include 'admin_header.php';
                         legend: {
                             display: false
                         },
-                        title: {
-                            display: true,
-                            text: `Showing ${recentData.length} most recent exports`
-                        }
                     },
                     scales: {
                         x: {
@@ -723,7 +715,7 @@ include 'admin_header.php';
 
             if (fileSizes.length === 0) {
                 document.getElementById('exportFileSizeChart').parentElement.innerHTML =
-                    '<div class="chart-no-data">No file size data available</div>';
+                    '<div class="chart-no-data">No data available</div>';
                 return;
             }
 
@@ -757,10 +749,6 @@ include 'admin_header.php';
                         legend: {
                             position: 'bottom'
                         },
-                        title: {
-                            display: true,
-                            text: `${fileSizes.length} exports with file size data`
-                        }
                     },
                     scales: {
                         x: {
@@ -791,7 +779,7 @@ include 'admin_header.php';
         function generateOpenAIChart(openaiData) {
             if (openaiData.length === 0) {
                 document.getElementById('openaiChart').parentElement.innerHTML =
-                    '<div class="chart-no-data">No OpenAI usage data available</div>';
+                    '<div class="chart-no-data">No data available</div>';
                 return;
             }
 
@@ -825,10 +813,6 @@ include 'admin_header.php';
                         legend: {
                             position: 'bottom'
                         },
-                        title: {
-                            display: true,
-                            text: `${openaiData.length} total OpenAI API calls`
-                        }
                     }
                 }
             });
@@ -837,7 +821,7 @@ include 'admin_header.php';
         function generateOpenAITokenChart(openaiData) {
             if (openaiData.length === 0) {
                 document.getElementById('openaiTokenChart').parentElement.innerHTML =
-                    '<div class="chart-no-data">No OpenAI token data available</div>';
+                    '<div class="chart-no-data">No data available</div>';
                 return;
             }
 
@@ -864,10 +848,6 @@ include 'admin_header.php';
                         legend: {
                             display: false
                         },
-                        title: {
-                            display: true,
-                            text: `Token usage (last ${recentData.length} calls)`
-                        }
                     },
                     scales: {
                         y: {
@@ -885,7 +865,7 @@ include 'admin_header.php';
         function generateExchangeRatesChart(exchangeRatesData) {
             if (exchangeRatesData.length === 0) {
                 document.getElementById('exchangeRatesChart').parentElement.innerHTML =
-                    '<div class="chart-no-data">No exchange rates data available</div>';
+                    '<div class="chart-no-data">No data available</div>';
                 return;
             }
 
@@ -916,10 +896,6 @@ include 'admin_header.php';
                         legend: {
                             display: false
                         },
-                        title: {
-                            display: true,
-                            text: `${exchangeRatesData.length} total exchange rate calls`
-                        }
                     },
                     scales: {
                         y: {
@@ -957,7 +933,7 @@ include 'admin_header.php';
 
             if (allData.length === 0) {
                 document.getElementById('overallActivityChart').parentElement.innerHTML =
-                    '<div class="chart-no-data">No activity data available</div>';
+                    '<div class="chart-no-data">No data available</div>';
                 return;
             }
 
@@ -1038,10 +1014,6 @@ include 'admin_header.php';
                         legend: {
                             position: 'bottom'
                         },
-                        title: {
-                            display: true,
-                            text: `Activity overview (${sortedDates.length} days total)`
-                        }
                     }
                 }
             });

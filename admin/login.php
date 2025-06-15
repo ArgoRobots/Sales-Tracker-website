@@ -4,7 +4,7 @@ require_once '../db_connect.php';
 require_once '2fa.php';
 
 // Check if user is already logged in
-if ($_SESSION['role'] === 'admin' && isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] === true) {
+if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
     header('Location: index.php');
     exit;
 }
@@ -99,8 +99,8 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
     <title>Admin Login - Argo Sales Tracker</title>
 
-    <link rel="stylesheet" href="login.css">
-    <link rel="stylesheet" href="2fa.css">
+    <link rel="stylesheet" href="unified-admin.css">
+    <link rel="stylesheet" href="../resources/styles/button.css">
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
 </head>
 
@@ -125,10 +125,13 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
                 </div>
 
                 <input type="hidden" name="verify_code" value="1">
-                <button type="button" onclick="submitVerificationForm()" id="submit-button" class="btn">Verify</button>
+
+                <div class="center">
+                    <button type="button" onclick="submitVerificationForm()" id="submit-button" class="btn btn-blue">Verify</button>
+                </div>
 
                 <div class="back-to-login">
-                    <a href="users/users/logout.php">Cancel and return to login</a>
+                    <a href="logout.php">Cancel and return to login</a>
                 </div>
             </form>
         <?php else: ?>
@@ -154,7 +157,9 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
                     <input type="password" id="password" name="password" required>
                 </div>
 
-                <button type="submit" name="login" class="btn">Login</button>
+                <div class="center">
+                    <button type="submit" name="login" class="btn btn-blue">Login</button>
+                </div>
             </form>
         <?php endif; ?>
     </div>

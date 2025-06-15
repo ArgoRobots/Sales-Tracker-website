@@ -1,57 +1,56 @@
 .pdf-export-btn {
-    position: fixed;
-    top: 60px;
-    right: 20px;
-    z-index: 99;
-    background: var(--button);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 8px 16px;
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 500;
-    transition: background-color 0.2s, transform 0.2s;
+  position: fixed;
+  top: 60px;
+  right: 20px;
+  z-index: 99;
+  background: var(--blue);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  transition: background-color 0.2s, transform 0.2s;
 }
 
 .pdf-export-btn:hover {
-    background: var(--buttonHover);
-    transform: translateY(-2px);
+  background: var(--blueHover);
+  transform: translateY(-2px);
 }
 
 .pdf-export-btn:active {
-    transform: translateY(0);
+  transform: translateY(0);
 }
 
 .pdf-export-btn svg {
-    width: 18px;
-    height: 18px;
+  width: 18px;
+  height: 18px;
 }
 
 @media (max-width: 768px) {
-    .pdf-export-btn {
-        top: 60px;
-        padding: 6px 12px;
-        font-size: 14px;
-    }
+  .pdf-export-btn {
+    top: 60px;
+    padding: 6px 12px;
+    font-size: 14px;
+  }
 
-    /* When sidebar is active, adjust position to avoid overlap */
-    .sidebar.active+.content .pdf-export-btn {
-        right: 20px;
-    }
+  /* When sidebar is active, adjust position to avoid overlap */
+  .sidebar.active + .content .pdf-export-btn {
+    right: 20px;
+  }
 }
 
 @media (max-width: 480px) {
+  /* Hide text on small screens */
+  .pdf-export-btn span {
+    display: none;
+  }
 
-    /* Hide text on small screens */
-    .pdf-export-btn span {
-        display: none;
-    }
-
-    .pdf-export-btn {
-        padding: 8px;
-    }
+  .pdf-export-btn {
+    padding: 8px;
+  }
 }

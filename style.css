@@ -114,7 +114,7 @@ body {
 
 @media (max-width: 550px) {
   .hero-buttons .btn {
-    font-size: .9rem;
+    font-size: 0.9rem;
     width: 100%;
   }
 }
@@ -243,7 +243,7 @@ body {
 .comparison-header {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  background: var(--blueHeader);
+  background: var(--blueText);
   color: white;
   padding: 20px 0;
   text-align: center;
@@ -311,7 +311,7 @@ body {
 }
 
 .mobile-section-header {
-  background: var(--blueHeader);
+  background: var(--blueText);
   color: white;
   padding: 15px 20px;
   font-size: 18px;
@@ -463,14 +463,14 @@ body {
 
 .pricing-card .price {
   font-size: 48px;
-  color: var(--button);
+  color: var(--blue);
   font-weight: bold;
   margin: 8px 0 5px;
 }
 
 .pricing-card .description {
   color: #666;
-  margin-bottom: 32px
+  margin-bottom: 32px;
 }
 
 /* Utility classes */
@@ -502,7 +502,7 @@ body {
 }
 
 .check-icon {
-  color: var(--button);
+  color: var(--blue);
   flex-shrink: 0;
   margin-right: 12px;
   margin-top: 3px;

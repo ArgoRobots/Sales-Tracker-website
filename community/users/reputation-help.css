@@ -1,150 +1,150 @@
 /* Reputation Help Page Styles */
 .reputation-help-container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 60px 20px;
-    min-height: 100vh;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 60px 20px;
+  min-height: 100vh;
 }
 
 .reputation-help-header {
-    margin-bottom: 40px;
-    text-align: center;
+  margin-bottom: 40px;
+  text-align: center;
 }
 
 .reputation-help-header h1 {
-    color: var(--blueHeader);
-    font-size: 32px;
-    margin: 10px 0;
+  color: var(--blueText);
+  font-size: 32px;
+  margin: 10px 0;
 }
 
 .reputation-help-header p {
-    font-size: 18px;
-    max-width: 600px;
-    margin: 0 auto;
+  font-size: 18px;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .reputation-section {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    padding: 30px 30px 10px 30px;
-    margin-bottom: 30px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 30px 30px 10px 30px;
+  margin-bottom: 30px;
 }
 
 .reputation-section.full-padding {
-    padding: 30px;
+  padding: 30px;
 }
 
 .reputation-section h2 {
-    color: var(--blueHeader);
-    font-size: 24px;
-    margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #e5e7eb;
+  color: var(--blueText);
+  font-size: 24px;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .reputation-section p {
-    line-height: 1.6;
+  line-height: 1.6;
 }
 
 .rep-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
 }
 
 .rep-table th,
 .rep-table td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #e5e7eb;
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .rep-table th {
-    background-color: #f9fafb;
-    font-weight: 600;
-    color: #1f2937;
+  background-color: #f9fafb;
+  font-weight: 600;
+  color: #1f2937;
 }
 
 .rep-positive,
 .rep-negative {
-    font-weight: 600;
-    margin-left: 5px;
+  font-weight: 600;
+  margin-left: 5px;
 }
 
 .rep-positive {
-    color: #16a34a;
+  color: #16a34a;
 }
 
 .rep-negative {
-    color: #dc2626;
+  color: #dc2626;
 }
 
 .rep-example {
-    background-color: #f3f4f6;
-    padding: 20px 20px 10px 20px;
-    border-radius: 6px;
-    margin: 20px 0;
+  background-color: #f3f4f6;
+  padding: 20px 20px 10px 20px;
+  border-radius: 6px;
+  margin: 20px 0;
 }
 
 .rep-example h3 {
-    color: #1f2937;
-    font-size: 18px;
-    margin-bottom: 15px;
+  color: #1f2937;
+  font-size: 18px;
+  margin-bottom: 15px;
 }
 
 .rep-example p {
-    margin-bottom: 10px;
-    display: flex;
-    align-items: baseline;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: baseline;
 }
 
 .rep-example p::before {
-    content: "•";
-    margin-right: 8px;
-    color: #3b82f6;
+  content: "•";
+  margin-right: 8px;
+  color: #3b82f6;
 }
 
 .rep-tip {
-    background-color: #dbeafe;
-    border-left: 4px solid #3b82f6;
-    padding: 15px;
-    border-radius: 0 6px 6px 0;
-    margin: 20px 0;
+  background-color: #dbeafe;
+  border-left: 4px solid #3b82f6;
+  padding: 15px;
+  border-radius: 0 6px 6px 0;
+  margin: 20px 0;
 }
 
 .rep-tip h4 {
-    color: #1e40af;
-    margin-bottom: 10px;
-    font-size: 16px;
+  color: #1e40af;
+  margin-bottom: 10px;
+  font-size: 16px;
 }
 
 .bullet-list {
-    list-style-type: none;
-    padding-left: 0;
-    margin: 15px 0;
+  list-style-type: none;
+  padding-left: 0;
+  margin: 15px 0;
 }
 
 .bullet-list li {
-    position: relative;
-    padding-left: 24px;
-    margin-bottom: 12px;
-    line-height: 1.6;
+  position: relative;
+  padding-left: 24px;
+  margin-bottom: 12px;
+  line-height: 1.6;
 }
 
 .bullet-list li::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 8px;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background-color: #3b82f6;
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #3b82f6;
 }
 
 .btn svg {
-    top: 2px;
-    position: relative;
-    left: -3px;
+  top: 2px;
+  position: relative;
+  left: -3px;
 }

@@ -1,88 +1,103 @@
 .btn {
-    padding: 10px 0;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border: none;
-    font-weight: bold;
-    text-decoration: none;
-    display: block;
-    text-align: center;
-    width: 180px;
+  padding: 10px 0;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  font-weight: bold;
+  text-decoration: none;
+  display: block;
+  text-align: center;
+  width: 180px;
 }
 
 .btn-white {
-    background: white;
-    color: var(--blueHeader);
+  background: white;
+  color: var(--blueText);
 }
 
 .btn-white:hover {
-    background: #f0f9ff;
+  background: #f0f9ff;
 }
 
 .btn-outline {
-    background: transparent;
-    border: 2px solid white;
-    color: white;
+  background: transparent;
+  border: 2px solid white;
+  color: white;
 }
 
 .btn-outline:hover {
-    background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .btn-blue {
-    background: var(--button);
-    color: white;
+  background: var(--blue);
+  color: white;
 }
 
 .btn-blue:hover {
-    background: var(--buttonHover);
+  background: var(--blueHover);
+}
+
+.btn-red {
+  background: var(--red);
+  color: #000;
+}
+
+.btn-red:hover {
+  background: var(--redHover);
 }
 
 .btn-black {
-    background: transparent;
-    border: 2px solid black;
-    color: black;
-    padding: 6px 0;
+  background: transparent;
+  border: 2px solid black;
+  color: black;
+  padding: 6px 0;
 }
 
 .btn-black:hover {
-    background: rgba(0, 0, 0, 0.05);
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .back-button {
-    display: inline-flex;
-    align-items: center;
-    margin: 20px 0;
-    padding: 8px 16px;
-    color: #000;
-    background-color: var(--whiteBackground);
-    border: 1px solid #e5e7eb;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 500;
-    text-decoration: none;
-    transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  margin: 20px 0;
+  padding: 8px 16px;
+  color: #000;
+  background-color: var(--whiteBackground);
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
 }
 
 .back-button:hover {
-    background-color: #f3f4f6;
-    color: var(--blueHeader);
-    border-color: #d1d5db;
+  background-color: #f3f4f6;
+  color: var(--blueText);
+  border-color: #d1d5db;
 }
 
 .back-button svg {
-    margin-right: 6px;
+  margin-right: 6px;
 }
 
 .btn-gray {
-    background-color: #f3f4f6;
-    border: 1px solid #d1d5db;
-    color: #414141;
-    border: #6b7280 1px solid !important;
+  background-color: #f3f4f6;
+  border: 1px solid #d1d5db;
+  color: #414141;
+  border: #6b7280 1px solid !important;
 }
 
 .btn-gray:hover {
-    background-color: #e5e7eb;
-    color: #1f2937;
+  background-color: #e5e7eb;
+  color: #1f2937;
+}
+
+.btn-small {
+  width: 100px;
+  padding: 5px 0;
+  font-size: 12px;
 }

@@ -1,190 +1,190 @@
 .checkout-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 40px 20px;
-    min-height: 100vh;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  min-height: 100vh;
 }
 
 h1 {
-    text-align: center;
-    margin-top: 50px;
+  text-align: center;
+  margin-top: 50px;
 }
 
 .checkout-form {
-    background: white;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    margin-top: 50px;
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 50px;
 }
 
 #paypal-button-container {
-    margin-top: 20px;
-    width: 100%;
-    min-height: 200px;
+  margin-top: 20px;
+  width: 100%;
+  min-height: 200px;
 }
 
 .checkout-form h2 {
-    margin-bottom: 20px;
-    text-align: center;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 .form-group {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 500;
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
 }
 
 .form-control {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 16px;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 16px;
 }
 
 .checkout-btn {
-    background: var(--button);
-    color: white;
-    border: none;
-    padding: 14px 20px;
-    margin-top: 20px;
-    border-radius: 6px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    width: 100%;
-    transition: all 0.3s ease;
+  background: var(--blue);
+  color: white;
+  border: none;
+  padding: 14px 20px;
+  margin-top: 20px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.3s ease;
 }
 
 .checkout-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .order-summary {
-    background: #f8fafc;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 30px;
+  background: #f8fafc;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
 }
 
 .order-summary h3 {
-    margin-bottom: 15px;
-    font-size: 18px;
+  margin-bottom: 15px;
+  font-size: 18px;
 }
 
 .order-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
-    border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
 }
 
 .order-total {
-    display: flex;
-    justify-content: space-between;
-    padding-top: 15px;
-    font-weight: 600;
-    font-size: 18px;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 15px;
+  font-weight: 600;
+  font-size: 18px;
 }
 
 .card-icons {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
 }
 
 .card-icons img {
-    height: 30px;
+  height: 30px;
 }
 
 #stripe-submit-btn,
 #square-submit-btn {
-    background-color: var(--button);
-    color: white;
-    font-weight: 600;
+  background-color: var(--blue);
+  color: white;
+  font-weight: 600;
 }
 
 #stripe-submit-btn:hover,
 #square-submit-btn:hover {
-    background-color: var(--buttonHover);
+  background-color: var(--blueHover);
 }
 
 .processing-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.95);
-    z-index: 9999;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 40px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.95);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px;
 }
 
 .processing-overlay h2 {
-    color: var(--blueHeader);
-    margin-bottom: 15px;
-    font-size: 28px;
+  color: var(--blueText);
+  margin-bottom: 15px;
+  font-size: 28px;
 }
 
 .processing-overlay p {
-    color: #4b5563;
-    margin-bottom: 30px;
-    font-size: 18px;
+  color: #4b5563;
+  margin-bottom: 30px;
+  font-size: 18px;
 }
 
 .spinner {
-    display: inline-block;
-    width: 50px;
-    height: 50px;
-    border: 5px solid #e5e7eb;
-    border-top-color: var(--button);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-bottom: 30px;
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  border: 5px solid #e5e7eb;
+  border-top-color: var(--blue);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 30px;
 }
 
 @keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Square specific styles */
 #card-container {
-    min-height: 90px;
-    background: var(--whiteBackground);
-    border: 1px solid #ddd;
-    border-radius: 6px;
+  min-height: 90px;
+  background: var(--whiteBackground);
+  border: 1px solid #ddd;
+  border-radius: 6px;
 }
 
 .payment-error {
-    color: #b91c1c;
-    font-size: 14px;
-    margin-top: 8px;
+  color: #b91c1c;
+  font-size: 14px;
+  margin-top: 8px;
 }
 
 /* Square payment form container styles */
 .sq-payment-form {
-    margin: 20px 0;
+  margin: 20px 0;
 }
 
 /* Loading indicator for Square */
 .loading-square {
-    text-align: center;
-    padding: 30px 0;
+  text-align: center;
+  padding: 30px 0;
 }
 
 .loading-square .spinner {
-    margin: 0 auto 15px;
+  margin: 0 auto 15px;
 }
