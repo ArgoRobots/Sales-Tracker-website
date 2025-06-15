@@ -60,21 +60,16 @@ $current_user = $is_logged_in ? get_current_user_ID() : null;
                     <a href="users/login.php" class="btn btn-blue">Log in to Post</a>
                 <?php endif; ?>
 
-                <!-- Category filter -->
-                <div class="filter-dropdown">
-                    <select id="category-filter" class="filter-select">
-                        <option value="all">All Categories</option>
-                        <option value="bug">Bug Reports</option>
-                        <option value="feature">Feature Requests</option>
-                    </select>
-                </div>
-
-                <!-- Type filter -->
+                <!-- Combined Sort/Filter dropdown -->
                 <div class="filter-dropdown">
                     <select id="sort-filter" class="filter-select">
                         <option value="newest">Newest First</option>
                         <option value="oldest">Oldest First</option>
                         <option value="most_voted">Most Voted</option>
+                        <option value="open_only">Open Posts Only</option>
+                        <option value="in_progress_only">In Progress Only</option>
+                        <option value="completed_only">Completed Only</option>
+                        <option value="declined_only">Declined Only</option>
                     </select>
                 </div>
             </div>
@@ -116,7 +111,7 @@ $current_user = $is_logged_in ? get_current_user_ID() : null;
                     // Get user's vote for this post
                     $user_vote = $is_logged_in ? get_user_vote($post['id'], $current_user['email']) : 0;
                     ?>
-                    <div class="post-card" data-post-id="<?php echo $post['id']; ?>" data-post-type="<?php echo $post['post_type']; ?>">
+                    <div class="post-card" data-post-id="<?php echo $post['id']; ?>" data-post-type="<?php echo $post['post_type']; ?>" data-post-status="<?php echo $post['status']; ?>">
                         <!-- Post votes -->
                         <div class="post-votes">
                             <button class="vote-btn upvote <?php echo $user_vote === 1 ? 'voted' : ''; ?>" data-post-id="<?php echo $post['id']; ?>" data-vote="up">

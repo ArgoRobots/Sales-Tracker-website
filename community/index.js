@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const loadingIndicator = document.getElementById("loading-indicator");
   const searchInput = document.getElementById("search-posts");
   const searchBtn = document.getElementById("search-btn");
-  const categoryFilter = document.getElementById("category-filter");
   const sortFilter = document.getElementById("sort-filter");
   const selectAllCheckbox = document.getElementById("select-all-posts");
   const bulkActionsDiv = document.querySelector(".bulk-actions");
@@ -292,9 +291,6 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!searchFilterLabel) return;
 
     const searchTerm = searchInput.value.trim();
-    const category = categoryFilter
-      ? categoryFilter.options[categoryFilter.selectedIndex].text
-      : "All Categories";
     const sortType = sortFilter
       ? sortFilter.options[sortFilter.selectedIndex].text
       : "Newest First";
@@ -306,12 +302,16 @@ document.addEventListener("DOMContentLoaded", function () {
       labelText += `Searching for "${searchTerm}"`;
     }
 
-    if (category !== "All Categories") {
-      labelText += (labelText ? " in " : "Showing ") + category;
+    // Add sort/filter information
+    if (sortType.includes("Only")) {
+      // This is a status filter
+      labelText +=
+        (labelText ? " • " : "Showing ") + sortType.replace(" Only", " posts");
+    } else {
+      // This is a sort option
+      labelText +=
+        (labelText ? " • " : "Showing posts • ") + `Sorted by ${sortType}`;
     }
-
-    labelText +=
-      (labelText ? " • " : "Showing posts • ") + `Sorted by ${sortType}`;
 
     // Display the label
     searchFilterLabel.textContent = labelText;
@@ -406,11 +406,11 @@ document.addEventListener("DOMContentLoaded", function () {
               // Check if we need to load more posts
               if (allPosts.length === 0) {
                 postsContainer.innerHTML = `
-                    <div class="empty-state">
-                        <h3>No posts yet!</h3>
-                        <p>Be the first to create a post in our community.</p>
-                    </div>
-                `;
+                        <div class="empty-state">
+                            <h3>No posts yet!</h3>
+                            <p>Be the first to create a post in our community.</p>
+                        </div>
+                    `;
               } else {
                 checkAndLoadMorePosts();
               }
@@ -497,22 +497,25 @@ document.addEventListener("DOMContentLoaded", function () {
   /**
    * Filters and sorts the list of posts based on:
    * - Search term (fuzzy match against title)
-   * - Selected category
-   * - Selected sort option (most voted, newest, or oldest)
+   * - Selected sort/filter option (newest, oldest, most_voted, or status filters)
    *
    * @returns {HTMLElement[]} Array of filtered and sorted post elements
    */
   function filterAndSortPosts() {
     const searchTerm = searchInput.value.toLowerCase().trim();
-    const category = categoryFilter.value;
     const sortBy = sortFilter?.value;
 
     const similarityThreshold = 0.6; // 0.0 = no match, 1.0 = perfect match
 
     let filtered = allPosts.filter((post) => {
-      // Filter by category
-      if (category !== "all" && post.dataset.postType !== category) {
-        return false;
+      // Filter by status if a status filter is selected
+      if (sortBy && sortBy.endsWith("_only")) {
+        const requiredStatus = sortBy.replace("_only", "");
+        const postStatus = post.dataset.postStatus;
+
+        if (postStatus !== requiredStatus) {
+          return false;
+        }
       }
 
       // Filter by search term
@@ -537,8 +540,8 @@ document.addEventListener("DOMContentLoaded", function () {
       return true;
     });
 
-    // Sort the filtered posts
-    if (sortBy) {
+    // Sort the filtered posts (only if not a status filter)
+    if (sortBy && !sortBy.endsWith("_only")) {
       filtered.sort((a, b) => {
         if (sortBy === "most_voted") {
           const votesA = parseInt(
@@ -633,16 +636,16 @@ document.addEventListener("DOMContentLoaded", function () {
       if (emptyState) {
         emptyState.style.display = "block";
         emptyState.innerHTML = `
-            <h3>No matching posts</h3>
-            <p>Try different search terms or filters</p>
-        `;
+                <h3>No matching posts</h3>
+                <p>Try different search terms or filters</p>
+            `;
       } else {
         const newEmptyState = document.createElement("div");
         newEmptyState.className = "empty-state";
         newEmptyState.innerHTML = `
-            <h3>No matching posts</h3>
-            <p>Try different search terms or filters</p>
-        `;
+                <h3>No matching posts</h3>
+                <p>Try different search terms or filters</p>
+            `;
         postsContainer.appendChild(newEmptyState);
       }
     } else {
@@ -663,13 +666,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Event listeners for filters
-  if (categoryFilter) {
-    categoryFilter.addEventListener("change", function () {
-      applyFilters();
-      setTimeout(updateSelectAllCheckbox, 100);
-    });
-  }
-
   if (sortFilter) {
     sortFilter.addEventListener("change", function () {
       applyFilters();
@@ -743,11 +739,11 @@ document.addEventListener("DOMContentLoaded", function () {
                   const postsContainer =
                     document.getElementById("posts-container");
                   postsContainer.innerHTML = `
-                  <div class="empty-state">
-                    <h3>No posts yet!</h3>
-                    <p>Be the first to create a post in our community.</p>
-                  </div>
-                `;
+                      <div class="empty-state">
+                        <h3>No posts yet!</h3>
+                        <p>Be the first to create a post in our community.</p>
+                      </div>
+                    `;
                 } else {
                   checkAndLoadMorePosts();
                 }
@@ -807,6 +803,9 @@ document.addEventListener("DOMContentLoaded", function () {
               }
 
               statusLabel.textContent = statusText;
+
+              // Update the data attribute for filtering
+              postCard.dataset.postStatus = newStatus;
             } else {
               alert("Error updating status: " + data.message);
             }
