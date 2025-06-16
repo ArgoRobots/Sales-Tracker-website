@@ -77,8 +77,8 @@ function checkRateLimit()
 function validateJsonContent($content)
 {
     // Check for basic JSON structure
-    $data = json_decode($content, true);
     if (json_last_error() !== JSON_ERROR_NONE) {
+        error_log("Uploaded content not in correct format");
         return false;
     }
 
