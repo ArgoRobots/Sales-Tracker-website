@@ -105,6 +105,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../resources/scripts/main.js"></script>
     <script src="../resources/notifications/notifications.js" defer></script>
+    <script src="../resources/scripts/utc-to-local.js" defer></script>
     <script src="formatting/text-formatting.js" defer></script>
 
     <link rel="stylesheet" href="create-post.css">
@@ -303,7 +304,9 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                             </span>
 
                             <!-- Date -->
-                            <span class="post-date"><?php echo date('M j, Y g:i a', strtotime($post['created_at'])); ?></span>
+                            <span class="post-date" data-timestamp="<?php echo strtotime($post['created_at']); ?>">
+                                <?php echo date('M j, Y g:i a', strtotime($post['created_at'])); ?>
+                            </span>
 
                             <!-- Views -->
                             <span class="post-views">
@@ -368,7 +371,11 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                                                 <?php endif; ?>
                                             </span><?php echo htmlspecialchars($comment['user_name']); ?>
                                         </a>
-                                        <span class="comment-date"><?php echo date('M j, Y g:i a', strtotime($comment['created_at'])); ?></span>
+
+                                        <!-- Date -->
+                                        <span class="comment-date" data-timestamp="<?php echo strtotime($comment['created_at']); ?>">
+                                            <?php echo date('M j, Y g:i a', strtotime($comment['created_at'])); ?>
+                                        </span>
                                     </div>
                                     <div class="comment-controls">
                                         <?php if ($can_edit_comment || $can_delete_comment): ?>

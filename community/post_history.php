@@ -94,6 +94,7 @@ array_unshift($history, $current_post);
 
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../resources/scripts/main.js"></script>
+    <script src="../resources/scripts/utc-to-local.js" defer></script>
     <script src="post-history-diff.js" defer></script>
 
     <link rel="stylesheet" href="post-history.css">
@@ -165,7 +166,11 @@ array_unshift($history, $current_post);
                                 <?php endif; ?>
                             </div>
                             <div>
-                                <strong>Date:</strong> <?php echo date('M j, Y g:i a', strtotime($version['edited_at'])); ?>
+                                <!-- Date -->
+                                <strong>Date:</strong>
+                                <span data-timestamp="<?php echo strtotime($version['edited_at']); ?>">
+                                    <?php echo date('M j, Y g:i a', strtotime($version['edited_at'])); ?>
+                                </span>
                             </div>
                         </div>
 

@@ -25,6 +25,7 @@ $current_user = $is_logged_in ? get_current_user_ID() : null;
 
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../resources/scripts/main.js"></script>
+    <script src="../resources/scripts/utc-to-local.js" defer></script>
     <script src="index.js" defer></script>
 
     <link rel="stylesheet" href="index.css">
@@ -172,7 +173,13 @@ $current_user = $is_logged_in ? get_current_user_ID() : null;
                                             </span><?php echo htmlspecialchars(trim($post['user_name'])); ?>
                                         </a>
                                     </span>
-                                    <span class="post-date"><?php echo date('M j, Y', strtotime($post['created_at'])); ?></span>
+
+                                    <!-- Date -->
+                                    <span class="post-date" data-timestamp="<?php echo strtotime($post['created_at']); ?>">
+                                        <?php echo date('M j, Y', strtotime($post['created_at'])); ?>
+                                    </span>
+
+                                    <!-- Views -->
                                     <span class="post-views">
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>

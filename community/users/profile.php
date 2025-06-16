@@ -496,6 +496,7 @@ if ($is_own_profile && isset($user['email'])) {
     <script src="profile.js" defer></script>
     <script src="../../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../../resources/scripts/main.js"></script>
+    <script src="../../resources/scripts/utc-to-local.js" defer></script>
     <script src="../../resources/notifications/notifications.js" defer></script>
 
     <link rel="stylesheet" href="profile.css">
@@ -743,7 +744,9 @@ if ($is_own_profile && isset($user['email'])) {
                                                                 </a>
                                                             <?php endif; ?>
                                                         </div>
-                                                        <div class="reputation-date">
+
+                                                        <!-- Date -->
+                                                        <div class="reputation-date" data-utc-timestamp="<?php echo $rep_item['created_at']; ?>" data-format="full">
                                                             <?php echo date('M j, Y g:i a', strtotime($rep_item['created_at'])); ?>
                                                         </div>
                                                     </div>
@@ -900,7 +903,9 @@ if ($is_own_profile && isset($user['email'])) {
                                                         </svg>
                                                         <?php echo number_format($post['views']); ?> <?php echo $post['views'] === 1 ? 'view' : 'views'; ?>
                                                     </span>
-                                                    <span class="post-date">
+
+                                                    <!-- Date -->
+                                                    <span class="post-date" data-timestamp="<?php echo strtotime($post['created_at']); ?>">
                                                         <?php echo date('M j, Y', strtotime($post['created_at'])); ?>
                                                     </span>
                                                 </div>
@@ -1003,7 +1008,9 @@ if ($is_own_profile && isset($user['email'])) {
                                                     </a>"
                                                 <?php endif; ?>
                                             </div>
-                                            <div class="reputation-date">
+
+                                            <!-- Date -->
+                                            <div class="reputation-date" data-timestamp="<?php echo strtotime($rep_item['created_at']); ?>">
                                                 <?php echo date('M j, Y g:i a', strtotime($rep_item['created_at'])); ?>
                                             </div>
                                         </div>
