@@ -226,6 +226,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../resources/header/style.css">
     <link rel="stylesheet" href="../resources/footer/style.css">
+
+    <!-- Mentions system -->
+    <link rel="stylesheet" href="mentions/mentions.css">
+    <script src="mentions/mentions.js" defer></script>
+    <script src="mentions/init.js" defer></script>
 </head>
 
 <body>
@@ -281,19 +286,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                         <div class="form-group">
                             <label for="bug_steps">Steps to Reproduce</label>
-                            <textarea id="bug_steps" name="bug_steps" rows="4" class="formattable" placeholder="Please provide step-by-step instructions to reproduce the issue"><?php echo isset($metadata['bug_steps']) ? htmlspecialchars($metadata['bug_steps']) : ''; ?></textarea>
+                            <textarea id="bug_steps" name="bug_steps" rows="4" class="formattable mentionable" placeholder="Please provide step-by-step instructions to reproduce the issue"><?php echo isset($metadata['bug_steps']) ? htmlspecialchars($metadata['bug_steps']) : ''; ?></textarea>
                             <?php add_formatting_toolbar('post_content'); ?>
                         </div>
 
                         <div class="form-group">
                             <label for="bug_expected">Expected Result</label>
-                            <textarea id="bug_expected" name="bug_expected" rows="3" class="formattable" placeholder="What you expected to happen"><?php echo isset($metadata['bug_expected']) ? htmlspecialchars($metadata['bug_expected']) : ''; ?></textarea>
+                            <textarea id="bug_expected" name="bug_expected" rows="3" class="formattable mentionable" placeholder="What you expected to happen"><?php echo isset($metadata['bug_expected']) ? htmlspecialchars($metadata['bug_expected']) : ''; ?></textarea>
                             <?php add_formatting_toolbar('post_content'); ?>
                         </div>
 
                         <div class="form-group">
                             <label for="bug_actual">Actual Result</label>
-                            <textarea id="bug_actual" name="bug_actual" rows="3" class="formattable" placeholder="What actually happened"><?php echo isset($metadata['bug_actual']) ? htmlspecialchars($metadata['bug_actual']) : ''; ?></textarea>
+                            <textarea id="bug_actual" name="bug_actual" rows="3" class="formattable mentionable" placeholder="What actually happened"><?php echo isset($metadata['bug_actual']) ? htmlspecialchars($metadata['bug_actual']) : ''; ?></textarea>
                             <?php add_formatting_toolbar('post_content'); ?>
                         </div>
                     </div>
@@ -318,7 +323,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             $content_to_display = $post['content'];
                         }
                         ?>
-                        <textarea id="content" name="content" class="formattable" required><?= htmlspecialchars($content_to_display) ?></textarea>
+                        <textarea id="content" name="content" class="formattable mentionable" required><?= htmlspecialchars($content_to_display) ?></textarea>
                         <?php add_formatting_toolbar('post_content'); ?>
                     </div>
 
@@ -359,6 +364,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             postTypeSelect.addEventListener('change', toggleFields);
         });
     </script>
+
+    <!-- This will be used by mentions.js -->
+    <div class="mention-dropdown" id="mentionDropdown"></div>
 </body>
 
 </html>

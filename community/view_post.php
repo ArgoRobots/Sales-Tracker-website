@@ -117,6 +117,11 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
     <link rel="stylesheet" href="../resources/header/style.css">
     <link rel="stylesheet" href="../resources/footer/style.css">
     <link rel="stylesheet" href="../resources/notifications/notifications.css">
+
+    <!-- Mentions system -->
+    <link rel="stylesheet" href="mentions/mentions.css">
+    <script src="mentions/mentions.js" defer></script>
+    <script src="mentions/init.js" defer></script>
 </head>
 
 <body>
@@ -392,7 +397,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                                     </div>
                                 </div>
                                 <div class="comment-content">
-                                    <?php echo nl2br(htmlspecialchars($comment['content'])); ?>
+                                    <?php echo preg_replace('/@(\w+)/', '<a class="link" href="users/profile.php?username=$1">@$1</a>', htmlspecialchars($comment['content'])); ?>
                                 </div>
                             </div>
                         </div>
@@ -418,7 +423,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                                 <h4>Add a Comment</h4>
                                 <input type="hidden" name="post_id" value="<?php echo $post['id']; ?>">
                                 <div class="form-group">
-                                    <textarea id="comment_content" name="comment_content" rows="4" required></textarea>
+                                    <textarea id="comment_content" name="comment_content" class="mentionable" rows="4" required></textarea>
                                 </div>
                                 <div class="form-actions">
                                     <button type="submit" class="btn btn-gray">Submit Comment</button>
@@ -439,6 +444,9 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
     <footer class="footer">
         <div id="includeFooter"></div>
     </footer>
+
+    <!-- This will be used by mentions.js -->
+    <div class="mention-dropdown" id="mentionDropdown"></div>
 </body>
 
 </html>

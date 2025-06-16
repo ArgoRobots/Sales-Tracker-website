@@ -98,6 +98,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../resources/header/style.css">
     <link rel="stylesheet" href="../resources/footer/style.css">
+
+    <!-- Mentions system -->
+    <link rel="stylesheet" href="mentions/mentions.css">
+    <script src="mentions/mentions.js" defer></script>
+    <script src="mentions/init.js" defer></script>
 </head>
 
 <body>
@@ -157,26 +162,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                         <div class="form-group">
                             <label for="bug_steps">Steps to Reproduce</label>
-                            <textarea id="bug_steps" name="bug_steps" class="formattable" rows="4" placeholder="Please provide step-by-step instructions to reproduce the issue"></textarea>
+                            <textarea id="bug_steps" name="bug_steps" class="formattable mentionable" rows="4" placeholder="Please provide step-by-step instructions to reproduce the issue"></textarea>
                             <?php add_formatting_toolbar('post_content'); ?>
                         </div>
 
                         <div class="form-group">
                             <label for="bug_expected">Expected Result</label>
-                            <textarea id="bug_expected" name="bug_expected" rows="3" class="formattable" placeholder="What you expected to happen"></textarea>
+                            <textarea id="bug_expected" name="bug_expected" rows="3" class="formattable mentionable" placeholder="What you expected to happen"></textarea>
                             <?php add_formatting_toolbar('post_content'); ?>
                         </div>
 
                         <div class="form-group">
                             <label for="bug_actual">Actual Result</label>
-                            <textarea id="bug_actual" name="bug_actual" rows="3" class="formattable" placeholder="What actually happened"></textarea>
+                            <textarea id="bug_actual" name="bug_actual" rows="3" class="formattable mentionable" placeholder="What actually happened"></textarea>
                             <?php add_formatting_toolbar('post_content'); ?>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="post_content">Additional Details</label>
-                        <textarea id="post_content" name="post_content" class="formattable" required><?php echo isset($_POST['post_content']) ? htmlspecialchars($_POST['post_content']) : ''; ?></textarea>
+                        <textarea id="post_content" name="post_content" class="formattable mentionable" required><?php echo isset($_POST['post_content']) ? htmlspecialchars($_POST['post_content']) : ''; ?></textarea>
                         <?php add_formatting_toolbar('post_content'); ?>
                     </div>
 
@@ -242,6 +247,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             postTypeSelect.addEventListener('change', toggleFields);
         });
     </script>
+
+    <!-- This will be used by mentions.js -->
+    <div class="mention-dropdown" id="mentionDropdown"></div>
 </body>
 
 </html>

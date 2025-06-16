@@ -47,8 +47,9 @@ function get_post($post_id)
 }
 
 /**
- * Add a new post
+ * Add a new post with @mentions support
  * 
+ * @param int $user_id User ID
  * @param string $user_name User's name
  * @param string $user_email User's email
  * @param string $title Post title
@@ -60,6 +61,18 @@ function add_post($user_id, $user_name, $user_email, $title, $content, $post_typ
 {
     $db = get_db_connection();
 
+    // Process @mentions if the mentions.php file exists
+    $has_mentions = false;
+    $mentions = [];
+
+    if (file_exists(__DIR__ . '/mentions/mentions.php')) {
+        require_once __DIR__ . '/mentions/mentions.php';
+
+        // Extract mentions from content
+        $mentions = extract_mentions($content);
+        $has_mentions = !empty($mentions);
+    }
+
     $stmt = $db->prepare('INSERT INTO community_posts 
         (user_id, user_name, user_email, title, content, post_type, views) 
         VALUES (?, ?, ?, ?, ?, ?, 0)');
@@ -69,6 +82,11 @@ function add_post($user_id, $user_name, $user_email, $title, $content, $post_typ
     if ($stmt->execute()) {
         $post_id = $db->insert_id;
         $stmt->close();
+
+        // Create notifications for mentioned users if applicable
+        if ($has_mentions && function_exists('create_mention_notifications')) {
+            create_mention_notifications($mentions, $post_id, 0, $user_id);
+        }
 
         // Send notification email
         send_notification_email('new_post', [
@@ -172,27 +190,45 @@ function get_comment_count($post_id)
 }
 
 /**
- * Add a new comment
+ * Add a new comment with @mentions support
  * 
  * @param int $post_id Post ID
  * @param string $user_name User's name
  * @param string $user_email User's email
  * @param string $content Comment content
+ * @param int $user_id User ID (optional)
  * @return array|false New comment data or false on failure
  */
-function add_comment($post_id, $user_name, $user_email, $content)
+function add_comment($post_id, $user_name, $user_email, $content, $user_id = null)
 {
     $db = get_db_connection();
 
-    $stmt = $db->prepare('INSERT INTO community_comments (post_id, user_name, user_email, content, votes) 
-                         VALUES (?, ?, ?, ?, 0)');
-    $stmt->bind_param('isss', $post_id, $user_name, $user_email, $content);
+    // Process @mentions if the mentions.php file exists
+    $has_mentions = false;
+    $mentions = [];
+
+    if (file_exists(__DIR__ . '/mentions/mentions.php')) {
+        require_once __DIR__ . '/mentions/mentions.php';
+
+        // Extract mentions from content
+        $mentions = extract_mentions($content);
+        $has_mentions = !empty($mentions);
+    }
+
+    $stmt = $db->prepare('INSERT INTO community_comments (post_id, user_name, user_email, content, votes, user_id) 
+                         VALUES (?, ?, ?, ?, 0, ?)');
+    $stmt->bind_param('isssi', $post_id, $user_name, $user_email, $content, $user_id);
 
     if ($stmt->execute()) {
         $comment_id = $db->insert_id;
 
         // Get the post data
         $post = get_post($post_id);
+
+        // Create notifications for mentioned users if applicable
+        if ($has_mentions && function_exists('create_mention_notifications')) {
+            create_mention_notifications($mentions, $post_id, $comment_id, $user_id);
+        }
 
         // Get the new comment
         $stmt = $db->prepare('SELECT * FROM community_comments WHERE id = ?');
@@ -211,6 +247,13 @@ function add_comment($post_id, $user_name, $user_email, $content)
             'user_name' => $user_name,
             'user_email' => $user_email
         ]);
+
+        // Process the comment content for display if needed
+        if ($has_mentions && function_exists('process_mentions')) {
+            $new_comment['processed_content'] = process_mentions($content, 'link');
+        } else {
+            $new_comment['processed_content'] = $content;
+        }
 
         return $new_comment;
     }

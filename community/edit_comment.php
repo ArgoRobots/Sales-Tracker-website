@@ -2,6 +2,7 @@
 session_start();
 require_once '../db_connect.php';
 require_once 'community_functions.php';
+require_once 'mentions/mentions.php';
 
 header('Content-Type: application/json');
 
@@ -59,6 +60,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Check if user has permission to edit this comment
     // Admin can edit any comment, regular users can only edit their own comments
     if ($role === 'admin' || $comment['user_id'] == $user_id) {
+        // Process @mentions in the comment content before saving
+        $mentions = extract_mentions($comment_content);
+        $has_mentions = !empty($mentions);
+
+        // Create notifications for any new mentions
+        if ($has_mentions) {
+            // Get the post ID for this comment
+            $post_id = $comment['post_id'];
+            create_mention_notifications($mentions, $post_id, $comment_id, $user_id);
+        }
+
         // Update the comment with new content
         $stmt = $db->prepare('UPDATE community_comments SET content = ? WHERE id = ?');
         $stmt->bind_param('si', $comment_content, $comment_id);
@@ -71,6 +83,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute();
             $result = $stmt->get_result();
             $updated_comment = $result->fetch_assoc();
+
+            // Process the comment content to include mention formatting
+            $updated_comment['processed_content'] = preg_replace('/@(\w+)/', '<a class="link" href="users/profile.php?username=$1">@$1</a>', htmlspecialchars($updated_comment['content']));
 
             $response = [
                 'success' => true,

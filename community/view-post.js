@@ -524,23 +524,35 @@ document.addEventListener("DOMContentLoaded", function () {
         // Save original content for cancellation
         commentElement.setAttribute("data-original-content", originalContent);
 
-        // Get the comment text (strip any HTML)
+        // Get the comment text, preserving only the raw @mentions (not the links)
+        // This fixes the issue where @mentions disappear during editing
         const tempDiv = document.createElement("div");
         tempDiv.innerHTML = originalContent;
+
+        // Replace all @mention links with plain @username text
+        const mentionLinks = tempDiv.querySelectorAll("a.link");
+        mentionLinks.forEach((link) => {
+          // Get the text content (should be @username)
+          const mentionText = link.textContent;
+          // Replace the link with the plain text mention
+          link.replaceWith(mentionText);
+        });
+
+        // Get the plain text with preserved @mentions
         const commentText = tempDiv.textContent.trim();
 
-        // Create and insert the edit form
+        // Create and insert the edit form - note the action="javascript:void(0);" to prevent page navigation
         const formHtml = `
-          <form class="inline-edit-form" data-comment-id="${commentId}">
-            <div class="form-group">
-              <textarea name="comment_content" rows="4" required>${commentText}</textarea>
-            </div>
-            <div class="form-actions">
-              <button type="button" id="cancel-edit" class="btn btn-gray">Cancel</button>
-              <button type="submit" class="btn btn-gray">Save Changes</button>
-            </div>
-          </form>
-        `;
+        <form class="inline-edit-form" action="javascript:void(0);" data-comment-id="${commentId}">
+          <div class="form-group">
+            <textarea name="comment_content" class="mentionable" rows="4" required>${commentText}</textarea>
+          </div>
+          <div class="form-actions">
+            <button type="button" id="cancel-edit" class="btn btn-gray">Cancel</button>
+            <button type="submit" class="btn btn-gray">Save Changes</button>
+          </div>
+        </form>
+      `;
 
         // Replace the comment content with the form
         commentContent.innerHTML = formHtml;
@@ -549,6 +561,13 @@ document.addEventListener("DOMContentLoaded", function () {
         const textarea = commentContent.querySelector("textarea");
         textarea.focus();
         textarea.selectionStart = textarea.selectionEnd = textarea.value.length;
+
+        // Initialize mentions system for the new textarea if needed
+        if (window.mentionsSystem) {
+          window.mentionsSystem.addMentionableElement(textarea);
+        } else if (window.initMentionsForElement) {
+          window.initMentionsForElement(textarea);
+        }
 
         // Add event listeners for the form
         const form = commentContent.querySelector("form");
@@ -569,9 +588,9 @@ document.addEventListener("DOMContentLoaded", function () {
           }
         });
 
-        // Form submit event
+        // Form submit event - AJAX implementation to prevent page reload
         form.addEventListener("submit", function (e) {
-          e.preventDefault();
+          e.preventDefault(); // Stop form from submitting normally
 
           const formData = new FormData(form);
           formData.append("comment_id", commentId);
@@ -590,9 +609,19 @@ document.addEventListener("DOMContentLoaded", function () {
             .then((response) => response.json())
             .then((data) => {
               if (data.success) {
-                // Format the updated content with line breaks
-                const updatedContent = nl2br(data.comment.content);
-                commentContent.innerHTML = updatedContent;
+                // Use the processed_content if available, or fall back to basic formatting
+                if (data.comment.processed_content) {
+                  commentContent.innerHTML = data.comment.processed_content;
+                } else {
+                  // Format the updated content with line breaks and preserve @mentions
+                  const updatedContent = data.comment.content
+                    .replace(/\n/g, "<br>")
+                    .replace(
+                      /@(\w+)/g,
+                      '<a class="link" href="users/profile.php?username=$1">@$1</a>'
+                    );
+                  commentContent.innerHTML = updatedContent;
+                }
 
                 // Show the comment controls again
                 const commentControls =
