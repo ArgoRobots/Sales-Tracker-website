@@ -3,10 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let postId = null;
   const postCard = document.querySelector(".post-card");
   if (postCard) {
-    postId =
-      postCard.getAttribute("data-post-id") ||
-      postCard.dataset.postId ||
-      postCard.getAttribute("id").replace("post-", "");
+    postId = postCard.getAttribute("data-post-id");
     postId = parseInt(postId, 10);
   }
 

@@ -9,26 +9,26 @@
  */
 function process_mentions($content)
 {
-    // Regular expression to find @mentions
-    $pattern = '/@(\w+)/';
+    // First remove any existing mention spans or links
+    $clean_content = preg_replace('/<(?:span|a) class="link"[^>]*>(@\w+)<\/(?:span|a)>/', '$1', $content);
 
-    // Replace @mentions with links
+    // Then process mentions properly - create actual clickable links
+    $pattern = '/@(\w+)/';
     $processed_content = preg_replace_callback(
         $pattern,
         function ($matches) {
             $username = $matches[1];
-
-            // Check if the mentioned user exists
             $user_id = get_user_id_by_username($username);
 
-            // If the user exists, create a link, otherwise return the original text
             if ($user_id) {
-                return '<span class="link" data-user-id="' . $user_id . '">@' . $username . '</span>';
+                // Create actual clickable link to user profile
+                return '<a class="link" href="users/profile.php?username=' . htmlspecialchars($username) . '" data-user-id="' . $user_id . '">@' . htmlspecialchars($username) . '</a>';
             } else {
-                return '@' . $username;
+                // Return the plain text if user doesn't exist
+                return '@' . htmlspecialchars($username);
             }
         },
-        $content
+        $clean_content
     );
 
     return $processed_content;

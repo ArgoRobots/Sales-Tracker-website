@@ -84,8 +84,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $result = $stmt->get_result();
             $updated_comment = $result->fetch_assoc();
 
-            // Process the comment content to include mention formatting
-            $updated_comment['processed_content'] = preg_replace('/@(\w+)/', '<a class="link" href="users/profile.php?username=$1">@$1</a>', htmlspecialchars($updated_comment['content']));
+            // Process the comment content using the proper mentions function
+            $updated_comment['processed_content'] = process_mentions(htmlspecialchars($updated_comment['content']));
 
             $response = [
                 'success' => true,

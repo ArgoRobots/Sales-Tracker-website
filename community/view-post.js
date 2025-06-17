@@ -230,7 +230,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Handle comment voting - updated with similar changes
+  // Handle comment voting
   const commentVoteButtons = document.querySelectorAll(".comment-vote-btn");
 
   commentVoteButtons.forEach((btn) => {
@@ -525,7 +525,6 @@ document.addEventListener("DOMContentLoaded", function () {
         commentElement.setAttribute("data-original-content", originalContent);
 
         // Get the comment text, preserving only the raw @mentions (not the links)
-        // This fixes the issue where @mentions disappear during editing
         const tempDiv = document.createElement("div");
         tempDiv.innerHTML = originalContent;
 
@@ -543,16 +542,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Create and insert the edit form - note the action="javascript:void(0);" to prevent page navigation
         const formHtml = `
-        <form class="inline-edit-form" action="javascript:void(0);" data-comment-id="${commentId}">
-          <div class="form-group">
-            <textarea name="comment_content" class="mentionable" rows="4" required>${commentText}</textarea>
-          </div>
-          <div class="form-actions">
-            <button type="button" id="cancel-edit" class="btn btn-gray">Cancel</button>
-            <button type="submit" class="btn btn-gray">Save Changes</button>
-          </div>
-        </form>
-      `;
+          <form class="inline-edit-form" action="javascript:void(0);" data-comment-id="${commentId}">
+            <div class="form-group">
+              <textarea name="comment_content" class="mentionable" rows="4" required>${commentText}</textarea>
+            </div>
+            <div class="form-actions">
+              <button type="button" id="cancel-edit" class="btn btn-gray">Cancel</button>
+              <button type="submit" class="btn btn-gray">Save Changes</button>
+            </div>
+          </form>
+        `;
 
         // Replace the comment content with the form
         commentContent.innerHTML = formHtml;
@@ -607,20 +606,18 @@ document.addEventListener("DOMContentLoaded", function () {
             body: formData,
           })
             .then((response) => response.json())
+            // In the form submit event handler, update the success callback:
             .then((data) => {
               if (data.success) {
                 // Use the processed_content if available, or fall back to basic formatting
                 if (data.comment.processed_content) {
                   commentContent.innerHTML = data.comment.processed_content;
                 } else {
-                  // Format the updated content with line breaks and preserve @mentions
-                  const updatedContent = data.comment.content
-                    .replace(/\n/g, "<br>")
-                    .replace(
-                      /@(\w+)/g,
-                      '<a class="link" href="users/profile.php?username=$1">@$1</a>'
-                    );
-                  commentContent.innerHTML = updatedContent;
+                  // If no processed_content provided, use the raw content with line breaks
+                  commentContent.innerHTML = data.comment.content.replace(
+                    /\n/g,
+                    "<br>"
+                  );
                 }
 
                 // Show the comment controls again

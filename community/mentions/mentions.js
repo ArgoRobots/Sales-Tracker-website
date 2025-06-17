@@ -295,15 +295,29 @@ class MentionsSystem {
 
     this.mentionDropdown.innerHTML = ""; // Clear previous results
 
-    if (this.suggestions.length === 0 && this.mentionText.length > 0) {
-      // Only show "No users found" if there was actually a query
+    // Handle empty suggestions
+    if (this.suggestions.length === 0) {
       const noResults = document.createElement("div");
-      noResults.className = "mention-item";
-      noResults.textContent = "No users found";
+      noResults.className = "mention-item-static"; // Different class for non-clickable items
+
+      if (this.mentionText.length === 0) {
+        // When user just typed "@" with no additional text
+        noResults.textContent = "Type to search for users...";
+        noResults.style.color = "#6b7280"; // Lighter color for hint text
+        noResults.style.fontStyle = "italic";
+        noResults.style.cursor = "default"; // No pointer cursor
+      } else {
+        // When user typed "@something" but no results found
+        noResults.textContent = "No users found";
+        noResults.style.color = "#6b7280";
+        noResults.style.cursor = "default"; // No pointer cursor
+      }
+
       this.mentionDropdown.appendChild(noResults);
       return;
     }
 
+    // Render actual suggestions
     this.suggestions.forEach((user, index) => {
       const item = document.createElement("div");
       item.className = "mention-item";
@@ -316,12 +330,12 @@ class MentionsSystem {
             .toUpperCase()}</div>`;
 
       item.innerHTML = `
-        ${avatar}
-        <div class="mention-details">
-            <div class="mention-username">${user.username}</div>
-            ${user.role ? `<div class="mention-role">${user.role}</div>` : ""}
-        </div>
-        `;
+      ${avatar}
+      <div class="mention-details">
+          <div class="mention-username">${user.username}</div>
+          ${user.role ? `<div class="mention-role">${user.role}</div>` : ""}
+      </div>
+      `;
 
       item.addEventListener("click", () => this.selectMention(user));
       item.addEventListener("mouseenter", () => {

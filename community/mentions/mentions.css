@@ -20,6 +20,23 @@
   transition: background-color 0.2s;
 }
 
+/* Non-clickable mention items (hints and no results) */
+.mention-item-static {
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  cursor: default;
+  color: #6b7280;
+  font-style: italic;
+  background-color: transparent;
+}
+
+/* No hover effects for static items */
+.mention-item-static:hover {
+  background-color: transparent;
+  cursor: default;
+}
+
 .mention-item:hover,
 .mention-item.selected {
   background-color: #f5f5f5;
@@ -63,36 +80,4 @@
 .mention-role {
   font-size: 12px;
   color: #777;
-}
-
-/* Styling for the @mention link in content */
-.link {
-  color: #3498db;
-  font-weight: 500;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.link:hover {
-  text-decoration: underline;
-}
-
-/* Styling for mentionable elements with a visual indicator */
-.mentionable {
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 8px 12px;
-  min-height: 40px;
-  line-height: 1.5;
-}
-
-.mentionable:focus {
-  border-color: #3498db;
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
-}
-
-/* Add a slight visual indicator for potential mentions */
-.mentionable[data-mentioning="true"] {
-  background-color: #f9f9f9;
 }

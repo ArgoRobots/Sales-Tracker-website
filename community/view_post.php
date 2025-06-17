@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once '../db_connect.php';
+require_once 'mentions/mentions.php';
 require_once 'community_functions.php';
 require_once 'formatting/formatting_functions.php';
 
@@ -114,6 +115,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
     <link rel="stylesheet" href="formatting/formatted-text.css">
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../resources/styles/button.css">
+    <link rel="stylesheet" href="../resources/styles/link.css">
     <link rel="stylesheet" href="../resources/header/style.css">
     <link rel="stylesheet" href="../resources/footer/style.css">
     <link rel="stylesheet" href="../resources/notifications/notifications.css">
@@ -229,7 +231,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                         </div>
                     </div>
 
-                    <!-- Enhanced display for bug reports with metadata -->
+                    <!-- Post content for bug reports with metadata -->
                     <?php if ($post['post_type'] === 'bug' && $has_metadata): ?>
                         <div class="post-body">
                             <div class="bug-report-container">
@@ -248,7 +250,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                                     <?php if (!empty($metadata['bug_version'])): ?>
                                         <div class="bug-info-item">
                                             <div class="bug-info-label">Version:</div>
-                                            <div class="bug-info-value"><?php echo render_formatted_text($metadata['bug_version']); ?></div>
+                                            <div class="bug-info-value"><?php echo process_mentions(render_formatted_text($metadata['bug_version'])); ?></div>
                                         </div>
                                     <?php endif; ?>
                                 </div>
@@ -256,7 +258,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                                 <?php if (!empty($metadata['bug_steps'])): ?>
                                     <div class="bug-info-section">
                                         <div class="bug-info-section-title">Steps to Reproduce</div>
-                                        <div class="bug-info-section-content"><?php echo render_formatted_text($metadata['bug_steps']); ?></div>
+                                        <div class="bug-info-section-content"><?php echo process_mentions(render_formatted_text($metadata['bug_steps'])); ?></div>
                                     </div>
                                 <?php endif; ?>
 
@@ -264,28 +266,28 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                                     <?php if (!empty($metadata['bug_expected'])): ?>
                                         <div class="bug-info-section">
                                             <div class="bug-info-section-title">Expected Result</div>
-                                            <div class="bug-info-section-content"><?php echo render_formatted_text($metadata['bug_expected']); ?></div>
+                                            <div class="bug-info-section-content"><?php echo process_mentions(render_formatted_text($metadata['bug_expected'])); ?></div>
                                         </div>
                                     <?php endif; ?>
 
                                     <?php if (!empty($metadata['bug_actual'])): ?>
                                         <div class="bug-info-section">
                                             <div class="bug-info-section-title">Actual Result</div>
-                                            <div class="bug-info-section-content"><?php echo render_formatted_text($metadata['bug_actual']); ?></div>
+                                            <div class="bug-info-section-content"><?php echo process_mentions(render_formatted_text($metadata['bug_actual'])); ?></div>
                                         </div>
                                     <?php endif; ?>
                                 </div>
 
                                 <div class="bug-info-section">
                                     <div class="bug-info-section-title">Additional Details</div>
-                                    <div class="bug-info-section-content"><?php echo render_formatted_text($post['content']); ?></div>
+                                    <div class="bug-info-section-content"><?php echo process_mentions(render_formatted_text($post['content'])); ?></div>
                                 </div>
                             </div>
                         </div>
                     <?php else: ?>
                         <!-- Regular post content display for non-bug posts or bugs without metadata -->
                         <div class="post-body">
-                            <?php echo render_formatted_text($post['content']); ?>
+                            <?php echo process_mentions(render_formatted_text($post['content'])); ?>
                         </div>
                     <?php endif; ?>
 
@@ -397,7 +399,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                                     </div>
                                 </div>
                                 <div class="comment-content">
-                                    <?php echo preg_replace('/@(\w+)/', '<a class="link" href="users/profile.php?username=$1">@$1</a>', htmlspecialchars($comment['content'])); ?>
+                                    <?php echo process_mentions(htmlspecialchars($comment['content'])); ?>
                                 </div>
                             </div>
                         </div>
