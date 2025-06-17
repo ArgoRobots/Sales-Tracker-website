@@ -3,6 +3,13 @@ session_start();
 require_once '../../db_connect.php';
 require_once 'formatting_functions.php';
 
+// Handle AJAX preview requests
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['content']) && isset($_POST['ajax_preview'])) {
+    header('Content-Type: text/html');
+    echo render_formatted_text($_POST['content']);
+    exit;
+}
+
 // Process preview content
 $previewContent = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['practice_content'])) {
@@ -194,12 +201,12 @@ $combinedExample = "- **Bold list item**\n- _Italic list item_\n- List item with
 
                     // Live update on every input
                     editor.addEventListener('input', function() {
-                        fetch('preview.php', {
+                        fetch('help.php', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/x-www-form-urlencoded',
                                 },
-                                body: 'content=' + encodeURIComponent(editor.value)
+                                body: 'content=' + encodeURIComponent(editor.value) + '&ajax_preview=1'
                             })
                             .then(response => response.text())
                             .then(html => {

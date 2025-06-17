@@ -282,7 +282,7 @@ function diffText(oldText, newText, characterLevel = false) {
 
   // For character-level diffing
   if (characterLevel) {
-    return improvedDiffCharacters(oldText, newText);
+    return diffCharacters(oldText, newText);
   }
 
   // For word-level diffing (original implementation)
@@ -315,7 +315,7 @@ function diffText(oldText, newText, characterLevel = false) {
  * @param {string} newText - The new text
  * @return {string} HTML with character-level differences highlighted
  */
-function improvedDiffCharacters(oldText, newText) {
+function diffCharacters(oldText, newText) {
   // If texts are identical, return unchanged
   if (oldText === newText) return newText;
 
