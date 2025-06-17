@@ -58,9 +58,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = register_user($username, $email, $password);
 
         if ($result['success']) {
-            // Debug log for troubleshooting
-            error_log("Registration successful. User ID: " . $result['user_id']);
-
             // Store user_id temporarily for verification
             $_SESSION['temp_user_id'] = $result['user_id'];
 

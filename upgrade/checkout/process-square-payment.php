@@ -14,7 +14,6 @@ require_once '../../email_sender.php';
 // Log incoming request data
 $request_log = 'Square payment request received at: ' . date('Y-m-d H:i:s') . "\n";
 $request_log .= 'Request IP: ' . $_SERVER['REMOTE_ADDR'] . "\n";
-error_log($request_log);
 
 // Get raw POST data
 $json_data = file_get_contents('php://input');
@@ -25,7 +24,6 @@ $masked_data = $data;
 if (isset($masked_data['source_id'])) {
     $masked_data['source_id'] = substr($masked_data['source_id'], 0, 4) . '...' . substr($masked_data['source_id'], -4);
 }
-error_log('Received payment data: ' . json_encode($masked_data));
 
 // Check for required data
 if (!$data || !isset($data['source_id']) || !isset($data['email'])) {
@@ -54,9 +52,6 @@ try {
     $api_base_url = $is_production ?
         'https://connect.squareup.com/v2' :
         'https://connect.squareupsandbox.com/v2';
-
-    error_log('Using Square ' . ($is_production ? 'Production' : 'Sandbox') . ' environment');
-    error_log('Using location ID: ' . $square_location_id);
 
     // Database connection
     $db = get_db_connection();
@@ -99,7 +94,6 @@ try {
     // Log the payment request (without sensitive data)
     $masked_payment_data = $payment_data;
     $masked_payment_data['source_id'] = substr($payment_data['source_id'], 0, 4) . '...' . substr($payment_data['source_id'], -4);
-    error_log('Square payment request: ' . json_encode($masked_payment_data));
 
     // Process the payment through Square API using cURL
     $ch = curl_init("$api_base_url/payments");
@@ -119,9 +113,6 @@ try {
     $curl_error = curl_error($ch);
     curl_close($ch);
 
-    // Log the response and HTTP code for debugging
-    error_log("Square API response (HTTP $http_code): " . $response_data);
-
     if ($http_code >= 200 && $http_code < 300) {
         $payment_result = json_decode($response_data, true);
 
@@ -132,13 +123,10 @@ try {
             $amount = $payment['amount_money']['amount'] / 100; // Convert cents to dollars
             $currency = $payment['amount_money']['currency'];
 
-            error_log("Payment completed with status: $status, transaction ID: $transaction_id");
-
             // Verify payment was approved
             if ($status === 'COMPLETED') {
                 // Create a new license key
                 $license_key = create_license_key($data['email']);
-                error_log("Generated license key: $license_key for email: " . $data['email']);
 
                 if ($license_key) {
                     // Update the license key with transaction details
@@ -158,7 +146,6 @@ try {
 
                     // Send license key via email
                     $email_sent = send_license_email($data['email'], $license_key);
-                    error_log("License email sent to " . $data['email'] . ": " . ($email_sent ? 'Success' : 'Failed'));
 
                     $response = [
                         'success' => true,
@@ -188,8 +175,6 @@ try {
                     );
                     $stmt->execute();
                     $stmt->close();
-
-                    error_log("Payment transaction recorded in database");
                 } else {
                     $response = [
                         'success' => false,

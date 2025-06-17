@@ -136,8 +136,6 @@ function logSecurityEvent($event, $details = '')
         'event' => $event,
         'details' => $details
     ];
-
-    error_log("SECURITY: " . json_encode($log_entry));
 }
 
 // Main upload handling
@@ -276,17 +274,14 @@ try {
     ];
 
     echo json_encode($response);
-
-    // Log successful upload
-    error_log("SUCCESS: Argo Sales Tracker data uploaded - " . basename($filename) . " ({$bytes_written} bytes)");
 } catch (Exception $e) {
     http_response_code(500);
     echo json_encode(['error' => 'Internal server error']);
     logSecurityEvent('exception', $e->getMessage());
-    error_log("UPLOAD ERROR: " . $e->getMessage());
+    error_log("Upload error: " . $e->getMessage());
 } catch (Error $e) {
     http_response_code(500);
     echo json_encode(['error' => 'Internal server error']);
     logSecurityEvent('fatal_error', $e->getMessage());
-    error_log("UPLOAD FATAL ERROR: " . $e->getMessage());
+    error_log("Upload fatal error: " . $e->getMessage());
 }

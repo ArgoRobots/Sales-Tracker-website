@@ -54,9 +54,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Debug information to help troubleshoot permission issues
-    error_log("Comment ID: $comment_id, User ID: $user_id, Comment User ID: {$comment['user_id']}, Role: $role");
-
     // Check if user has permission to edit this comment
     // Admin can edit any comment, regular users can only edit their own comments
     if ($role === 'admin' || $comment['user_id'] == $user_id) {

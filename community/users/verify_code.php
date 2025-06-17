@@ -6,9 +6,6 @@ require_once 'user_functions.php';
 $error = '';
 $success = false;
 
-// Debug info - remove after testing
-error_log("Session data: " . print_r($_SESSION, true));
-
 // Check if temp_user_id is set
 if (!isset($_SESSION['temp_user_id'])) {
     // Redirect to registration page if no temp user ID exists
@@ -18,7 +15,6 @@ if (!isset($_SESSION['temp_user_id'])) {
 
 // Store temp_user_id in a variable for easy access
 $user_id = $_SESSION['temp_user_id'];
-error_log("User ID for verification: $user_id");
 
 // Check if the user exists in the database
 $db = get_db_connection();
@@ -30,7 +26,6 @@ $user = $result->fetch_assoc();
 $stmt->close();
 
 if (!$user) {
-    error_log("User with ID $user_id not found during verification page load");
     header('Location: register.php?error=user_not_found');
     exit;
 }
@@ -57,7 +52,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->close();
 
         if (!$db_verification) {
-            error_log("User with ID $user_id not found during verification attempt");
             $error = 'User not found. Please register again.';
         } else {
             // Compare the codes directly
@@ -91,15 +85,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         // Remove temporary user ID
                         unset($_SESSION['temp_user_id']);
 
-                        error_log("Verification successful. Session updated: " . print_r($_SESSION, true));
-
                         // Generate and send license key
                         if (function_exists('generate_license_key') && function_exists('send_license_email')) {
                             $license_key = generate_license_key($verified_user['email']);
                             send_license_email($verified_user['email'], $license_key);
-                            error_log("License key sent to: " . $verified_user['email']);
-                        } else {
-                            error_log("License functions not available");
                         }
 
                         $success = true;

@@ -434,11 +434,12 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                         <?php endif; ?>
                     <?php else: ?>
                         <div class="login-required">
-                            <p>Please <a href="users/login.php">log in</a> or <a href="users/register.php">create an account</a> to comment on this post.</p>
+                            <p>Please <a class="link" href="users/login.php">log in</a> or
+                                <a class="link" href="users/register.php">create an account</a> to comment on this post.
+                            </p>
                         </div>
                     <?php endif; ?>
                 </div>
-
             </div>
         </div>
     </div>

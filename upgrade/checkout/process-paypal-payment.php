@@ -15,10 +15,6 @@ require_once '../../email_sender.php';
 $json_data = file_get_contents('php://input');
 $data = json_decode($json_data, true);
 
-// Log incoming request data
-error_log('PayPal payment request received at: ' . date('Y-m-d H:i:s'));
-error_log('Request data: ' . json_encode($data));
-
 // Check for required data
 if (!$data || !isset($data['orderID']) || !isset($data['payer_email'])) {
     echo json_encode([
@@ -62,7 +58,6 @@ try {
 
     // Step 3: Verify order status
     $order_status = $order_details['status'] ?? '';
-    error_log("PayPal order status: $order_status");
 
     // For PayPal, the order should already be captured by the frontend
     // But let's verify it's completed
@@ -82,8 +77,6 @@ try {
         $amount = $capture['amount']['value'] ?? $amount;
         $currency = $capture['amount']['currency_code'] ?? $currency;
     }
-
-    error_log("Payment verified: Email=$payer_email, Transaction=$transaction_id, Amount=$amount $currency");
 
     // Step 5: Database connection
     $db = get_db_connection();
@@ -111,8 +104,6 @@ try {
         $license_key = create_license_key($payer_email);
 
         if ($license_key) {
-            error_log("Generated license key: $license_key");
-
             // Update the license key with transaction details
             $stmt = $db->prepare('UPDATE license_keys SET 
                 transaction_id = ?, 
@@ -129,7 +120,6 @@ try {
 
             // Send license email
             $email_sent = send_license_email($payer_email, $license_key);
-            error_log("License email sent to $payer_email: " . ($email_sent ? 'Success' : 'Failed'));
 
             // Log transaction for record keeping
             $stmt = $db->prepare('INSERT INTO payment_transactions 
