@@ -13,7 +13,7 @@ class MentionsSystem {
       maxSuggestions: 5,
       mentionableElements: ".mentionable", // Use the mentionable class consistently
       dropdownClass: "mentions-dropdown",
-      linkClass: "link",
+      linkClass: "link-no-underline",
       postId: null,
       apiEndpoint: "mentions/search.php",
       ...options,
@@ -487,14 +487,6 @@ class MentionsSystem {
     );
 
     this.currentMentionableElement.innerHTML = processedContent;
-  }
-
-  /**
-   * Helper method to apply mentions to the content on form submit
-   * This is especially useful for textareas where we can't apply styling directly
-   */
-  static applyMentionsToContent(content, linkClass = "link") {
-    return content.replace(/@(\w+)/g, `<span class="${linkClass}">@$1</span>`);
   }
 
   /**

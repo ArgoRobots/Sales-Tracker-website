@@ -22,7 +22,7 @@ function process_mentions($content)
 
             if ($user_id) {
                 // Create actual clickable link to user profile
-                return '<a class="link" href="users/profile.php?username=' . htmlspecialchars($username) . '" data-user-id="' . $user_id . '">@' . htmlspecialchars($username) . '</a>';
+                return '<a class="link-no-underline" href="users/profile.php?username=' . htmlspecialchars($username) . '" data-user-id="' . $user_id . '">@' . htmlspecialchars($username) . '</a>';
             } else {
                 // Return the plain text if user doesn't exist
                 return '@' . htmlspecialchars($username);

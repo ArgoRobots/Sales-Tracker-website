@@ -223,16 +223,6 @@ header .header-inner .menu-container .menu .community:after {
   flex-direction: column;
 }
 
-.post-link {
-  text-decoration: none;
-  color: inherit;
-  display: block;
-}
-
-.post-link:hover .post-title {
-  color: var(--blue);
-}
-
 .post-header {
   display: flex;
   justify-content: space-between;
@@ -329,21 +319,11 @@ header .header-inner .menu-container .menu .community:after {
   color: #94a3b8;
 }
 
-.user-link,
-.view-comments-btn {
-  color: var(--blue);
-  text-decoration: none;
-}
-
-.user-link:hover,
-.view-comments-btn:hover {
-  text-decoration: underline;
-}
-
 .post-actions {
   display: flex;
   align-items: center;
   gap: 10px;
+  font-size: 14px;
 }
 
 .admin-actions {

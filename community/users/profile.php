@@ -951,7 +951,7 @@ if ($is_own_profile && isset($user['email'])) {
                                                 </div>
                                                 <div class="comment-meta-info">
                                                     <span class="comment-on">
-                                                        on post: <a href="../view_post.php?id=<?php echo $comment['post_id']; ?>" class="post-link">
+                                                        on post: <a href="../view_post.php?id=<?php echo $comment['post_id']; ?>" class="comment-link">
                                                             <?php echo htmlspecialchars($comment['post_title']); ?>
                                                         </a>
                                                     </span>

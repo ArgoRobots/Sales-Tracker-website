@@ -31,6 +31,7 @@ $current_user = $is_logged_in ? get_current_user_ID() : null;
     <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../resources/styles/checkbox.css">
+    <link rel="stylesheet" href="../resources/styles/link.css">
     <link rel="stylesheet" href="../resources/styles/button.css">
     <link rel="stylesheet" href="../resources/header/style.css">
     <link rel="stylesheet" href="../resources/footer/style.css">
@@ -129,7 +130,7 @@ $current_user = $is_logged_in ? get_current_user_ID() : null;
                         </div>
                         <!-- Post content remains the same -->
                         <div class="post-content">
-                            <a href="view_post.php?id=<?php echo $post['id']; ?>" class="post-link">
+                            <a href="view_post.php?id=<?php echo $post['id']; ?>" class="link-no-underline">
                                 <div class="post-header">
                                     <h3 class="post-title"><?php echo htmlspecialchars($post['title']); ?></h3>
                                     <div class="post-meta">
@@ -161,7 +162,7 @@ $current_user = $is_logged_in ? get_current_user_ID() : null;
                                 <div class="post-info">
                                     <span class="post-author">
                                         Posted by
-                                        <a href="users/profile.php?username=<?php echo urlencode(trim($post['user_name'])); ?>" class="user-link">
+                                        <a href="users/profile.php?username=<?php echo urlencode(trim($post['user_name'])); ?>" class="link-no-underline">
                                             <span class="author-avatar">
                                                 <?php if (!empty($post['avatar'])): ?>
                                                     <img src="<?php echo htmlspecialchars($post['avatar']); ?>" alt="Avatar">
@@ -189,7 +190,7 @@ $current_user = $is_logged_in ? get_current_user_ID() : null;
                                     </span>
                                 </div>
                                 <div class="post-actions">
-                                    <a href="view_post.php?id=<?php echo $post['id']; ?>" class="view-comments-btn">
+                                    <a href="view_post.php?id=<?php echo $post['id']; ?>" class="link-no-underline">
                                         Comments (<?php echo get_comment_count($post['id']); ?>)
                                     </a>
                                     <?php if (

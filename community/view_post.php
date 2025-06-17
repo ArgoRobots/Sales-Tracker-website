@@ -297,7 +297,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                             <!-- Author -->
                             <span class="post-author">
                                 Posted by
-                                <a href="users/profile.php?username=<?php echo urlencode($post['user_name']); ?>" class="user-link">
+                                <a href="users/profile.php?username=<?php echo urlencode($post['user_name']); ?>" class="link-no-underline">
                                     <span class="author-avatar">
                                         <?php if (!empty($post['avatar'])): ?>
                                             <img src="<?php echo htmlspecialchars($post['avatar']); ?>" alt="Avatar">
@@ -367,7 +367,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                             <div class="comment-main">
                                 <div class="comment-header">
                                     <div class="comment-author-info">
-                                        <a href="users/profile.php?username=<?php echo urlencode($comment['user_name']); ?>" class="user-link">
+                                        <a href="users/profile.php?username=<?php echo urlencode($comment['user_name']); ?>" class="link-no-underline">
                                             <span class="author-avatar">
                                                 <?php if (!empty($comment['avatar'])): ?>
                                                     <img src="<?php echo htmlspecialchars($comment['avatar']); ?>" alt="Avatar">

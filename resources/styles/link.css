@@ -1,8 +1,16 @@
 .link {
   color: var(--blue);
-  transition: 0.3s;
 }
 
 .link:hover {
   text-decoration: none;
+}
+
+.link-no-underline {
+  color: var(--blue);
+  text-decoration: none;
+}
+
+.link-no-underline:hover {
+  text-decoration: underline;
 }
