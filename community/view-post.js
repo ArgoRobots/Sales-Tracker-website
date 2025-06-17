@@ -699,9 +699,4 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   attachCommentListeners();
-
-  // Helper function to convert newlines to <br> tags
-  function nl2br(str) {
-    return str.replace(/\n/g, "<br>");
-  }
 });

@@ -250,7 +250,7 @@ function add_comment($post_id, $user_name, $user_email, $content, $user_id = nul
 
         // Process the comment content for display if needed
         if ($has_mentions && function_exists('process_mentions')) {
-            $new_comment['processed_content'] = process_mentions($content, 'link');
+            $new_comment['processed_content'] = process_mentions($content);
         } else {
             $new_comment['processed_content'] = $content;
         }

@@ -1,28 +1,19 @@
-/**
- * mentions-init.js
- * Initializes the MentionsSystem for consistent @mentions functionality
- * across all pages in the community forum.
- */
-
 document.addEventListener("DOMContentLoaded", function () {
-  // Get the post ID if it exists in the page
+  // Get the post ID
   let postId = null;
   const postCard = document.querySelector(".post-card");
   if (postCard) {
-    postId = postCard.getAttribute("data-post-id");
+    postId =
+      postCard.getAttribute("data-post-id") ||
+      postCard.dataset.postId ||
+      postCard.getAttribute("id").replace("post-", "");
+    postId = parseInt(postId, 10);
   }
 
-  // Initialize @mentions system
+  // Initialize system
   window.mentionsSystem = new MentionsSystem({
     postId: postId,
-    mentionableElements: ".mentionable", // Use class-based approach
-    minChars: 0, // Show dropdown immediately when @ is typed
+    mentionableElements: ".mentionable",
+    apiEndpoint: "/community/mentions/search.php",
   });
-
-  // Make the instance globally available to support dynamic content
-  window.initMentionsForElement = function (element) {
-    if (window.mentionsSystem) {
-      window.mentionsSystem.addMentionableElement(element);
-    }
-  };
 });

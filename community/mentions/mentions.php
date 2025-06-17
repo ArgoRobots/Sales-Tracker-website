@@ -1,17 +1,13 @@
 <?php
 
 /**
- * Functions for processing @mentions in post and comment content
- */
-
-/**
- * Process @mentions in content and convert them to links
+ * Process @mentions in post and comment content and convert them to links
  * 
  * @param string $content The content to process
  * @param string $link_class The CSS class to apply to the mention link
  * @return string The processed content with mentions converted to links
  */
-function process_mentions($content, $link_class = 'link')
+function process_mentions($content)
 {
     // Regular expression to find @mentions
     $pattern = '/@(\w+)/';
@@ -19,7 +15,7 @@ function process_mentions($content, $link_class = 'link')
     // Replace @mentions with links
     $processed_content = preg_replace_callback(
         $pattern,
-        function ($matches) use ($link_class) {
+        function ($matches) {
             $username = $matches[1];
 
             // Check if the mentioned user exists
@@ -27,7 +23,7 @@ function process_mentions($content, $link_class = 'link')
 
             // If the user exists, create a link, otherwise return the original text
             if ($user_id) {
-                return '<span class="' . $link_class . '" data-user-id="' . $user_id . '">@' . $username . '</span>';
+                return '<span class="link" data-user-id="' . $user_id . '">@' . $username . '</span>';
             } else {
                 return '@' . $username;
             }

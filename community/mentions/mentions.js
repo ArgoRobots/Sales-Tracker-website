@@ -7,16 +7,9 @@
 
 class MentionsSystem {
   constructor(options = {}) {
-    // Check if a global instance already exists
-    if (window.mentionsSystem && this !== window.mentionsSystem) {
-      console.log("Using existing MentionsSystem instance");
-      return window.mentionsSystem;
-    }
-
     // Default configuration
     this.config = {
       triggerChar: "@",
-      minChars: 0, // Show dropdown immediately when @ is typed
       maxSuggestions: 5,
       mentionableElements: ".mentionable", // Use the mentionable class consistently
       dropdownClass: "mentions-dropdown",
@@ -78,7 +71,6 @@ class MentionsSystem {
     this.observeDynamicElements();
 
     this.initialized = true;
-    console.log("MentionsSystem initialized");
   }
 
   /**
@@ -152,8 +144,6 @@ class MentionsSystem {
     element.addEventListener("focus", () => {
       this.currentMentionableElement = element;
     });
-
-    console.log("Attached listeners to:", element);
   }
 
   /**
@@ -164,7 +154,6 @@ class MentionsSystem {
     const text = el.value || el.innerText;
     const cursorPos = this.getCursorPosition(el);
 
-    // Find if we're in the middle of typing a mention
     const mentionState = this.getMentionState(text, cursorPos);
 
     if (mentionState.mentioning) {
@@ -172,11 +161,8 @@ class MentionsSystem {
       this.mentionStart = mentionState.start;
       this.mentionText = mentionState.text;
 
-      if (this.mentionText.length >= this.config.minChars) {
-        this.fetchSuggestions(this.mentionText);
-      } else {
-        this.hideDropdown();
-      }
+      // Always fetch suggestions when mentioning, even with empty text
+      this.fetchSuggestions(this.mentionText || "");
     } else {
       this.mentioning = false;
       this.hideDropdown();
@@ -241,29 +227,27 @@ class MentionsSystem {
    * Determine if the user is currently typing a mention
    */
   getMentionState(text, cursorPos) {
-    // Check if we're in the middle of typing a mention
-    let start = cursorPos - 1;
+    let i = cursorPos - 1;
 
-    // Move backwards to find the trigger character
-    while (
-      start >= 0 &&
-      text[start] !== this.config.triggerChar &&
-      text[start] !== " "
-    ) {
-      start--;
-    }
+    while (i >= 0) {
+      const char = text[i];
 
-    // If we found the trigger character
-    if (start >= 0 && text[start] === this.config.triggerChar) {
-      // Check if it's at the beginning or has a space before it
-      if (start === 0 || text[start - 1] === " " || text[start - 1] === "\n") {
-        const mentionText = text.substring(start + 1, cursorPos);
-        return {
-          mentioning: true,
-          start: start,
-          text: mentionText,
-        };
+      if (char === this.config.triggerChar) {
+        const beforeChar = text[i - 1];
+        if (i === 0 || /\s/.test(beforeChar)) {
+          const mentionText = text.substring(i + 1, cursorPos);
+          return {
+            mentioning: true,
+            start: i,
+            text: mentionText,
+          };
+        } else {
+          break;
+        }
       }
+
+      if (/\s/.test(char)) break;
+      i--;
     }
 
     return { mentioning: false };
@@ -274,44 +258,29 @@ class MentionsSystem {
    */
   async fetchSuggestions(query) {
     try {
-      const params = new URLSearchParams({
-        query: query,
-        postId: this.config.postId || "",
-      });
-
-      // Use a relative path that works regardless of the current page
-      let apiPath = this.config.apiEndpoint;
-
-      // Handle different page contexts by fixing the path
-      if (!apiPath.startsWith("/") && !apiPath.includes("://")) {
-        // Check if we're in the community directory
-        if (window.location.pathname.includes("/community/")) {
-          // We're already in the community directory
-          if (!apiPath.startsWith("mentions/")) {
-            apiPath = "mentions/" + apiPath;
-          }
-        } else {
-          // We might be in a subdirectory, try to get to the mentions directory
-          apiPath = "community/mentions/" + apiPath.replace("mentions/", "");
-        }
+      // Build URL parameters properly
+      const params = new URLSearchParams();
+      params.append("query", query);
+      if (this.config.postId) {
+        params.append("postId", this.config.postId);
       }
 
-      console.log("Fetching suggestions from:", apiPath);
-      const response = await fetch(`${apiPath}?${params}`);
+      const requestUrl = `${this.config.apiEndpoint}?${params.toString()}`;
+      const response = await fetch(requestUrl);
 
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
-      this.suggestions = data.users || [];
 
-      if (this.suggestions.length > 0) {
-        this.renderDropdown();
-        this.showDropdown();
-      } else {
-        this.hideDropdown();
+      if (!data || !Array.isArray(data.users)) {
+        throw new Error("Invalid API response format");
       }
+
+      this.suggestions = data.users;
+      this.renderDropdown();
+      this.showDropdown();
     } catch (error) {
       console.error("Error fetching suggestions:", error);
       this.hideDropdown();
@@ -322,12 +291,18 @@ class MentionsSystem {
    * Render the dropdown with suggestions
    */
   renderDropdown() {
-    if (!this.mentionDropdown) {
-      this.createDropdown();
-    }
+    if (!this.mentionDropdown) this.createDropdown();
 
-    this.mentionDropdown.innerHTML = "";
-    this.selectedIndex = 0;
+    this.mentionDropdown.innerHTML = ""; // Clear previous results
+
+    if (this.suggestions.length === 0 && this.mentionText.length > 0) {
+      // Only show "No users found" if there was actually a query
+      const noResults = document.createElement("div");
+      noResults.className = "mention-item";
+      noResults.textContent = "No users found";
+      this.mentionDropdown.appendChild(noResults);
+      return;
+    }
 
     this.suggestions.forEach((user, index) => {
       const item = document.createElement("div");
@@ -341,21 +316,14 @@ class MentionsSystem {
             .toUpperCase()}</div>`;
 
       item.innerHTML = `
-                ${avatar}
-                <div class="mention-details">
-                    <div class="mention-username">${user.username}</div>
-                    ${
-                      user.role
-                        ? `<div class="mention-role">${user.role}</div>`
-                        : ""
-                    }
-                </div>
-            `;
+        ${avatar}
+        <div class="mention-details">
+            <div class="mention-username">${user.username}</div>
+            ${user.role ? `<div class="mention-role">${user.role}</div>` : ""}
+        </div>
+        `;
 
-      item.addEventListener("click", () => {
-        this.selectMention(user);
-      });
-
+      item.addEventListener("click", () => this.selectMention(user));
       item.addEventListener("mouseenter", () => {
         this.selectedIndex = index;
         this.updateDropdownSelection();
@@ -406,12 +374,6 @@ class MentionsSystem {
     }px`;
     this.mentionDropdown.style.left = `${rect.left + scrollLeft}px`;
     this.mentionDropdown.style.display = "block";
-
-    console.log(
-      "Showing dropdown at:",
-      this.mentionDropdown.style.top,
-      this.mentionDropdown.style.left
-    );
   }
 
   /**
@@ -531,23 +493,7 @@ class MentionsSystem {
     }
     return false;
   }
-
-  /**
-   * Reset the initialization flag - use this if you need to reinitialize
-   */
-  reset() {
-    this.initialized = false;
-    return this;
-  }
 }
 
 // Export the module
 window.MentionsSystem = MentionsSystem;
-
-// Initialize when document is ready - this will create a global instance
-document.addEventListener("DOMContentLoaded", function () {
-  // Check if one exists already before creating a new one
-  if (!window.mentionsSystem) {
-    window.mentionsSystem = new MentionsSystem();
-  }
-});
