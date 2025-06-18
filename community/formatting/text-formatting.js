@@ -218,13 +218,15 @@ function insertLink(textarea) {
   if (!linkText) return; // User cancelled
 
   const linkUrl = prompt(
-    "Enter URL (only argorobots.com and Wikipedia are allowed):"
+    "Enter URL (only approved domains are allowed - see allowed domains list):"
   );
   if (!linkUrl) return; // User cancelled
 
   // Basic client-side validation as a UX enhancement
   if (!isAllowedUrl(linkUrl)) {
-    alert("Only URLs from argorobots.com and Wikipedia are allowed.");
+    alert(
+      "This URL is not from an approved domain. Please check the allowed domains list for permitted sites."
+    );
     return;
   }
 

@@ -27,6 +27,7 @@ try {
     // Get query parameters
     $query = isset($_GET['query']) ? trim($_GET['query']) : '';
     $post_id = isset($_GET['postId']) ? intval($_GET['postId']) : 0;
+    $current_user_id = $_SESSION['user_id']; // Get current user ID to exclude from results
 
     // Connect to the database
     $db = get_db_connection();
@@ -34,14 +35,14 @@ try {
         throw new Exception('Database connection failed');
     }
 
-    // Get users who have commented on the post
+    // Get users who have commented on the post (excluding current user)
     $commenters = [];
     if ($post_id > 0) {
         $sql_commenters = "
             SELECT DISTINCT u.id, u.username, u.avatar, u.role
             FROM community_users u
             JOIN community_comments c ON u.id = c.user_id
-            WHERE c.post_id = ?
+            WHERE c.post_id = ? AND u.id != ?
             ORDER BY c.created_at DESC
         ";
 
@@ -50,7 +51,7 @@ try {
             throw new Exception('Prepare failed: ' . $db->error);
         }
 
-        $stmt->bind_param('i', $post_id);
+        $stmt->bind_param('ii', $post_id, $current_user_id);
         if (!$stmt->execute()) {
             throw new Exception('Execute failed: ' . $stmt->error);
         }
@@ -61,12 +62,12 @@ try {
         }
         $stmt->close();
 
-        // Get the post author if not already in commenters
+        // Get the post author if not already in commenters (and not current user)
         $sql_author = "
             SELECT DISTINCT u.id, u.username, u.avatar, u.role
             FROM community_users u
             JOIN community_posts p ON u.id = p.user_id
-            WHERE p.id = ?
+            WHERE p.id = ? AND u.id != ?
         ";
 
         $stmt = $db->prepare($sql_author);
@@ -74,7 +75,7 @@ try {
             throw new Exception('Prepare failed: ' . $db->error);
         }
 
-        $stmt->bind_param('i', $post_id);
+        $stmt->bind_param('ii', $post_id, $current_user_id);
         if (!$stmt->execute()) {
             throw new Exception('Execute failed: ' . $stmt->error);
         }
@@ -90,21 +91,22 @@ try {
 
     // If query is empty (just '@'), show only commenters and post author
     if (empty($query)) {
-        // Return combined commenters and author (already collected earlier)
+        // Return combined commenters and author (already collected earlier, excluding current user)
         echo json_encode(['users' => array_values($commenters)]);
         exit;
     }
+
     // For non-empty queries, proceed with the existing search logic
     $search_exact_start = $query . '%';
     $search_anywhere = '%' . $query . '%';
 
     $users = [];
 
-    // First, get exact start matches
+    // First, get exact start matches (excluding current user)
     $sql_exact_start = "
         SELECT id, username, avatar, role
         FROM community_users
-        WHERE username LIKE ?
+        WHERE username LIKE ? AND id != ?
         ORDER BY username ASC
         LIMIT 10
     ";
@@ -114,7 +116,7 @@ try {
         throw new Exception('Prepare failed: ' . $db->error);
     }
 
-    $stmt->bind_param('s', $search_exact_start);
+    $stmt->bind_param('si', $search_exact_start, $current_user_id);
     if (!$stmt->execute()) {
         throw new Exception('Execute failed: ' . $stmt->error);
     }
@@ -125,13 +127,13 @@ try {
     }
     $stmt->close();
 
-    // Then, if we have fewer than 10 results, get partial matches anywhere in the username
+    // Then, if we have fewer than 10 results, get partial matches anywhere in the username (excluding current user)
     if (count($users) < 10) {
         $ids_to_exclude = !empty($users) ? implode(',', array_keys($users)) : '0';
         $sql_anywhere = "
             SELECT id, username, avatar, role
             FROM community_users
-            WHERE username LIKE ? AND id NOT IN ($ids_to_exclude)
+            WHERE username LIKE ? AND id NOT IN ($ids_to_exclude) AND id != ?
             ORDER BY username ASC
             LIMIT " . (10 - count($users));
 
@@ -140,7 +142,7 @@ try {
             throw new Exception('Prepare failed: ' . $db->error);
         }
 
-        $stmt->bind_param('s', $search_anywhere);
+        $stmt->bind_param('si', $search_anywhere, $current_user_id);
         if (!$stmt->execute()) {
             throw new Exception('Execute failed: ' . $stmt->error);
         }
@@ -152,7 +154,7 @@ try {
         $stmt->close();
     }
 
-    // Combine results, giving priority to commenters and the post author
+    // Combine results, giving priority to commenters and the post author (all already exclude current user)
     $combined_users = [];
 
     // First add exact matches from commenters

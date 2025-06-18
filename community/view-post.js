@@ -556,17 +556,18 @@ document.addEventListener("DOMContentLoaded", function () {
         // Replace the comment content with the form
         commentContent.innerHTML = formHtml;
 
-        // Set cursor position to end of text
+        // Get the textarea and initialize mentions BEFORE setting focus
         const textarea = commentContent.querySelector("textarea");
-        textarea.focus();
-        textarea.selectionStart = textarea.selectionEnd = textarea.value.length;
 
-        // Initialize mentions system for the new textarea if needed
-        if (window.mentionsSystem) {
-          window.mentionsSystem.addMentionableElement(textarea);
-        } else if (window.initMentionsForElement) {
-          window.initMentionsForElement(textarea);
-        }
+        // Initialize mentions system for the new textarea
+        initializeMentionsForTextarea(textarea);
+
+        // Set focus and cursor position after a brief delay to ensure mentions is ready
+        setTimeout(() => {
+          textarea.focus();
+          textarea.selectionStart = textarea.selectionEnd =
+            textarea.value.length;
+        }, 50);
 
         // Add event listeners for the form
         const form = commentContent.querySelector("form");
@@ -697,3 +698,39 @@ document.addEventListener("DOMContentLoaded", function () {
 
   attachCommentListeners();
 });
+
+function initializeMentionsForTextarea(textarea) {
+  const attemptInit = () => {
+    if (
+      window.mentionsSystem &&
+      typeof window.mentionsSystem.addMentionableElement === "function"
+    ) {
+      if (textarea.dataset.mentionsInitialized === "true") {
+        return true;
+      }
+
+      if (!textarea.classList.contains("mentionable")) {
+        textarea.classList.add("mentionable");
+      }
+
+      const success = window.mentionsSystem.addMentionableElement(textarea);
+
+      if (success) {
+        console.log("Mentions initialized for edit textarea");
+        return true;
+      }
+    }
+    return false;
+  };
+
+  if (!attemptInit()) {
+    setTimeout(() => {
+      if (!attemptInit()) {
+        if (window.mentionsSystem) {
+          window.mentionsSystem.attachListeners(textarea);
+        }
+        console.warn("Had to force initialize mentions for edit textarea");
+      }
+    }, 100);
+  }
+}

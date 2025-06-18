@@ -216,7 +216,6 @@ class MentionsSystem {
     ) {
       return element.selectionStart;
     } else {
-      // For contenteditable
       const selection = window.getSelection();
       const range = selection.getRangeAt(0);
       return range.startOffset;
@@ -297,6 +296,8 @@ class MentionsSystem {
 
     // Handle empty suggestions
     if (this.suggestions.length === 0) {
+      this.selectedIndex = -1; // Reset selection for empty results
+
       const noResults = document.createElement("div");
       noResults.className = "mention-item-static"; // Different class for non-clickable items
 
@@ -316,6 +317,9 @@ class MentionsSystem {
       this.mentionDropdown.appendChild(noResults);
       return;
     }
+
+    // Reset to first item when rendering suggestions
+    this.selectedIndex = 0;
 
     // Render actual suggestions
     this.suggestions.forEach((user, index) => {
@@ -469,7 +473,6 @@ class MentionsSystem {
    * Process all mentions in the content and add the link class
    */
   processMentions() {
-    // This method is for contenteditable elements
     if (
       !this.currentMentionableElement ||
       (this.currentMentionableElement.tagName.toLowerCase() !== "div" &&
