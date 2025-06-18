@@ -100,6 +100,7 @@ array_unshift($history, $current_post);
     <link rel="stylesheet" href="post-history.css">
     <link rel="stylesheet" href="view-post.css">
     <link rel="stylesheet" href="../resources/styles/button.css">
+    <link rel="stylesheet" href="../resources/styles/link.css">
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../resources/header/style.css">
     <link rel="stylesheet" href="../resources/footer/style.css">
@@ -157,7 +158,7 @@ array_unshift($history, $current_post);
                                     <strong>Edited by:</strong>
                                 <?php endif; ?>
 
-                                <a href="users/profile.php?username=<?php echo urlencode($version['username']); ?>">
+                                <a class="link" href="users/profile.php?username=<?php echo urlencode($version['username']); ?>">
                                     <?php echo htmlspecialchars($version['username']); ?>
                                 </a>
 

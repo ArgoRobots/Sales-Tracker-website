@@ -327,7 +327,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                             <!-- Last edited -->
                             <?php if ($post_last_edit): ?>
                                 <span class="post-last-edited">
-                                    <a href="post_history.php?id=<?php echo $post_id; ?>">Last edited by <?php echo htmlspecialchars($post_last_edit['username']); ?></a>
+                                    <a class="link" href="post_history.php?id=<?php echo $post_id; ?>">Last edited by <?php echo htmlspecialchars($post_last_edit['username']); ?></a>
                                 </span>
                             <?php endif; ?>
                         </div>

@@ -630,6 +630,7 @@ tbody tr:hover {
 
 .alert-error,
 .error-message {
+  text-align: center;
   background: #fee2e2;
   color: #b91c1c;
   border-color: #ef4444;

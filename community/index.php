@@ -57,9 +57,9 @@ $current_user = $is_logged_in ? get_current_user_ID() : null;
         <div class="community-actions">
             <div class="action-left">
                 <?php if ($is_logged_in): ?>
-                    <a href="create_post.php" class="btn btn-blue">Create New Post</a>
+                    <a href="create_post.php" class="create-new-post btn btn-blue">Create New Post</a>
                 <?php else: ?>
-                    <a href="users/login.php" class="btn btn-blue">Log in to Post</a>
+                    <a href="users/login.php" class="login-to-post btn btn-blue">Log in to Post</a>
                 <?php endif; ?>
 
                 <!-- Combined Sort/Filter dropdown -->

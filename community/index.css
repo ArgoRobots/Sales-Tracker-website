@@ -9,7 +9,7 @@ header .header-inner .menu-container .menu .community:after {
   border: 1px solid #bae6fd;
   color: #0369a1;
   text-align: center;
-  padding: 10px;
+  padding: 10px 20px;
   margin: 15px 20px;
   border-radius: 5px;
 }
@@ -491,6 +491,22 @@ header .header-inner .menu-container .menu .community:after {
   .community-header p {
     font-size: 16px;
   }
+
+  .login-to-post {
+    display: none !important;
+  }
+
+  .create-new-post {
+    width: 100% !important;
+  }
+
+  .filter-dropdown {
+    width: 100% !important;
+  }
+
+  .filter-select {
+    width: 100%;
+  }
 }
 
 @media (max-width: 640px) {
@@ -538,10 +554,5 @@ header .header-inner .menu-container .menu .community:after {
   .post-votes {
     min-width: 40px;
     padding: 5px;
-  }
-
-  .btn-blue {
-    font-size: 14px;
-    padding: 8px 12px;
   }
 }
