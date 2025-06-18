@@ -1,0 +1,74 @@
+.domains-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.domains-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.domains-header h1 {
+  margin: 30px 0 10px;
+}
+
+.domains-category {
+  background: var(--whiteBackground, #f9fafb);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.domains-category h3 {
+  margin-bottom: 15px;
+  padding-bottom: 5px;
+}
+
+.domains-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.domains-list li {
+  background: #ffffff;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.pattern-note {
+  background: #e3f2fd;
+  border: 1px solid #90caf9;
+  border-radius: 4px;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 20px;
+  font-weight: 500;
+  position: relative;
+  top: 80px;
+}
+
+.search-box {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px;
+  margin: 20px auto;
+  display: block;
+  border: 2px solid #e5e7eb;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.search-box:focus {
+  outline: none;
+}

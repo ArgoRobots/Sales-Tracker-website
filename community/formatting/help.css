@@ -150,6 +150,7 @@ kbd {
   position: relative;
   padding-left: 24px;
   line-height: 1.6;
+  margin-bottom: 8px;
 }
 
 .tips-list li::before {
@@ -161,6 +162,85 @@ kbd {
   height: 6px;
   border-radius: 50%;
   background-color: var(--blue);
+}
+
+/* @Mention specific styles */
+.mention-steps {
+  margin: 20px 0;
+}
+
+.step {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #f8fafc;
+  border-radius: 6px;
+  border-left: 3px solid var(--blue);
+}
+
+.step-number {
+  background-color: var(--blue);
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+.step-content {
+  flex: 1;
+}
+
+.step-content strong {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--blueText);
+}
+
+.step-content p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.feature-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.feature-list li {
+  position: relative;
+  padding-left: 24px;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.feature-list li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 16px;
+  height: 16px;
+  background-color: #10b981;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.mention-example-output {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Arial, sans-serif;
 }
 
 /* Back button */
@@ -187,6 +267,16 @@ kbd {
 
   .example-grid {
     grid-template-columns: 1fr;
+  }
+
+  .step {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .step-number {
+    margin-right: 0;
+    margin-bottom: 10px;
   }
 }
 

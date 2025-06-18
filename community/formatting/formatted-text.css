@@ -1,125 +1,125 @@
 .formatting-toolbar {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    background-color: #f8f9fa;
-    border: 1px solid #e5e7eb;
-    border-radius: 4px 4px 0 0;
-    padding: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  background-color: #f8f9fa;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px 4px 0 0;
+  padding: 5px;
 }
 
 .formatting-toolbar .format-btn {
-    background-color: #fff;
-    border: 1px solid #d1d5db;
-    border-radius: 3px;
-    color: #4b5563;
-    padding: 5px 8px;
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    height: 28px;
-    display: flex;
-    align-items: center;
-    width: auto;
-    min-width: 32px;
-    justify-content: center;
+  background-color: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 3px;
+  color: #4b5563;
+  padding: 5px 8px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  width: auto;
+  min-width: 32px;
+  justify-content: center;
 }
 
 .formatting-toolbar .format-btn:hover {
-    background-color: #f3f4f6;
-    border-color: #9ca3af;
+  background-color: #f3f4f6;
+  border-color: #9ca3af;
 }
 
 .formatting-toolbar .format-btn:active {
-    background-color: #e5e7eb;
+  background-color: #e5e7eb;
 }
 
-.formatting-toolbar+textarea {
-    border-radius: 0 0 4px 4px !important;
-    border-top: none !important;
-    max-height: 700px
+.formatting-toolbar + textarea {
+  border-radius: 0 0 4px 4px !important;
+  border-top: none !important;
+  max-height: 700px;
 }
 
 @media (max-width: 640px) {
-    .formatting-toolbar {
-        padding: 3px;
-    }
+  .formatting-toolbar {
+    padding: 3px;
+  }
 
-    .formatting-toolbar .format-btn {
-        padding: 4px 6px;
-        font-size: 12px;
-        height: 26px;
-    }
+  .formatting-toolbar .format-btn {
+    padding: 4px 6px;
+    font-size: 12px;
+    height: 26px;
+  }
 }
 
 .formatting-toolbar .help-btn {
-    margin-left: auto;
-    background-color: #3b82f6;
-    border: none;
-    color: white;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  margin-left: auto;
+  background-color: #3b82f6;
+  border: none;
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .formatting-toolbar .help-btn:hover {
-    background-color: #2563eb;
-    transform: scale(1.1);
+  background-color: #2563eb;
+  transform: scale(1.1);
 }
 
 .formatting-toolbar .help-btn:active {
-    transform: scale(0.9);
+  transform: scale(0.9);
 }
 
 .formatting-toolbar .help-btn svg {
-    width: 22px;
-    height: 22px;
-    stroke: white;
+  width: 22px;
+  height: 22px;
+  stroke: white;
 }
 
 .formatting-toolbar {
-    align-items: center;
+  align-items: center;
 }
 
 .formatted-text blockquote {
-    margin: .5em 0;
-    padding: .5em 1.5em;
-    background: #f8fafc;
-    border-left: 4px solid #3b82f6;
-    border-radius: 4px;
-    font-style: normal;
+  margin: 0.5em 0;
+  padding: 0.5em 1.5em;
+  background: #f8fafc;
+  border-left: 4px solid #3b82f6;
+  border-radius: 4px;
+  font-style: normal;
 }
 
 .formatted-text ul,
 .formatted-text ol {
-    padding-left: 1.5em;
+  padding-left: 1.5em;
 }
 
 .formatted-text li {
-    margin: 0.25em 0;
+  margin: 0.25em 0;
 }
 
 /* Link styles */
 .formatted-text a {
-    color: #3b82f6;
-    text-decoration: none;
+  color: var(--blue);
+  text-decoration: none;
 }
 
 .formatted-text a:hover {
-    color: #1d4ed8;
-    text-decoration: underline;
+  color: #1d4ed8;
+  text-decoration: underline;
 }
 
 .invalid-link-warning {
-    color: #dc2626;
-    font-size: 0.9em;
-    font-style: italic;
+  color: #dc2626;
+  font-size: 0.9em;
+  font-style: italic;
 }
 
 /* Link button styles */
 .format-btn.link-btn svg {
-    stroke: #3b82f6;
+  stroke: #3b82f6;
 }

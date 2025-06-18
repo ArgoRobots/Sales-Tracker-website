@@ -87,7 +87,7 @@ function process_links($text)
 }
 
 /**
- * Validates if a URL is allowed (only argorobots.com and Wikipedia domains)
+ * Validates if a URL is allowed
  *
  * @param string $url The URL to validate
  * @return bool True if URL is allowed, false otherwise
@@ -103,14 +103,151 @@ function is_allowed_url($url)
 
     $host = strtolower($parsed_url['host']);
 
-    // Check if it's from argorobots.com (including subdomains)
-    if ($host === 'argorobots.com' || strpos($host, '.argorobots.com') !== false) {
+    // Define allowed domains organized by category
+    $allowed_domains = [
+        // Company domain
+        'argorobots.com',
+
+        // Educational & Reference
+        'wikipedia.org',
+        'w3schools.com',
+        'developer.mozilla.org', // MDN Web Docs
+        'docs.microsoft.com',
+        'dev.to',
+        'medium.com',
+
+        // Developer Communities & Q&A
+        'stackoverflow.com',
+        'stackexchange.com',
+        'superuser.com',
+        'serverfault.com',
+        'askubuntu.com',
+        'mathoverflow.net',
+        'reddit.com',
+        'news.ycombinator.com', // Hacker News
+
+        // Code Repositories & Tools
+        'github.com',
+        'gitlab.com',
+        'bitbucket.org',
+        'codepen.io',
+        'jsfiddle.net',
+        'replit.com',
+        'codesandbox.io',
+
+        // Google Services
+        'google.com',
+        'youtube.com',
+        'googledocs.com',
+        'googleusercontent.com',
+        'google.dev', // Google for Developers
+
+        // Microsoft Services
+        'microsoft.com',
+        'visualstudio.com',
+        'azure.microsoft.com',
+
+        // Programming Language Official Sites
+        'php.net',
+        'python.org',
+        'nodejs.org',
+        'reactjs.org',
+        'vuejs.org',
+        'angular.io',
+        'laravel.com',
+        'symfony.com',
+        'wordpress.org',
+        'jquery.com',
+
+        // Package Managers & Libraries
+        'npmjs.com',
+        'packagist.org', // PHP packages
+        'pypi.org', // Python packages
+        'nuget.org', // .NET packages
+        'mvnrepository.com', // Maven (Java)
+        'crates.io', // Rust packages
+
+        // Cloud Platforms & Services
+        'aws.amazon.com',
+        'cloud.google.com',
+        'digitalocean.com',
+        'heroku.com',
+        'netlify.com',
+        'vercel.com',
+
+        // Development Tools
+        'postman.com',
+        'insomnia.rest',
+        'docker.com',
+        'kubernetes.io',
+        'jenkins.io',
+        'atlassian.com', // Jira, Confluence, etc.
+
+        // Tech News & Blogs
+        'techcrunch.com',
+        'arstechnica.com',
+        'wired.com',
+        'theverge.com',
+
+        // Standards & Specifications
+        'w3.org',
+        'ietf.org',
+        'whatwg.org',
+        'ecma-international.org',
+
+        // Security & Best Practices
+        'owasp.org',
+        'cve.mitre.org',
+        'nvd.nist.gov',
+    ];
+
+    // Check for exact domain matches
+    if (in_array($host, $allowed_domains)) {
         return true;
     }
 
-    // Check if it's from Wikipedia
-    if ($host === 'wikipedia.org' || strpos($host, '.wikipedia.org') !== false) {
-        return true;
+    // Check for subdomain matches (e.g., subdomain.example.com)
+    foreach ($allowed_domains as $allowed_domain) {
+        if (str_ends_with($host, '.' . $allowed_domain)) {
+            return true;
+        }
+    }
+
+    // Special cases for domains with country codes or variations
+    $special_patterns = [
+        // Wikipedia in different languages (e.g., en.wikipedia.org, fr.wikipedia.org)
+        '/^[a-z]{2,3}\.wikipedia\.org$/',
+
+        // Stack Exchange network sites (e.g., meta.stackoverflow.com, gaming.stackexchange.com)
+        '/^[a-z0-9\-]+\.stack(overflow|exchange)\.com$/',
+
+        // Google country domains (e.g., google.co.uk, google.ca)
+        '/^google\.(com?\.)?[a-z]{2,3}$/',
+
+        // GitHub user/org pages (e.g., username.github.io)
+        '/^[a-z0-9\-]+\.github\.io$/',
+
+        // GitLab pages (e.g., username.gitlab.io)
+        '/^[a-z0-9\-]+\.gitlab\.io$/',
+
+        // Microsoft domains (e.g., docs.microsoft.com, learn.microsoft.com)
+        '/^[a-z0-9\-]+\.microsoft\.com$/',
+
+        // AWS documentation subdomains
+        '/^[a-z0-9\-]+\.aws\.amazon\.com$/',
+
+        // Netlify app domains (e.g., app-name.netlify.app)
+        '/^[a-z0-9\-]+\.netlify\.app$/',
+
+        // Vercel app domains (e.g., app-name.vercel.app)
+        '/^[a-z0-9\-]+\.vercel\.app$/',
+    ];
+
+    // Check against special patterns
+    foreach ($special_patterns as $pattern) {
+        if (preg_match($pattern, $host)) {
+            return true;
+        }
     }
 
     return false;

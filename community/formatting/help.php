@@ -36,6 +36,7 @@ $combinedExample = "- **Bold list item**\n- _Italic list item_\n- List item with
     <link rel="stylesheet" href="help.css">
     <link rel="stylesheet" href="formatted-text.css">
     <link rel="stylesheet" href="../../resources/styles/button.css">
+    <link rel="stylesheet" href="../../resources/styles/link.css">
     <link rel="stylesheet" href="../../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../../resources/header/style.css">
     <link rel="stylesheet" href="../../resources/header/dark.css">
@@ -148,7 +149,10 @@ $combinedExample = "- **Bold list item**\n- _Italic list item_\n- List item with
                 </div>
                 <div class="shortcut-tip">Shortcut: <kbd>Ctrl</kbd> + <kbd>K</kbd></div>
             </div>
-            <p class="note"><strong>Note:</strong> For security reasons, only links to argorobots.com and Wikipedia domains are permitted. Links to other domains will be displayed as text only.</p>
+            <p class="note"><strong>Note:</strong> For security reasons, only links to approved domains are permitted.
+                Links to other domains will be displayed as text only.
+                <a class="link-no-underline" href="allowed-domains.php">View the complete list of allowed domains</a>.
+            </p>
             <div class="example example-wide">
                 <h4>Link to Disallowed Domain (Example)</h4>
                 <div class="example-input">
@@ -156,6 +160,59 @@ $combinedExample = "- **Bold list item**\n- _Italic list item_\n- List item with
                 </div>
                 <div class="example-output">
                     <?= render_formatted_text("[Disallowed Link](https://example.com)") ?>
+                </div>
+            </div>
+        </div>
+
+        <!-- @Mentions Section -->
+        <div class="formatting-section">
+            <h3>@Mentions</h3>
+            <p>Use @mentions to notify other users when you reference them in posts or comments. This links to their profile.</p>
+
+            <div class="example example-wide">
+                <h4>How to @Mention Users</h4>
+                <div class="mention-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <strong>Type the @ symbol</strong>
+                            <p>Start typing <code>@</code> in any text field (posts, comments, etc.)</p>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <strong>See the dropdown</strong>
+                            <p>A dropdown will appear showing relevant users. If you're in a post's comments, you'll see the post author and other commenters first.</p>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <strong>Search or select</strong>
+                            <p>Continue typing to search for specific users, or use <kbd>↑</kbd> <kbd>↓</kbd> arrow keys to navigate the list.</p>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <strong>Complete the mention</strong>
+                            <p>Press <kbd>Enter</kbd> or click to select a user. The mention will be inserted as <code>@username</code>.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="example example-wide">
+                <h4>@Mention Example</h4>
+                <div class="example-input">
+                    Great point @john_doe! I agree with your suggestion.
+                </div>
+                <div class="example-output mention-example-output">
+                    Great point <a href="#" class="link-no-underline">@john_doe</a>! I agree with your suggestion.
                 </div>
             </div>
         </div>
