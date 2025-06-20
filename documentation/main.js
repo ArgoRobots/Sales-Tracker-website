@@ -6,6 +6,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const isMobile = () => window.innerWidth <= 768;
 
+  // Flag to track if navigation was triggered by click
+  let isNavigating = false;
+
   const toggleSidebar = () => {
     sidebar.classList.toggle("active");
     sidebarToggle.classList.toggle("active");
@@ -64,6 +67,9 @@ document.addEventListener("DOMContentLoaded", function () {
         const targetElement = document.getElementById(targetId);
 
         if (targetElement) {
+          // Set navigation flag
+          isNavigating = true;
+
           // Remove active class from all nav links
           navLinks.forEach((link) => link.classList.remove("active"));
 
@@ -79,6 +85,12 @@ document.addEventListener("DOMContentLoaded", function () {
             top: targetPosition,
             behavior: "smooth",
           });
+
+          // Reset navigation flag after scrolling completes
+          setTimeout(() => {
+            isNavigating = false;
+          }, 1000); // Adjust timeout based on scroll duration
+
           closeSidebar();
         }
       }
@@ -87,6 +99,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Function to set active nav item based on scroll position
   function setActiveNavItem() {
+    // Don't update URL if navigation was triggered by click
+    if (isNavigating) {
+      return;
+    }
+
     // Check if user is at the very top of the page
     if (window.scrollY <= 10) {
       // Remove active class from all nav links
@@ -95,6 +112,11 @@ document.addEventListener("DOMContentLoaded", function () {
       document
         .querySelector(".nav-links li:first-child")
         ?.classList.add("active");
+
+      // Update URL to remove hash when at top
+      if (history.replaceState && window.location.hash) {
+        history.replaceState(null, null, window.location.pathname);
+      }
 
       return;
     }
@@ -126,7 +148,11 @@ document.addEventListener("DOMContentLoaded", function () {
         activeLink.classList.add("active");
 
         // Update URL hash as user scrolls (without affecting scroll position)
-        if (history.replaceState) {
+        // Only update if the current hash is different
+        if (
+          history.replaceState &&
+          window.location.hash !== `#${currentSection}`
+        ) {
           history.replaceState(null, null, `#${currentSection}`);
         }
       }
