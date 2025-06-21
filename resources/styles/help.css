@@ -251,7 +251,23 @@ kbd {
   margin-bottom: 30px;
 }
 
+/* Back link */
+.back-link {
+  display: inline-block;
+  margin-bottom: 20px;
+  font-weight: 500;
+  position: relative;
+  top: 80px;
+}
+
 /* Media queries for responsive design */
+@media (max-width: 850px) {
+  .back-link {
+    top: 50px !important;
+    margin-bottom: 30px;
+  }
+}
+
 @media (max-width: 768px) {
   .formatting-help-container {
     padding: 40px 15px;
@@ -278,8 +294,15 @@ kbd {
     margin-right: 0;
     margin-bottom: 10px;
   }
+
+  .help-btn {
+    display: none !important;
+  }
 }
 
-.help-btn {
-  display: none !important;
+@media (max-width: 480px) {
+  .back-link {
+    top: 40px !important;
+    font-size: 14px;
+  }
 }

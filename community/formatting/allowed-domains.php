@@ -15,8 +15,8 @@ require_once 'formatting_functions.php';
     <script src="../../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../../resources/scripts/main.js"></script>
 
-    <link rel="stylesheet" href="help.css">
     <link rel="stylesheet" href="allowed-domains.css">
+    <link rel="stylesheet" href="../../resources/styles/help.css">
     <link rel="stylesheet" href="../../resources/styles/button.css">
     <link rel="stylesheet" href="../../resources/styles/link.css">
     <link rel="stylesheet" href="../../resources/styles/custom-colors.css">
