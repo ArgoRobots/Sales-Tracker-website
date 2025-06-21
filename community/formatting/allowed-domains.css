@@ -50,14 +50,6 @@
   margin: 10px 0;
 }
 
-.back-link {
-  display: inline-block;
-  margin-bottom: 20px;
-  font-weight: 500;
-  position: relative;
-  top: 80px;
-}
-
 .search-box {
   width: 100%;
   max-width: 400px;
