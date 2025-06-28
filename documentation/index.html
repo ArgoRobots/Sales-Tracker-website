@@ -67,9 +67,20 @@
                         </li>
                         <li data-scroll-to="analytics" title="View analytics features">Analytics Dashboard</li>
                         <li data-scroll-to="receipts" title="Learn about receipt management">Receipt Management</li>
-                        <li data-scroll-to="spreadsheets" title="Learn about spreadsheet features">Spreadsheet
-                            Import/Export</li>
+                        <li data-scroll-to="spreadsheet-import" title="Learn about importing spreadsheets">Spreadsheet
+                            Import</li>
+                        <li data-scroll-to="spreadsheet-export" title="Learn about exporting spreadsheets">Spreadsheet
+                            Export</li>
                         <li data-scroll-to="search-bar" title="Learn about search features">Advanced Search</li>
+                    </ul>
+                </div>
+
+                <!-- Reference section -->
+                <div class="nav-section">
+                    <h3>Reference</h3>
+                    <ul class="nav-links">
+                        <li data-scroll-to="supported-currencies" title="View supported currencies">Supported Currencies
+                        </li>
                     </ul>
                 </div>
 
@@ -424,21 +435,16 @@
                 </div>
             </section>
 
-            <!-- Spreadsheet Import/Export section -->
-            <section id="spreadsheets" class="article">
-                <h2>Spreadsheet Import/Export</h2>
-                <p>Easily move your data in and out of Argo Sales Tracker using Excel spreadsheets.</p>
+            <!-- Spreadsheet Import section -->
+            <section id="spreadsheet-import" class="article">
+                <h2>Spreadsheet Import</h2>
+                <p>Import your existing business data from Excel spreadsheets into Argo Sales Tracker. The import system
+                    supports multiple currencies and can automatically detect the currency used in your data.</p>
 
-                <h3>Importing Data</h3>
-                <ol class="steps-list">
-                    <li>Prepare your spreadsheet following our <a class="link"
-                            href="../resources/downloads/Argo Sales Tracker format.xlsx">template format</a>
-                    <li>Click "File > Import spreadsheet"
-                    <li>Select your file and choose what to import
-                    <li>Review and confirm the import
-                </ol>
-
-                <p>Your Excel file must contain the following sheets:</p>
+                <h3>Preparing Your Spreadsheet</h3>
+                <p>Download our <a class="link" href="../resources/downloads/Argo Sales Tracker format.xlsx">template
+                        spreadsheet</a> to see the exact format required. Your Excel file can include any combination of
+                    the following sheets (not all are required):</p>
 
                 <div class="info-box">
                     <ul>
@@ -451,37 +457,360 @@
                     </ul>
                 </div>
 
-                <p>Your Excel file must be in the following format:</p>
+                <h3>Formatting Requirements</h3>
                 <div class="info-box">
+                    <p><strong>Simple approach:</strong> Download our <a class="link"
+                            href="../resources/downloads/Argo Sales Tracker format.xlsx">template spreadsheet</a> and
+                        follow the exact format shown. This is much easier than trying to remember formatting rules!</p>
+
+                    <p>Key points:</p>
                     <ul>
-                        <li><strong>Multi-item transactions:</strong> Only the first row contains the transaction ID,
-                            date, currency, and totals. For additional items in the same transaction, leave the ID cell
-                            empty.</li>
-                        <li><strong>Empty cells:</strong> Can be left blank or use '-'. </li>
-                        <li><strong>Currency values:</strong> Use decimal format with two decimal places (e.g., 250.00).
-                            All monetary values in transaction sheets need to be in USD.</li>
-                        <li><strong>Country names:</strong> Need to match the <a class="link"
-                                href="accepted_countries.php">system's country list</a> or use recognized
-                            variants (e.g., "US", "USA", etc. are recognized as "United States").</li>
-                        <li><strong>Date format:</strong> Use YYYY-MM-DD format (e.g., 2025-01-15).</li>
+                        <li><strong>Sheet names:</strong> Use "Accountants", "Companies", "Purchase products", "Sale
+                            products", "Purchases", "Sales" (case doesn't matter)</li>
+                        <li><strong>Date format:</strong> YYYY-MM-DD (e.g., 2025-01-15)</li>
+                        <li><strong>Country names:</strong> Must match the <a class="link"
+                                href="accepted_countries.php">accepted country list</a></li>
+                        <li><strong>Everything else:</strong> Follow the template format exactly</li>
                     </ul>
                 </div>
 
-                <div class="warning-box">
-                    <strong>Important:</strong> When importing data, ensure your spreadsheet follows the exact format
-                    described
-                    above. Download our template <a class="link"
-                        href="../resources/downloads/Argo Sales Tracker format.xlsx">here</a>.
+                <h3>Currency Support</h3>
+                <p>The import system supports <a class="link" data-scroll-to="supported-currencies">28 different
+                        currencies</a>. The system will attempt to automatically detect the currency from your
+                    spreadsheet data, but you can also manually select the source currency during import.</p>
+
+                <div class="info-box">
+                    <strong>Multi-Currency Support:</strong> If your spreadsheet contains data in a different currency
+                    than your default, the system will automatically convert all values using real-time exchange rates
+                    for the transaction dates.
                 </div>
 
-                <h3>Exporting Data</h3>
+                <h3>How to Import</h3>
                 <ol class="steps-list">
-                    <li>Click "File > Export"
-                    <li>Select "Excel spreadsheet (.xlsx) from the drop down menu"</li>
-                    <li>Choose a location for your export
-                    <li>The exported file will contain separate worksheets for: Purchases,
-                        Sales, Categories, Products, Companies, and Accountants
+                    <li>Click "File > Import spreadsheet"</li>
+                    <li>Select your Excel file</li>
+                    <li>The system will detect which data sheets are available and show a preview</li>
+                    <li>Review the detected currency (or select manually if needed)</li>
+                    <li>Select which data sections you want to import using the checkboxes</li>
+                    <li>Optionally select a receipts folder if you have receipt files to import</li>
+                    <li>Click "Import" to begin the process</li>
                 </ol>
+
+                <h3>What Gets Created Automatically</h3>
+                <p>The import system is smart about handling missing data:</p>
+                <ul>
+                    <li><strong>Companies:</strong> If a transaction references a company that doesn't exist, it will be
+                        automatically created</li>
+                    <li><strong>Categories:</strong> If a product references a category that doesn't exist, it will be
+                        automatically created</li>
+                </ul>
+
+                <h3>Receipt Import</h3>
+                <p>If you have receipt files to import alongside your data:</p>
+                <ol class="steps-list">
+                    <li>Organize your receipt files in a folder on your computer</li>
+                    <li>In your spreadsheet, include the receipt filename in the "Receipt" column</li>
+                    <li>During import, select the folder containing your receipt files</li>
+                    <li>The system will automatically link receipts to their corresponding transactions</li>
+                </ol>
+
+                <div class="info-box">
+                    <strong>Tip:</strong> The system automatically looks for a receipts folder next to your
+                    spreadsheet file with names like "receipts".
+                </div>
+
+                <h3>Error Handling</h3>
+                <p>If the import encounters errors (like invalid monetary values), you'll be given options to:</p>
+                <ul>
+                    <li><strong>Skip:</strong> Skip the problematic transaction and continue importing others</li>
+                    <li><strong>Retry:</strong> Correct the value in the spreadsheet and try again</li>
+                    <li><strong>Cancel:</strong> Stop the import process entirely</li>
+                </ul>
+
+                <div class="warning-box">
+                    <strong>Rollback Protection:</strong> If you cancel an import or encounter serious errors, all
+                    changes are automatically rolled back, leaving your data unchanged.
+                </div>
+            </section>
+
+            <!-- Spreadsheet Export section -->
+            <section id="spreadsheet-export" class="article">
+                <h2>Spreadsheet Export</h2>
+                <p>Export your data to Excel spreadsheets for backup, analysis, or sharing with accountants and business
+                    partners.</p>
+
+                <h3>Exporting Your Data</h3>
+                <ol class="steps-list">
+                    <li>Click "File > Export"</li>
+                    <li>Select "Excel spreadsheet (.xlsx)" from the dropdown menu</li>
+                    <li>Choose your preferred currency for the export</li>
+                    <li>Select a location to save your export file</li>
+                </ol>
+
+                <h3>What Gets Exported</h3>
+                <p>The exported Excel file contains separate worksheets for each data type:</p>
+                <ul>
+                    <li><strong>Purchases:</strong> All purchase transactions with complete details</li>
+                    <li><strong>Sales:</strong> All sales transactions with complete details</li>
+                    <li><strong>Purchase products:</strong> All products available for purchasing</li>
+                    <li><strong>Sale products:</strong> All products available for selling</li>
+                    <li><strong>Companies:</strong> List of all companies</li>
+                    <li><strong>Accountants:</strong> List of all accountants</li>
+                </ul>
+
+                <h3>Currency Conversion</h3>
+                <p>When exporting, you can choose any of the <a class="link"
+                        data-scroll-to="supported-currencies">supported currencies</a>. The system will:</p>
+                <ul>
+                    <li>Convert all monetary values to your chosen currency using historical exchange rates</li>
+                    <li>Use the exact exchange rate that was valid on each transaction's date</li>
+                    <li>Display values with proper currency formatting</li>
+                    <li>Add a note at the top indicating which currency is being used</li>
+                </ul>
+
+                <div class="info-box">
+                    <strong>Multi-Item Transactions:</strong> Transactions with multiple items are exported with the
+                    main transaction details on the first row, and additional items on subsequent rows with empty
+                    transaction ID cells.
+                </div>
+
+                <h3>Receipt Export</h3>
+                <p>Receipt filenames are included in the exported spreadsheet. If you need the actual receipt files:</p>
+                <ol class="steps-list">
+                    <li>Select the transactions you want to export receipts for in the main view</li>
+                    <li>Right-click and select "Export receipts"</li>
+                    <li>Choose a destination folder</li>
+                    <li>All receipts will be organized in a dated folder structure</li>
+                </ol>
+
+                <h3>Chart Export</h3>
+                <p>Charts from the Analytics Dashboard can also be exported to Excel with full data:</p>
+                <ol class="steps-list">
+                    <li>Right-click any chart in the Analytics Dashboard</li>
+                    <li>Select "Export to Microsoft Excel"</li>
+                    <li>Choose a save location</li>
+                    <li>The exported file will include both the chart and the underlying data</li>
+                </ol>
+
+                <div class="info-box">
+                    <strong>File Naming:</strong> If a file with the same name already exists, the system automatically
+                    adds a number to create a unique filename.
+                </div>
+            </section>
+
+            <!-- Supported Currencies section -->
+            <section id="supported-currencies" class="article">
+                <h2>Supported Currencies</h2>
+                <p>Argo Sales Tracker supports 28 international currencies for import, export, and display. The system
+                    uses real-time exchange rates to convert between currencies accurately.</p>
+
+                <h3>Complete Currency List</h3>
+                <div class="info-box">
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Currency Code</th>
+                            <th>Currency Name</th>
+                            <th>Symbol</th>
+                            <th>Country/Region</th>
+                        </tr>
+                        <tr>
+                            <td>ALL</td>
+                            <td>Albanian Lek</td>
+                            <td>L</td>
+                            <td>Albania</td>
+                        </tr>
+                        <tr>
+                            <td>AUD</td>
+                            <td>Australian Dollar</td>
+                            <td>$</td>
+                            <td>Australia</td>
+                        </tr>
+                        <tr>
+                            <td>BAM</td>
+                            <td>Bosnia and Herzegovina Convertible Mark</td>
+                            <td>KM</td>
+                            <td>Bosnia and Herzegovina</td>
+                        </tr>
+                        <tr>
+                            <td>BGN</td>
+                            <td>Bulgarian Lev</td>
+                            <td>лв</td>
+                            <td>Bulgaria</td>
+                        </tr>
+                        <tr>
+                            <td>BRL</td>
+                            <td>Brazilian Real</td>
+                            <td>R$</td>
+                            <td>Brazil</td>
+                        </tr>
+                        <tr>
+                            <td>BYN</td>
+                            <td>Belarusian Ruble</td>
+                            <td>Br</td>
+                            <td>Belarus</td>
+                        </tr>
+                        <tr>
+                            <td>CAD</td>
+                            <td>Canadian Dollar</td>
+                            <td>$</td>
+                            <td>Canada</td>
+                        </tr>
+                        <tr>
+                            <td>CHF</td>
+                            <td>Swiss Franc</td>
+                            <td>CHF</td>
+                            <td>Switzerland</td>
+                        </tr>
+                        <tr>
+                            <td>CNY</td>
+                            <td>Chinese Yuan Renminbi</td>
+                            <td>¥</td>
+                            <td>China</td>
+                        </tr>
+                        <tr>
+                            <td>CZK</td>
+                            <td>Czech Koruna</td>
+                            <td>Kč</td>
+                            <td>Czech Republic</td>
+                        </tr>
+                        <tr>
+                            <td>DKK</td>
+                            <td>Danish Krone</td>
+                            <td>kr</td>
+                            <td>Denmark</td>
+                        </tr>
+                        <tr>
+                            <td>EUR</td>
+                            <td>Euro</td>
+                            <td>€</td>
+                            <td>European Union</td>
+                        </tr>
+                        <tr>
+                            <td>GBP</td>
+                            <td>British Pound</td>
+                            <td>£</td>
+                            <td>United Kingdom</td>
+                        </tr>
+                        <tr>
+                            <td>HUF</td>
+                            <td>Hungarian Forint</td>
+                            <td>Ft</td>
+                            <td>Hungary</td>
+                        </tr>
+                        <tr>
+                            <td>ISK</td>
+                            <td>Icelandic Króna</td>
+                            <td>kr</td>
+                            <td>Iceland</td>
+                        </tr>
+                        <tr>
+                            <td>JPY</td>
+                            <td>Japanese Yen</td>
+                            <td>¥</td>
+                            <td>Japan</td>
+                        </tr>
+                        <tr>
+                            <td>KRW</td>
+                            <td>South Korean Won</td>
+                            <td>₩</td>
+                            <td>South Korea</td>
+                        </tr>
+                        <tr>
+                            <td>MKD</td>
+                            <td>Macedonian Denar</td>
+                            <td>ден</td>
+                            <td>North Macedonia</td>
+                        </tr>
+                        <tr>
+                            <td>NOK</td>
+                            <td>Norwegian Krone</td>
+                            <td>kr</td>
+                            <td>Norway</td>
+                        </tr>
+                        <tr>
+                            <td>PLN</td>
+                            <td>Polish Złoty</td>
+                            <td>zł</td>
+                            <td>Poland</td>
+                        </tr>
+                        <tr>
+                            <td>RON</td>
+                            <td>Romanian Leu</td>
+                            <td>lei</td>
+                            <td>Romania</td>
+                        </tr>
+                        <tr>
+                            <td>RSD</td>
+                            <td>Serbian Dinar</td>
+                            <td>дин</td>
+                            <td>Serbia</td>
+                        </tr>
+                        <tr>
+                            <td>RUB</td>
+                            <td>Russian Ruble</td>
+                            <td>₽</td>
+                            <td>Russia</td>
+                        </tr>
+                        <tr>
+                            <td>SEK</td>
+                            <td>Swedish Krona</td>
+                            <td>kr</td>
+                            <td>Sweden</td>
+                        </tr>
+                        <tr>
+                            <td>TRY</td>
+                            <td>Turkish Lira</td>
+                            <td>₺</td>
+                            <td>Turkey</td>
+                        </tr>
+                        <tr>
+                            <td>TWD</td>
+                            <td>Taiwan Dollar</td>
+                            <td>NT$</td>
+                            <td>Taiwan</td>
+                        </tr>
+                        <tr>
+                            <td>UAH</td>
+                            <td>Ukrainian Hryvnia</td>
+                            <td>₴</td>
+                            <td>Ukraine</td>
+                        </tr>
+                        <tr>
+                            <td>USD</td>
+                            <td>United States Dollar</td>
+                            <td>$</td>
+                            <td>United States</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3>How Currency Conversion Works</h3>
+                <p>The system uses the OpenExchangeRates API to get accurate, historical exchange rates:</p>
+                <ul>
+                    <li><strong>Real-time rates:</strong> Exchange rates are fetched for the exact date of each
+                        transaction</li>
+                    <li><strong>Caching:</strong> Exchange rates are cached locally to minimize API calls and improve
+                        performance</li>
+                    <li><strong>Internet required:</strong> An internet connection is needed when importing or exporting
+                        data with currency conversion</li>
+                    <li><strong>Automatic detection:</strong> During import, the system can often detect the currency
+                        automatically from symbols and formatting</li>
+                </ul>
+
+                <div class="warning-box">
+                    <strong>Internet Connection Required:</strong> Currency conversion requires an internet connection
+                    to fetch current and historical exchange rates. The rates are cached locally to minimize future
+                    requests.
+                </div>
+
+                <h3>Setting Your Default Currency</h3>
+                <p>You can set your preferred default currency during initial setup or change it later in the settings.
+                    This currency will be used for:</p>
+                <ul>
+                    <li>Displaying transaction amounts in the main interface</li>
+                    <li>Analytics and chart calculations</li>
+                    <li>Default export currency (though you can choose a different one during export)</li>
+                </ul>
             </section>
 
             <!-- Search Bar section -->
@@ -553,7 +882,7 @@
                 </div>
 
                 <div class="warning-box">
-                    <strong>Tip:</strong> AI search requires an internet connection and is only available in the paid
+                    AI search requires an internet connection and is only available in the paid
                     version. <a class="link" href="../upgrade/index.html">Upgrade here</a> to access this feature.
                 </div>
             </section>

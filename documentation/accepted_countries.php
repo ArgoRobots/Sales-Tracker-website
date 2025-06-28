@@ -246,7 +246,7 @@ require_once '../community/formatting/formatting_functions.php';
             <div class="alphabetical-grid">
                 <div class="alphabet-section">
                     <h4>A</h4>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Afghanistan</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Afghanistan</span> (primary)</li>
@@ -254,7 +254,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>AFG</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Albania</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Albania</span> (primary)</li>
@@ -262,7 +262,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>ALB</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Algeria</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Algeria</span> (primary)</li>
@@ -270,7 +270,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>DZA</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Andorra</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Andorra</span> (primary)</li>
@@ -278,7 +278,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>AND</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Angola</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Angola</span> (primary)</li>
@@ -286,7 +286,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>AGO</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Antigua and Barbuda</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Antigua and Barbuda</span> (primary)</li>
@@ -294,7 +294,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>ATG</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Argentina</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Argentina</span> (primary)</li>
@@ -303,7 +303,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>Argentine Republic</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Armenia</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Armenia</span> (primary)</li>
@@ -311,7 +311,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>ARM</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Austria</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Austria</span> (primary)</li>
@@ -320,7 +320,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>Republic of Austria</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Azerbaijan</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Azerbaijan</span> (primary)</li>
@@ -332,7 +332,7 @@ require_once '../community/formatting/formatting_functions.php';
 
                 <div class="alphabet-section">
                     <h4>B</h4>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Bahamas</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Bahamas</span> (primary)</li>
@@ -340,7 +340,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>BHS</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Bahrain</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Bahrain</span> (primary)</li>
@@ -348,7 +348,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>BHR</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Bangladesh</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Bangladesh</span> (primary)</li>
@@ -356,7 +356,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>BGD</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Barbados</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Barbados</span> (primary)</li>
@@ -364,7 +364,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>BRB</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Belarus</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Belarus</span> (primary)</li>
@@ -373,7 +373,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>Republic of Belarus</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Belgium</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Belgium</span> (primary)</li>
@@ -382,7 +382,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>Kingdom of Belgium</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Belize</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Belize</span> (primary)</li>
@@ -390,7 +390,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>BLZ</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Benin</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Benin</span> (primary)</li>
@@ -398,7 +398,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>BEN</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Bhutan</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Bhutan</span> (primary)</li>
@@ -406,7 +406,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>BTN</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Bolivia</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Bolivia</span> (primary)</li>
@@ -414,7 +414,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>BOL</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Bosnia and Herzegovina</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Bosnia and Herzegovina</span> (primary)</li>
@@ -422,7 +422,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>BIH</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Botswana</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Botswana</span> (primary)</li>
@@ -430,7 +430,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>BWA</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Brazil</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Brazil</span> (primary)</li>
@@ -439,7 +439,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>Federative Republic of Brazil</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Brunei</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Brunei</span> (primary)</li>
@@ -447,7 +447,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>BRN</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Bulgaria</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Bulgaria</span> (primary)</li>
@@ -456,7 +456,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>Republic of Bulgaria</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Burkina Faso</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Burkina Faso</span> (primary)</li>
@@ -464,7 +464,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>BFA</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Burundi</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Burundi</span> (primary)</li>
@@ -476,7 +476,7 @@ require_once '../community/formatting/formatting_functions.php';
 
                 <div class="alphabet-section">
                     <h4>C</h4>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Cabo Verde</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Cabo Verde</span> (primary)</li>
@@ -485,7 +485,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>Cape Verde</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Cambodia</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Cambodia</span> (primary)</li>
@@ -493,7 +493,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>KHM</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Cameroon</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Cameroon</span> (primary)</li>
@@ -501,7 +501,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>CMR</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Central African Republic</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Central African Republic</span> (primary)</li>
@@ -509,7 +509,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>CAF</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Chad</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Chad</span> (primary)</li>
@@ -517,7 +517,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>TCD</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Chile</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Chile</span> (primary)</li>
@@ -525,7 +525,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>CHL</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Colombia</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Colombia</span> (primary)</li>
@@ -533,7 +533,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>COL</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Comoros</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Comoros</span> (primary)</li>
@@ -541,7 +541,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>COM</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Costa Rica</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Costa Rica</span> (primary)</li>
@@ -549,7 +549,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>CRI</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Croatia</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Croatia</span> (primary)</li>
@@ -558,7 +558,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>Republic of Croatia</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Cuba</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Cuba</span> (primary)</li>
@@ -566,7 +566,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>CUB</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Cyprus</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Cyprus</span> (primary)</li>
@@ -574,7 +574,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>CYP</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Czechia</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Czechia</span> (primary)</li>
@@ -587,7 +587,7 @@ require_once '../community/formatting/formatting_functions.php';
 
                 <div class="alphabet-section">
                     <h4>D</h4>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Denmark</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Denmark</span> (primary)</li>
@@ -596,7 +596,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>Kingdom of Denmark</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Djibouti</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Djibouti</span> (primary)</li>
@@ -604,7 +604,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>DJI</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Dominica</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Dominica</span> (primary)</li>
@@ -612,7 +612,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>DMA</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Dominican Republic</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Dominican Republic</span> (primary)</li>
@@ -624,7 +624,7 @@ require_once '../community/formatting/formatting_functions.php';
 
                 <div class="alphabet-section">
                     <h4>E</h4>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Ecuador</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Ecuador</span> (primary)</li>
@@ -632,7 +632,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>ECU</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Egypt</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Egypt</span> (primary)</li>
@@ -641,7 +641,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>Arab Republic of Egypt</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>El Salvador</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">El Salvador</span> (primary)</li>
@@ -649,7 +649,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>SLV</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Equatorial Guinea</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Equatorial Guinea</span> (primary)</li>
@@ -657,7 +657,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>GNQ</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Eritrea</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Eritrea</span> (primary)</li>
@@ -665,7 +665,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>ERI</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Estonia</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Estonia</span> (primary)</li>
@@ -674,7 +674,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>Republic of Estonia</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Eswatini</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Eswatini</span> (primary)</li>
@@ -683,7 +683,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>Swaziland</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Ethiopia</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Ethiopia</span> (primary)</li>
@@ -695,7 +695,7 @@ require_once '../community/formatting/formatting_functions.php';
 
                 <div class="alphabet-section">
                     <h4>F</h4>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Fiji</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Fiji</span> (primary)</li>
@@ -703,7 +703,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>FJI</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Finland</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Finland</span> (primary)</li>
@@ -716,7 +716,7 @@ require_once '../community/formatting/formatting_functions.php';
 
                 <div class="alphabet-section">
                     <h4>G</h4>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Gabon</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Gabon</span> (primary)</li>
@@ -724,7 +724,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>GAB</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Gambia</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Gambia</span> (primary)</li>
@@ -732,7 +732,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>GMB</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Georgia</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Georgia</span> (primary)</li>
@@ -740,7 +740,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>GEO</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Ghana</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Ghana</span> (primary)</li>
@@ -748,7 +748,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>GHA</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Greece</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Greece</span> (primary)</li>
@@ -757,7 +757,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>Hellenic Republic</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Grenada</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Grenada</span> (primary)</li>
@@ -765,7 +765,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>GRD</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Guatemala</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Guatemala</span> (primary)</li>
@@ -773,7 +773,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>GTM</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Guinea</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Guinea</span> (primary)</li>
@@ -781,7 +781,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>GIN</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Guinea-Bissau</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Guinea-Bissau</span> (primary)</li>
@@ -789,7 +789,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>GNB</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Guyana</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Guyana</span> (primary)</li>
@@ -801,7 +801,7 @@ require_once '../community/formatting/formatting_functions.php';
 
                 <div class="alphabet-section">
                     <h4>H</h4>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Haiti</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Haiti</span> (primary)</li>
@@ -809,7 +809,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>HTI</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Honduras</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Honduras</span> (primary)</li>
@@ -817,7 +817,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>HND</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Hungary</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Hungary</span> (primary)</li>
@@ -829,7 +829,7 @@ require_once '../community/formatting/formatting_functions.php';
 
                 <div class="alphabet-section">
                     <h4>I</h4>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Iceland</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Iceland</span> (primary)</li>
@@ -837,7 +837,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>ISL</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Indonesia</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Indonesia</span> (primary)</li>
@@ -845,7 +845,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>IDN</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Iran</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Iran</span> (primary)</li>
@@ -853,7 +853,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>IRN</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Iraq</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Iraq</span> (primary)</li>
@@ -861,7 +861,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>IRQ</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Ireland</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Ireland</span> (primary)</li>
@@ -870,7 +870,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>Republic of Ireland</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Israel</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Israel</span> (primary)</li>
@@ -879,7 +879,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>State of Israel</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Ivory Coast</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Ivory Coast</span> (primary)</li>
@@ -892,7 +892,7 @@ require_once '../community/formatting/formatting_functions.php';
 
                 <div class="alphabet-section">
                     <h4>J</h4>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Jamaica</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Jamaica</span> (primary)</li>
@@ -900,7 +900,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>JAM</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Jordan</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Jordan</span> (primary)</li>
@@ -912,7 +912,7 @@ require_once '../community/formatting/formatting_functions.php';
 
                 <div class="alphabet-section">
                     <h4>K</h4>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Kazakhstan</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Kazakhstan</span> (primary)</li>
@@ -920,7 +920,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>KAZ</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Kenya</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Kenya</span> (primary)</li>
@@ -928,7 +928,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>KEN</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Kiribati</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Kiribati</span> (primary)</li>
@@ -936,7 +936,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>KIR</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Kuwait</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Kuwait</span> (primary)</li>
@@ -944,7 +944,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>KWT</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Kyrgyzstan</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Kyrgyzstan</span> (primary)</li>
@@ -956,7 +956,7 @@ require_once '../community/formatting/formatting_functions.php';
 
                 <div class="alphabet-section">
                     <h4>L</h4>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Lao</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Lao</span> (primary)</li>
@@ -965,7 +965,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>Laos</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Latvia</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Latvia</span> (primary)</li>
@@ -974,7 +974,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>Republic of Latvia</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Lebanon</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Lebanon</span> (primary)</li>
@@ -982,7 +982,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>LBN</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Lesotho</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Lesotho</span> (primary)</li>
@@ -990,7 +990,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>LSO</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Liberia</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Liberia</span> (primary)</li>
@@ -998,7 +998,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>LBR</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Libya</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Libya</span> (primary)</li>
@@ -1006,7 +1006,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>LBY</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Liechtenstein</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Liechtenstein</span> (primary)</li>
@@ -1014,7 +1014,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>LIE</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Lithuania</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Lithuania</span> (primary)</li>
@@ -1023,7 +1023,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>Republic of Lithuania</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Luxembourg</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Luxembourg</span> (primary)</li>
@@ -1035,7 +1035,7 @@ require_once '../community/formatting/formatting_functions.php';
 
                 <div class="alphabet-section">
                     <h4>M</h4>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Madagascar</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Madagascar</span> (primary)</li>
@@ -1043,7 +1043,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>MDG</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Malawi</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Malawi</span> (primary)</li>
@@ -1051,7 +1051,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>MWI</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Malaysia</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Malaysia</span> (primary)</li>
@@ -1059,7 +1059,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>MYS</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Maldives</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Maldives</span> (primary)</li>
@@ -1067,7 +1067,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>MDV</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Mali</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Mali</span> (primary)</li>
@@ -1075,7 +1075,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>MLI</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Malta</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Malta</span> (primary)</li>
@@ -1083,7 +1083,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>MLT</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Marshall Islands</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Marshall Islands</span> (primary)</li>
@@ -1091,7 +1091,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>MHL</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Mauritania</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Mauritania</span> (primary)</li>
@@ -1099,7 +1099,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>MRT</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Mauritius</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Mauritius</span> (primary)</li>
@@ -1107,7 +1107,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>MUS</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Micronesia</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Micronesia</span> (primary)</li>
@@ -1115,7 +1115,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>FSM</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Moldova</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Moldova</span> (primary)</li>
@@ -1124,7 +1124,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>Republic of Moldova</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Monaco</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Monaco</span> (primary)</li>
@@ -1132,7 +1132,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>MCO</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Mongolia</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Mongolia</span> (primary)</li>
@@ -1140,7 +1140,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>MNG</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Montenegro</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Montenegro</span> (primary)</li>
@@ -1148,7 +1148,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>MNE</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Morocco</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Morocco</span> (primary)</li>
@@ -1156,7 +1156,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>MAR</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Mozambique</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Mozambique</span> (primary)</li>
@@ -1164,7 +1164,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>MOZ</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Myanmar</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Myanmar</span> (primary)</li>
@@ -1177,7 +1177,7 @@ require_once '../community/formatting/formatting_functions.php';
 
                 <div class="alphabet-section">
                     <h4>N</h4>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Namibia</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Namibia</span> (primary)</li>
@@ -1185,7 +1185,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>NAM</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Nauru</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Nauru</span> (primary)</li>
@@ -1193,7 +1193,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>NRU</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Nepal</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Nepal</span> (primary)</li>
@@ -1201,7 +1201,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>NPL</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Nicaragua</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Nicaragua</span> (primary)</li>
@@ -1209,7 +1209,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>NIC</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Niger</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Niger</span> (primary)</li>
@@ -1217,7 +1217,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>NER</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Nigeria</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Nigeria</span> (primary)</li>
@@ -1225,7 +1225,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>NGA</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>North Korea</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">North Korea</span> (primary)</li>
@@ -1235,7 +1235,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>DPRK</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>North Macedonia</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">North Macedonia</span> (primary)</li>
@@ -1244,7 +1244,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>Macedonia</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Norway</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Norway</span> (primary)</li>
@@ -1257,7 +1257,7 @@ require_once '../community/formatting/formatting_functions.php';
 
                 <div class="alphabet-section">
                     <h4>O</h4>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Oman</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Oman</span> (primary)</li>
@@ -1269,7 +1269,7 @@ require_once '../community/formatting/formatting_functions.php';
 
                 <div class="alphabet-section">
                     <h4>P</h4>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Pakistan</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Pakistan</span> (primary)</li>
@@ -1277,7 +1277,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>PAK</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Palau</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Palau</span> (primary)</li>
@@ -1285,7 +1285,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>PLW</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Panama</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Panama</span> (primary)</li>
@@ -1293,7 +1293,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>PAN</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Papua New Guinea</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Papua New Guinea</span> (primary)</li>
@@ -1301,7 +1301,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>PNG</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Paraguay</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Paraguay</span> (primary)</li>
@@ -1309,7 +1309,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>PRY</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Peru</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Peru</span> (primary)</li>
@@ -1317,7 +1317,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>PER</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Philippines</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Philippines</span> (primary)</li>
@@ -1325,7 +1325,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>PHL</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Poland</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Poland</span> (primary)</li>
@@ -1334,7 +1334,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>Republic of Poland</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Portugal</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Portugal</span> (primary)</li>
@@ -1347,7 +1347,7 @@ require_once '../community/formatting/formatting_functions.php';
 
                 <div class="alphabet-section">
                     <h4>Q</h4>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Qatar</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Qatar</span> (primary)</li>
@@ -1359,7 +1359,7 @@ require_once '../community/formatting/formatting_functions.php';
 
                 <div class="alphabet-section">
                     <h4>R</h4>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Romania</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Romania</span> (primary)</li>
@@ -1367,7 +1367,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>ROU</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Rwanda</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Rwanda</span> (primary)</li>
@@ -1379,7 +1379,7 @@ require_once '../community/formatting/formatting_functions.php';
 
                 <div class="alphabet-section">
                     <h4>S</h4>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Saint Kitts and Nevis</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Saint Kitts and Nevis</span> (primary)</li>
@@ -1387,7 +1387,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>KNA</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Saint Lucia</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Saint Lucia</span> (primary)</li>
@@ -1395,7 +1395,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>LCA</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Saint Vincent and the Grenadines</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Saint Vincent and the Grenadines</span> (primary)</li>
@@ -1403,7 +1403,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>VCT</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Samoa</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Samoa</span> (primary)</li>
@@ -1411,7 +1411,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>WSM</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>San Marino</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">San Marino</span> (primary)</li>
@@ -1419,7 +1419,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>SMR</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Sao Tome and Principe</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Sao Tome and Principe</span> (primary)</li>
@@ -1427,7 +1427,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>STP</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Saudi Arabia</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Saudi Arabia</span> (primary)</li>
@@ -1435,7 +1435,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>SAU</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Senegal</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Senegal</span> (primary)</li>
@@ -1443,7 +1443,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>SEN</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Serbia</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Serbia</span> (primary)</li>
@@ -1451,7 +1451,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>SRB</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Seychelles</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Seychelles</span> (primary)</li>
@@ -1459,7 +1459,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>SYC</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Sierra Leone</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Sierra Leone</span> (primary)</li>
@@ -1467,7 +1467,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>SLE</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Slovakia</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Slovakia</span> (primary)</li>
@@ -1476,7 +1476,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>Slovak Republic</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Slovenia</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Slovenia</span> (primary)</li>
@@ -1485,7 +1485,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>Republic of Slovenia</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Solomon Islands</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Solomon Islands</span> (primary)</li>
@@ -1493,7 +1493,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>SLB</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Somalia</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Somalia</span> (primary)</li>
@@ -1501,7 +1501,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>SOM</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>South Africa</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">South Africa</span> (primary)</li>
@@ -1510,7 +1510,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>Republic of South Africa</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>South Sudan</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">South Sudan</span> (primary)</li>
@@ -1518,7 +1518,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>SSD</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Sri Lanka</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Sri Lanka</span> (primary)</li>
@@ -1526,7 +1526,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>LKA</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Sudan</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Sudan</span> (primary)</li>
@@ -1534,7 +1534,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>SDN</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Suriname</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Suriname</span> (primary)</li>
@@ -1542,7 +1542,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>SUR</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Sweden</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Sweden</span> (primary)</li>
@@ -1551,7 +1551,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>Kingdom of Sweden</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Syria</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Syria</span> (primary)</li>
@@ -1563,7 +1563,7 @@ require_once '../community/formatting/formatting_functions.php';
 
                 <div class="alphabet-section">
                     <h4>T</h4>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Taiwan</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Taiwan</span> (primary)</li>
@@ -1573,7 +1573,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>Republic of China</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Tajikistan</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Tajikistan</span> (primary)</li>
@@ -1581,7 +1581,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>TJK</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Tanzania</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Tanzania</span> (primary)</li>
@@ -1589,7 +1589,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>TZA</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Thailand</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Thailand</span> (primary)</li>
@@ -1598,7 +1598,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>Kingdom of Thailand</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>The Democratic Republic of the Congo</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">The Democratic Republic of the Congo</span> (primary)</li>
@@ -1608,7 +1608,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>Congo-Kinshasa</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>The Republic of the Congo</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">The Republic of the Congo</span> (primary)</li>
@@ -1617,7 +1617,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>Congo-Brazzaville</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Timor-Leste</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Timor-Leste</span> (primary)</li>
@@ -1626,7 +1626,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>East Timor</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Togo</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Togo</span> (primary)</li>
@@ -1634,7 +1634,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>TGO</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Tonga</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Tonga</span> (primary)</li>
@@ -1642,7 +1642,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>TON</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Trinidad and Tobago</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Trinidad and Tobago</span> (primary)</li>
@@ -1650,7 +1650,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>TTO</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Tunisia</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Tunisia</span> (primary)</li>
@@ -1658,7 +1658,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>TUN</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Turkey</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Turkey</span> (primary)</li>
@@ -1667,7 +1667,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>Republic of Turkey</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Turkmenistan</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Turkmenistan</span> (primary)</li>
@@ -1675,7 +1675,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>TKM</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Tuvalu</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Tuvalu</span> (primary)</li>
@@ -1687,7 +1687,7 @@ require_once '../community/formatting/formatting_functions.php';
 
                 <div class="alphabet-section">
                     <h4>U</h4>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Uganda</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Uganda</span> (primary)</li>
@@ -1695,7 +1695,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>UGA</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Ukraine</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Ukraine</span> (primary)</li>
@@ -1703,7 +1703,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>UKR</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>United Arab Emirates</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">United Arab Emirates</span> (primary)</li>
@@ -1712,7 +1712,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>UAE</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Uruguay</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Uruguay</span> (primary)</li>
@@ -1720,7 +1720,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>URY</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Uzbekistan</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Uzbekistan</span> (primary)</li>
@@ -1732,7 +1732,7 @@ require_once '../community/formatting/formatting_functions.php';
 
                 <div class="alphabet-section">
                     <h4>V</h4>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Vanuatu</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Vanuatu</span> (primary)</li>
@@ -1740,7 +1740,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>VUT</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Venezuela</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Venezuela</span> (primary)</li>
@@ -1748,7 +1748,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>VEN</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Vietnam</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Vietnam</span> (primary)</li>
@@ -1761,7 +1761,7 @@ require_once '../community/formatting/formatting_functions.php';
 
                 <div class="alphabet-section">
                     <h4>W</h4>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Western Sahara</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Western Sahara</span> (primary)</li>
@@ -1773,7 +1773,7 @@ require_once '../community/formatting/formatting_functions.php';
 
                 <div class="alphabet-section">
                     <h4>Y</h4>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Yemen</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Yemen</span> (primary)</li>
@@ -1785,7 +1785,7 @@ require_once '../community/formatting/formatting_functions.php';
 
                 <div class="alphabet-section">
                     <h4>Z</h4>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Zambia</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Zambia</span> (primary)</li>
@@ -1793,7 +1793,7 @@ require_once '../community/formatting/formatting_functions.php';
                             <li>ZMB</li>
                         </ul>
                     </div>
-                    <div class="country-group">
+                    <div class='country-group-small'>
                         <h5>Zimbabwe</h5>
                         <ul class="countries-list">
                             <li><span class="primary-name">Zimbabwe</span> (primary)</li>
