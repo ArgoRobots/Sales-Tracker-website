@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../resources/styles/button.css">
     <link rel="stylesheet" href="../resources/styles/icons.css">
+    <link rel="stylesheet" href="../resources/styles/link.css">
     <link rel="stylesheet" href="../resources/header/style.css">
     <link rel="stylesheet" href="../resources/footer/style.css">
 </head>
@@ -43,6 +44,82 @@
 
     <div class="container">
         <div class="version-grid">
+
+            <!-- Version 1.0.3 -->
+            <div class="version-card">
+                <div class="version-header">
+                    <span class="version-tag">Version 1.0.3</span>
+                    <span class="date-tag">June 28 2025</span>
+                </div>
+
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <div class="icon icon-check"></div>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Bug Fixes and Optimizations<span class="type-tag fix">Fix</span></h3>
+                            <p>Fixed several bugs and made optimizations throughout the application for improved
+                                stability and performance.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <div class="icon icon-plus"></div>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Receipt Import/Export with Spreadsheets<span class="type-tag feature">New Feature</span>
+                            </h3>
+                            <p>Added the ability to import and export receipts along with your spreadsheet data for
+                                complete data portability and easier migration.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <div class="icon icon-lightning"></div>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Enhanced Import Error Handling<span class="type-tag enhancement">Enhancement</span></h3>
+                            <p>Improved error handling for importing spreadsheets that are not in the correct format or
+                                are missing required data. When encountering invalid values, you can now choose to skip
+                                the problematic row, retry with corrected data, or cancel the entire import process.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <div class="icon icon-plus"></div>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Currency Selection for Exports<span class="type-tag feature">New Feature</span></h3>
+                            <p>Choose your preferred currency when exporting spreadsheets, allowing you to present
+                                financial data in the currency that best suits your needs.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <div class="icon icon-plus"></div>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Currency Detection and Conversion<span class="type-tag feature">New Feature</span>
+                            </h3>
+                            <p>The application now automatically detects the currency used in imported spreadsheets and
+                                converts all monetary values to your default currency. If auto-detection fails, you can
+                                manually select the source currency for accurate conversion.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="documentation-link">
+                    <p>
+                        <strong>For more information about the updated spreadsheet import/export process,
+                            <a class="link-no-underline" href="../documentation/index.html#spreadsheet-import">visit our
+                                documentation</a></strong>
+                    </p>
+                </div>
+            </div>
 
             <!-- Version 1.0.2 -->
             <div class="version-card">
@@ -212,7 +289,7 @@
                             <div class="icon icon-plus"></div>
                         </div>
                         <div class="feature-content">
-                            <h3>Export and Import Spreadsheets<span class="type-tag feature">New Feature</span></h3>
+                            <h3>Import and Export Spreadsheets<span class="type-tag feature">New Feature</span></h3>
                             <p>Seamlessly manage your business data with our powerful spreadsheet tools. Export complete
                                 datasets including companies, accountants, products, and transaction records in
                                 organized worksheets using the standard .xlsx format. Compatible with Microsoft Excel,

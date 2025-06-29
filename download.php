@@ -2,14 +2,9 @@
 require_once 'statistics.php';
 require_once 'db_connect.php';
 
-function get_current_version()
-{
-    return '1.0.0';
-}
-
 // Set the file to download
-$file = 'resources/downloads/Argo Sales Tracker Installer V.1.0.2.exe';
-$version = get_current_version();
+$file = 'resources/downloads/Argo Sales Tracker Installer V.1.0.3.exe';
+$version = '1.0.3';
 
 // Check if file exists
 if (file_exists($file)) {

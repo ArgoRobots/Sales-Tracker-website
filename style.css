@@ -345,9 +345,9 @@ body {
 }
 
 .check-icon {
+  color: var(--blue);
   flex-shrink: 0;
-  color: #22c55e;
-  margin-top: 3px;
+  margin-right: 3px;
 }
 
 .error-icon {
@@ -499,12 +499,6 @@ body {
   display: flex;
   align-items: flex-start;
   margin-bottom: 1rem;
-}
-
-.check-icon {
-  color: var(--blue);
-  flex-shrink: 0;
-  margin-top: 3px;
 }
 
 .check-list li span {

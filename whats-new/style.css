@@ -122,7 +122,7 @@ header .header-inner .menu-container .menu .whats-new:after {
 }
 
 .feature-content p {
-  color: #4a4c4f;
+  color: #2c2d2e;
 }
 
 .type-tag {
@@ -147,4 +147,16 @@ header .header-inner .menu-container .menu .whats-new:after {
 .fix {
   background: #fee2e2;
   color: #991b1b;
+}
+
+.documentation-link {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.documentation-link p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 14px;
 }
