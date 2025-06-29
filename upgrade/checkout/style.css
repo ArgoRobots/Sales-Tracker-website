@@ -1,3 +1,8 @@
+/* Underline current page */
+header .header-inner .menu-container .menu .upgrade-now:after {
+  transform: translateX(-50%) scaleX(1);
+}
+
 .checkout-container {
   max-width: 600px;
   margin: 0 auto;
