@@ -70,30 +70,30 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                     <div class="image-container">
                         <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
                             <!-- Dashboard background -->
-                            <rect x="10" y="20" width="100" height="80" rx="8" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
-                            
+                            <rect x="10" y="20" width="100" height="80" rx="8" fill="#ffffff" stroke="#e5e7eb" stroke-width="2" />
+
                             <!-- Bar chart -->
-                            <rect x="20" y="70" width="8" height="20" rx="2" fill="#3b82f6"/>
-                            <rect x="32" y="60" width="8" height="30" rx="2" fill="#10b981"/>
-                            <rect x="44" y="50" width="8" height="40" rx="2" fill="#f59e0b"/>
-                            <rect x="56" y="65" width="8" height="25" rx="2" fill="#ef4444"/>
-                            
+                            <rect x="20" y="70" width="8" height="20" rx="2" fill="#3b82f6" />
+                            <rect x="32" y="60" width="8" height="30" rx="2" fill="#10b981" />
+                            <rect x="44" y="50" width="8" height="40" rx="2" fill="#f59e0b" />
+                            <rect x="56" y="65" width="8" height="25" rx="2" fill="#ef4444" />
+
                             <!-- Line chart -->
-                            <path d="M75 80 L85 70 L95 65 L105 60" stroke="#8b5cf6" stroke-width="3" fill="none" stroke-linecap="round"/>
-                            <circle cx="75" cy="80" r="3" fill="#8b5cf6"/>
-                            <circle cx="85" cy="70" r="3" fill="#8b5cf6"/>
-                            <circle cx="95" cy="65" r="3" fill="#8b5cf6"/>
-                            <circle cx="105" cy="60" r="3" fill="#8b5cf6"/>
-                            
+                            <path d="M75 80 L85 70 L95 65 L105 60" stroke="#8b5cf6" stroke-width="3" fill="none" stroke-linecap="round" />
+                            <circle cx="75" cy="80" r="3" fill="#8b5cf6" />
+                            <circle cx="85" cy="70" r="3" fill="#8b5cf6" />
+                            <circle cx="95" cy="65" r="3" fill="#8b5cf6" />
+                            <circle cx="105" cy="60" r="3" fill="#8b5cf6" />
+
                             <!-- Header icons -->
-                            <circle cx="25" cy="35" r="4" fill="#22c55e"/>
-                            <rect x="35" y="32" width="20" height="2" rx="1" fill="#6b7280"/>
-                            <rect x="35" y="37" width="15" height="2" rx="1" fill="#9ca3af"/>
-                            
-                            <circle cx="85" cy="35" r="4" fill="#ef4444"/>
-                            <rect x="95" y="32" width="15" height="2" rx="1" fill="#6b7280"/>
-                            <rect x="95" y="37" width="10" height="2" rx="1" fill="#9ca3af"/>
-                            
+                            <circle cx="25" cy="35" r="4" fill="#22c55e" />
+                            <rect x="35" y="32" width="20" height="2" rx="1" fill="#6b7280" />
+                            <rect x="35" y="37" width="15" height="2" rx="1" fill="#9ca3af" />
+
+                            <circle cx="85" cy="35" r="4" fill="#ef4444" />
+                            <rect x="95" y="32" width="15" height="2" rx="1" fill="#6b7280" />
+                            <rect x="95" y="37" width="10" height="2" rx="1" fill="#9ca3af" />
+
                             <!-- Dollar signs -->
                             <text x="25" y="38" text-anchor="middle" fill="white" font-size="6" font-weight="bold">$</text>
                             <text x="85" y="38" text-anchor="middle" fill="white" font-size="6" font-weight="bold">$</text>
@@ -108,31 +108,31 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                     <div class="image-container">
                         <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
                             <!-- Form background -->
-                            <rect x="20" y="15" width="80" height="90" rx="8" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
-                            
+                            <rect x="20" y="15" width="80" height="90" rx="8" fill="#ffffff" stroke="#e5e7eb" stroke-width="2" />
+
                             <!-- Form header -->
-                            <rect x="20" y="15" width="80" height="20" rx="8" fill="#1e3a8a"/>
-                            <rect x="20" y="27" width="80" height="8" fill="#1e3a8a"/>
-                            
+                            <rect x="20" y="15" width="80" height="20" rx="8" fill="#1e3a8a" />
+                            <rect x="20" y="27" width="80" height="8" fill="#1e3a8a" />
+
                             <!-- Header text -->
-                            <rect x="30" y="22" width="30" height="3" rx="1.5" fill="white"/>
-                            
+                            <rect x="30" y="22" width="30" height="3" rx="1.5" fill="white" />
+
                             <!-- Form fields -->
-                            <rect x="30" y="45" width="60" height="8" rx="2" fill="#f9fafb" stroke="#d1d5db"/>
-                            <rect x="30" y="58" width="60" height="8" rx="2" fill="#f9fafb" stroke="#d1d5db"/>
-                            <rect x="30" y="71" width="25" height="8" rx="2" fill="#f9fafb" stroke="#d1d5db"/>
-                            <rect x="60" y="71" width="30" height="8" rx="2" fill="#f9fafb" stroke="#d1d5db"/>
-                            <rect x="30" y="84" width="60" height="8" rx="2" fill="#f9fafb" stroke="#d1d5db"/>
-                            
+                            <rect x="30" y="45" width="60" height="8" rx="2" fill="#f9fafb" stroke="#d1d5db" />
+                            <rect x="30" y="58" width="60" height="8" rx="2" fill="#f9fafb" stroke="#d1d5db" />
+                            <rect x="30" y="71" width="25" height="8" rx="2" fill="#f9fafb" stroke="#d1d5db" />
+                            <rect x="60" y="71" width="30" height="8" rx="2" fill="#f9fafb" stroke="#d1d5db" />
+                            <rect x="30" y="84" width="60" height="8" rx="2" fill="#f9fafb" stroke="#d1d5db" />
+
                             <!-- Add button -->
-                            <circle cx="60" cy="25" r="15" fill="#22c55e" stroke="white" stroke-width="2"/>
-                            <path d="M60 18 L60 32 M53 25 L67 25" stroke="white" stroke-width="3" stroke-linecap="round"/>
-                            
+                            <circle cx="60" cy="25" r="15" fill="#22c55e" stroke="white" stroke-width="2" />
+                            <path d="M60 18 L60 32 M53 25 L67 25" stroke="white" stroke-width="3" stroke-linecap="round" />
+
                             <!-- Form labels -->
-                            <rect x="30" y="40" width="20" height="2" rx="1" fill="#6b7280"/>
-                            <rect x="30" y="53" width="25" height="2" rx="1" fill="#6b7280"/>
-                            <rect x="30" y="66" width="15" height="2" rx="1" fill="#6b7280"/>
-                            <rect x="60" y="66" width="20" height="2" rx="1" fill="#6b7280"/>
+                            <rect x="30" y="40" width="20" height="2" rx="1" fill="#6b7280" />
+                            <rect x="30" y="53" width="25" height="2" rx="1" fill="#6b7280" />
+                            <rect x="30" y="66" width="15" height="2" rx="1" fill="#6b7280" />
+                            <rect x="60" y="66" width="20" height="2" rx="1" fill="#6b7280" />
                         </svg>
                     </div>
                     <div class="text-container">
@@ -144,44 +144,44 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                     <div class="image-container">
                         <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
                             <!-- Grid background -->
-                            <rect x="15" y="20" width="90" height="80" rx="8" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
-                            
+                            <rect x="15" y="20" width="90" height="80" rx="8" fill="#ffffff" stroke="#e5e7eb" stroke-width="2" />
+
                             <!-- Product grid items -->
-                            <rect x="25" y="30" width="20" height="20" rx="4" fill="#dbeafe" stroke="#3b82f6"/>
-                            <rect x="50" y="30" width="20" height="20" rx="4" fill="#dcfce7" stroke="#22c55e"/>
-                            <rect x="75" y="30" width="20" height="20" rx="4" fill="#fef3c7" stroke="#f59e0b"/>
-                            
-                            <rect x="25" y="55" width="20" height="20" rx="4" fill="#fce7f3" stroke="#ec4899"/>
-                            <rect x="50" y="55" width="20" height="20" rx="4" fill="#f3e8ff" stroke="#8b5cf6"/>
-                            <rect x="75" y="55" width="20" height="20" rx="4" fill="#fed7d7" stroke="#ef4444"/>
-                            
+                            <rect x="25" y="30" width="20" height="20" rx="4" fill="#dbeafe" stroke="#3b82f6" />
+                            <rect x="50" y="30" width="20" height="20" rx="4" fill="#dcfce7" stroke="#22c55e" />
+                            <rect x="75" y="30" width="20" height="20" rx="4" fill="#fef3c7" stroke="#f59e0b" />
+
+                            <rect x="25" y="55" width="20" height="20" rx="4" fill="#fce7f3" stroke="#ec4899" />
+                            <rect x="50" y="55" width="20" height="20" rx="4" fill="#f3e8ff" stroke="#8b5cf6" />
+                            <rect x="75" y="55" width="20" height="20" rx="4" fill="#fed7d7" stroke="#ef4444" />
+
                             <!-- Product icons -->
-                            <rect x="30" y="35" width="10" height="6" rx="1" fill="#3b82f6"/>
-                            <rect x="31" y="37" width="8" height="2" rx="0.5" fill="white"/>
-                            
-                            <circle cx="60" cy="40" r="5" fill="#22c55e"/>
-                            <rect x="58" y="38" width="4" height="4" rx="1" fill="white"/>
-                            
-                            <polygon points="85,35 80,45 90,45" fill="#f59e0b"/>
-                            <circle cx="85" cy="42" r="1.5" fill="white"/>
-                            
-                            <rect x="30" y="60" width="10" height="10" rx="2" fill="#ec4899"/>
-                            <circle cx="35" cy="65" r="2" fill="white"/>
-                            
-                            <circle cx="60" cy="65" r="5" fill="#8b5cf6"/>
-                            <path d="M58 65 L60 67 L62 63" stroke="white" stroke-width="1" fill="none"/>
-                            
-                            <rect x="80" y="60" width="10" height="10" rx="1" fill="#ef4444"/>
-                            <path d="M83 63 L87 67 M87 63 L83 67" stroke="white" stroke-width="1.5"/>
-                            
+                            <rect x="30" y="35" width="10" height="6" rx="1" fill="#3b82f6" />
+                            <rect x="31" y="37" width="8" height="2" rx="0.5" fill="white" />
+
+                            <circle cx="60" cy="40" r="5" fill="#22c55e" />
+                            <rect x="58" y="38" width="4" height="4" rx="1" fill="white" />
+
+                            <polygon points="85,35 80,45 90,45" fill="#f59e0b" />
+                            <circle cx="85" cy="42" r="1.5" fill="white" />
+
+                            <rect x="30" y="60" width="10" height="10" rx="2" fill="#ec4899" />
+                            <circle cx="35" cy="65" r="2" fill="white" />
+
+                            <circle cx="60" cy="65" r="5" fill="#8b5cf6" />
+                            <path d="M58 65 L60 67 L62 63" stroke="white" stroke-width="1" fill="none" />
+
+                            <rect x="80" y="60" width="10" height="10" rx="1" fill="#ef4444" />
+                            <path d="M83 63 L87 67 M87 63 L83 67" stroke="white" stroke-width="1.5" />
+
                             <!-- Category tags -->
-                            <rect x="25" y="82" width="70" height="4" rx="2" fill="#f3f4f6"/>
-                            <rect x="25" y="89" width="45" height="4" rx="2" fill="#f3f4f6"/>
-                            
+                            <rect x="25" y="82" width="70" height="4" rx="2" fill="#f3f4f6" />
+                            <rect x="25" y="89" width="45" height="4" rx="2" fill="#f3f4f6" />
+
                             <!-- Category indicators -->
-                            <circle cx="28" cy="84" r="1.5" fill="#3b82f6"/>
-                            <circle cx="55" cy="84" r="1.5" fill="#22c55e"/>
-                            <circle cx="82" cy="84" r="1.5" fill="#f59e0b"/>
+                            <circle cx="28" cy="84" r="1.5" fill="#3b82f6" />
+                            <circle cx="55" cy="84" r="1.5" fill="#22c55e" />
+                            <circle cx="82" cy="84" r="1.5" fill="#f59e0b" />
                         </svg>
                     </div>
                     <div class="text-container">
@@ -689,6 +689,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     <section class="section">
         <div class=" container">
             <h2 class="section-title">Simple, Transparent Pricing</h2>
+            <p class="section-subtitle">No subscriptions. Just pay once, and own forever</p>
             <!-- Free plan -->
             <div class="flex-container">
                 <div class="pricing-card">

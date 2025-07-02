@@ -478,6 +478,13 @@ body {
   padding: 90px 0;
 }
 
+.section-subtitle {
+  text-align: center;
+  font-size: 20px;
+  margin-top: -50px;
+  margin-bottom: 40px;
+}
+
 .section-title {
   font-size: 36px;
   text-align: center;
