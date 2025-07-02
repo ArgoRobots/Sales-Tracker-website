@@ -263,7 +263,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M5 13l4 4L19 7" />
                             </svg>
-                            Purchase and sale receipt segregation
+                            Purchase and sale receipt separation
                         </li>
                     </ul>
                 </div>
@@ -306,7 +306,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M5 13l4 4L19 7" />
                             </svg>
-                            Purchases and sales segregation - Keep your purchase and sales records organized in
+                            Purchases and sales separation - Keep your purchase and sales records organized in
                             separate worksheets for better clarity
                         </li>
                     </ul>
@@ -689,7 +689,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     <section class="section">
         <div class=" container">
             <h2 class="section-title">Simple, Transparent Pricing</h2>
-            <p class="section-subtitle">No subscriptions. Just pay once, and own forever</p>
+            <p class="section-subtitle">No subscriptions. Just pay once, and own forever.</p>
             <!-- Free plan -->
             <div class="flex-container">
                 <div class="pricing-card">
