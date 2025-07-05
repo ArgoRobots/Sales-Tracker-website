@@ -25,6 +25,7 @@ $current_user = $is_logged_in ? get_current_user_ID() : null;
 
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../resources/scripts/main.js"></script>
+    <script src="../resources/notifications/notifications.js" defer></script>
     <script src="../resources/scripts/utc-to-local.js" defer></script>
     <script src="index.js" defer></script>
 
@@ -35,6 +36,7 @@ $current_user = $is_logged_in ? get_current_user_ID() : null;
     <link rel="stylesheet" href="../resources/styles/button.css">
     <link rel="stylesheet" href="../resources/header/style.css">
     <link rel="stylesheet" href="../resources/footer/style.css">
+    <link rel="stylesheet" href="../resources/notifications/notifications.css">
 </head>
 
 <body>

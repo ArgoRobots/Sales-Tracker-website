@@ -77,19 +77,19 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   function displayServerMessage(messageData) {
-    const message = document.createElement("div");
-    message.className = messageData.success
-      ? "success-message"
-      : "error-message";
-    message.innerHTML = messageData.message_html || messageData.message;
+    if (!messageData.show_message) return;
 
-    // Apply all styles from the server
-    if (messageData.message_style) {
-      Object.entries(messageData.message_style).forEach(([key, value]) => {
-        message.style[key] = value;
-      });
+    const message = document.createElement("div");
+
+    if (messageData.message_class) {
+      message.className = messageData.message_class;
+    } else {
+      message.className = messageData.success
+        ? "success-message"
+        : "error-message";
     }
 
+    message.textContent = messageData.message;
     document.body.appendChild(message);
 
     // Remove after specified duration or default to 3 seconds

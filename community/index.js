@@ -63,16 +63,16 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!messageData.show_message) return;
 
     const message = document.createElement("div");
-    message.className = "login-alert";
-    message.innerHTML = messageData.message_html || messageData.message;
 
-    // Apply all styles from the server
-    if (messageData.message_style) {
-      Object.entries(messageData.message_style).forEach(([key, value]) => {
-        message.style[key] = value;
-      });
+    if (messageData.message_class) {
+      message.className = messageData.message_class;
+    } else {
+      message.className = messageData.success
+        ? "success-message"
+        : "error-message";
     }
 
+    message.textContent = messageData.message;
     document.body.appendChild(message);
 
     // Remove after specified duration or default to 3 seconds

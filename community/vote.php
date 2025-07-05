@@ -17,20 +17,7 @@ if (!isset($_SESSION['user_id'])) {
     $response['success'] = false;
     $response['message'] = 'You must be logged in to vote';
     $response['show_message'] = true;
-    $response['message_html'] = 'You must be logged in to vote';
-    $response['message_style'] = [
-        'position' => 'fixed',
-        'top' => '20px',
-        'left' => '50%',
-        'transform' => 'translateX(-50%)',
-        'padding' => '10px 20px',
-        'backgroundColor' => '#f8d7da',
-        'color' => '#842029',
-        'borderRadius' => '4px',
-        'zIndex' => '1000',
-        'boxShadow' => '0 2px 4px rgba(0,0,0,0.2)'
-    ];
-    $response['message_duration'] = 3000; // milliseconds
+    $response['message_class'] = 'error-message';
     echo json_encode($response);
     exit;
 }
@@ -67,20 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $response['success'] = false;
                     $response['message'] = 'You cannot vote on your own post';
                     $response['show_message'] = true;
-                    $response['message_html'] = 'You cannot vote on your own post';
-                    $response['message_style'] = [
-                        'position' => 'fixed',
-                        'top' => '20px',
-                        'left' => '50%',
-                        'transform' => 'translateX(-50%)',
-                        'padding' => '10px 20px',
-                        'backgroundColor' => '#f8d7da',
-                        'color' => '#842029',
-                        'borderRadius' => '4px',
-                        'zIndex' => '1000',
-                        'boxShadow' => '0 2px 4px rgba(0,0,0,0.2)'
-                    ];
-                    $response['message_duration'] = 3000; // milliseconds
+                    $response['message_class'] = 'error-message';
                 } else {
                     // Process the vote
                     $result = vote_post($post_id, $email, $vote_type);
@@ -122,20 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $response['success'] = false;
                 $response['message'] = 'You cannot vote on your own comment';
                 $response['show_message'] = true;
-                $response['message_html'] = 'You cannot vote on your own comment';
-                $response['message_style'] = [
-                    'position' => 'fixed',
-                    'top' => '20px',
-                    'left' => '50%',
-                    'transform' => 'translateX(-50%)',
-                    'padding' => '10px 20px',
-                    'backgroundColor' => '#f8d7da',
-                    'color' => '#842029',
-                    'borderRadius' => '4px',
-                    'zIndex' => '1000',
-                    'boxShadow' => '0 2px 4px rgba(0,0,0,0.2)'
-                ];
-                $response['message_duration'] = 3000; // milliseconds
+                $response['message_class'] = 'error-message';
             } else {
                 // Process the comment vote
                 $result = vote_comment($comment_id, $email, $vote_type);

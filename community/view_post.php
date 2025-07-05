@@ -196,14 +196,14 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
 
                 <!-- Post votes -->
                 <div class="post-votes">
-                    <button class="vote-btn upvote <?php echo $user_vote === 1 ? 'voted' : ''; ?>" data-post-id="<?php echo $post['id']; ?>" data-vote="up" <?php echo !$is_logged_in ? 'disabled' : ''; ?>>
+                    <button class="vote-btn upvote <?php echo $user_vote === 1 ? 'voted' : ''; ?>" data-post-id="<?php echo $post['id']; ?>" data-vote="up">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                             <path stroke-width="2" d="M12 19V5M5 12l7-7 7 7" />
                         </svg>
                     </button>
 
                     <span class="vote-count"><?php echo $post['votes']; ?></span>
-                    <button class="vote-btn downvote <?php echo $user_vote === -1 ? 'voted' : ''; ?>" data-post-id="<?php echo $post['id']; ?>" data-vote="down" <?php echo !$is_logged_in ? 'disabled' : ''; ?>>
+                    <button class="vote-btn downvote <?php echo $user_vote === -1 ? 'voted' : ''; ?>" data-post-id="<?php echo $post['id']; ?>" data-vote="down">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                             <path stroke-width="2" d="M12 5v14M5 12l7 7 7-7" />
                         </svg>
@@ -350,13 +350,13 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                         <div class="comment" data-comment-id="<?php echo $comment['id']; ?>">
                             <!-- Vertical vote controls on left -->
                             <div class="comment-votes">
-                                <button class="comment-vote-btn upvote <?php echo $user_comment_vote === 1 ? 'voted' : ''; ?>" data-comment-id="<?php echo $comment['id']; ?>" data-vote="up" <?php echo !$is_logged_in ? 'disabled' : ''; ?>>
+                                <button class="comment-vote-btn upvote <?php echo $user_comment_vote === 1 ? 'voted' : ''; ?>" data-comment-id="<?php echo $comment['id']; ?>" data-vote="up">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                         <path stroke-width="2" d="M12 19V5M5 12l7-7 7 7" />
                                     </svg>
                                 </button>
                                 <span class="comment-vote-count"><?php echo $comment_votes; ?></span>
-                                <button class="comment-vote-btn downvote <?php echo $user_comment_vote === -1 ? 'voted' : ''; ?>" data-comment-id="<?php echo $comment['id']; ?>" data-vote="down" <?php echo !$is_logged_in ? 'disabled' : ''; ?>>
+                                <button class="comment-vote-btn downvote <?php echo $user_comment_vote === -1 ? 'voted' : ''; ?>" data-comment-id="<?php echo $comment['id']; ?>" data-vote="down">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                         <path stroke-width="2" d="M12 5v14M5 12l7 7 7-7" />
                                     </svg>
