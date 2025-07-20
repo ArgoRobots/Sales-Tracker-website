@@ -391,7 +391,7 @@ include 'admin_header.php';
         function generateErrorCategoryChart(errorData) {
             if (errorData.length === 0) {
                 document.getElementById('errorCategoryChart').parentElement.innerHTML =
-                    '<div class="chart-no-data"><h3>No Errors Detected!</h3><p>Your application is running smoothly</p></div>';
+                    '<div class="chart-no-data"><h3>🎉 No Errors Detected!</h3><p>Your application is running smoothly</p></div>';
                 return;
             }
 
@@ -451,7 +451,7 @@ include 'admin_header.php';
         function generateErrorCodeChart(errorData) {
             if (errorData.length === 0) {
                 document.getElementById('errorCodeChart').parentElement.innerHTML =
-                    '<div class="chart-no-data"><h3>No Error Codes!</h3><p>Clean codebase detected</p></div>';
+                    '<div class="chart-no-data"><h3>🎉 No Error Codes!</h3><p>Clean codebase detected</p></div>';
                 return;
             }
 
@@ -530,7 +530,7 @@ include 'admin_header.php';
                 data: {
                     labels: dates.map(date => {
                         const d = new Date(date);
-                        return `${d.getMonth()+1}/${d.getDate()}/${d.getFullYear().toString().slice(-2)}`;
+                        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
                     }),
                     datasets: [{
                         label: 'Daily Error Count',
@@ -668,7 +668,7 @@ include 'admin_header.php';
                 data: {
                     labels: dates.map(date => {
                         const d = new Date(date);
-                        return `${d.getMonth()+1}/${d.getDate()}/${d.getFullYear().toString().slice(-2)}`;
+                        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
                     }),
                     datasets: [{
                         label: 'Average Session Duration (seconds)',
@@ -950,9 +950,9 @@ include 'admin_header.php';
                 if (recentData.length > 50) {
                     // Show fewer labels for many data points
                     return index % Math.ceil(recentData.length / 20) === 0 ?
-                        `${date.getMonth() + 1}/${date.getDate()}` : '';
+                        `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}` : '';
                 } else {
-                    return `${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
+                    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
                 }
             });
 
@@ -1195,7 +1195,7 @@ include 'admin_header.php';
             const recentData = exchangeRatesData.slice(-30);
             const labels = recentData.map((d, index) => {
                 const date = new Date(d.timestamp);
-                return `${date.getMonth() + 1}/${date.getDate()}`;
+                return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
             });
             const durations = recentData.map(d => parseInt(d.DurationMS) || 0);
 
@@ -1340,7 +1340,7 @@ include 'admin_header.php';
                 data: {
                     labels: recent30Dates.map(date => {
                         const d = new Date(date);
-                        return `${d.getMonth() + 1}/${d.getDate()}`;
+                        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
                     }),
                     datasets: activeDatasets
                 },
