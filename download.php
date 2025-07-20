@@ -3,8 +3,8 @@ require_once 'statistics.php';
 require_once 'db_connect.php';
 
 // Set the file to download
-$file = 'resources/downloads/Argo Sales Tracker Installer V.1.0.3.exe';
-$version = '1.0.3';
+$version = '1.0.4';
+$file = 'resources/downloads/Argo Sales Tracker Installer V.' . $version . '.exe';
 
 // Check if file exists
 if (file_exists($file)) {
