@@ -20,7 +20,8 @@ $aggregatedData = [
         'OpenAI' => [],
         'OpenExchangeRates' => [],
         'GoogleSheets' => [],
-        'Session' => []
+        'Session' => [],
+        'Error' => []
     ]
 ];
 $fileInfo = [];
@@ -116,7 +117,8 @@ include 'admin_header.php';
             count($aggregatedData['dataPoints']['OpenAI']) == 0 &&
             count($aggregatedData['dataPoints']['OpenExchangeRates']) == 0 &&
             count($aggregatedData['dataPoints']['GoogleSheets']) == 0 &&
-            count($aggregatedData['dataPoints']['Session']) == 0)
+            count($aggregatedData['dataPoints']['Session']) == 0 &&
+            count($aggregatedData['dataPoints']['Error']) == 0)
     ): ?>
         <div class="no-data">
             <h3>No Data Available</h3>
@@ -146,10 +148,33 @@ include 'admin_header.php';
             <!-- Will be populated by JavaScript -->
         </div>
 
-        <!-- Charts row 1 -->
+        <!-- Error Analysis Section -->
         <div class="chart-row">
             <div class="chart-container">
-                <h2>Average user Session Duration</h2>
+                <h2>Errors by Category</h2>
+                <canvas id="errorCategoryChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <h2>Most Common Error Codes</h2>
+                <canvas id="errorCodeChart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-row">
+            <div class="chart-container">
+                <h2>Error Frequency Over Time</h2>
+                <canvas id="errorTimeChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <h2>Application Stability Overview</h2>
+                <canvas id="stabilityChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Usage Analysis Section -->
+        <div class="chart-row">
+            <div class="chart-container">
+                <h2>Average Session Duration</h2>
                 <canvas id="sessionDurationChart"></canvas>
             </div>
             <div class="chart-container">
@@ -158,7 +183,7 @@ include 'admin_header.php';
             </div>
         </div>
 
-        <!-- Charts row 2 -->
+        <!-- Performance Analysis Section -->
         <div class="chart-row">
             <div class="chart-container">
                 <h2>Average Duration by Export Type</h2>
@@ -170,19 +195,7 @@ include 'admin_header.php';
             </div>
         </div>
 
-        <!-- Charts row 3 -->
-        <div class="chart-row">
-            <div class="chart-container">
-                <h2>Export Durations Over Time</h2>
-                <canvas id="exportDurationChart"></canvas>
-            </div>
-            <div class="chart-container">
-                <h2>Export File Sizes</h2>
-                <canvas id="exportFileSizeChart"></canvas>
-            </div>
-        </div>
-
-        <!-- Charts Row 4 -->
+        <!-- API Usage Section -->
         <div class="chart-row">
             <div class="chart-container">
                 <h2>OpenAI API Usage</h2>
@@ -194,11 +207,23 @@ include 'admin_header.php';
             </div>
         </div>
 
-        <!-- Charts Row 5 -->
+        <!-- Trends Section -->
         <div class="chart-row">
+            <div class="chart-container">
+                <h2>Export Durations Over Time</h2>
+                <canvas id="exportDurationChart"></canvas>
+            </div>
             <div class="chart-container">
                 <h2>Exchange Rates API Usage</h2>
                 <canvas id="exchangeRatesChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Overall Activity Section -->
+        <div class="chart-row">
+            <div class="chart-container">
+                <h2>Export File Sizes</h2>
+                <canvas id="exportFileSizeChart"></canvas>
             </div>
             <div class="chart-container">
                 <h2>Data Points Over Time</h2>
@@ -229,31 +254,43 @@ include 'admin_header.php';
         const exchangeRatesData = rawData.dataPoints.OpenExchangeRates || [];
         const googleSheetsData = rawData.dataPoints.GoogleSheets || [];
         const sessionData = rawData.dataPoints.Session || [];
+        const errorData = rawData.dataPoints.Error || [];
 
         console.log('Data loaded:', {
             exports: exportData.length,
             openai: openaiData.length,
             exchangeRates: exchangeRatesData.length,
             googleSheets: googleSheetsData.length,
-            sessions: sessionData.length
+            sessions: sessionData.length,
+            errors: errorData.length
         });
 
         // Generate statistics
-        generateStatistics(exportData, openaiData, exchangeRatesData, googleSheetsData, sessionData);
+        generateStatistics(exportData, openaiData, exchangeRatesData, googleSheetsData, sessionData, errorData);
 
-        // Generate charts
+        // Generate error charts first (most important for debugging)
+        generateErrorCategoryChart(errorData);
+        generateErrorCodeChart(errorData);
+        generateErrorTimeChart(errorData);
+        generateStabilityChart(exportData, openaiData, exchangeRatesData, sessionData, errorData);
+
+        // Generate usage charts
         generateSessionDurationChart(sessionData);
         generateExportTypesBreakdown(exportData);
         generateExportDurationByTypeChart(exportData);
         generateExportFileSizeByTypeChart(exportData);
+
+        // Generate performance charts
         generateExportDurationChart(exportData);
-        generateExportFileSizeChart(exportData);
         generateOpenAIChart(openaiData);
         generateOpenAITokenChart(openaiData);
         generateExchangeRatesChart(exchangeRatesData);
-        generateOverallActivityChart(exportData, openaiData, exchangeRatesData, googleSheetsData, sessionData);
 
-        function generateStatistics(exportData, openaiData, exchangeRatesData, googleSheetsData, sessionData) {
+        // Generate overall activity
+        generateExportFileSizeChart(exportData);
+        generateOverallActivityChart(exportData, openaiData, exchangeRatesData, googleSheetsData, sessionData, errorData);
+
+        function generateStatistics(exportData, openaiData, exchangeRatesData, googleSheetsData, sessionData, errorData) {
             const statsGrid = document.getElementById('statsGrid');
 
             // Calculate statistics
@@ -261,9 +298,8 @@ include 'admin_header.php';
             const totalOpenAI = openaiData.length;
             const totalExchangeRates = exchangeRatesData.length;
             const totalGoogleSheets = googleSheetsData.length;
-
-            // Fixed: Use sessionData.length directly since each record is a completed session
             const totalSessions = sessionData.length;
+            const totalErrors = errorData.length;
 
             const avgExportDuration = exportData.length > 0 ?
                 exportData.reduce((sum, item) => sum + parseFloat(item.DurationMS || 0), 0) / exportData.length : 0;
@@ -273,18 +309,45 @@ include 'admin_header.php';
 
             const totalTokens = openaiData.reduce((sum, item) => sum + parseInt(item.TokensUsed || 0), 0);
 
-            // Fixed: Use sessionData directly since each record has duration
             const sessionDurations = sessionData.map(d => parseFloat(d.duration || 0));
             const avgSessionDuration = sessionDurations.length > 0 ?
                 sessionDurations.reduce((sum, duration) => sum + duration, 0) / sessionDurations.length : 0;
 
+            // Calculate error rate (errors per total operations)
+            const totalOperations = totalExports + totalOpenAI + totalExchangeRates + totalGoogleSheets;
+            const errorRate = totalOperations > 0 ? ((totalErrors / totalOperations) * 100).toFixed(2) : 0;
+
+            // Most common error category
+            const errorCategories = {};
+            errorData.forEach(error => {
+                const category = error.ErrorCategory || 'Unknown';
+                errorCategories[category] = (errorCategories[category] || 0) + 1;
+            });
+            const mostCommonErrorCategory = Object.keys(errorCategories).length > 0 ?
+                Object.keys(errorCategories).reduce((a, b) => errorCategories[a] > errorCategories[b] ? a : b) : 'None';
+
             const uniqueFiles = new Set();
-            [...exportData, ...openaiData, ...exchangeRatesData, ...googleSheetsData, ...sessionData]
+            [...exportData, ...openaiData, ...exchangeRatesData, ...googleSheetsData, ...sessionData, ...errorData]
             .forEach(item => {
                 if (item.source_file) uniqueFiles.add(item.source_file);
             });
 
             const stats = [{
+                    title: 'Total Errors',
+                    value: totalErrors.toLocaleString(),
+                    subtext: errorData.length > 0 ? 'incidents reported' : 'No errors 🎉'
+                },
+                {
+                    title: 'Error Rate',
+                    value: errorRate + '%',
+                    subtext: totalOperations > 0 ? 'errors per operation' : 'No data'
+                },
+                {
+                    title: 'Most Common Error',
+                    value: mostCommonErrorCategory,
+                    subtext: Object.keys(errorCategories).length > 0 ? `${errorCategories[mostCommonErrorCategory]} occurrences` : 'None'
+                },
+                {
                     title: 'Total Exports',
                     value: totalExports.toLocaleString(),
                     subtext: 'operations'
@@ -292,37 +355,27 @@ include 'admin_header.php';
                 {
                     title: 'OpenAI Calls',
                     value: totalOpenAI.toLocaleString(),
-                    subtext: openaiData.length > 0 ? '' : 'No data'
-                },
-                {
-                    title: 'Exchange Rate Calls',
-                    value: totalExchangeRates.toLocaleString()
-                },
-                {
-                    title: 'Google Sheets',
-                    value: totalGoogleSheets.toLocaleString(),
-                    subtext: googleSheetsData.length > 0 ? '' : 'No data'
+                    subtext: openaiData.length > 0 ? `${totalTokens.toLocaleString()} tokens` : 'No data'
                 },
                 {
                     title: 'User Sessions',
                     value: totalSessions.toLocaleString(),
-                    subtext: sessionData.length > 0 ? '' : 'No data'
+                    subtext: sessionData.length > 0 ? `${Math.round(avgSessionDuration)}s avg` : 'No data'
+                },
+                {
+                    title: 'Exchange Rate Calls',
+                    value: totalExchangeRates.toLocaleString(),
+                    subtext: exchangeRatesData.length > 0 ? 'API requests' : 'No data'
                 },
                 {
                     title: 'Avg Export Time',
-                    value: Math.round(avgExportDuration) + ' ms'
-                },
-                {
-                    title: 'Avg OpenAI Time',
-                    value: openaiData.length > 0 ? Math.round(avgOpenAIDuration) + ' ms' : 'No data'
-                },
-                {
-                    title: 'Total Tokens',
-                    value: openaiData.length > 0 ? totalTokens.toLocaleString() : 'No data'
+                    value: Math.round(avgExportDuration) + ' ms',
+                    subtext: exportData.length > 0 ? 'processing time' : 'No data'
                 },
                 {
                     title: 'Source Files',
-                    value: uniqueFiles.size
+                    value: uniqueFiles.size,
+                    subtext: 'data sources'
                 }
             ];
 
@@ -335,10 +388,245 @@ include 'admin_header.php';
             `).join('');
         }
 
+        function generateErrorCategoryChart(errorData) {
+            if (errorData.length === 0) {
+                document.getElementById('errorCategoryChart').parentElement.innerHTML =
+                    '<div class="chart-no-data"><h3>No Errors Detected!</h3><p>Your application is running smoothly</p></div>';
+                return;
+            }
+
+            // Count errors by category
+            const categoryCounts = {};
+            errorData.forEach(error => {
+                const category = error.ErrorCategory || 'Unknown';
+                categoryCounts[category] = (categoryCounts[category] || 0) + 1;
+            });
+
+            const sortedCategories = Object.entries(categoryCounts)
+                .sort(([, a], [, b]) => b - a);
+
+            const labels = sortedCategories.map(([category]) => category);
+            const data = sortedCategories.map(([, count]) => count);
+            const colors = ['#ef4444', '#f97316', '#eab308', '#84cc16', '#22c55e', '#06b6d4', '#6366f1', '#8b5cf6'];
+
+            new Chart(document.getElementById("errorCategoryChart"), {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: colors.slice(0, labels.length),
+                        borderColor: colors.slice(0, labels.length).map(c => c.replace('0.8', '1')),
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: ${value} errors (${percentage}%)`;
+                                }
+                            }
+                        }
+                    },
+                    layout: {
+                        padding: {
+                            bottom: 40
+                        }
+                    }
+                }
+            });
+        }
+
+        function generateErrorCodeChart(errorData) {
+            if (errorData.length === 0) {
+                document.getElementById('errorCodeChart').parentElement.innerHTML =
+                    '<div class="chart-no-data"><h3>No Error Codes!</h3><p>Clean codebase detected</p></div>';
+                return;
+            }
+
+            // Count errors by code
+            const codeCounts = {};
+            errorData.forEach(error => {
+                const code = error.ErrorCode || 'Unknown';
+                codeCounts[code] = (codeCounts[code] || 0) + 1;
+            });
+
+            const sortedCodes = Object.entries(codeCounts)
+                .sort(([, a], [, b]) => b - a)
+                .slice(0, 10); // Top 10 error codes
+
+            const labels = sortedCodes.map(([code]) => code);
+            const data = sortedCodes.map(([, count]) => count);
+
+            new Chart(document.getElementById("errorCodeChart"), {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Error Occurrences',
+                        data: data,
+                        backgroundColor: '#ef4444',
+                        borderColor: '#dc2626',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Number of Occurrences'
+                            }
+                        }
+                    },
+                    layout: {
+                        padding: {
+                            bottom: 40
+                        }
+                    }
+                }
+            });
+        }
+
+        function generateErrorTimeChart(errorData) {
+            if (errorData.length === 0) {
+                document.getElementById('errorTimeChart').parentElement.innerHTML =
+                    '<div class="chart-no-data"><h3>📈 Stable Performance</h3><p>No error trends to display</p></div>';
+                return;
+            }
+
+            // Group errors by date
+            const dailyErrors = {};
+            errorData.forEach(error => {
+                const date = error.timestamp.split(' ')[0]; // Extract date part
+                dailyErrors[date] = (dailyErrors[date] || 0) + 1;
+            });
+
+            const dates = Object.keys(dailyErrors).sort();
+            const errorCounts = dates.map(date => dailyErrors[date]);
+
+            new Chart(document.getElementById("errorTimeChart"), {
+                type: 'line',
+                data: {
+                    labels: dates.map(date => {
+                        const d = new Date(date);
+                        return `${d.getMonth()+1}/${d.getDate()}/${d.getFullYear().toString().slice(-2)}`;
+                    }),
+                    datasets: [{
+                        label: 'Daily Error Count',
+                        data: errorCounts,
+                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                        borderColor: '#ef4444',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Error Count'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                maxRotation: 45
+                            }
+                        }
+                    },
+                    layout: {
+                        padding: {
+                            bottom: 40
+                        }
+                    }
+                }
+            });
+        }
+
+        function generateStabilityChart(exportData, openaiData, exchangeRatesData, sessionData, errorData) {
+            const totalOperations = exportData.length + openaiData.length + exchangeRatesData.length + sessionData.length;
+            const totalErrors = errorData.length;
+            const successfulOperations = totalOperations - totalErrors;
+
+            if (totalOperations === 0) {
+                document.getElementById('stabilityChart').parentElement.innerHTML =
+                    '<div class="chart-no-data">No operations data available</div>';
+                return;
+            }
+
+            new Chart(document.getElementById("stabilityChart"), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Successful Operations', 'Errors'],
+                    datasets: [{
+                        data: [successfulOperations, totalErrors],
+                        backgroundColor: ['#10b981', '#ef4444'],
+                        borderColor: ['#059669', '#dc2626'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: ${value.toLocaleString()} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    },
+                    layout: {
+                        padding: {
+                            bottom: 40
+                        }
+                    }
+                }
+            });
+        }
+
         function generateSessionDurationChart(sessionData) {
             if (sessionData.length === 0) {
                 document.getElementById('sessionDurationChart').parentElement.innerHTML =
-                    '<div class="chart-no-data">No data available</div>';
+                    '<div class="chart-no-data">No session data available</div>';
                 return;
             }
 
@@ -351,7 +639,7 @@ include 'admin_header.php';
 
             if (sessions.length === 0) {
                 document.getElementById('sessionDurationChart').parentElement.innerHTML =
-                    '<div class="chart-no-data">No data available</div>';
+                    '<div class="chart-no-data">No session data available</div>';
                 return;
             }
 
@@ -424,7 +712,7 @@ include 'admin_header.php';
         function generateExportTypesBreakdown(exportData) {
             if (exportData.length === 0) {
                 document.getElementById('exportTypesGrid').parentElement.innerHTML =
-                    '<div class="chart-no-data">No data available</div>';
+                    '<div class="chart-no-data">No export data available</div>';
                 return;
             }
 
@@ -484,7 +772,7 @@ include 'admin_header.php';
         function generateExportDurationByTypeChart(exportData) {
             if (exportData.length === 0) {
                 document.getElementById('exportDurationByTypeChart').parentElement.innerHTML =
-                    '<div class="chart-no-data">No data available</div>';
+                    '<div class="chart-no-data">No export data available</div>';
                 return;
             }
 
@@ -570,7 +858,7 @@ include 'admin_header.php';
 
             if (filteredData.length === 0) {
                 document.getElementById('exportFileSizeByTypeChart').parentElement.innerHTML =
-                    '<div class="chart-no-data">No data available</div>';
+                    '<div class="chart-no-data">No file size data available</div>';
                 return;
             }
 
@@ -650,7 +938,7 @@ include 'admin_header.php';
         function generateExportDurationChart(exportData) {
             if (exportData.length === 0) {
                 document.getElementById('exportDurationChart').parentElement.innerHTML =
-                    '<div class="chart-no-data">No data available</div>';
+                    '<div class="chart-no-data">No export data available</div>';
                 return;
             }
 
@@ -674,11 +962,6 @@ include 'admin_header.php';
                     return parseFloat(duration.replace(/[^\d.]/g, ''));
                 }
                 return parseInt(duration) || 0;
-            });
-
-            const backgroundColors = recentData.map(d => {
-                const type = d.ExportType || 'Unknown';
-                return typeColors[type] || '#9ca3af';
             });
 
             new Chart(document.getElementById("exportDurationChart"), {
@@ -740,7 +1023,7 @@ include 'admin_header.php';
 
             if (fileSizes.length === 0) {
                 document.getElementById('exportFileSizeChart').parentElement.innerHTML =
-                    '<div class="chart-no-data">No data available</div>';
+                    '<div class="chart-no-data">No file size data available</div>';
                 return;
             }
 
@@ -809,7 +1092,7 @@ include 'admin_header.php';
         function generateOpenAIChart(openaiData) {
             if (openaiData.length === 0) {
                 document.getElementById('openaiChart').parentElement.innerHTML =
-                    '<div class="chart-no-data">No data available</div>';
+                    '<div class="chart-no-data">No OpenAI data available</div>';
                 return;
             }
 
@@ -856,7 +1139,7 @@ include 'admin_header.php';
         function generateOpenAITokenChart(openaiData) {
             if (openaiData.length === 0) {
                 document.getElementById('openaiTokenChart').parentElement.innerHTML =
-                    '<div class="chart-no-data">No data available</div>';
+                    '<div class="chart-no-data">No OpenAI token data available</div>';
                 return;
             }
 
@@ -905,7 +1188,7 @@ include 'admin_header.php';
         function generateExchangeRatesChart(exchangeRatesData) {
             if (exchangeRatesData.length === 0) {
                 document.getElementById('exchangeRatesChart').parentElement.innerHTML =
-                    '<div class="chart-no-data">No data available</div>';
+                    '<div class="chart-no-data">No exchange rates data available</div>';
                 return;
             }
 
@@ -955,7 +1238,7 @@ include 'admin_header.php';
             });
         }
 
-        function generateOverallActivityChart(exportData, openaiData, exchangeRatesData, googleSheetsData) {
+        function generateOverallActivityChart(exportData, openaiData, exchangeRatesData, googleSheetsData, sessionData, errorData) {
             // Combine all data and group by date
             const allData = [
                 ...exportData.map(d => ({
@@ -973,12 +1256,20 @@ include 'admin_header.php';
                 ...googleSheetsData.map(d => ({
                     ...d,
                     type: 'Google Sheets'
+                })),
+                ...sessionData.map(d => ({
+                    ...d,
+                    type: 'Session'
+                })),
+                ...errorData.map(d => ({
+                    ...d,
+                    type: 'Error'
                 }))
             ];
 
             if (allData.length === 0) {
                 document.getElementById('overallActivityChart').parentElement.innerHTML =
-                    '<div class="chart-no-data">No data available</div>';
+                    '<div class="chart-no-data">No activity data available</div>';
                 return;
             }
 
@@ -992,7 +1283,9 @@ include 'admin_header.php';
                         Export: 0,
                         OpenAI: 0,
                         'Exchange Rates': 0,
-                        'Google Sheets': 0
+                        'Google Sheets': 0,
+                        Session: 0,
+                        Error: 0
                     };
                 }
                 dailyCounts[dateKey][item.type]++;
@@ -1024,6 +1317,18 @@ include 'admin_header.php';
                     data: recent30Dates.map(date => dailyCounts[date]['Google Sheets']),
                     backgroundColor: '#10b981',
                     borderColor: '#059669'
+                },
+                {
+                    label: 'Sessions',
+                    data: recent30Dates.map(date => dailyCounts[date].Session),
+                    backgroundColor: '#06b6d4',
+                    borderColor: '#0891b2'
+                },
+                {
+                    label: 'Errors',
+                    data: recent30Dates.map(date => dailyCounts[date].Error),
+                    backgroundColor: '#ef4444',
+                    borderColor: '#dc2626'
                 }
             ];
 
