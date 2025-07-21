@@ -18,9 +18,68 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="keywords" content="">
     <meta name="author" content="Argo">
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Argo Sales Tracker - Free Windows sales tracking software for small businesses. Track purchases, sales, and receipts with powerful analytics. No monthly fees, lifetime access available.">
+    <meta name="keywords" content="sales tracker, business software, sales tracking app, inventory management, small business tools, Windows software, Calgary business software, Excel import export, analytics dashboard, receipt management">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Argo Sales Tracker - Smart Sales Tracking Software">
+    <meta property="og:description" content="Transform your business with smart sales tracking. Free Windows app for small businesses to track purchases, sales, and receipts with powerful analytics.">
+    <meta property="og:url" content="https://argorobots.com/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Argo Sales Tracker">
+    <meta property="og:locale" content="en_CA">
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Argo Sales Tracker - Smart Sales Tracking Software">
+    <meta name="twitter:description" content="Transform your business with smart sales tracking. Free Windows app for small businesses to track purchases, sales, and receipts with powerful analytics.">
+
+    <!-- Additional SEO Meta Tags -->
+    <meta name="geo.region" content="CA-AB">
+    <meta name="geo.placename" content="Calgary">
+    <meta name="geo.position" content="51.0447;-114.0719">
+    <meta name="ICBM" content="51.0447, -114.0719">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://argorobots.com/">
+
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "Argo Sales Tracker",
+            "description": "Free Windows sales tracking software for small businesses with analytics, Excel import/export, and receipt management",
+            "url": "https://argorobots.com/",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "Windows",
+            "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "CAD",
+                "availability": "https://schema.org/InStock"
+            },
+            "publisher": {
+                "@type": "Organization",
+                "name": "Argo",
+                "url": "https://argorobots.com/",
+                "address": {
+                    "@type": "PostalAddress",
+                    "addressLocality": "Calgary",
+                    "addressRegion": "AB",
+                    "addressCountry": "CA"
+                }
+            },
+            "downloadUrl": "https://argorobots.com/download.php",
+            "softwareVersion": "1.0.4",
+            "datePublished": "2025-05-01",
+            "dateModified": "2025-07-20"
+        }
+    </script>
+
     <link rel="shortcut icon" type="image/x-icon" href="images/argo-logo/A-logo.ico">
     <title>Argo Sales Tracker</title>
 

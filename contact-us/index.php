@@ -16,11 +16,36 @@ if (isset($_SESSION['contact_error'])) {
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="">
-  <meta name="keywords" content="">
   <meta name="author" content="Argo">
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Contact Argo Sales Tracker support team in Calgary, Canada. Get help with sales tracking software, report bugs, request features, or ask questions. Fast response times within 1-8 business hours.">
+  <meta name="keywords" content="contact argo sales tracker, customer support calgary, business software help, sales tracker support, contact form, technical support, calgary software company contact, customer service">
+
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="Contact Us - Argo Sales Tracker Support">
+  <meta property="og:description" content="Contact Argo Sales Tracker support team in Calgary, Canada. Get help with sales tracking software, report bugs, request features, or ask questions. Fast response times within 1-8 business hours.">
+  <meta property="og:url" content="https://argorobots.com/contact-us/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Argo Sales Tracker">
+  <meta property="og:locale" content="en_CA">
+
+  <!-- Twitter Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Contact Us - Argo Sales Tracker Support">
+  <meta name="twitter:description" content="Contact Argo Sales Tracker support team in Calgary, Canada. Get help with sales tracking software, report bugs, request features, or ask questions. Fast response times within 1-8 business hours.">
+
+  <!-- Additional SEO Meta Tags -->
+  <meta name="geo.region" content="CA-AB">
+  <meta name="geo.placename" content="Calgary">
+  <meta name="geo.position" content="51.0447;-114.0719">
+  <meta name="ICBM" content="51.0447, -114.0719">
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://argorobots.com/contact-us/">
+
   <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
-  <title>Contact Us - Argo Sales Tracker</title>
+  <title>Contact Us - Argo Sales Tracker Support | Calgary Software Company</title>
 
   <script src="../resources/scripts/jquery-3.6.0.js"></script>
   <script src="../resources/scripts/main.js"></script>
