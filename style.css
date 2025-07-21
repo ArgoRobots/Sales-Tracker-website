@@ -500,6 +500,7 @@ body {
 
 .check-list {
   list-style: none;
+  text-align: left;
 }
 
 .check-list li {

@@ -21,7 +21,6 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     <meta name="description" content="">
     <meta name="keywords" content="">
     <meta name="author" content="Argo">
-    <meta name="robots" content="noindex, nofollow">
     <link rel="shortcut icon" type="image/x-icon" href="images/argo-logo/A-logo.ico">
     <title>Argo Sales Tracker</title>
 
