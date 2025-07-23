@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<item>
+    <version>1.0.4</version>
+    <url>https://argorobots.com/download.php</url>
+    <changelog>https://argorobots.com/whats-new/index.html</changelog>
+    <mandatory>false</mandatory>
+    <checksum algorithm="SHA256">36132A45DDC73BDE11D2941601A41ACA3E4F70B31F60F87FC92615BA29865D73</checksum>
+    <size>90857736</size>
+</item>
