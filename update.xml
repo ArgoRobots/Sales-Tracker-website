@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<item>
-    <version>1.0.4</version>
-    <url>https://argorobots.com/download.php</url>
-    <changelog>https://argorobots.com/whats-new/index.html</changelog>
-    <mandatory>false</mandatory>
-    <args>/quiet</args>
-    <checksum algorithm="SHA256">36132A45DDC73BDE11D2941601A41ACA3E4F70B31F60F87FC92615BA29865D73</checksum>
-    <size>90857736</size>
-</item>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
+    <channel>
+        <title>Sales Tracker Updates</title>
+        <link>https://argorobots.com</link>
+        <description>Updates for Sales Tracker</description>
+        <language>en</language>
+        <item>
+            <title>Version 1.0.4</title>
+            <sparkle:version>1.0.4</sparkle:version>
+            <description><![CDATA[
+                <h2>What's New in Version 1.0.4</h2>
+                <ul>
+                    <li>Bug fixes and improvements</li>
+                    <li>Enhanced performance</li>
+                </ul>
+            ]]></description>
+            <pubDate>Mon, 01 Jan 2024 10:00:00 +0000</pubDate>
+            <enclosure url="https://argorobots.com/download.php" 
+                       sparkle:version="1.0.4" 
+                       type="application/octet-stream" 
+                       length="90857736" />
+        </item>
+    </channel>
+</rss>
