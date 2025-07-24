@@ -73,7 +73,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                     "addressCountry": "CA"
                 }
             },
-            "downloadUrl": "https://argorobots.com/download.php",
+            "downloadUrl": "https://argorobots.com/download",
             "softwareVersion": "1.0.4",
             "datePublished": "2025-05-01",
             "dateModified": "2025-07-20"
@@ -108,7 +108,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                     <p class="hero-subtitle">Track purchases and sales, and grow your business with our powerful
                         yet simple-to-use software.</p>
                     <div class="hero-buttons">
-                        <a href="download.php" class="btn btn-white">Download for free</a>
+                        <a href="/download" class="btn btn-white">Download for free</a>
                         <a href="upgrade/index.html" class="btn btn-white">Buy the full version</a>
                     </div>
                     <p class="system-req">*Windows only</p>
@@ -701,7 +701,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
             <div class="comparison-cta">
                 <p>Stop struggling with spreadsheets. Get started with Argo Sales Tracker today.</p>
                 <div class="cta-buttons">
-                    <a href="download.php" class="btn btn-blue">Download for free</a>
+                    <a href="/download" class="btn btn-blue">Download for free</a>
                     <a href="upgrade/index.html" class="btn btn-blue">Buy the full version</a>
                 </div>
             </div>

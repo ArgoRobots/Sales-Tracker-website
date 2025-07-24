@@ -104,6 +104,12 @@ AddDefaultCharset UTF-8
     <FilesMatch "\.(ico|pdf|jpg|jpeg|png|gif|svg)$">
         Header set Cache-Control "max-age=86400, public"
     </FilesMatch>
+    
+    # Force download for executable files
+    <FilesMatch "\.(exe|msi)$">
+        Header set Content-Type "application/octet-stream"
+        Header set Content-Disposition "attachment"
+    </FilesMatch>
 </IfModule>
 
 # Redirect to error pages
@@ -118,3 +124,19 @@ ErrorDocument 503 /error-pages/503.html
 php_flag display_errors Off
 php_flag log_errors On
 php_value error_log error_log.txt
+
+# ALL REWRITE RULES IN ONE BLOCK
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Protect database directory
+    RewriteRule ^database/ - [F,L]
+    
+    # Download handling rules with filename in URL
+    RewriteRule ^download/([^/]+\.exe)$ get_installer.php?filename=$1 [L,QSA]
+    RewriteRule ^download/?$ get_installer.php [L,QSA]
+    
+    # Allow direct access to installer files but track downloads
+    RewriteCond %{REQUEST_FILENAME} \.(exe|msi)$ [NC]
+    RewriteRule ^resources/downloads/(.+)$ track_and_serve.php?file=$1 [L,QSA]
+</IfModule>
