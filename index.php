@@ -263,7 +263,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                 <div class="showcase-content">
                     <h3 class="showcase-title">Powerful Analytics Dashboard</h3>
                     <p class="showcase-description">Track your business performance with interactive charts and detailed
-                        insights. Monitor sales trends, expense distribution, and more in real-time.</p>
+                        insights. Monitor sales trends, expense distribution, and more, all in real-time.</p>
                     <ul class="check-list">
                         <li>
                             <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
