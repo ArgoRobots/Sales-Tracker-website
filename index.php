@@ -114,7 +114,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                     <p class="system-req">*Windows only</p>
                 </div>
                 <div>
-                    <img src="images/main.png" alt="Dashboard Preview">
+                    <img src="images/main.webp" alt="Dashboard Preview">
                 </div>
             </div>
         </div>
@@ -259,7 +259,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
 
             <!-- Analytics dashboard -->
             <div class="showcase-item">
-                <img src="images/analytics.png" alt="Analytics dashboard">
+                <img src="images/analytics.webp" alt="Analytics dashboard">
                 <div class="showcase-content">
                     <h3 class="showcase-title">Powerful Analytics Dashboard</h3>
                     <p class="showcase-description">Track your business performance with interactive charts and detailed
