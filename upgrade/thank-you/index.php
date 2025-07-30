@@ -11,19 +11,12 @@
     <link rel="shortcut icon" type="image/x-icon" href="../../images/argo-logo/A-logo.ico">
     <title>Thank You - Argo Sales Tracker</title>
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17210317271"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'AW-17210317271');
-    </script>
+    <?php include 'resources/head/google-analytics.php'; ?>
 
     <!-- Event snippet for Purchase conversion page -->
     <script>
         // Wait for DOM to load, then get transaction ID from URL
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);
             const transactionID = urlParams.get('license') || '';
 

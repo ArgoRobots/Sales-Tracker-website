@@ -493,6 +493,8 @@ if ($is_own_profile && isset($user['email'])) {
     <link rel="shortcut icon" type="image/x-icon" href="../../images/argo-logo/A-logo.ico">
     <title><?php echo $user_not_found ? 'User Not Found' : htmlspecialchars($user['username']) . "'s Profile"; ?> - Argo Community</title>
 
+    <?php include 'resources/head/google-analytics.php'; ?>
+
     <script src="profile.js" defer></script>
     <script src="../../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../../resources/scripts/main.js"></script>

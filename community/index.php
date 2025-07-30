@@ -23,6 +23,8 @@ $current_user = $is_logged_in ? get_current_user_ID() : null;
     <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
     <title>Argo Sales Tracker Community</title>
 
+    <?php include 'resources/head/google-analytics.php'; ?>
+
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../resources/scripts/main.js"></script>
     <script src="../resources/notifications/notifications.js" defer></script>

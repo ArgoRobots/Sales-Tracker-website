@@ -83,6 +83,8 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     <link rel="shortcut icon" type="image/x-icon" href="images/argo-logo/A-logo.ico">
     <title>Argo Sales Tracker</title>
 
+    <?php include 'resources/head/google-analytics.php'; ?>
+
     <script src="resources/scripts/jquery-3.6.0.js"></script>
     <script src="resources/scripts/main.js"></script>
 
