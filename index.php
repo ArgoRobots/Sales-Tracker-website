@@ -485,35 +485,6 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                                 <line x1="9" y1="9" x2="15" y2="15" />
                             </svg>
                             <div class="comparison-content">
-                                <h3>Security Concerns</h3>
-                                <p>Spreadsheets typically lack advanced security features, with limited password
-                                    protection and no encryption for sensitive business data.</p>
-                            </div>
-                        </div>
-
-                        <div class="comparison-item">
-                            <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            <div class="comparison-content">
-                                <h3>Military-Grade Security</h3>
-                                <p>AES-256 encryption keeps your data safe, with robust password protection and Windows
-                                    Hello integration in the paid version for biometric authentication.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="comparison-row">
-                        <div class="comparison-item">
-                            <svg class="error-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <circle cx="12" cy="12" r="10" />
-                                <line x1="15" y1="9" x2="9" y2="15" />
-                                <line x1="9" y1="9" x2="15" y2="15" />
-                            </svg>
-                            <div class="comparison-content">
                                 <h3>Clunky Interface</h3>
                                 <p>Grid-based interfaces with small cells and hidden menus make data entry tedious
                                     and analysis difficult for non-technical users.</p>
@@ -630,38 +601,6 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                                 <p>Real-time interactive dashboards automatically update as you add data, with
                                     sophisticated visualizations that provide actionable insights without any technical
                                     skills required.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Security -->
-                    <div class="mobile-comparison-section">
-                        <div class="mobile-section-header">Data Security</div>
-
-                        <div class="mobile-section-spreadsheet">
-                            <svg class="error-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <circle cx="12" cy="12" r="10" />
-                                <line x1="15" y1="9" x2="9" y2="15" />
-                                <line x1="9" y1="9" x2="15" y2="15" />
-                            </svg>
-                            <div class="mobile-content">
-                                <h3>Spreadsheets: Security Concerns</h3>
-                                <p>Spreadsheets typically lack advanced security features, with limited password
-                                    protection and no encryption for sensitive business data.</p>
-                            </div>
-                        </div>
-
-                        <div class="mobile-section-argo">
-                            <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            <div class="mobile-content">
-                                <h3>Argo: Military-Grade Security</h3>
-                                <p>AES-256 encryption keeps your data safe, with robust password protection and Windows
-                                    Hello integration in the paid version for biometric authentication.</p>
                             </div>
                         </div>
                     </div>
