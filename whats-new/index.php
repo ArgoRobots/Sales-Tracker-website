@@ -75,6 +75,84 @@
     <div class="container">
         <div class="version-grid">
 
+            <!-- Version 1.0.5 -->
+            <div class="version-card">
+                <div class="version-header">
+                    <span class="version-tag">Version 1.0.5</span>
+                    <span class="date-tag">August 6 2025</span>
+                </div>
+
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <div class="icon icon-plus"></div>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Automatic Updates<span class="type-tag feature">New Feature</span></h3>
+                            <p>Stay up-to-date effortlessly! The application now automatically checks for new versions
+                                when connected to the internet and prompts you to update. No more manual checking of the
+                                website for the latest releases. Note: You may need to download this version manually to
+                                enable automatic updates for future releases.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <div class="icon icon-lightning"></div>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Enhanced Accountant Management<span class="type-tag enhancement">Enhancement</span></h3>
+                            <p>Users now select an accountant when opening companies (skipped if only one exists). Your
+                                selection is remembered so you no longer have to select the accountant every time you
+                                create transactions.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <div class="icon icon-lightning"></div>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Enhanced Return Tracking<span class="type-tag enhancement">Enhancement</span></h3>
+                            <p>Returned products now display which accountant processed the return, providing better
+                                tracking for your return management processes.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <div class="icon icon-plus"></div>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Multilingual Log Support<span class="type-tag feature">New Feature</span></h3>
+                            <p>Application logs can now be translated to other languages, making debugging and support
+                                more accessible.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <div class="icon icon-plus"></div>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Version Compatibility Check<span class="type-tag feature">New Feature</span></h3>
+                            <p>Added version validation to prevent opening files that were saved with newer versions of
+                                the application, ensuring data integrity and preventing compatibility issues.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <div class="icon icon-check"></div>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Bug Fixes<span class="type-tag fix">Fix</span></h3>
+                            <p>Fixed several bugs throughout the application for improved stability and performance.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Version 1.0.4 -->
             <div class="version-card">
                 <div class="version-header">
@@ -314,8 +392,8 @@
                         <div class="feature-content">
                             <h3>Improved Language Translation<span class="type-tag enhancement">Enhancement</span></h3>
                             <p>Enhanced language switching with a new loading screen and optimized the translation
-                                system. It downloads all translations at once instead of using API calls, making
-                                language conversion much faster and more reliable.</p>
+                                system. It downloads all translations at once instead of using multiple API calls,
+                                making language conversion much faster and more reliable.</p>
                         </div>
                     </div>
 

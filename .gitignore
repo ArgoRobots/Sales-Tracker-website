@@ -3,3 +3,4 @@
 .VSCodeCounter
 error_log.txt
 /vendor/
+/.vscode/
