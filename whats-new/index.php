@@ -304,7 +304,7 @@
                 <div class="documentation-link">
                     <p>
                         <strong>For more information about the updated spreadsheet import/export process,
-                            <a class="link-no-underline" href="../documentation/index.html#spreadsheet-import">visit our
+                            <a class="link-no-underline" href="../documentation/index.php#spreadsheet-import">visit our
                                 documentation</a></strong>
                     </p>
                 </div>

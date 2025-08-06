@@ -49,7 +49,7 @@
                 city, timezone) to identify and resolve software issues and optimize performance
                 globally. You can disable this feature at any time in the Settings panel of the application. This data
                 collection is separate from any standard web analytics used on our website. For more information about
-                what data is collected and how it is used, please see our <a class="link" href="privacy.html">Privacy
+                what data is collected and how it is used, please see our <a class="link" href="privacy.php">Privacy
                     Policy</a>.</p>
 
             <h2>User Content</h2>

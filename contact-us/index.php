@@ -19,12 +19,15 @@ if (isset($_SESSION['contact_error'])) {
   <meta name="author" content="Argo">
 
   <!-- SEO Meta Tags -->
-  <meta name="description" content="Contact Argo Sales Tracker support team in Calgary, Canada. Get help with sales tracking software, report bugs, request features, or ask questions. Fast response times within 1-8 business hours.">
-  <meta name="keywords" content="contact argo sales tracker, customer support calgary, business software help, sales tracker support, contact form, technical support, calgary software company contact, customer service">
+  <meta name="description"
+    content="Contact Argo Sales Tracker support team in Calgary, Canada. Get help with sales tracking software, report bugs, request features, or ask questions. Fast response times within 1-8 business hours.">
+  <meta name="keywords"
+    content="contact argo sales tracker, customer support calgary, business software help, sales tracker support, contact form, technical support, calgary software company contact, customer service">
 
   <!-- Open Graph Meta Tags -->
   <meta property="og:title" content="Contact Us - Argo Sales Tracker Support">
-  <meta property="og:description" content="Contact Argo Sales Tracker support team in Calgary, Canada. Get help with sales tracking software, report bugs, request features, or ask questions. Fast response times within 1-8 business hours.">
+  <meta property="og:description"
+    content="Contact Argo Sales Tracker support team in Calgary, Canada. Get help with sales tracking software, report bugs, request features, or ask questions. Fast response times within 1-8 business hours.">
   <meta property="og:url" content="https://argorobots.com/contact-us/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Argo Sales Tracker">
@@ -33,7 +36,8 @@ if (isset($_SESSION['contact_error'])) {
   <!-- Twitter Meta Tags -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Contact Us - Argo Sales Tracker Support">
-  <meta name="twitter:description" content="Contact Argo Sales Tracker support team in Calgary, Canada. Get help with sales tracking software, report bugs, request features, or ask questions. Fast response times within 1-8 business hours.">
+  <meta name="twitter:description"
+    content="Contact Argo Sales Tracker support team in Calgary, Canada. Get help with sales tracking software, report bugs, request features, or ask questions. Fast response times within 1-8 business hours.">
 
   <!-- Additional SEO Meta Tags -->
   <meta name="geo.region" content="CA-AB">
@@ -70,9 +74,9 @@ if (isset($_SESSION['contact_error'])) {
       <h1 class="title">Contact Us</h1>
 
       <?php if (!empty($error_message)): ?>
-        <div class="error-message">
-          <?php echo htmlspecialchars($error_message); ?>
-        </div>
+      <div class="error-message">
+        <?php echo htmlspecialchars($error_message); ?>
+      </div>
       <?php endif; ?>
 
       <!-- Contact form using PHP for form submission handling -->
@@ -100,7 +104,7 @@ if (isset($_SESSION['contact_error'])) {
           <div class="support-container-2">
             <h2 class="sub-title">Submit a question or comment</h2>
             <p class="description">Many common questions are answered on our <a
-                href="../documentation/index.html">Documentation</a> and <a href="../about-us/index.html">About Us</a>
+                href="../documentation/index.php">Documentation</a> and <a href="../about-us/index.php">About Us</a>
               pages.</p>
           </div>
           <div class="support-container-3"></div>

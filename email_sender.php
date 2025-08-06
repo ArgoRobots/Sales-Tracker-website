@@ -46,7 +46,7 @@ function send_license_email($to_email, $license_key)
                     </div>
                     
                     <div class="button-container">
-                        <a href="https://argorobots.com/documentation/index.html" class="button">View Documentation</a>
+                        <a href="https://argorobots.com/documentation/index.php" class="button">View Documentation</a>
                     </div>
                     
                     <p>If you have any questions or need assistance, please don't hesitate to <a href="https://argorobots.com/contact-us/index.php" style="color: #2563eb;">contact our support team</a>.</p>
@@ -120,7 +120,7 @@ function resend_license_email($to_email, $license_key)
                     </div>
                     
                     <div class="button-container">
-                        <a href="https://argorobots.com/documentation/index.html" class="button button-resend">View Documentation</a>
+                        <a href="https://argorobots.com/documentation/index.php" class="button button-resend">View Documentation</a>
                     </div>
                     
                     <p>If you have any questions or need assistance, please don't hesitate to <a href="https://argorobots.com/contact-us/index.php" style="color: #2563eb;">contact our support team</a>.</p>

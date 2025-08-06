@@ -60,7 +60,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
     exit;
 } else if ($response['success']) {
     // Redirect to success page for non-AJAX requests
-    header('Location: message-sent-successfully/index.html');
+    header('Location: message-sent-successfully/index.php');
     exit;
 } else if (!empty($response['message'])) {
     // Store error message in session for non-AJAX requests

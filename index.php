@@ -21,12 +21,15 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     <meta name="author" content="Argo">
 
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Argo Sales Tracker - Free Windows sales tracking software for small businesses. Track purchases, sales, and receipts with powerful analytics. No monthly fees, lifetime access available.">
-    <meta name="keywords" content="sales tracker, business software, sales tracking app, inventory management, small business tools, Windows software, Calgary business software, Excel import export, analytics dashboard, receipt management">
+    <meta name="description"
+        content="Argo Sales Tracker - Free Windows sales tracking software for small businesses. Track purchases, sales, and receipts with powerful analytics. No monthly fees, lifetime access available.">
+    <meta name="keywords"
+        content="sales tracker, business software, sales tracking app, inventory management, small business tools, Windows software, Calgary business software, Excel import export, analytics dashboard, receipt management">
 
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Argo Sales Tracker - Smart Sales Tracking Software">
-    <meta property="og:description" content="Transform your business with smart sales tracking. Free Windows app for small businesses to track purchases, sales, and receipts with powerful analytics.">
+    <meta property="og:description"
+        content="Transform your business with smart sales tracking. Free Windows app for small businesses to track purchases, sales, and receipts with powerful analytics.">
     <meta property="og:url" content="https://argorobots.com/">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Argo Sales Tracker">
@@ -35,7 +38,8 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Argo Sales Tracker - Smart Sales Tracking Software">
-    <meta name="twitter:description" content="Transform your business with smart sales tracking. Free Windows app for small businesses to track purchases, sales, and receipts with powerful analytics.">
+    <meta name="twitter:description"
+        content="Transform your business with smart sales tracking. Free Windows app for small businesses to track purchases, sales, and receipts with powerful analytics.">
 
     <!-- Additional SEO Meta Tags -->
     <meta name="geo.region" content="CA-AB">
@@ -111,7 +115,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                         yet simple-to-use software.</p>
                     <div class="hero-buttons">
                         <a href="/download" class="btn btn-white">Download for free</a>
-                        <a href="upgrade/index.html" class="btn btn-white">Buy the full version</a>
+                        <a href="upgrade/index.php" class="btn btn-white">Buy the full version</a>
                     </div>
                     <p class="system-req">*Windows only</p>
                 </div>
@@ -130,7 +134,8 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                     <div class="image-container">
                         <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
                             <!-- Dashboard background -->
-                            <rect x="10" y="20" width="100" height="80" rx="8" fill="#ffffff" stroke="#e5e7eb" stroke-width="2" />
+                            <rect x="10" y="20" width="100" height="80" rx="8" fill="#ffffff" stroke="#e5e7eb"
+                                stroke-width="2" />
 
                             <!-- Bar chart -->
                             <rect x="20" y="70" width="8" height="20" rx="2" fill="#3b82f6" />
@@ -139,7 +144,8 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                             <rect x="56" y="65" width="8" height="25" rx="2" fill="#ef4444" />
 
                             <!-- Line chart -->
-                            <path d="M75 80 L85 70 L95 65 L105 60" stroke="#8b5cf6" stroke-width="3" fill="none" stroke-linecap="round" />
+                            <path d="M75 80 L85 70 L95 65 L105 60" stroke="#8b5cf6" stroke-width="3" fill="none"
+                                stroke-linecap="round" />
                             <circle cx="75" cy="80" r="3" fill="#8b5cf6" />
                             <circle cx="85" cy="70" r="3" fill="#8b5cf6" />
                             <circle cx="95" cy="65" r="3" fill="#8b5cf6" />
@@ -155,8 +161,10 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                             <rect x="95" y="37" width="10" height="2" rx="1" fill="#9ca3af" />
 
                             <!-- Dollar signs -->
-                            <text x="25" y="38" text-anchor="middle" fill="white" font-size="6" font-weight="bold">$</text>
-                            <text x="85" y="38" text-anchor="middle" fill="white" font-size="6" font-weight="bold">$</text>
+                            <text x="25" y="38" text-anchor="middle" fill="white" font-size="6"
+                                font-weight="bold">$</text>
+                            <text x="85" y="38" text-anchor="middle" fill="white" font-size="6"
+                                font-weight="bold">$</text>
                         </svg>
                     </div>
                     <div class="text-container">
@@ -168,7 +176,8 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                     <div class="image-container">
                         <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
                             <!-- Form background -->
-                            <rect x="20" y="15" width="80" height="90" rx="8" fill="#ffffff" stroke="#e5e7eb" stroke-width="2" />
+                            <rect x="20" y="15" width="80" height="90" rx="8" fill="#ffffff" stroke="#e5e7eb"
+                                stroke-width="2" />
 
                             <!-- Form header -->
                             <rect x="20" y="15" width="80" height="20" rx="8" fill="#1e3a8a" />
@@ -186,7 +195,8 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
 
                             <!-- Add button -->
                             <circle cx="60" cy="25" r="15" fill="#22c55e" stroke="white" stroke-width="2" />
-                            <path d="M60 18 L60 32 M53 25 L67 25" stroke="white" stroke-width="3" stroke-linecap="round" />
+                            <path d="M60 18 L60 32 M53 25 L67 25" stroke="white" stroke-width="3"
+                                stroke-linecap="round" />
 
                             <!-- Form labels -->
                             <rect x="30" y="40" width="20" height="2" rx="1" fill="#6b7280" />
@@ -197,14 +207,16 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                     </div>
                     <div class="text-container">
                         <h3>Easily add new transactions</h3>
-                        <p>Add new purchases and sales with fields for quantities, shipping costs, taxes, fees and more.</p>
+                        <p>Add new purchases and sales with fields for quantities, shipping costs, taxes, fees and more.
+                        </p>
                     </div>
                 </div>
                 <div class="feature-card">
                     <div class="image-container">
                         <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
                             <!-- Grid background -->
-                            <rect x="15" y="20" width="90" height="80" rx="8" fill="#ffffff" stroke="#e5e7eb" stroke-width="2" />
+                            <rect x="15" y="20" width="90" height="80" rx="8" fill="#ffffff" stroke="#e5e7eb"
+                                stroke-width="2" />
 
                             <!-- Product grid items -->
                             <rect x="25" y="30" width="20" height="20" rx="4" fill="#dbeafe" stroke="#3b82f6" />
@@ -643,7 +655,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                 <p>Stop struggling with spreadsheets. Get started with Argo Sales Tracker today.</p>
                 <div class="cta-buttons">
                     <a href="/download" class="btn btn-blue">Download for free</a>
-                    <a href="upgrade/index.html" class="btn btn-blue">Buy the full version</a>
+                    <a href="upgrade/index.php" class="btn btn-blue">Buy the full version</a>
                 </div>
             </div>
         </div>
@@ -763,7 +775,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                             Priority Support
                         </li>
                     </ul>
-                    <a href="upgrade/index.html" class="btn btn-blue" style="width: 100%; margin-top: 36px;">Get
+                    <a href="upgrade/index.php" class="btn btn-blue" style="width: 100%; margin-top: 36px;">Get
                         Started</a>
                 </div>
             </div>

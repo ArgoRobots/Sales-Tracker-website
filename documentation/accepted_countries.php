@@ -33,11 +33,12 @@ require_once '../community/formatting/formatting_functions.php';
     </header>
 
     <div class="countries-container">
-        <a href="index.html#spreadsheets" class="link-no-underline back-link">← Back to Documentation</a>
+        <a href="index.php#spreadsheets" class="link-no-underline back-link">← Back to Documentation</a>
 
         <div class="countries-header">
             <h1>Accepted Country Names</h1>
-            <p>When importing spreadsheet data, country names must match the system's country list or use recognized variants. All variants listed below are automatically converted to the standardized country name.</p>
+            <p>When importing spreadsheet data, country names must match the system's country list or use recognized
+                variants. All variants listed below are automatically converted to the standardized country name.</p>
             <input type="text" class="search-box" id="countrySearch" placeholder="Search countries...">
         </div>
 
@@ -1820,19 +1821,21 @@ require_once '../community/formatting/formatting_functions.php';
         </div>
 
         <div class="pattern-note">
-            <strong>Note:</strong> Country names are case-insensitive, so "United States", "united states", and "UNITED STATES"
+            <strong>Note:</strong> Country names are case-insensitive, so "United States", "united states", and "UNITED
+            STATES"
             are all accepted. If a country variant is not listed above, you can request it to be added by
-            <a class="link" href="../community/index.php">posting a feature request</a> or by <a class="link" href="../contact-us/index.php">contacting support</a>.
+            <a class="link" href="../community/index.php">posting a feature request</a> or by <a class="link"
+                href="../contact-us/index.php">contacting support</a>.
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const searchBox = document.getElementById('countrySearch');
             const categories = document.querySelectorAll('.countries-category');
             const noResults = document.getElementById('noResults');
 
-            searchBox.addEventListener('input', function() {
+            searchBox.addEventListener('input', function () {
                 const searchTerm = this.value.toLowerCase();
                 let totalVisibleItems = 0;
 

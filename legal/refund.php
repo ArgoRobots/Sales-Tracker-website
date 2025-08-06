@@ -89,7 +89,7 @@
             <h2>Technical Issues</h2>
             <p>If you are experiencing technical issues with Argo Sales Tracker, we encourage you to:</p>
             <ol>
-                <li>Review our <a class="link" href="../documentation/index.html">Documentation</a> for troubleshooting
+                <li>Review our <a class="link" href="../documentation/index.php">Documentation</a> for troubleshooting
                     guides and frequently asked questions</li>
                 <li>Contact our technical support team through our <a class="link"
                         href="../contact-us/index.php">Contact Page</a> or by email</li>

@@ -204,7 +204,7 @@
                         perfect for small businesses just getting started with inventory tracking. As your business
                         grows, seamlessly upgrade to our paid version for unlimited products and advanced features.</p>
                     <p>Not sure which version is right for you? <a href="../index.php" class="link">Try our free
-                            version first</a> – you can always <a href="../upgrade/index.html" class="link">upgrade
+                            version first</a> – you can always <a href="../upgrade/index.php" class="link">upgrade
                             later</a> when you need more features.</p>
                 </div>
 
@@ -340,7 +340,7 @@
 
                 <div class="warning-box">
                     <strong>Important:</strong> Free version users are limited to 10 products. Upgrade to the paid
-                    version <a class="link" href="../upgrade/index.html">here</a> for unlimited products.
+                    version <a class="link" href="../upgrade/index.php">here</a> for unlimited products.
                 </div>
             </section>
 
@@ -736,7 +736,7 @@
 
                 <div class="warning-box">
                     AI search requires an internet connection and is only available in the paid
-                    version. <a class="link" href="../upgrade/index.html">Upgrade here</a> to access this feature.
+                    version. <a class="link" href="../upgrade/index.php">Upgrade here</a> to access this feature.
                 </div>
             </section>
 
