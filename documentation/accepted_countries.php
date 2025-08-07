@@ -1822,8 +1822,7 @@ require_once '../community/formatting/formatting_functions.php';
 
         <div class="pattern-note">
             <strong>Note:</strong> Country names are case-insensitive, so "United States", "united states", and "UNITED
-            STATES"
-            are all accepted. If a country variant is not listed above, you can request it to be added by
+            STATES" are all accepted. If a country variant is not listed above, you can request it to be added by
             <a class="link" href="../community/index.php">posting a feature request</a> or by <a class="link"
                 href="../contact-us/index.php">contacting support</a>.
         </div>

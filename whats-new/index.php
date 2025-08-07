@@ -124,7 +124,7 @@
                             <div class="icon icon-plus"></div>
                         </div>
                         <div class="feature-content">
-                            <h3>Multilingual Log Support<span class="type-tag feature">New Feature</span></h3>
+                            <h3>Multilingual Log Support<span class="type-tag enhancement">Enhancement</span></h3>
                             <p>Application logs can now be translated to other languages, making debugging and support
                                 more accessible.</p>
                         </div>
