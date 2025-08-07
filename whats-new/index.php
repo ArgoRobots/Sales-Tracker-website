@@ -79,7 +79,7 @@
             <div class="version-card">
                 <div class="version-header">
                     <span class="version-tag">Version 1.0.5</span>
-                    <span class="date-tag">August 6 2025</span>
+                    <span class="date-tag">August 7 2025</span>
                 </div>
 
                 <div class="feature-list">
@@ -105,6 +105,18 @@
                             <p>Users now select an accountant when opening companies (skipped if only one exists). Your
                                 selection is remembered so you no longer have to select the accountant every time you
                                 create transactions.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <div class="icon icon-plus"></div>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Company Logo Display<span class="type-tag feature">New Feature</span></h3>
+                            <p>Add a personalized touch to your application with custom company logos.The logo appears
+                                in the main interface and can be easily changed by clicking on it or using the
+                                right-click menu. Perfect for branding and making the application feel truly yours.</p>
                         </div>
                     </div>
 
