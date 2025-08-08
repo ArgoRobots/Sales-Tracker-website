@@ -38,10 +38,10 @@
             <h2>License Key Purchases</h2>
 
             <h3>Eligibility for Refunds</h3>
-            <p>We offer a <strong>14-day money-back guarantee</strong> for purchases of Argo Sales Tracker license keys,
+            <p>We offer a <strong>30-day money-back guarantee</strong> for purchases of Argo Sales Tracker license keys,
                 subject to the following conditions:</p>
             <ol>
-                <li>The refund request must be made within 14 days of the original purchase date.</li>
+                <li>The refund request must be made within 30 days of the original purchase date.</li>
                 <li>You must provide a valid reason for requesting a refund.</li>
                 <li>The license key must not have been used extensively (as determined by our system logs).</li>
             </ol>
@@ -49,7 +49,7 @@
             <h3>Ineligible for Refunds</h3>
             <p>Refunds will not be provided in the following situations:</p>
             <ol>
-                <li>More than 14 days have passed since the original purchase date.</li>
+                <li>More than 30 days have passed since the original purchase date.</li>
                 <li>The license key has been used extensively.</li>
                 <li>The license key was purchased as part of a special promotion or discount specifically marked as
                     non-refundable.</li>
@@ -110,7 +110,7 @@
                 <li>By email: <a class="link" href="mailto:contact@argorobots.com">contact@argorobots.com</a></li>
             </ul>
 
-            <p class="last-updated">Last updated: June 15, 2025</p>
+            <p class="last-updated">Last updated: August 8, 2025</p>
         </div>
     </div>
 

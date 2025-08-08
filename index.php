@@ -87,7 +87,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     <link rel="shortcut icon" type="image/x-icon" href="images/argo-logo/A-logo.ico">
     <title>Argo Sales Tracker - Save 8+ Hours Weekly | Free Business Automation Software</title>
 
-    <!-- <?php include 'resources/head/google-analytics.php'; ?> -->
+    <?php include 'resources/head/google-analytics.php'; ?>
 
     <script src="resources/scripts/jquery-3.6.0.js"></script>
     <script src="resources/scripts/main.js"></script>
@@ -123,8 +123,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                 </div>
 
                 <h1 class="hero-title">
-                    Save <span class="highlight">8+ Hours Weekly</span><br>
-                    & Boost Your Profits
+                    Transform your business with smart sales tracking
                 </h1>
 
                 <p class="hero-subtitle">
@@ -174,7 +173,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                     <img src="images/main.webp" alt="Argo Sales Tracker Dashboard" class="dashboard-main">
 
                     <!-- Floating Metrics -->
-                    <div class="floating-metric metric-1">
+                    <div class="floating-metric">
                         <div class="metric-icon">💰</div>
                         <div class="metric-content">
                             <div class="metric-label">This Month</div>
@@ -183,7 +182,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                         </div>
                     </div>
 
-                    <div class="floating-metric metric-2">
+                    <div class="floating-metric">
                         <div class="metric-icon">⚡</div>
                         <div class="metric-content">
                             <div class="metric-label">Time Saved</div>
@@ -497,7 +496,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
 
                 <div class="comparison-row">
                     <div class="row-label">Calculation errors per month</div>
-                    <div class="row-item negative">5-10 errors 💸</div>
+                    <div class="row-item negative">several errors 💸</div>
                     <div class="row-item positive">0 errors ✅</div>
                 </div>
 
@@ -516,7 +515,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                 <div class="comparison-row">
                     <div class="row-label">Monthly cost</div>
                     <div class="row-item negative">$0 (but costs 100+ hours)</div>
-                    <div class="row-item positive">$0 forever 🎉</div>
+                    <div class="row-item positive">$0 forever</div>
                 </div>
             </div>
 
@@ -664,7 +663,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                 <!-- Premium Plan -->
                 <div class="pricing-card premium-plan">
                     <div class="plan-header">
-                        <div class="plan-badge premium">Best Value</div>
+                        <div class="plan-badge premium">Full Version</div>
                         <h3 class="plan-name">Premium</h3>
                         <div class="plan-price">
                             <span class="price-currency">$</span>

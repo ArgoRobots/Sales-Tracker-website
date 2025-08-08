@@ -267,13 +267,6 @@ h6 {
   line-height: 1.1;
 }
 
-.highlight {
-  background: linear-gradient(135deg, var(--warning-yellow), #f59e0b);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
 .hero-subtitle {
   font-size: 1.3rem;
   margin-bottom: 32px;
@@ -355,16 +348,6 @@ h6 {
   gap: 12px;
   min-width: 200px;
   z-index: 10;
-}
-
-.metric-1 {
-  top: 5%;
-  right: -20%;
-}
-
-.metric-2 {
-  top: 45%;
-  right: -25%;
 }
 
 .metric-icon {
@@ -1027,47 +1010,12 @@ h6 {
     grid-template-columns: 1fr;
     gap: 40px;
     text-align: center;
+    align-items: center;
+    min-height: auto;
   }
 
   .feature-showcase.reverse .feature-visual {
     order: 0;
-  }
-
-  .security-content {
-    grid-template-columns: 1fr;
-    gap: 40px;
-    text-align: center;
-  }
-
-  .comparison-header,
-  .comparison-row {
-    grid-template-columns: 1fr;
-  }
-
-  .row-label {
-    border-right: none;
-    border-bottom: 1px solid var(--gray-200);
-    min-height: auto;
-    text-align: center;
-    font-weight: 600;
-    background: var(--gray-50);
-  }
-
-  .row-item {
-    min-height: auto;
-  }
-
-  .floating-metric {
-    position: static;
-    margin: 16px auto;
-    display: flex;
-    width: fit-content;
-    max-width: 280px;
-  }
-
-  .feature-showcase {
-    align-items: center;
-    min-height: auto;
   }
 
   .feature-content {
@@ -1077,6 +1025,127 @@ h6 {
 
   .feature-visual {
     height: auto;
+  }
+
+  .feature-benefits {
+    align-items: center;
+  }
+
+  .benefit {
+    justify-content: center;
+    text-align: center;
+    margin: 0 auto;
+  }
+
+  .security-content {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    text-align: center;
+  }
+
+  .security-features {
+    align-items: center;
+  }
+
+  .security-feature {
+    justify-content: center;
+    text-align: center;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+
+  .floating-metric {
+    margin: 16px auto;
+    width: 280px;
+    position: relative;
+  }
+
+  /* Position icon absolutely so it doesn't affect text centering */
+  .floating-metric .metric-icon {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  /* Center the metric content in the entire container */
+  .metric-content {
+    text-align: center;
+    width: 100%;
+    padding-left: 0;
+  }
+
+  /* Ensure metric labels, values, and changes are centered */
+  .metric-label,
+  .metric-value,
+  .metric-change {
+    text-align: center;
+    display: block;
+  }
+
+  /* Comparison Table Mobile Fix */
+  .comparison-table {
+    box-shadow: none;
+    background: transparent;
+  }
+
+  .comparison-header {
+    display: none;
+  }
+
+  .comparison-row {
+    display: block;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+    padding: 0;
+    border-bottom: none;
+    min-height: auto;
+  }
+
+  .row-label {
+    background: var(--gray-50);
+    padding: 16px 20px;
+    margin: 0;
+    border-bottom: 1px solid var(--gray-200);
+    border-right: none;
+    text-align: left;
+    font-weight: 600;
+    color: var(--gray-900);
+    border-radius: 16px 16px 0 0;
+    min-height: auto;
+  }
+
+  .row-item {
+    padding: 16px 20px;
+    text-align: left;
+    min-height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--gray-200);
+  }
+
+  .row-item:last-child {
+    border-bottom: none;
+    border-radius: 0 0 16px 16px;
+  }
+
+  .row-item:before {
+    font-weight: 600;
+    margin-right: 12px;
+    font-size: 0.9rem;
+  }
+
+  .row-item.negative:before {
+    content: "Spreadsheets:";
+    color: var(--gray-700);
+  }
+
+  .row-item.positive:before {
+    content: "Argo:";
+    color: var(--gray-700);
   }
 }
 
@@ -1093,7 +1162,26 @@ h6 {
     font-size: 1.8rem;
   }
 
-  .hero-stats,
+  .hero-stats {
+    flex-direction: row;
+    justify-content: center;
+    gap: 24px;
+  }
+
+  .stat-number {
+    font-size: 2rem;
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+  }
+
+  .hero-cta {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
   .hero-guarantees {
     flex-direction: column;
     align-items: center;
@@ -1141,6 +1229,14 @@ h6 {
 
   .hero {
     padding: 80px 0 60px;
+  }
+
+  .hero-stats {
+    gap: 16px;
+  }
+
+  .stat-number {
+    font-size: 1.8rem;
   }
 
   .problem-section,
