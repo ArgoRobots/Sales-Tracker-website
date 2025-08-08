@@ -116,78 +116,80 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
         </div>
 
         <div class="container">
-            <div class="hero-content">
-                <div class="hero-badge">
-                    <span class="badge-pulse"></span>
-                    <span>Built for small businesses that value their time</span>
-                </div>
-
-                <h1 class="hero-title">
-                    Transform your business with smart sales tracking
-                </h1>
-
-                <p class="hero-subtitle">
-                    Stop drowning in spreadsheets. Argo automates your sales tracking, eliminates costly errors,
-                    and shows you exactly where your money comes from.
-                </p>
-
-                <div class="hero-stats">
-                    <div class="stat">
-                        <span class="stat-number">8+</span>
-                        <span class="stat-label">Hours Saved Weekly</span>
+            <div class="grid-2col">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <span class="badge-pulse"></span>
+                        <span>Built for small businesses that value their time</span>
                     </div>
-                    <div class="stat">
-                        <span class="stat-number">95%</span>
-                        <span class="stat-label">Error Reduction</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-number">$0</span>
-                        <span class="stat-label">Monthly Fees</span>
-                    </div>
-                </div>
 
-                <div class="hero-cta">
-                    <a href="/download" class="btn btn-primary btn-large">
-                        <span class="btn-text">Get now for Free</span>
-                        <span class="btn-subtext">Setup in 3 minutes</span>
-                    </a>
-                    <a href="upgrade/index.php" class="btn btn-secondary">
-                        Upgrade for $20 CAD
-                    </a>
-                </div>
+                    <h1 class="hero-title">
+                        Transform your business with smart sales tracking
+                    </h1>
 
-                <div class="hero-guarantees">
-                    <div class="guarantee">
-                        <span class="guarantee-icon">💳</span>
-                        <span>No bank card needed</span>
-                    </div>
-                    <div class="guarantee">
-                        <span class="guarantee-icon">🛡️</span>
-                        <span>30-day money back</span>
-                    </div>
-                </div>
-            </div>
+                    <p class="hero-subtitle">
+                        Stop drowning in spreadsheets. Argo automates your sales tracking, eliminates costly errors,
+                        and shows you exactly where your money comes from.
+                    </p>
 
-            <div class="hero-visual">
-                <div class="dashboard-container">
-                    <img src="images/main.webp" alt="Argo Sales Tracker Dashboard" class="dashboard-main">
-
-                    <!-- Floating Metrics -->
-                    <div class="floating-metric">
-                        <div class="metric-icon">💰</div>
-                        <div class="metric-content">
-                            <div class="metric-label">This Month</div>
-                            <div class="metric-value">+$18,520</div>
-                            <div class="metric-change">+32% vs last month</div>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <span class="stat-number">8+</span>
+                            <span class="stat-label">Hours Saved Weekly</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">95%</span>
+                            <span class="stat-label">Error Reduction</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">$0</span>
+                            <span class="stat-label">Monthly Fees</span>
                         </div>
                     </div>
 
-                    <div class="floating-metric">
-                        <div class="metric-icon">⚡</div>
-                        <div class="metric-content">
-                            <div class="metric-label">Time Saved</div>
-                            <div class="metric-value">8.4 hrs/week</div>
-                            <div class="metric-change">vs manual tracking</div>
+                    <div class="hero-cta">
+                        <a href="/download" class="btn btn-primary btn-large">
+                            <span class="btn-text">Get now for Free</span>
+                            <span class="btn-subtext">Setup in 3 minutes</span>
+                        </a>
+                        <a href="upgrade/index.php" class="btn btn-secondary">
+                            Upgrade for $20 CAD
+                        </a>
+                    </div>
+
+                    <div class="hero-guarantees">
+                        <div class="icon-text">
+                            <span class="icon-text__icon">💳</span>
+                            <span>No bank card needed</span>
+                        </div>
+                        <div class="icon-text">
+                            <span class="icon-text__icon">🛡️</span>
+                            <span>30-day money back</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-visual">
+                    <div class="dashboard-container">
+                        <img src="images/main.webp" alt="Argo Sales Tracker Dashboard" class="dashboard-main">
+
+                        <!-- Floating Metrics -->
+                        <div class="floating-metric metric-1">
+                            <div class="metric-icon">💰</div>
+                            <div class="metric-content">
+                                <div class="metric-label">This Month</div>
+                                <div class="metric-value">+$18,520</div>
+                                <div class="metric-change">+32% vs last month</div>
+                            </div>
+                        </div>
+
+                        <div class="floating-metric metric-2">
+                            <div class="metric-icon">⚡</div>
+                            <div class="metric-content">
+                                <div class="metric-label">Time Saved</div>
+                                <div class="metric-value">8.4 hrs/week</div>
+                                <div class="metric-change">vs manual tracking</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -196,48 +198,46 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     </section>
 
     <!-- Problem Section -->
-    <section class="problem-section">
+    <section class="section section-alt">
         <div class="container">
-            <div class="problem-content">
-                <h2 class="section-title">Are You Tired of This?</h2>
+            <h2 class="section-title">Are You Tired of This?</h2>
 
-                <div class="problems-grid">
-                    <div class="problem-card">
-                        <div class="problem-icon">⏰</div>
-                        <h3>Spending Hours on Data Entry</h3>
-                        <p>Manually typing transactions into spreadsheets, double-checking formulas, and fixing broken
-                            calculations every week.</p>
-                    </div>
-
-                    <div class="problem-card">
-                        <div class="problem-icon">💸</div>
-                        <h3>Losing Money to Errors</h3>
-                        <p>Calculation mistakes, missing receipts, and data corruption costing you hundreds or thousands
-                            in lost profits.</p>
-                    </div>
-
-                    <div class="problem-card">
-                        <div class="problem-icon">📊</div>
-                        <h3>No Clear Business Insights</h3>
-                        <p>Flying blind with no idea which products make money, when your busy seasons are, or how to
-                            grow strategically.</p>
-                    </div>
+            <div class="grid">
+                <div class="card text-center">
+                    <div class="problem-icon">⏰</div>
+                    <h3>Spending Hours on Data Entry</h3>
+                    <p>Manually typing transactions into spreadsheets, double-checking formulas, and fixing broken
+                        calculations every week.</p>
                 </div>
 
-                <div class="problem-cta">
-                    <p class="problem-text">There's a better way. Let us show you how Argo can solve this.</p>
+                <div class="card text-center">
+                    <div class="problem-icon">💸</div>
+                    <h3>Losing Money to Errors</h3>
+                    <p>Calculation mistakes, missing receipts, and data corruption costing you hundreds or thousands
+                        in lost profits.</p>
                 </div>
+
+                <div class="card text-center">
+                    <div class="problem-icon">📊</div>
+                    <h3>No Clear Business Insights</h3>
+                    <p>Flying blind with no idea which products make money, when your busy seasons are, or how to
+                        grow strategically.</p>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <p class="problem-text">There's a better way. Let us show you how Argo can solve this.</p>
             </div>
         </div>
     </section>
 
     <!-- Solution Section -->
-    <section class="solution-section">
+    <section class="section">
         <div class="container">
             <h2 class="section-title">How Argo Transforms Your Business</h2>
 
             <!-- Feature 1: Smart Transaction Entry -->
-            <div class="feature-showcase">
+            <div class="feature-showcase grid-2col">
                 <div class="feature-content">
                     <div class="feature-badge">Save 5+ Hours Weekly</div>
                     <h3 class="feature-title">Add Transactions in 15 Seconds</h3>
@@ -246,16 +246,16 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                         No more manual formulas or data entry errors. Just fast, accurate tracking.
                     </p>
                     <div class="feature-benefits">
-                        <div class="benefit">
-                            <span class="benefit-icon">⚡</span>
+                        <div class="icon-text">
+                            <span class="icon-text__icon">⚡</span>
                             <span><strong>95% faster</strong> than spreadsheets</span>
                         </div>
-                        <div class="benefit">
-                            <span class="benefit-icon">🎯</span>
+                        <div class="icon-text">
+                            <span class="icon-text__icon">🎯</span>
                             <span><strong>Zero calculation errors</strong> with built-in validation</span>
                         </div>
-                        <div class="benefit">
-                            <span class="benefit-icon">📝</span>
+                        <div class="icon-text">
+                            <span class="icon-text__icon">📝</span>
                             <span><strong>Auto-complete</strong> for products and customers</span>
                         </div>
                     </div>
@@ -323,7 +323,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
             </div>
 
             <!-- Feature 2: Automated Insights -->
-            <div class="feature-showcase reverse">
+            <div class="feature-showcase grid-2col reverse">
                 <div class="feature-content">
                     <div class="feature-badge">Boost Profits 25%+</div>
                     <h3 class="feature-title">Discover Your Hidden Profit Drivers</h3>
@@ -333,16 +333,16 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                         Real-time insights that actually grow your business.
                     </p>
                     <div class="feature-benefits">
-                        <div class="benefit">
-                            <span class="benefit-icon">📊</span>
+                        <div class="icon-text">
+                            <span class="icon-text__icon">📊</span>
                             <span><strong>22+ interactive charts</strong> updated in real-time</span>
                         </div>
-                        <div class="benefit">
-                            <span class="benefit-icon">🎯</span>
+                        <div class="icon-text">
+                            <span class="icon-text__icon">🎯</span>
                             <span><strong>Profit tracking</strong> per product and category</span>
                         </div>
-                        <div class="benefit">
-                            <span class="benefit-icon">📈</span>
+                        <div class="icon-text">
+                            <span class="icon-text__icon">📈</span>
                             <span><strong>Trend analysis</strong> to predict busy seasons</span>
                         </div>
                     </div>
@@ -363,7 +363,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
             </div>
 
             <!-- Feature 3: Smart Receipt Management -->
-            <div class="feature-showcase">
+            <div class="feature-showcase grid-2col">
                 <div class="feature-content">
                     <div class="feature-badge">Never Lose Another Receipt</div>
                     <h3 class="feature-title">Import & Organize Receipts Effortlessly</h3>
@@ -372,16 +372,16 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                         Everything in one place, searchable and audit-ready.
                     </p>
                     <div class="feature-benefits">
-                        <div class="benefit">
-                            <span class="benefit-icon">📁</span>
+                        <div class="icon-text">
+                            <span class="icon-text__icon">📁</span>
                             <span><strong>Import receipt images</strong> from your computer or phone</span>
                         </div>
-                        <div class="benefit">
-                            <span class="benefit-icon">🔍</span>
+                        <div class="icon-text">
+                            <span class="icon-text__icon">🔍</span>
                             <span><strong>Instant search</strong> by date, amount, or vendor</span>
                         </div>
-                        <div class="benefit">
-                            <span class="benefit-icon">📦</span>
+                        <div class="icon-text">
+                            <span class="icon-text__icon">📦</span>
                             <span><strong>Bulk export</strong> for tax season in one click</span>
                         </div>
                     </div>
@@ -447,26 +447,26 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     </section>
 
     <!-- Results Section -->
-    <section class="results-section">
+    <section class="section section-alt">
         <div class="container">
             <h2 class="section-title">The Results You Can Expect</h2>
 
-            <div class="results-grid">
-                <div class="result-card">
+            <div class="grid">
+                <div class="card text-center">
                     <div class="result-metric">8+ hours</div>
                     <div class="result-label">Weekly time savings potential</div>
                     <div class="result-description">Based on typical small business data entry workflows vs. Argo's
                         automated systems.</div>
                 </div>
 
-                <div class="result-card">
+                <div class="card text-center">
                     <div class="result-metric">95%</div>
                     <div class="result-label">Reduction in calculation errors</div>
                     <div class="result-description">Automated calculations and validation eliminate the human errors
                         common in manual spreadsheets.</div>
                 </div>
 
-                <div class="result-card">
+                <div class="card text-center">
                     <div class="result-metric">Instant</div>
                     <div class="result-label">Business insights</div>
                     <div class="result-description">See your profit margins, best-selling products, and trends
@@ -477,7 +477,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     </section>
 
     <!-- Comparison Section -->
-    <section class="comparison-section">
+    <section class="section">
         <div class="container">
             <h2 class="section-title">Spreadsheets vs. Argo: The Real Cost</h2>
 
@@ -519,8 +519,8 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                 </div>
             </div>
 
-            <div class="comparison-cta">
-                <div class="cta-content center">
+            <div class="text-center">
+                <div class="card" style="display: inline-block; padding: 60px 40px;">
                     <h3>Ready to Stop Wasting Time?</h3>
                     <p>Make the switch to automated sales tracking and see the difference.</p>
                     <a href="/download" class="btn btn-primary btn-large">Make the Switch for Free</a>
@@ -530,9 +530,9 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     </section>
 
     <!-- Security Section -->
-    <section class="security-section">
+    <section class="section section-alt">
         <div class="container">
-            <div class="security-content">
+            <div class="grid-2col">
                 <div class="security-visual">
                     <svg width="300" height="300" viewBox="0 0 300 300" class="security-svg">
                         <!-- Background circles -->
@@ -606,16 +606,16 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     </section>
 
     <!-- Pricing Section -->
-    <section class="pricing-section">
+    <section class="section">
         <div class="container">
-            <div class="pricing-header">
+            <div class="pricing-header text-center">
                 <h2 class="section-title">Simple, Honest Pricing</h2>
                 <p class="section-subtitle">No subscriptions, no hidden fees. Pay once, own forever.</p>
             </div>
 
-            <div class="pricing-cards">
+            <div class="pricing-cards grid">
                 <!-- Free Plan -->
-                <div class="pricing-card free-plan">
+                <div class="pricing-card free-plan card">
                     <div class="plan-header">
                         <div class="plan-badge popular">Most Popular</div>
                         <h3 class="plan-name">Free Forever</h3>
@@ -661,7 +661,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                 </div>
 
                 <!-- Premium Plan -->
-                <div class="pricing-card premium-plan">
+                <div class="pricing-card premium-plan card">
                     <div class="plan-header">
                         <div class="plan-badge premium">Full Version</div>
                         <h3 class="plan-name">Premium</h3>
@@ -711,9 +711,9 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     </section>
 
     <!-- Final CTA -->
-    <section class="final-cta">
+    <section class="final-cta section">
         <div class="container">
-            <div class="cta-content">
+            <div class="cta-content text-center">
                 <h2>Ready to Save 8+ Hours Every Week?</h2>
                 <p>Transform your business with automated sales tracking that actually works.</p>
 
@@ -728,20 +728,20 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                 </div>
 
                 <div class="final-guarantees">
-                    <div class="guarantee-item">
-                        <span class="guarantee-icon">⚡</span>
+                    <div class="icon-text">
+                        <span class="icon-text__icon">⚡</span>
                         <span>3-minute setup</span>
                     </div>
-                    <div class="guarantee-item">
-                        <span class="guarantee-icon">🔒</span>
+                    <div class="icon-text">
+                        <span class="icon-text__icon">🔒</span>
                         <span>Military-grade security</span>
                     </div>
-                    <div class="guarantee-item">
-                        <span class="guarantee-icon">💳</span>
+                    <div class="icon-text">
+                        <span class="icon-text__icon">💳</span>
                         <span>No bank card needed</span>
                     </div>
-                    <div class="guarantee-item">
-                        <span class="guarantee-icon">🛡️</span>
+                    <div class="icon-text">
+                        <span class="icon-text__icon">🛡️</span>
                         <span>30-day guarantee</span>
                     </div>
                 </div>
