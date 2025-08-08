@@ -24,8 +24,8 @@
 .countries-category h3 {
   margin-bottom: 20px;
   padding-bottom: 5px;
-  color: var(--blue, #2563eb);
-  border-bottom: 2px solid var(--blue, #2563eb);
+  color: var(--primary-blue, #2563eb);
+  border-bottom: 2px solid var(--primary-blue, #2563eb);
 }
 
 .country-group {
@@ -79,7 +79,7 @@
 
 .primary-name {
   font-weight: 600;
-  color: var(--blue, #2563eb);
+  color: var(--primary-blue, #2563eb);
 }
 
 .alphabetical-grid {
@@ -139,7 +139,7 @@
 
 .search-box:focus {
   outline: none;
-  border-color: var(--blue, #2563eb);
+  border-color: var(--primary-blue, #2563eb);
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 

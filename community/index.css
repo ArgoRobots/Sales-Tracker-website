@@ -105,12 +105,12 @@ header .header-inner .menu-container .menu .community:after {
 
 .search-box input:focus {
   outline: none;
-  border-color: var(--blue);
+  border-color: var(--primary-blue);
 }
 
 /* Search icon button */
 .search-icon-button {
-  background-color: var(--blue);
+  background-color: var(--primary-blue);
   color: white;
   border: none;
   width: 40px;
@@ -275,7 +275,7 @@ header .header-inner .menu-container .menu .community:after {
 
 .post-status.completed {
   background-color: #dbeafe;
-  color: var(--blue);
+  color: var(--primary-blue);
 }
 
 .post-status.declined {
@@ -364,7 +364,7 @@ header .header-inner .menu-container .menu .community:after {
 }
 
 .highlighted-post {
-  border: 2px solid var(--blue);
+  border: 2px solid var(--primary-blue);
   animation: highlight-pulse 2s infinite;
 }
 
@@ -421,7 +421,7 @@ header .header-inner .menu-container .menu .community:after {
   height: 30px;
   border: 3px solid rgba(37, 99, 235, 0.3);
   border-radius: 50%;
-  border-top-color: var(--blue);
+  border-top-color: var(--primary-blue);
   animation: spin 1s linear infinite;
   margin-bottom: 10px;
 }
@@ -451,7 +451,7 @@ header .header-inner .menu-container .menu .community:after {
 
 .filter-select:focus {
   outline: none;
-  border-color: var(--blue);
+  border-color: var(--primary-blue);
   box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.2);
 }
 

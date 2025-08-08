@@ -69,7 +69,7 @@ h2 {
 
 .first .container .contact-us-container .description a {
   transition: 0.33s all ease;
-  color: var(--blue);
+  color: var(--primary-blue);
   text-decoration: underline;
 }
 
@@ -129,7 +129,7 @@ h2 {
 
 .first .container .wrapper .question-container button {
   position: relative;
-  background: var(--blue);
+  background: var(--primary-blue);
   color: #fff;
   border: none;
   border-radius: 40px;

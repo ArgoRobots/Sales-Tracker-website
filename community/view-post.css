@@ -185,7 +185,7 @@ header .header-inner .menu-container .menu .community:after {
 
 .post-status.completed {
   background-color: #dbeafe;
-  color: var(--blue);
+  color: var(--primary-blue);
 }
 
 .post-status.declined {
@@ -429,7 +429,7 @@ header .header-inner .menu-container .menu .community:after {
 }
 
 .comment-vote-btn.voted.upvote {
-  color: var(--blue);
+  color: var(--primary-blue);
 }
 
 .comment-vote-btn.voted.downvote {
@@ -470,7 +470,7 @@ header .header-inner .menu-container .menu .community:after {
 /* Buttons styling */
 .edit-post-btn {
   background-color: #dbeafe;
-  color: var(--blue);
+  color: var(--primary-blue);
   border: none;
   padding: 5px 10px;
   border-radius: 4px;
@@ -488,7 +488,7 @@ header .header-inner .menu-container .menu .community:after {
 
 .edit-comment-btn {
   background-color: #dbeafe;
-  color: var(--blue);
+  color: var(--primary-blue);
   border: none;
   padding: 3px 8px;
   border-radius: 4px;

@@ -35,7 +35,7 @@ header .header-inner .menu-container .menu .contact-us:after {
 .success-icon {
   width: 90px;
   height: 90px;
-  background: linear-gradient(45deg, var(--blue), var(--blueHover));
+  background: linear-gradient(45deg, var(--primary-blue), var(--blueHover));
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -136,7 +136,7 @@ h1 {
 }
 
 .primary-btn {
-  background: var(--blue);
+  background: var(--primary-blue);
   color: white;
 }
 

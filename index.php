@@ -22,14 +22,14 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
 
     <!-- SEO Meta Tags -->
     <meta name="description"
-        content="Argo Sales Tracker - Free Windows sales tracking software for small businesses. Track purchases, sales, and receipts with powerful analytics. No monthly fees, lifetime access available.">
+        content="Transform your small business with Argo Sales Tracker. Save 8+ hours weekly, reduce errors by 95%, and boost profits. Free Windows software with 22+ interactive charts. No monthly fees.">
     <meta name="keywords"
-        content="sales tracker, business software, sales tracking app, inventory management, small business tools, Windows software, Calgary business software, Excel import export, analytics dashboard, receipt management">
+        content="sales tracker, business software, profit tracking, inventory management, small business automation, Windows software, Calgary business software, time saving, error reduction">
 
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Argo Sales Tracker - Smart Sales Tracking Software">
+    <meta property="og:title" content="Argo Sales Tracker - Save 8+ Hours Weekly & Boost Profits">
     <meta property="og:description"
-        content="Transform your business with smart sales tracking. Free Windows app for small businesses to track purchases, sales, and receipts with powerful analytics.">
+        content="Transform your business with automated sales tracking, eliminate errors, and grow profits. Free forever with lifetime upgrades available.">
     <meta property="og:url" content="https://argorobots.com/">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Argo Sales Tracker">
@@ -37,9 +37,9 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
 
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Argo Sales Tracker - Smart Sales Tracking Software">
+    <meta name="twitter:title" content="Argo Sales Tracker - Save 8+ Hours Weekly">
     <meta name="twitter:description"
-        content="Transform your business with smart sales tracking. Free Windows app for small businesses to track purchases, sales, and receipts with powerful analytics.">
+        content="Transform your business with automated sales tracking and boost profits. Free forever.">
 
     <!-- Additional SEO Meta Tags -->
     <meta name="geo.region" content="CA-AB">
@@ -56,7 +56,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
             "@context": "https://schema.org",
             "@type": "SoftwareApplication",
             "name": "Argo Sales Tracker",
-            "description": "Free Windows sales tracking software for small businesses with analytics, Excel import/export, and receipt management",
+            "description": "Free Windows sales tracking software that saves 8+ hours weekly for small businesses with 22+ automated charts and profit insights",
             "url": "https://argorobots.com/",
             "applicationCategory": "BusinessApplication",
             "operatingSystem": "Windows",
@@ -85,9 +85,9 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     </script>
 
     <link rel="shortcut icon" type="image/x-icon" href="images/argo-logo/A-logo.ico">
-    <title>Argo Sales Tracker</title>
+    <title>Argo Sales Tracker - Save 8+ Hours Weekly | Free Business Automation Software</title>
 
-    <?php include 'resources/head/google-analytics.php'; ?>
+    <!-- <?php include 'resources/head/google-analytics.php'; ?> -->
 
     <script src="resources/scripts/jquery-3.6.0.js"></script>
     <script src="resources/scripts/main.js"></script>
@@ -104,679 +104,647 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
         <div id="includeHeader"></div>
     </header>
 
-    <section class="section gradient-bg">
-        <div class="container first-container">
-            <h1 class="title">Argo Sales Tracker</h1>
-
-            <div class="hero-grid">
-                <div class="hero-content">
-                    <h2 class="hero-title">Transform your business with smart sales tracking</h2>
-                    <p class="hero-subtitle">Track purchases and sales, and grow your business with our powerful
-                        yet simple-to-use software.</p>
-                    <div class="hero-buttons">
-                        <a href="/download" class="btn btn-white">Download for free</a>
-                        <a href="upgrade/index.php" class="btn btn-white">Buy the full version</a>
-                    </div>
-                    <p class="system-req">*Windows only</p>
-                </div>
-                <div>
-                    <img src="images/main.webp" alt="Dashboard Preview">
-                </div>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-background">
+            <div class="hero-gradient"></div>
+            <div class="floating-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
             </div>
         </div>
-    </section>
 
-    <section class="section">
-        <div class="container second-container">
-            <h2 class="section-title">Everything You Need</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="image-container">
-                        <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
-                            <!-- Dashboard background -->
-                            <rect x="10" y="20" width="100" height="80" rx="8" fill="#ffffff" stroke="#e5e7eb"
-                                stroke-width="2" />
-
-                            <!-- Bar chart -->
-                            <rect x="20" y="70" width="8" height="20" rx="2" fill="#3b82f6" />
-                            <rect x="32" y="60" width="8" height="30" rx="2" fill="#10b981" />
-                            <rect x="44" y="50" width="8" height="40" rx="2" fill="#f59e0b" />
-                            <rect x="56" y="65" width="8" height="25" rx="2" fill="#ef4444" />
-
-                            <!-- Line chart -->
-                            <path d="M75 80 L85 70 L95 65 L105 60" stroke="#8b5cf6" stroke-width="3" fill="none"
-                                stroke-linecap="round" />
-                            <circle cx="75" cy="80" r="3" fill="#8b5cf6" />
-                            <circle cx="85" cy="70" r="3" fill="#8b5cf6" />
-                            <circle cx="95" cy="65" r="3" fill="#8b5cf6" />
-                            <circle cx="105" cy="60" r="3" fill="#8b5cf6" />
-
-                            <!-- Header icons -->
-                            <circle cx="25" cy="35" r="4" fill="#22c55e" />
-                            <rect x="35" y="32" width="20" height="2" rx="1" fill="#6b7280" />
-                            <rect x="35" y="37" width="15" height="2" rx="1" fill="#9ca3af" />
-
-                            <circle cx="85" cy="35" r="4" fill="#ef4444" />
-                            <rect x="95" y="32" width="15" height="2" rx="1" fill="#6b7280" />
-                            <rect x="95" y="37" width="10" height="2" rx="1" fill="#9ca3af" />
-
-                            <!-- Dollar signs -->
-                            <text x="25" y="38" text-anchor="middle" fill="white" font-size="6"
-                                font-weight="bold">$</text>
-                            <text x="85" y="38" text-anchor="middle" fill="white" font-size="6"
-                                font-weight="bold">$</text>
-                        </svg>
-                    </div>
-                    <div class="text-container">
-                        <h3>Purchases and Sales Tracking</h3>
-                        <p>Keep track of all your purchases and sales with detailed records and receipts.</p>
-                    </div>
-                </div>
-                <div class="feature-card">
-                    <div class="image-container">
-                        <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
-                            <!-- Form background -->
-                            <rect x="20" y="15" width="80" height="90" rx="8" fill="#ffffff" stroke="#e5e7eb"
-                                stroke-width="2" />
-
-                            <!-- Form header -->
-                            <rect x="20" y="15" width="80" height="20" rx="8" fill="#1e3a8a" />
-                            <rect x="20" y="27" width="80" height="8" fill="#1e3a8a" />
-
-                            <!-- Header text -->
-                            <rect x="30" y="22" width="30" height="3" rx="1.5" fill="white" />
-
-                            <!-- Form fields -->
-                            <rect x="30" y="45" width="60" height="8" rx="2" fill="#f9fafb" stroke="#d1d5db" />
-                            <rect x="30" y="58" width="60" height="8" rx="2" fill="#f9fafb" stroke="#d1d5db" />
-                            <rect x="30" y="71" width="25" height="8" rx="2" fill="#f9fafb" stroke="#d1d5db" />
-                            <rect x="60" y="71" width="30" height="8" rx="2" fill="#f9fafb" stroke="#d1d5db" />
-                            <rect x="30" y="84" width="60" height="8" rx="2" fill="#f9fafb" stroke="#d1d5db" />
-
-                            <!-- Add button -->
-                            <circle cx="60" cy="25" r="15" fill="#22c55e" stroke="white" stroke-width="2" />
-                            <path d="M60 18 L60 32 M53 25 L67 25" stroke="white" stroke-width="3"
-                                stroke-linecap="round" />
-
-                            <!-- Form labels -->
-                            <rect x="30" y="40" width="20" height="2" rx="1" fill="#6b7280" />
-                            <rect x="30" y="53" width="25" height="2" rx="1" fill="#6b7280" />
-                            <rect x="30" y="66" width="15" height="2" rx="1" fill="#6b7280" />
-                            <rect x="60" y="66" width="20" height="2" rx="1" fill="#6b7280" />
-                        </svg>
-                    </div>
-                    <div class="text-container">
-                        <h3>Easily add new transactions</h3>
-                        <p>Add new purchases and sales with fields for quantities, shipping costs, taxes, fees and more.
-                        </p>
-                    </div>
-                </div>
-                <div class="feature-card">
-                    <div class="image-container">
-                        <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
-                            <!-- Grid background -->
-                            <rect x="15" y="20" width="90" height="80" rx="8" fill="#ffffff" stroke="#e5e7eb"
-                                stroke-width="2" />
-
-                            <!-- Product grid items -->
-                            <rect x="25" y="30" width="20" height="20" rx="4" fill="#dbeafe" stroke="#3b82f6" />
-                            <rect x="50" y="30" width="20" height="20" rx="4" fill="#dcfce7" stroke="#22c55e" />
-                            <rect x="75" y="30" width="20" height="20" rx="4" fill="#fef3c7" stroke="#f59e0b" />
-
-                            <rect x="25" y="55" width="20" height="20" rx="4" fill="#fce7f3" stroke="#ec4899" />
-                            <rect x="50" y="55" width="20" height="20" rx="4" fill="#f3e8ff" stroke="#8b5cf6" />
-                            <rect x="75" y="55" width="20" height="20" rx="4" fill="#fed7d7" stroke="#ef4444" />
-
-                            <!-- Product icons -->
-                            <rect x="30" y="35" width="10" height="6" rx="1" fill="#3b82f6" />
-                            <rect x="31" y="37" width="8" height="2" rx="0.5" fill="white" />
-
-                            <circle cx="60" cy="40" r="5" fill="#22c55e" />
-                            <rect x="58" y="38" width="4" height="4" rx="1" fill="white" />
-
-                            <polygon points="85,35 80,45 90,45" fill="#f59e0b" />
-                            <circle cx="85" cy="42" r="1.5" fill="white" />
-
-                            <rect x="30" y="60" width="10" height="10" rx="2" fill="#ec4899" />
-                            <circle cx="35" cy="65" r="2" fill="white" />
-
-                            <circle cx="60" cy="65" r="5" fill="#8b5cf6" />
-                            <path d="M58 65 L60 67 L62 63" stroke="white" stroke-width="1" fill="none" />
-
-                            <rect x="80" y="60" width="10" height="10" rx="1" fill="#ef4444" />
-                            <path d="M83 63 L87 67 M87 63 L83 67" stroke="white" stroke-width="1.5" />
-
-                            <!-- Category tags -->
-                            <rect x="25" y="82" width="70" height="4" rx="2" fill="#f3f4f6" />
-                            <rect x="25" y="89" width="45" height="4" rx="2" fill="#f3f4f6" />
-
-                            <!-- Category indicators -->
-                            <circle cx="28" cy="84" r="1.5" fill="#3b82f6" />
-                            <circle cx="55" cy="84" r="1.5" fill="#22c55e" />
-                            <circle cx="82" cy="84" r="1.5" fill="#f59e0b" />
-                        </svg>
-                    </div>
-                    <div class="text-container">
-                        <h3>Product Management</h3>
-                        <p>Organize products with custom categories and track information like country/company of
-                            origin.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="section bg-gray">
         <div class="container">
-            <h2 class="section-title">Discover the Features</h2>
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="badge-pulse"></span>
+                    <span>Built for small businesses that value their time</span>
+                </div>
 
-            <!-- Analytics dashboard -->
-            <div class="showcase-item">
-                <img src="images/analytics.webp" alt="Analytics dashboard">
-                <div class="showcase-content">
-                    <h3 class="showcase-title">Powerful Analytics Dashboard</h3>
-                    <p class="showcase-description">Track your business performance with interactive charts and detailed
-                        insights. Monitor sales trends, expense distribution, and more, all in real-time.</p>
-                    <ul class="check-list">
-                        <li>
-                            <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            Interactive data visualization
-                        </li>
-                        <li>
-                            <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            Customizable reporting periods
-                        </li>
-                        <li>
-                            <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            Export charts to Microsoft Excel and Google Sheets
-                        </li>
-                    </ul>
+                <h1 class="hero-title">
+                    Save <span class="highlight">8+ Hours Weekly</span><br>
+                    & Boost Your Profits
+                </h1>
+
+                <p class="hero-subtitle">
+                    Stop drowning in spreadsheets. Argo automates your sales tracking, eliminates costly errors,
+                    and shows you exactly where your money comes from.
+                </p>
+
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">8+</span>
+                        <span class="stat-label">Hours Saved Weekly</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">95%</span>
+                        <span class="stat-label">Error Reduction</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">$0</span>
+                        <span class="stat-label">Monthly Fees</span>
+                    </div>
+                </div>
+
+                <div class="hero-cta">
+                    <a href="/download" class="btn btn-primary btn-large">
+                        <span class="btn-text">Get now for Free</span>
+                        <span class="btn-subtext">Setup in 3 minutes</span>
+                    </a>
+                    <a href="upgrade/index.php" class="btn btn-secondary">
+                        Upgrade for $20 CAD
+                    </a>
+                </div>
+
+                <div class="hero-guarantees">
+                    <div class="guarantee">
+                        <span class="guarantee-icon">💳</span>
+                        <span>No bank card needed</span>
+                    </div>
+                    <div class="guarantee">
+                        <span class="guarantee-icon">🛡️</span>
+                        <span>30-day money back</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- Receipt manager -->
-            <div class="showcase-item">
-                <div class="showcase-content">
-                    <h3 class="showcase-title">Manage your receipts</h3>
-                    <p class="showcase-description">Manage and export receipts with an easy-to-use interface.</p>
-                    <ul class="check-list">
-                        <li>
-                            <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            Flexible date range filtering
-                        </li>
-                        <li>
-                            <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            Bulk selection and export capabilities
-                        </li>
-                        <li>
-                            <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            Purchase and sale receipt separation
-                        </li>
-                    </ul>
+            <div class="hero-visual">
+                <div class="dashboard-container">
+                    <img src="images/main.webp" alt="Argo Sales Tracker Dashboard" class="dashboard-main">
+
+                    <!-- Floating Metrics -->
+                    <div class="floating-metric metric-1">
+                        <div class="metric-icon">💰</div>
+                        <div class="metric-content">
+                            <div class="metric-label">This Month</div>
+                            <div class="metric-value">+$18,520</div>
+                            <div class="metric-change">+32% vs last month</div>
+                        </div>
+                    </div>
+
+                    <div class="floating-metric metric-2">
+                        <div class="metric-icon">⚡</div>
+                        <div class="metric-content">
+                            <div class="metric-label">Time Saved</div>
+                            <div class="metric-value">8.4 hrs/week</div>
+                            <div class="metric-change">vs manual tracking</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="problem-section">
+        <div class="container">
+            <div class="problem-content">
+                <h2 class="section-title">Are You Tired of This?</h2>
+
+                <div class="problems-grid">
+                    <div class="problem-card">
+                        <div class="problem-icon">⏰</div>
+                        <h3>Spending Hours on Data Entry</h3>
+                        <p>Manually typing transactions into spreadsheets, double-checking formulas, and fixing broken
+                            calculations every week.</p>
+                    </div>
+
+                    <div class="problem-card">
+                        <div class="problem-icon">💸</div>
+                        <h3>Losing Money to Errors</h3>
+                        <p>Calculation mistakes, missing receipts, and data corruption costing you hundreds or thousands
+                            in lost profits.</p>
+                    </div>
+
+                    <div class="problem-card">
+                        <div class="problem-icon">📊</div>
+                        <h3>No Clear Business Insights</h3>
+                        <p>Flying blind with no idea which products make money, when your busy seasons are, or how to
+                            grow strategically.</p>
+                    </div>
                 </div>
 
-                <img src="images/export-receipts.png" alt="Receipt manager">
+                <div class="problem-cta">
+                    <p class="problem-text">There's a better way. Let us show you how Argo can solve this.</p>
+                </div>
             </div>
+        </div>
+    </section>
 
-            <!-- Spreadsheet manager -->
-            <div class="showcase-item">
-                <img src="images/import-spreadsheet.png" alt="Spreadsheet manager">
+    <!-- Solution Section -->
+    <section class="solution-section">
+        <div class="container">
+            <h2 class="section-title">How Argo Transforms Your Business</h2>
 
-                <div class="showcase-content">
-                    <h3 class="showcase-title">Import and export spreadsheets</h3>
-                    <p class="showcase-description">Seamlessly manage and export your business data to Excel
-                        spreadsheets. Perfect for accounting and taxes. Import existing
-                        spreadsheets to quickly populate your database.
+            <!-- Feature 1: Smart Transaction Entry -->
+            <div class="feature-showcase">
+                <div class="feature-content">
+                    <div class="feature-badge">Save 5+ Hours Weekly</div>
+                    <h3 class="feature-title">Add Transactions in 15 Seconds</h3>
+                    <p class="feature-description">
+                        Smart forms with validation and instant calculations.
+                        No more manual formulas or data entry errors. Just fast, accurate tracking.
                     </p>
-                    <ul class="check-list">
-                        <li>
-                            <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            Complete Data Export - Export all your data including products and transaction records in
-                            organized worksheets
-                        </li>
-                        <li>
-                            <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            Compatibility - Works with all major spreadsheet software including Microsoft Excel, Google
-                            Sheets, and LibreOffice
-                        </li>
-                        <li>
-                            <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            Purchases and sales separation - Keep your purchase and sales records organized in
-                            separate worksheets for better clarity
-                        </li>
-                    </ul>
+                    <div class="feature-benefits">
+                        <div class="benefit">
+                            <span class="benefit-icon">⚡</span>
+                            <span><strong>95% faster</strong> than spreadsheets</span>
+                        </div>
+                        <div class="benefit">
+                            <span class="benefit-icon">🎯</span>
+                            <span><strong>Zero calculation errors</strong> with built-in validation</span>
+                        </div>
+                        <div class="benefit">
+                            <span class="benefit-icon">📝</span>
+                            <span><strong>Auto-complete</strong> for products and customers</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="feature-visual">
+                    <svg width="100%" height="400" viewBox="0 0 500 400" class="transaction-svg">
+                        <!-- Main form background -->
+                        <rect x="50" y="50" width="400" height="300" rx="20" fill="#ffffff" stroke="#e5e7eb"
+                            stroke-width="2" />
+
+                        <!-- Header -->
+                        <rect x="50" y="50" width="400" height="60" rx="20" fill="#3b82f6" />
+                        <rect x="50" y="90" width="400" height="20" fill="#3b82f6" />
+                        <text x="250" y="85" text-anchor="middle" fill="white" font-size="18" font-weight="bold">Add New
+                            Transaction</text>
+
+                        <!-- Quick action buttons -->
+                        <rect x="70" y="130" width="80" height="35" rx="8" fill="#10b981" />
+                        <text x="110" y="152" text-anchor="middle" fill="white" font-size="12"
+                            font-weight="500">Sale</text>
+
+                        <rect x="160" y="130" width="80" height="35" rx="8" fill="#f3f4f6" stroke="#d1d5db" />
+                        <text x="200" y="152" text-anchor="middle" fill="#6b7280" font-size="12">Purchase</text>
+
+                        <!-- Smart form fields -->
+                        <text x="70" y="190" fill="#374151" font-size="12" font-weight="500">Product</text>
+                        <rect x="70" y="195" width="280" height="30" rx="6" fill="#f9fafb" stroke="#d1d5db" />
+                        <text x="80" y="215" fill="#1f2937" font-size="11">Widget Pro</text>
+
+                        <text x="70" y="245" fill="#374151" font-size="12" font-weight="500">Quantity</text>
+                        <rect x="70" y="250" width="100" height="30" rx="6" fill="#f9fafb" stroke="#d1d5db" />
+                        <text x="80" y="270" fill="#1f2937" font-size="11">5</text>
+
+                        <text x="190" y="245" fill="#374151" font-size="12" font-weight="500">Price Each</text>
+                        <rect x="190" y="250" width="100" height="30" rx="6" fill="#f9fafb" stroke="#d1d5db" />
+                        <text x="200" y="270" fill="#1f2937" font-size="11">$89.99</text>
+
+                        <text x="310" y="245" fill="#374151" font-size="12" font-weight="500">Total</text>
+                        <rect x="310" y="250" width="100" height="30" rx="6" fill="#ecfdf5" stroke="#10b981" />
+                        <text x="320" y="270" fill="#059669" font-size="11" font-weight="bold">$449.95</text>
+
+                        <!-- Auto-calculation indicator -->
+                        <circle cx="423" cy="265" r="8" fill="#10b981" />
+                        <text x="423" y="268" text-anchor="middle" fill="white" font-size="8"
+                            font-weight="bold">✓</text>
+
+                        <!-- Add button -->
+                        <rect x="70" y="300" width="120" height="40" rx="8" fill="#3b82f6" />
+                        <text x="130" y="325" text-anchor="middle" fill="white" font-size="14" font-weight="500">Add
+                            Transaction</text>
+
+                        <!-- Success message -->
+                        <rect x="210" y="308" width="200" height="24" rx="12" fill="#ecfdf5" stroke="#10b981" />
+                        <circle cx="225" cy="320" r="6" fill="#10b981" />
+                        <text x="222" y="325" text-anchor="middle" fill="white" font-size="8"
+                            font-weight="bold">✓</text>
+                        <text x="240" y="325" fill="#059669" font-size="11">Automatically saved & calculated</text>
+
+                        <!-- Speed indicator -->
+                        <circle cx="420" cy="80" r="20" fill="#fbbf24" />
+                        <text x="420" y="85" text-anchor="middle" fill="white" font-size="14"
+                            font-weight="bold">15s</text>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Feature 2: Automated Insights -->
+            <div class="feature-showcase reverse">
+                <div class="feature-content">
+                    <div class="feature-badge">Boost Profits 25%+</div>
+                    <h3 class="feature-title">Discover Your Hidden Profit Drivers</h3>
+                    <p class="feature-description">
+                        See exactly which products make money, when your busy seasons are, and where to focus your
+                        efforts.
+                        Real-time insights that actually grow your business.
+                    </p>
+                    <div class="feature-benefits">
+                        <div class="benefit">
+                            <span class="benefit-icon">📊</span>
+                            <span><strong>22+ interactive charts</strong> updated in real-time</span>
+                        </div>
+                        <div class="benefit">
+                            <span class="benefit-icon">🎯</span>
+                            <span><strong>Profit tracking</strong> per product and category</span>
+                        </div>
+                        <div class="benefit">
+                            <span class="benefit-icon">📈</span>
+                            <span><strong>Trend analysis</strong> to predict busy seasons</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="feature-visual">
+                    <div class="analytics-preview">
+                        <img src="images/analytics.webp" alt="Real-time Analytics Dashboard" class="analytics-img">
+                        <div class="insight-overlay">
+                            <div class="insight-card">
+                                <div class="insight-icon">💡</div>
+                                <div class="insight-text">
+                                    <strong>Insight:</strong> Widget Pro has 45% profit margin - your best seller!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature 3: Smart Receipt Management -->
+            <div class="feature-showcase">
+                <div class="feature-content">
+                    <div class="feature-badge">Never Lose Another Receipt</div>
+                    <h3 class="feature-title">Import & Organize Receipts Effortlessly</h3>
+                    <p class="feature-description">
+                        Import receipt images, attach them to transactions, and export organized packages for taxes.
+                        Everything in one place, searchable and audit-ready.
+                    </p>
+                    <div class="feature-benefits">
+                        <div class="benefit">
+                            <span class="benefit-icon">📁</span>
+                            <span><strong>Import receipt images</strong> from your computer or phone</span>
+                        </div>
+                        <div class="benefit">
+                            <span class="benefit-icon">🔍</span>
+                            <span><strong>Instant search</strong> by date, amount, or vendor</span>
+                        </div>
+                        <div class="benefit">
+                            <span class="benefit-icon">📦</span>
+                            <span><strong>Bulk export</strong> for tax season in one click</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="feature-visual">
+                    <svg width="100%" height="400" viewBox="0 0 500 400" class="receipt-svg">
+                        <!-- Main interface background -->
+                        <rect x="50" y="50" width="400" height="300" rx="12" fill="#ffffff" stroke="#e5e7eb"
+                            stroke-width="2" />
+
+                        <!-- Header -->
+                        <rect x="50" y="50" width="400" height="50" rx="12" fill="#3b82f6" />
+                        <rect x="50" y="88" width="400" height="12" fill="#3b82f6" />
+                        <text x="250" y="80" text-anchor="middle" fill="white" font-size="16" font-weight="bold">Receipt
+                            Manager</text>
+
+                        <!-- Import area -->
+                        <rect x="70" y="120" width="360" height="80" rx="8" fill="#f8fafc" stroke="#cbd5e1"
+                            stroke-dasharray="5,5" />
+                        <text x="250" y="150" text-anchor="middle" fill="#64748b" font-size="12">Drag & Drop Receipt
+                            Images Here</text>
+                        <text x="250" y="170" text-anchor="middle" fill="#64748b" font-size="10">or click to
+                            browse</text>
+                        <rect x="220" y="180" width="60" height="15" rx="4" fill="#3b82f6" />
+                        <text x="250" y="190" text-anchor="middle" fill="white" font-size="8">Browse Files</text>
+
+                        <!-- Receipt list -->
+                        <g class="receipt-item">
+                            <rect x="70" y="220" width="360" height="30" fill="#ffffff" stroke="#e2e8f0" />
+                            <circle cx="85" cy="235" r="6" fill="#10b981" />
+                            <path d="M83 235 L85 237 L89 232" stroke="white" stroke-width="1" fill="none" />
+                            <text x="100" y="232" fill="#1f2937" font-size="10"
+                                font-weight="500">office-supplies-receipt.jpg</text>
+                            <text x="100" y="244" fill="#6b7280" font-size="8">Attached to: Office Supplies Purchase -
+                                $87.50</text>
+                            <rect x="380" y="227" width="40" height="16" rx="3" fill="#dbeafe" />
+                            <text x="400" y="237" text-anchor="middle" fill="#1d4ed8" font-size="8">View</text>
+                        </g>
+
+                        <g class="receipt-item">
+                            <rect x="70" y="260" width="360" height="30" fill="#f8fafc" stroke="#e2e8f0" />
+                            <circle cx="85" cy="275" r="6" fill="#10b981" />
+                            <path d="M83 275 L85 277 L89 272" stroke="white" stroke-width="1" fill="none" />
+                            <text x="100" y="272" fill="#1f2937" font-size="10"
+                                font-weight="500">inventory-invoice.pdf</text>
+                            <text x="100" y="284" fill="#6b7280" font-size="8">Attached to: Inventory Restock -
+                                $1,234.50</text>
+                            <rect x="380" y="267" width="40" height="16" rx="3" fill="#dbeafe" />
+                            <text x="400" y="277" text-anchor="middle" fill="#1d4ed8" font-size="8">View</text>
+                        </g>
+
+                        <!-- Export button -->
+                        <rect x="70" y="310" width="100" height="25" rx="6" fill="#10b981" />
+                        <text x="120" y="325" text-anchor="middle" fill="white" font-size="10" font-weight="500">Export
+                            All</text>
+
+                        <!-- Stats -->
+                        <text x="200" y="325" fill="#6b7280" font-size="10">24 receipts organized</text>
+                    </svg>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Compare spreadsheets to Argo Sales Tracker -->
-    <section class="section">
+    <!-- Results Section -->
+    <section class="results-section">
         <div class="container">
-            <h2 class="section-title">Why Choose Argo Sales Tracker Over Spreadsheets?</h2>
+            <h2 class="section-title">The Results You Can Expect</h2>
 
-            <div class="comparison-container">
+            <div class="results-grid">
+                <div class="result-card">
+                    <div class="result-metric">8+ hours</div>
+                    <div class="result-label">Weekly time savings potential</div>
+                    <div class="result-description">Based on typical small business data entry workflows vs. Argo's
+                        automated systems.</div>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-metric">95%</div>
+                    <div class="result-label">Reduction in calculation errors</div>
+                    <div class="result-description">Automated calculations and validation eliminate the human errors
+                        common in manual spreadsheets.</div>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-metric">Instant</div>
+                    <div class="result-label">Business insights</div>
+                    <div class="result-description">See your profit margins, best-selling products, and trends
+                        immediately as you add data.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Section -->
+    <section class="comparison-section">
+        <div class="container">
+            <h2 class="section-title">Spreadsheets vs. Argo: The Real Cost</h2>
+
+            <div class="comparison-table">
                 <div class="comparison-header">
-                    <div class="comparison-title">Spreadsheets</div>
-                    <div class="comparison-title">Argo Sales Tracker</div>
+                    <div class="header-item"></div>
+                    <div class="header-item">Basic Spreadsheets</div>
+                    <div class="header-item featured">Argo Sales Tracker</div>
                 </div>
 
-                <!-- Desktop layout -->
-                <div class="comparison-desktop">
-                    <div class="comparison-row">
-                        <div class="comparison-item">
-                            <svg class="error-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <circle cx="12" cy="12" r="10" />
-                                <line x1="15" y1="9" x2="9" y2="15" />
-                                <line x1="9" y1="9" x2="15" y2="15" />
-                            </svg>
-                            <div class="comparison-content">
-                                <h3>Error-Prone Data Entry</h3>
-                                <p>Manual data entry in spreadsheets is prone to human error, with formula mistakes,
-                                    inconsistent formatting, and duplicate entries.</p>
-                            </div>
-                        </div>
-
-                        <div class="comparison-item">
-                            <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            <div class="comparison-content">
-                                <h3>Automated Error Prevention</h3>
-                                <p>Built-in validation prevents common errors, with structured data entry forms
-                                    and automated calculations that eliminate formula errors.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="comparison-row">
-                        <div class="comparison-item">
-                            <svg class="error-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <circle cx="12" cy="12" r="10" />
-                                <line x1="15" y1="9" x2="9" y2="15" />
-                                <line x1="9" y1="9" x2="15" y2="15" />
-                            </svg>
-                            <div class="comparison-content">
-                                <h3>Limited Data Organization</h3>
-                                <p>Organizing receipts and attachments requires separate folders and manual linking,
-                                    making it difficult to maintain a clear audit trail.</p>
-                            </div>
-                        </div>
-
-                        <div class="comparison-item">
-                            <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            <div class="comparison-content">
-                                <h3>Integrated Receipt Management</h3>
-                                <p>Directly attach and manage receipts within each transaction, with bulk export
-                                    capabilities and organized storage that creates a clear, auditable record.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="comparison-row">
-                        <div class="comparison-item">
-                            <svg class="error-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <circle cx="12" cy="12" r="10" />
-                                <line x1="15" y1="9" x2="9" y2="15" />
-                                <line x1="9" y1="9" x2="15" y2="15" />
-                            </svg>
-                            <div class="comparison-content">
-                                <h3>Basic Visualization</h3>
-                                <p>Creating and maintaining charts requires manual updates and technical knowledge,
-                                    often resulting in outdated or limited insights.</p>
-                            </div>
-                        </div>
-
-                        <div class="comparison-item">
-                            <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            <div class="comparison-content">
-                                <h3>Advanced Analytics</h3>
-                                <p>Real-time interactive dashboards automatically update as you add data, with
-                                    sophisticated visualizations that provide actionable insights without any technical
-                                    skills required.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="comparison-row">
-                        <div class="comparison-item">
-                            <svg class="error-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <circle cx="12" cy="12" r="10" />
-                                <line x1="15" y1="9" x2="9" y2="15" />
-                                <line x1="9" y1="9" x2="15" y2="15" />
-                            </svg>
-                            <div class="comparison-content">
-                                <h3>Clunky Interface</h3>
-                                <p>Grid-based interfaces with small cells and hidden menus make data entry tedious
-                                    and analysis difficult for non-technical users.</p>
-                            </div>
-                        </div>
-
-                        <div class="comparison-item">
-                            <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            <div class="comparison-content">
-                                <h3>Modern, Intuitive UI</h3>
-                                <p>Clean, purpose-built interface designed for sales tracking, with intuitive navigation
-                                    and context-specific tools that streamline and automate your workflow.</p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="comparison-row">
+                    <div class="row-label">Weekly time spent on data entry</div>
+                    <div class="row-item negative">8-12 hours ⏰</div>
+                    <div class="row-item positive">30 minutes ⚡</div>
                 </div>
 
-                <!-- Mobile layout -->
-                <div class="comparison-mobile">
-                    <!-- Data Entry -->
-                    <div class="mobile-comparison-section">
-                        <div class="mobile-section-header">Data Entry & Validation</div>
+                <div class="comparison-row">
+                    <div class="row-label">Calculation errors per month</div>
+                    <div class="row-item negative">5-10 errors 💸</div>
+                    <div class="row-item positive">0 errors ✅</div>
+                </div>
 
-                        <div class="mobile-section-spreadsheet">
-                            <svg class="error-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <circle cx="12" cy="12" r="10" />
-                                <line x1="15" y1="9" x2="9" y2="15" />
-                                <line x1="9" y1="9" x2="15" y2="15" />
-                            </svg>
-                            <div class="mobile-content">
-                                <h3>Spreadsheets: Error-Prone Data Entry</h3>
-                                <p>Manual data entry in spreadsheets is prone to human error, with formula mistakes,
-                                    inconsistent formatting, and duplicate entries.</p>
-                            </div>
-                        </div>
+                <div class="comparison-row">
+                    <div class="row-label">Business insights & analytics</div>
+                    <div class="row-item negative">Basic charts that break 📊</div>
+                    <div class="row-item positive">22+ real-time charts 📈</div>
+                </div>
 
-                        <div class="mobile-section-argo">
-                            <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            <div class="mobile-content">
-                                <h3>Argo: Automated Error Prevention</h3>
-                                <p>Built-in validation prevents common errors, with structured data entry forms
-                                    and automated calculations that eliminate formula errors.</p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="comparison-row">
+                    <div class="row-label">Receipt organization</div>
+                    <div class="row-item negative">Scattered everywhere 📁</div>
+                    <div class="row-item positive">Attached & searchable 🔍</div>
+                </div>
 
-                    <!-- Document Management -->
-                    <div class="mobile-comparison-section">
-                        <div class="mobile-section-header">Document Organization</div>
-
-                        <div class="mobile-section-spreadsheet">
-                            <svg class="error-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <circle cx="12" cy="12" r="10" />
-                                <line x1="15" y1="9" x2="9" y2="15" />
-                                <line x1="9" y1="9" x2="15" y2="15" />
-                            </svg>
-                            <div class="mobile-content">
-                                <h3>Spreadsheets: Limited Data Organization</h3>
-                                <p>Organizing receipts and attachments requires separate folders and manual linking,
-                                    making it difficult to maintain a clear audit trail.</p>
-                            </div>
-                        </div>
-
-                        <div class="mobile-section-argo">
-                            <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            <div class="mobile-content">
-                                <h3>Argo: Integrated Receipt Management</h3>
-                                <p>Directly attach and manage receipts within each transaction, with bulk export
-                                    capabilities and organized storage that creates a clear, auditable record.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Analytics -->
-                    <div class="mobile-comparison-section">
-                        <div class="mobile-section-header">Data Visualization</div>
-
-                        <div class="mobile-section-spreadsheet">
-                            <svg class="error-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <circle cx="12" cy="12" r="10" />
-                                <line x1="15" y1="9" x2="9" y2="15" />
-                                <line x1="9" y1="9" x2="15" y2="15" />
-                            </svg>
-                            <div class="mobile-content">
-                                <h3>Spreadsheets: Basic Visualization</h3>
-                                <p>Creating and maintaining charts requires manual updates and technical knowledge,
-                                    often resulting in outdated or limited insights.</p>
-                            </div>
-                        </div>
-
-                        <div class="mobile-section-argo">
-                            <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            <div class="mobile-content">
-                                <h3>Argo: Advanced Analytics</h3>
-                                <p>Real-time interactive dashboards automatically update as you add data, with
-                                    sophisticated visualizations that provide actionable insights without any technical
-                                    skills required.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- UI -->
-                    <div class="mobile-comparison-section">
-                        <div class="mobile-section-header">User Experience</div>
-
-                        <div class="mobile-section-spreadsheet">
-                            <svg class="error-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <circle cx="12" cy="12" r="10" />
-                                <line x1="15" y1="9" x2="9" y2="15" />
-                                <line x1="9" y1="9" x2="15" y2="15" />
-                            </svg>
-                            <div class="mobile-content">
-                                <h3>Spreadsheets: Clunky Interface</h3>
-                                <p>Grid-based interfaces with small cells and hidden menus make data entry tedious
-                                    and analysis difficult for non-technical users.</p>
-                            </div>
-                        </div>
-
-                        <div class="mobile-section-argo">
-                            <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            <div class="mobile-content">
-                                <h3>Argo: Modern, Intuitive UI</h3>
-                                <p>Clean, purpose-built interface designed for sales tracking, with intuitive navigation
-                                    and context-specific tools that streamline your workflow.</p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="comparison-row">
+                    <div class="row-label">Monthly cost</div>
+                    <div class="row-item negative">$0 (but costs 100+ hours)</div>
+                    <div class="row-item positive">$0 forever 🎉</div>
                 </div>
             </div>
 
             <div class="comparison-cta">
-                <p>Stop struggling with spreadsheets. Get started with Argo Sales Tracker today.</p>
-                <div class="cta-buttons">
-                    <a href="/download" class="btn btn-blue">Download for free</a>
-                    <a href="upgrade/index.php" class="btn btn-blue">Buy the full version</a>
+                <div class="cta-content center">
+                    <h3>Ready to Stop Wasting Time?</h3>
+                    <p>Make the switch to automated sales tracking and see the difference.</p>
+                    <a href="/download" class="btn btn-primary btn-large">Make the Switch for Free</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="section security-section  bg-gray">
+    <!-- Security Section -->
+    <section class="security-section">
         <div class="container">
-            <img class="security-image" src="images/security.svg" alt="Security Features">
-            <div class="showcase-content">
-                <h3 class="showcase-title">Military-Grade Security</h3>
-                <p class="showcase-description">Keep your business data protected with military-grade AES-256 encryption
-                    and modern authentication methods.</p>
-                <ul class="check-list">
-                    <li>
-                        <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                        </svg>
-                        AES-256 encryption - The same standard used by banks and military organizations to protect
-                        sensitive data
-                    </li>
-                    <li>
-                        <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                        </svg>
-                        Password protection - Secure your data with a strong password of your choice
-                    </li>
-                    <li>
-                        <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                        </svg>
-                        Windows Hello integration - Use fingerprint, facial recognition, or PIN for quick and secure
-                        access (Full version only)
-                    </li>
-                </ul>
+            <div class="security-content">
+                <div class="security-visual">
+                    <svg width="300" height="300" viewBox="0 0 300 300" class="security-svg">
+                        <!-- Background circles -->
+                        <circle cx="150" cy="150" r="120" fill="#dbeafe" opacity="0.3" />
+                        <circle cx="150" cy="150" r="90" fill="#3b82f6" opacity="0.1" />
+                        <circle cx="150" cy="150" r="60" fill="#1e40af" opacity="0.1" />
+
+                        <!-- Main shield -->
+                        <path d="M150 60 L210 90 L210 150 Q210 190 150 220 Q90 190 90 150 L90 90 Z" fill="#1e40af" />
+                        <path d="M150 80 L190 100 L190 145 Q190 175 150 195 Q110 175 110 145 L110 100 Z"
+                            fill="#3b82f6" />
+
+                        <!-- Lock icon -->
+                        <rect x="130" y="130" width="40" height="35" rx="5" fill="#ffffff" />
+                        <circle cx="150" cy="145" r="8" fill="#1e40af" />
+                        <rect x="146" y="145" width="8" height="12" fill="#ffffff" />
+
+                        <!-- Lock shackle -->
+                        <path d="M135 125 L135 115 Q135 105 150 105 Q165 105 165 115 L165 125" stroke="#ffffff"
+                            stroke-width="4" fill="none" />
+
+                        <!-- Security badges -->
+                        <rect x="50" y="50" width="60" height="20" rx="10" fill="#10b981" />
+                        <text x="80" y="64" text-anchor="middle" fill="white" font-size="10"
+                            font-weight="bold">AES-256</text>
+
+                        <rect x="190" y="230" width="80" height="20" rx="10" fill="#f59e0b" />
+                        <text x="230" y="244" text-anchor="middle" fill="white" font-size="10" font-weight="bold">Local
+                            Storage</text>
+
+                        <rect x="35" y="230" width="80" height="20" rx="10" fill="#8b5cf6" />
+                        <text x="75" y="244" text-anchor="middle" fill="white" font-size="10" font-weight="bold">Windows
+                            Hello</text>
+                    </svg>
+                </div>
+
+                <div class="security-text">
+                    <h3>Your Data is Protected with Military-Grade Security</h3>
+                    <p>We use AES-256 encryption - the same standard trusted by government agencies and military
+                        organizations worldwide. Your sensitive business data stays on your computer, encrypted and
+                        secure.</p>
+
+                    <div class="security-features">
+                        <div class="security-feature">
+                            <div class="feature-icon">🏛️</div>
+                            <div class="feature-content">
+                                <h4>AES-256 Encryption</h4>
+                                <p>Military-grade security standard</p>
+                            </div>
+                        </div>
+
+                        <div class="security-feature">
+                            <div class="feature-icon">💻</div>
+                            <div class="feature-content">
+                                <h4>Local Data Storage</h4>
+                                <p>Your data never leaves your computer</p>
+                            </div>
+                        </div>
+
+                        <div class="security-feature">
+                            <div class="feature-icon">🔐</div>
+                            <div class="feature-content">
+                                <h4>Windows Hello Support</h4>
+                                <p>Fingerprint and face unlock (Premium only)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <section class="section">
-        <div class=" container">
-            <h2 class="section-title">Simple, Transparent Pricing</h2>
-            <p class="section-subtitle">No subscriptions. Just pay once, and own forever.</p>
-            <!-- Free plan -->
-            <div class="flex-container">
-                <div class="pricing-card">
-                    <h3>Lifetime Access</h3>
-                    <p class="price">Free</p>
-                    <p class="description">Free forever</p>
-                    <ul class="check-list">
-                        <li>
-                            <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            Limit of 10 products
-                        </li>
-                        <li>
-                            <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            Most features
-                        </li>
-                        <li>
-                            <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            Basic Support
-                        </li>
-                    </ul>
-                    <a href="#" class="btn btn-blue" style="width: 100%; margin-top: 36px;">Download now for Windows</a>
+    <!-- Pricing Section -->
+    <section class="pricing-section">
+        <div class="container">
+            <div class="pricing-header">
+                <h2 class="section-title">Simple, Honest Pricing</h2>
+                <p class="section-subtitle">No subscriptions, no hidden fees. Pay once, own forever.</p>
+            </div>
+
+            <div class="pricing-cards">
+                <!-- Free Plan -->
+                <div class="pricing-card free-plan">
+                    <div class="plan-header">
+                        <div class="plan-badge popular">Most Popular</div>
+                        <h3 class="plan-name">Free Forever</h3>
+                        <div class="plan-price">
+                            <span class="price-currency">$</span>
+                            <span class="price-amount">0</span>
+                            <span class="price-period">forever</span>
+                        </div>
+                        <p class="plan-description">Perfect for small businesses getting started</p>
+                    </div>
+
+                    <div class="plan-features">
+                        <div class="feature-item">
+                            <span class="feature-check">✅</span>
+                            <span>Up to 10 products</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-check">✅</span>
+                            <span>Unlimited transactions</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-check">✅</span>
+                            <span>Real-time analytics</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-check">✅</span>
+                            <span>Receipt management</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-check">✅</span>
+                            <span>Data export</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-check">✅</span>
+                            <span>Email support</span>
+                        </div>
+                    </div>
+
+                    <div class="plan-cta">
+                        <a href="/download" class="btn btn-outline btn-full">Download Free</a>
+                        <p class="plan-note">No bank card required</p>
+                    </div>
                 </div>
 
-                <!-- paid plan -->
-                <div class="pricing-card">
-                    <h3>Lifetime Access</h3>
-                    <p class="price">$20 CAD</p>
-                    <p class="description">One-time payment</p>
-                    <ul class="check-list">
-                        <li>
-                            <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            Unlimited Products
-                        </li>
-                        <li>
-                            <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            All Features
-                        </li>
-                        <li>
-                            <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            Windows Hello
-                        </li>
-                        <li>
-                            <svg class="check-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            Priority Support
-                        </li>
-                    </ul>
-                    <a href="upgrade/index.php" class="btn btn-blue" style="width: 100%; margin-top: 36px;">Get
-                        Started</a>
+                <!-- Premium Plan -->
+                <div class="pricing-card premium-plan">
+                    <div class="plan-header">
+                        <div class="plan-badge premium">Best Value</div>
+                        <h3 class="plan-name">Premium</h3>
+                        <div class="plan-price">
+                            <span class="price-currency">$</span>
+                            <span class="price-amount">20</span>
+                            <span class="price-period">CAD one-time</span>
+                        </div>
+                        <p class="plan-description">Everything you need to scale</p>
+                    </div>
+
+                    <div class="plan-features">
+                        <div class="feature-item">
+                            <span class="feature-check">✅</span>
+                            <span><strong>Unlimited products</strong></span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-check">✅</span>
+                            <span>Windows Hello security</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-check">✅</span>
+                            <span>Priority support</span>
+                        </div>
+                        <div class="feature-item premium-feature">
+                            <span><strong>Lifetime updates included</strong></span>
+                        </div>
+                    </div>
+
+                    <div class="plan-cta">
+                        <a href="upgrade/index.php" class="btn btn-primary btn-full">Upgrade Now</a>
+                        <p class="plan-note">30-day money back guarantee</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pricing-guarantee">
+                <div class="guarantee-content">
+                    <div class="guarantee-text">
+                        <h4>Risk-Free Guarantee</h4>
+                        <p>Try Premium for 30 days. If you're not completely satisfied, get your money back instantly.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Save 8+ Hours Every Week?</h2>
+                <p>Transform your business with automated sales tracking that actually works.</p>
+
+                <div class="cta-buttons">
+                    <a href="/download" class="btn btn-primary btn-xl">
+                        <span class="btn-text">Get now for Free</span>
+                        <span class="btn-subtext">Setup in 3 minutes</span>
+                    </a>
+                    <a href="upgrade/index.php" class="btn btn-secondary">
+                        Upgrade for $20 CAD
+                    </a>
+                </div>
+
+                <div class="final-guarantees">
+                    <div class="guarantee-item">
+                        <span class="guarantee-icon">⚡</span>
+                        <span>3-minute setup</span>
+                    </div>
+                    <div class="guarantee-item">
+                        <span class="guarantee-icon">🔒</span>
+                        <span>Military-grade security</span>
+                    </div>
+                    <div class="guarantee-item">
+                        <span class="guarantee-icon">💳</span>
+                        <span>No bank card needed</span>
+                    </div>
+                    <div class="guarantee-item">
+                        <span class="guarantee-icon">🛡️</span>
+                        <span>30-day guarantee</span>
+                    </div>
                 </div>
             </div>
         </div>

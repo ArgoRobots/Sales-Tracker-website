@@ -151,7 +151,7 @@ body {
   width: 24px;
   height: 24px;
   margin-right: 12px;
-  stroke: var(--green);
+  stroke: var(--success-green);
   stroke-width: 2;
   fill: none;
 }
@@ -210,7 +210,7 @@ body {
 .feature-card .icon-container svg {
   width: 32px;
   height: 32px;
-  stroke: var(--blue);
+  stroke: var(--primary-blue);
   stroke-width: 2;
   fill: none;
 }

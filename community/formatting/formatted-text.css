@@ -104,7 +104,7 @@
 
 /* Link styles */
 .formatted-text a {
-  color: var(--blue);
+  color: var(--primary-blue);
   text-decoration: none;
 }
 

@@ -325,7 +325,7 @@
 
 .sort-option.active {
   background-color: #dbeafe;
-  color: var(--blue);
+  color: var(--primary-blue);
   font-weight: 500;
   border-color: #93c5fd;
 }
@@ -416,7 +416,7 @@
 .post-title {
   font-size: 16px;
   font-weight: 600;
-  color: var(--blue);
+  color: var(--primary-blue);
   text-decoration: none;
 }
 
@@ -454,7 +454,7 @@
 }
 
 .comment-link {
-  color: var(--blue);
+  color: var(--primary-blue);
   text-decoration: none;
 }
 
@@ -464,7 +464,7 @@
 
 /* Reputation section */
 .reputation-help-link svg {
-  color: var(--blue);
+  color: var(--primary-blue);
 }
 
 .reputation-help-link svg:hover {
@@ -519,7 +519,7 @@
 }
 
 .reputation-description a {
-  color: var(--blue);
+  color: var(--primary-blue);
   text-decoration: none;
   font-weight: 500;
 }

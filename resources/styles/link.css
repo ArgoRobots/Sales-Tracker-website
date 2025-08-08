@@ -1,5 +1,5 @@
 .link {
-  color: var(--blue);
+  color: var(--primary-blue);
 }
 
 .link:hover {
@@ -7,7 +7,7 @@
 }
 
 .link-no-underline {
-  color: var(--blue);
+  color: var(--primary-blue);
   text-decoration: none;
 }
 

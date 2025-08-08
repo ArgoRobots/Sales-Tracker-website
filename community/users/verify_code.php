@@ -150,7 +150,7 @@ if ($success) {
         }
 
         .verification-digit:focus {
-            border-color: var(--blue);
+            border-color: var(--primary-blue);
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
             outline: none;
         }
@@ -175,19 +175,25 @@ if ($success) {
             <p class="auth-subtitle">Please enter the 6-digit verification code sent to your email</p>
 
             <?php if ($error): ?>
-                <div class="error-message">
-                    <?php echo htmlspecialchars($error); ?>
-                </div>
+            <div class="error-message">
+                <?php echo htmlspecialchars($error); ?>
+            </div>
             <?php endif; ?>
 
             <form method="post" class="auth-form">
                 <div class="verification-code-container">
-                    <input type="text" maxlength="1" class="verification-digit" name="digit1" id="digit1" pattern="[0-9]" inputmode="numeric" required>
-                    <input type="text" maxlength="1" class="verification-digit" name="digit2" id="digit2" pattern="[0-9]" inputmode="numeric" required>
-                    <input type="text" maxlength="1" class="verification-digit" name="digit3" id="digit3" pattern="[0-9]" inputmode="numeric" required>
-                    <input type="text" maxlength="1" class="verification-digit" name="digit4" id="digit4" pattern="[0-9]" inputmode="numeric" required>
-                    <input type="text" maxlength="1" class="verification-digit" name="digit5" id="digit5" pattern="[0-9]" inputmode="numeric" required>
-                    <input type="text" maxlength="1" class="verification-digit" name="digit6" id="digit6" pattern="[0-9]" inputmode="numeric" required>
+                    <input type="text" maxlength="1" class="verification-digit" name="digit1" id="digit1"
+                        pattern="[0-9]" inputmode="numeric" required>
+                    <input type="text" maxlength="1" class="verification-digit" name="digit2" id="digit2"
+                        pattern="[0-9]" inputmode="numeric" required>
+                    <input type="text" maxlength="1" class="verification-digit" name="digit3" id="digit3"
+                        pattern="[0-9]" inputmode="numeric" required>
+                    <input type="text" maxlength="1" class="verification-digit" name="digit4" id="digit4"
+                        pattern="[0-9]" inputmode="numeric" required>
+                    <input type="text" maxlength="1" class="verification-digit" name="digit5" id="digit5"
+                        pattern="[0-9]" inputmode="numeric" required>
+                    <input type="text" maxlength="1" class="verification-digit" name="digit6" id="digit6"
+                        pattern="[0-9]" inputmode="numeric" required>
                 </div>
 
                 <p class="verification-hint">Check your email inbox for the 6-digit code</p>
@@ -210,7 +216,7 @@ if ($success) {
 
     <script>
         // Handle verification code input behavior
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const digitInputs = document.querySelectorAll('.verification-digit');
 
             // Focus the first input on page load
@@ -219,7 +225,7 @@ if ($success) {
             // Set up input behavior
             digitInputs.forEach((input, index) => {
                 // Auto-focus next input on entry
-                input.addEventListener('input', function(e) {
+                input.addEventListener('input', function (e) {
                     // Only allow numbers
                     this.value = this.value.replace(/[^0-9]/g, '');
 
@@ -235,14 +241,14 @@ if ($success) {
                 });
 
                 // Handle backspace to go to previous input
-                input.addEventListener('keydown', function(e) {
+                input.addEventListener('keydown', function (e) {
                     if (e.key === 'Backspace' && this.value === '' && index > 0) {
                         digitInputs[index - 1].focus();
                     }
                 });
 
                 // Handle paste event for entire code
-                input.addEventListener('paste', function(e) {
+                input.addEventListener('paste', function (e) {
                     e.preventDefault();
                     const paste = (e.clipboardData || window.clipboardData).getData('text');
 

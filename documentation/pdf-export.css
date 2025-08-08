@@ -3,7 +3,7 @@
   top: 60px;
   right: 20px;
   z-index: 99;
-  background: var(--blue);
+  background: var(--primary-blue);
   color: white;
   border: none;
   border-radius: 8px;

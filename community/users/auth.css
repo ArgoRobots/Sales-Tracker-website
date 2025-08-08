@@ -82,7 +82,7 @@
   height: 18px;
   margin: 0;
   cursor: pointer;
-  accent-color: var(--blue);
+  accent-color: var(--primary-blue);
 }
 
 .checkbox-group label {
@@ -96,7 +96,7 @@
 }
 
 .checkbox-group:hover label {
-  color: var(--blue);
+  color: var(--primary-blue);
 }
 
 /* Button styling */
@@ -116,7 +116,7 @@
 }
 
 a {
-  color: var(--blue);
+  color: var(--primary-blue);
   text-decoration: none;
 }
 
@@ -199,7 +199,7 @@ a:hover {
 }
 
 .auth-links a {
-  color: var(--blue);
+  color: var(--primary-blue);
   text-decoration: none;
 }
 

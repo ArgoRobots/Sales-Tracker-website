@@ -161,7 +161,7 @@ kbd {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background-color: var(--blue);
+  background-color: var(--primary-blue);
 }
 
 /* @Mention specific styles */
@@ -176,11 +176,11 @@ kbd {
   padding: 15px;
   background-color: #f8fafc;
   border-radius: 6px;
-  border-left: 3px solid var(--blue);
+  border-left: 3px solid var(--primary-blue);
 }
 
 .step-number {
-  background-color: var(--blue);
+  background-color: var(--primary-blue);
   color: white;
   width: 24px;
   height: 24px;
