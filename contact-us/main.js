@@ -4,7 +4,7 @@ window.addEventListener("DOMContentLoaded", function () {
   // Success and Error functions for after the form is submitted
   function success() {
     form.reset();
-    window.open("message-sent-successfully/index.html", "_self");
+    window.open("message-sent-successfully/index.php", "_self");
   }
 
   function error(message) {
