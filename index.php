@@ -22,12 +22,12 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
 
     <!-- SEO Meta Tags -->
     <meta name="description"
-        content="Transform your small business with Argo Sales Tracker. Save 8+ hours weekly, reduce errors by 95%, and boost profits. Free Windows software with 22+ interactive charts. No monthly fees.">
+        content="Transform your small business with Argo Sales Tracker. Save several hours weekly, reduce errors by 95%, and boost profits. Free Windows software with 22+ interactive charts. No monthly fees.">
     <meta name="keywords"
         content="sales tracker, business software, profit tracking, inventory management, small business automation, Windows software, Calgary business software, time saving, error reduction">
 
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Argo Sales Tracker - Save 8+ Hours Weekly & Boost Profits">
+    <meta property="og:title" content="Argo Sales Tracker - Save several Hours Weekly & Boost Profits">
     <meta property="og:description"
         content="Transform your business with automated sales tracking, eliminate errors, and grow profits. Free forever with lifetime upgrades available.">
     <meta property="og:url" content="https://argorobots.com/">
@@ -37,7 +37,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
 
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Argo Sales Tracker - Save 8+ Hours Weekly">
+    <meta name="twitter:title" content="Argo Sales Tracker - Save several Hours Weekly">
     <meta name="twitter:description"
         content="Transform your business with automated sales tracking and boost profits. Free forever.">
 
@@ -56,7 +56,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
             "@context": "https://schema.org",
             "@type": "SoftwareApplication",
             "name": "Argo Sales Tracker",
-            "description": "Free Windows sales tracking software that saves 8+ hours weekly for small businesses with 22+ automated charts and profit insights",
+            "description": "Free Windows sales tracking software that saves several hours weekly for small businesses with 22+ automated charts and profit insights",
             "url": "https://argorobots.com/",
             "applicationCategory": "BusinessApplication",
             "operatingSystem": "Windows",
@@ -85,7 +85,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     </script>
 
     <link rel="shortcut icon" type="image/x-icon" href="images/argo-logo/A-logo.ico">
-    <title>Argo Sales Tracker - Save 8+ Hours Weekly | Free Business Automation Software</title>
+    <title>Argo Sales Tracker - Save Several Hours Weekly | Free Business Automation Software</title>
 
     <?php include 'resources/head/google-analytics.php'; ?>
 
@@ -134,8 +134,8 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
 
                     <div class="hero-stats">
                         <div class="stat">
-                            <span class="stat-number">8+</span>
-                            <span class="stat-label">Hours Saved Weekly</span>
+                            <span class="stat-number">22+</span>
+                            <span class="stat-label">Live Charts</span>
                         </div>
                         <div class="stat">
                             <span class="stat-number">95%</span>
@@ -239,7 +239,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
             <!-- Feature 1: Smart Transaction Entry -->
             <div class="feature-showcase grid-2col">
                 <div class="feature-content">
-                    <div class="feature-badge">Save 5+ Hours Weekly</div>
+                    <div class="feature-badge">Save Several Hours Weekly</div>
                     <h3 class="feature-title">Add Transactions in 15 Seconds</h3>
                     <p class="feature-description">
                         Smart forms with validation and instant calculations.
@@ -453,7 +453,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
 
             <div class="grid">
                 <div class="card text-center">
-                    <div class="result-metric">8+ hours</div>
+                    <div class="result-metric">Several hours</div>
                     <div class="result-label">Weekly time savings potential</div>
                     <div class="result-description">Based on typical small business data entry workflows vs. Argo's
                         automated systems.</div>
@@ -489,9 +489,9 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                 </div>
 
                 <div class="comparison-row">
-                    <div class="row-label">Weekly time spent on data entry</div>
-                    <div class="row-item negative">8-12 hours ⏰</div>
-                    <div class="row-item positive">30 minutes ⚡</div>
+                    <div class="row-label">Data entry process</div>
+                    <div class="row-item negative">Manual & tedious 📝</div>
+                    <div class="row-item positive">Automated & easy ⚡</div>
                 </div>
 
                 <div class="comparison-row">
@@ -514,7 +514,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
 
                 <div class="comparison-row">
                     <div class="row-label">Monthly cost</div>
-                    <div class="row-item negative">$0 (but costs 100+ hours)</div>
+                    <div class="row-item negative">$0 (but costs a lot of time)</div>
                     <div class="row-item positive">$0 forever</div>
                 </div>
             </div>
@@ -617,7 +617,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                 <!-- Free Plan -->
                 <div class="pricing-card free-plan card">
                     <div class="plan-header">
-                        <div class="plan-badge popular">Most Popular</div>
+                        <div class="plan-badge popular">Basic Version</div>
                         <h3 class="plan-name">Free Forever</h3>
                         <div class="plan-price">
                             <span class="price-currency">$</span>
@@ -714,7 +714,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     <section class="final-cta section">
         <div class="container">
             <div class="cta-content text-center">
-                <h2>Ready to Save 8+ Hours Every Week?</h2>
+                <h2>Ready to Save Several Hours Every Week?</h2>
                 <p>Transform your business with automated sales tracking that actually works.</p>
 
                 <div class="cta-buttons">
