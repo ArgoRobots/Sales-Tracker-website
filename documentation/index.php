@@ -111,6 +111,8 @@
                     <ul class="nav-links">
                         <li data-scroll-to="supported-currencies" title="View supported currencies">Supported Currencies
                         </li>
+                        <li data-scroll-to="supported-languages" title="View supported languages">Supported Languages
+                        </li>
                     </ul>
                 </div>
 
@@ -953,6 +955,253 @@
                     <li>Analytics and chart calculations</li>
                     <li>Default export currency (though you can choose a different one during export)</li>
                 </ul>
+            </section>
+
+            <!-- Supported Languages section -->
+            <section id="supported-languages" class="article">
+                <h2>Supported Languages</h2>
+                <p>Argo Sales Tracker supports 54 languages to help users worldwide work in their preferred language.
+                    The installer is currently only available in English, but you can change the application language in
+                    the settings after installation.</p>
+
+                <h3>Changing Your Language</h3>
+                <ol class="steps-list">
+                    <li>Go to "Settings > General" in the application</li>
+                    <li>Find the "Language" dropdown menu</li>
+                    <li>Select your preferred language from the list</li>
+                </ol>
+
+                <h3>Complete Language List</h3>
+                <div class="info-box">
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Language</th>
+                            <th>Region/Countries</th>
+                        </tr>
+                        <tr>
+                            <td>Albanian</td>
+                            <td>Albania</td>
+                        </tr>
+                        <tr>
+                            <td>Arabic</td>
+                            <td>Middle East, North Africa</td>
+                        </tr>
+                        <tr>
+                            <td>Basque</td>
+                            <td>Basque Country</td>
+                        </tr>
+                        <tr>
+                            <td>Belarusian</td>
+                            <td>Belarus</td>
+                        </tr>
+                        <tr>
+                            <td>Bengali</td>
+                            <td>Bangladesh, India</td>
+                        </tr>
+                        <tr>
+                            <td>Bosnian</td>
+                            <td>Bosnia and Herzegovina</td>
+                        </tr>
+                        <tr>
+                            <td>Bulgarian</td>
+                            <td>Bulgaria</td>
+                        </tr>
+                        <tr>
+                            <td>Catalan</td>
+                            <td>Catalonia</td>
+                        </tr>
+                        <tr>
+                            <td>Chinese (Simplified)</td>
+                            <td>Mainland China</td>
+                        </tr>
+                        <tr>
+                            <td>Chinese (Traditional)</td>
+                            <td>Taiwan, Hong Kong</td>
+                        </tr>
+                        <tr>
+                            <td>Croatian</td>
+                            <td>Croatia</td>
+                        </tr>
+                        <tr>
+                            <td>Czech</td>
+                            <td>Czech Republic</td>
+                        </tr>
+                        <tr>
+                            <td>Danish</td>
+                            <td>Denmark</td>
+                        </tr>
+                        <tr>
+                            <td>Dutch</td>
+                            <td>Netherlands, Belgium</td>
+                        </tr>
+                        <tr>
+                            <td>English</td>
+                            <td>North America, UK, Australia</td>
+                        </tr>
+                        <tr>
+                            <td>Estonian</td>
+                            <td>Estonia</td>
+                        </tr>
+                        <tr>
+                            <td>Filipino</td>
+                            <td>Philippines</td>
+                        </tr>
+                        <tr>
+                            <td>Finnish</td>
+                            <td>Finland</td>
+                        </tr>
+                        <tr>
+                            <td>French</td>
+                            <td>France, Canada, Belgium</td>
+                        </tr>
+                        <tr>
+                            <td>Galician</td>
+                            <td>Galicia</td>
+                        </tr>
+                        <tr>
+                            <td>German</td>
+                            <td>Germany, Austria</td>
+                        </tr>
+                        <tr>
+                            <td>Greek</td>
+                            <td>Greece</td>
+                        </tr>
+                        <tr>
+                            <td>Hebrew</td>
+                            <td>Israel</td>
+                        </tr>
+                        <tr>
+                            <td>Hindi</td>
+                            <td>India</td>
+                        </tr>
+                        <tr>
+                            <td>Hungarian</td>
+                            <td>Hungary</td>
+                        </tr>
+                        <tr>
+                            <td>Icelandic</td>
+                            <td>Iceland</td>
+                        </tr>
+                        <tr>
+                            <td>Indonesian</td>
+                            <td>Indonesia</td>
+                        </tr>
+                        <tr>
+                            <td>Irish</td>
+                            <td>Ireland</td>
+                        </tr>
+                        <tr>
+                            <td>Italian</td>
+                            <td>Italy</td>
+                        </tr>
+                        <tr>
+                            <td>Japanese</td>
+                            <td>Japan</td>
+                        </tr>
+                        <tr>
+                            <td>Korean</td>
+                            <td>South Korea</td>
+                        </tr>
+                        <tr>
+                            <td>Latvian</td>
+                            <td>Latvia</td>
+                        </tr>
+                        <tr>
+                            <td>Lithuanian</td>
+                            <td>Lithuania</td>
+                        </tr>
+                        <tr>
+                            <td>Luxembourgish</td>
+                            <td>Luxembourg</td>
+                        </tr>
+                        <tr>
+                            <td>Macedonian</td>
+                            <td>North Macedonia</td>
+                        </tr>
+                        <tr>
+                            <td>Malay</td>
+                            <td>Malaysia, Brunei</td>
+                        </tr>
+                        <tr>
+                            <td>Maltese</td>
+                            <td>Malta</td>
+                        </tr>
+                        <tr>
+                            <td>Norwegian</td>
+                            <td>Norway</td>
+                        </tr>
+                        <tr>
+                            <td>Persian</td>
+                            <td>Iran, Afghanistan</td>
+                        </tr>
+                        <tr>
+                            <td>Polish</td>
+                            <td>Poland</td>
+                        </tr>
+                        <tr>
+                            <td>Portuguese</td>
+                            <td>Portugal, Brazil</td>
+                        </tr>
+                        <tr>
+                            <td>Romanian</td>
+                            <td>Romania</td>
+                        </tr>
+                        <tr>
+                            <td>Russian</td>
+                            <td>Russia, Eastern Europe</td>
+                        </tr>
+                        <tr>
+                            <td>Serbian</td>
+                            <td>Serbia</td>
+                        </tr>
+                        <tr>
+                            <td>Slovak</td>
+                            <td>Slovakia</td>
+                        </tr>
+                        <tr>
+                            <td>Slovenian</td>
+                            <td>Slovenia</td>
+                        </tr>
+                        <tr>
+                            <td>Spanish</td>
+                            <td>Spain, Latin America</td>
+                        </tr>
+                        <tr>
+                            <td>Swahili</td>
+                            <td>East Africa</td>
+                        </tr>
+                        <tr>
+                            <td>Swedish</td>
+                            <td>Sweden</td>
+                        </tr>
+                        <tr>
+                            <td>Thai</td>
+                            <td>Thailand</td>
+                        </tr>
+                        <tr>
+                            <td>Turkish</td>
+                            <td>Turkey</td>
+                        </tr>
+                        <tr>
+                            <td>Ukrainian</td>
+                            <td>Ukraine</td>
+                        </tr>
+                        <tr>
+                            <td>Urdu</td>
+                            <td>Pakistan, India</td>
+                        </tr>
+                        <tr>
+                            <td>Vietnamese</td>
+                            <td>Vietnam</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="info-box">
+                    <strong>Installation Note:</strong> The installer itself is currently only available in English, but
+                    once installed, you can switch to any of these 54 supported languages through the application
+                    settings.
+                </div>
             </section>
 
             <!-- Security section -->
