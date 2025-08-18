@@ -75,6 +75,64 @@
     <div class="container">
         <div class="version-grid">
 
+            <!-- Version 1.0.6 -->
+            <div class="version-card">
+                <div class="version-header">
+                    <span class="version-tag">Version 1.0.6</span>
+                    <span class="date-tag">August 15 2025</span>
+                </div>
+
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <div class="icon icon-lightning"></div>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Improved Application Scaling<span class="type-tag fix">Fix</span></h3>
+                            <p>The application now scales properly on most devices, providing a better user experience
+                                across different screen sizes and resolutions. Whether you're using a high-DPI display
+                                or a standard monitor, the interface will look crisp and properly sized.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <div class="icon icon-plus"></div>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Additional Language Support<span class="type-tag enhancement">Enhancement</span></h3>
+                            <p>Added more languages to make the application accessible to a broader international
+                                audience.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <div class="icon icon-lightning"></div>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Enhanced Import Dialog Controls<span class="type-tag enhancement">Enhancement</span>
+                            </h3>
+                            <p>Added "Yes to all" and "No to all" buttons to import dialog boxes, allowing you to apply
+                                your choice to all similar prompts during the import process. This eliminates the need
+                                to respond to each individual prompt when importing large datasets with duplicate items,
+                                making bulk imports much more efficient.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <div class="icon icon-check"></div>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Bug Fixes and Improvements<span class="type-tag fix">Fix</span></h3>
+                            <p>Various bug fixes and general improvements throughout the application for enhanced
+                                stability and performance.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Version 1.0.5 -->
             <div class="version-card">
                 <div class="version-header">
