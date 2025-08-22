@@ -79,7 +79,7 @@
             <div class="version-card">
                 <div class="version-header">
                     <span class="version-tag">Version 1.0.6</span>
-                    <span class="date-tag">August 15 2025</span>
+                    <span class="date-tag">August 17 2025</span>
                 </div>
 
                 <div class="feature-list">
