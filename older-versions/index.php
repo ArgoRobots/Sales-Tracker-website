@@ -2,59 +2,94 @@
 // Get available versions from filesystem
 function getOlderVersions()
 {
-    $downloadPath = '../resources/downloads/';
+    $versionsPath = '../resources/downloads/versions/';
     $versions = [];
 
     // Debug: Check if directory exists
-    if (!is_dir($downloadPath)) {
-        error_log("Directory does not exist: " . $downloadPath);
+    if (!is_dir($versionsPath)) {
+        error_log("Versions directory does not exist: " . $versionsPath);
         return $versions;
     }
 
-    // Scan the downloads directory
-    $files = scandir($downloadPath);
+    // Scan the versions directory for version folders
+    $versionFolders = scandir($versionsPath);
+    error_log("Found version folders: " . print_r($versionFolders, true));
 
-    foreach ($files as $file) {
-        // Look for installer files with the pattern "Argo Sales Tracker Installer V.{version}.exe"
-        if (preg_match('/^Argo Sales Tracker Installer V\.(.+)\.exe$/i', $file, $matches)) {
-            $version = $matches[1];
-            $filepath = $downloadPath . $file;
+    foreach ($versionFolders as $folder) {
+        if ($folder === '.' || $folder === '..') continue;
 
-            if (file_exists($filepath)) {
-                $filesize = filesize($filepath);
-                $modified = filemtime($filepath);
+        $versionPath = $versionsPath . $folder . '/';
+        error_log("Checking version path: " . $versionPath);
 
-                $versions[] = [
-                    'version' => $version,
-                    'filename' => $file,
-                    'filepath' => $filepath,
-                    'filesize' => $filesize,
-                    'modified' => $modified,
-                    'release_date' => date('Y-m-d', $modified)
-                ];
+        // Check if it's a directory
+        if (!is_dir($versionPath)) {
+            error_log("Not a directory: " . $versionPath);
+            continue;
+        }
+
+        // Look for installer files in the version directory
+        $files = scandir($versionPath);
+        error_log("Files in " . $folder . ": " . print_r($files, true));
+
+        foreach ($files as $file) {
+            // Look for installer files with the pattern "Argo Sales Tracker Installer V.{version}.exe"
+            if (preg_match('/^Argo Sales Tracker Installer V\.(.+)\.exe$/i', $file, $matches)) {
+                $version = $matches[1];
+                $filepath = $versionPath . $file;
+                error_log("Found installer: " . $file . " for version: " . $version);
+
+                if (file_exists($filepath)) {
+                    $filesize = filesize($filepath);
+                    $modified = filemtime($filepath);
+
+                    // Check if languages folder exists for this version
+                    $languagesPath = $versionPath . 'languages/';
+                    $hasLanguages = is_dir($languagesPath);
+
+                    $versionData = [
+                        'version' => $version,
+                        'filename' => $file,
+                        'filepath' => $filepath,
+                        'relativePath' => 'versions/' . $folder . '/' . $file,
+                        'filesize' => $filesize,
+                        'modified' => $modified,
+                        'release_date' => date('Y-m-d', $modified),
+                        'hasLanguages' => $hasLanguages,
+                        'languagesPath' => $hasLanguages ? 'versions/' . $folder . '/languages/' : null
+                    ];
+
+                    $versions[] = $versionData;
+                    error_log("Added version: " . print_r($versionData, true));
+                }
+                break; // Only one installer per version folder
             }
         }
     }
 
-    // Debug: Log found versions
-    error_log("Found versions: " . print_r(array_column($versions, 'version'), true));
+    error_log("All versions before sorting: " . print_r(array_column($versions, 'version'), true));
 
     // Sort versions in descending order
     usort($versions, function ($a, $b) {
         return version_compare($b['version'], $a['version']);
     });
 
+    error_log("All versions after sorting: " . print_r(array_column($versions, 'version'), true));
+
     // Only remove the latest version if we have more than 2 versions
     // This ensures we show at least one older version
     if (count($versions) > 2) {
-        array_shift($versions); // Remove the latest version
+        $removed = array_shift($versions); // Remove the latest version
+        error_log("Removed latest version (>2 versions): " . $removed['version']);
     } elseif (count($versions) == 2) {
-        array_shift($versions); // Remove latest, show the one older version
+        $removed = array_shift($versions); // Remove latest, show the one older version
+        error_log("Removed latest version (2 versions): " . $removed['version']);
     } else {
         // If only one version or none, don't show anything
+        error_log("Only " . count($versions) . " version(s) found, showing none");
         $versions = [];
     }
 
+    error_log("Final versions to display: " . print_r(array_column($versions, 'version'), true));
     return $versions;
 }
 
@@ -181,10 +216,11 @@ $older_versions = getOlderVersions();
                             </div>
                         </div>
                         <div class="download-section">
-                            <a href="resources/downloads/<?php echo urlencode($version['filename']); ?>"
+                            <a href="../resources/downloads/versions/<?php echo htmlspecialchars($version['version']); ?>/<?php echo urlencode($version['filename']); ?>"
                                 class="btn btn-blue download-btn"
                                 download="<?php echo htmlspecialchars($version['filename']); ?>"
-                                title="Download Version <?php echo htmlspecialchars($version['version']); ?>">
+                                title="Download Version <?php echo htmlspecialchars($version['version']); ?>"
+                                data-version="<?php echo htmlspecialchars($version['version']); ?>">
                                 ⬇ Download V.<?php echo htmlspecialchars($version['version']); ?>
                             </a>
                             <div class="version-badge">
@@ -202,29 +238,17 @@ $older_versions = getOlderVersions();
     </footer>
 
     <script>
-        // Add download tracking and confirmation
+        // Add download tracking without confirmation popup
         document.querySelectorAll('.download-btn').forEach(function(btn) {
             btn.addEventListener('click', function(e) {
-                const version = this.textContent.match(/v([\d\.]+)/);
+                const version = this.getAttribute('data-version');
                 if (version) {
-                    // Show confirmation for older version downloads
-                    const confirmed = confirm(
-                        'You are downloading an older version (v' + version[1] + ') of Argo Sales Tracker.\n\n' +
-                        'We recommend using the latest version for the best experience and security.\n\n' +
-                        'Continue with download?'
-                    );
-
-                    if (!confirmed) {
-                        e.preventDefault();
-                        return false;
-                    }
-
                     // Track download event if analytics is available
                     if (typeof gtag !== 'undefined') {
                         gtag('event', 'download', {
                             'event_category': 'software',
-                            'event_label': 'argo_sales_tracker_v' + version[1],
-                            'version': version[1]
+                            'event_label': 'argo_sales_tracker_v' + version,
+                            'version': version
                         });
                     }
                 }
