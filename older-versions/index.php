@@ -221,7 +221,7 @@ $older_versions = getOlderVersions();
                                 download="<?php echo htmlspecialchars($version['filename']); ?>"
                                 title="Download Version <?php echo htmlspecialchars($version['version']); ?>"
                                 data-version="<?php echo htmlspecialchars($version['version']); ?>">
-                                ⬇ Download V.<?php echo htmlspecialchars($version['version']); ?>
+                                Download V.<?php echo htmlspecialchars($version['version']); ?>
                             </a>
                             <div class="version-badge">
                                 Legacy Version

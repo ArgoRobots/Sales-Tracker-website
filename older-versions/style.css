@@ -90,10 +90,6 @@
   border-color: #d1d5db;
 }
 
-.version-info {
-  min-width: 0;
-}
-
 .version-info h3 {
   margin: 0 0 16px 0;
   color: #1f2937;

@@ -157,7 +157,7 @@ php_flag display_errors Off
 php_flag log_errors On
 php_value error_log error_log.txt
 
-# ALL REWRITE RULES IN ONE BLOCK
+# Rewrite rules
 <IfModule mod_rewrite.c>
     RewriteEngine On
     
@@ -176,15 +176,7 @@ php_value error_log error_log.txt
     RewriteCond %{REQUEST_FILENAME} \.(exe|msi)$ [NC]
     RewriteRule ^resources/downloads/versions/([^/]+)/(.+)$ get_installer.php?version=$1&filename=$2 [L,QSA]
     
-    # Legacy support for old download paths (redirect to new structure)
+    # Handle /download (redirect to get_installer.php)
     RewriteCond %{REQUEST_FILENAME} \.(exe|msi)$ [NC]
     RewriteRule ^resources/downloads/([^/]+\.exe)$ get_installer.php?filename=$1 [L,QSA]
-    
-    # Handle language file downloads for specific versions
-    # /languages/1.0.5/en.json -> resources/downloads/versions/1.0.5/languages/en.json
-    RewriteRule ^languages/([0-9]+\.[0-9]+\.[0-9]+)/(.+)$ resources/downloads/versions/$1/languages/$2 [L]
-    
-    # Handle API requests for language files with version info
-    RewriteRule ^api/languages/([0-9]+\.[0-9]+\.[0-9]+)/?$ api/get_languages.php?version=$1 [L,QSA]
-    RewriteRule ^api/languages/([0-9]+\.[0-9]+\.[0-9]+)/(.+)$ api/get_language.php?version=$1&lang=$2 [L,QSA]
 </IfModule>
