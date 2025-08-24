@@ -353,8 +353,16 @@ h4 {
 .hero-cta {
   display: flex;
   gap: 16px;
-  margin-bottom: 32px;
+  margin-bottom: 10px;
   justify-self: left;
+}
+
+.hero-cta .windows-only {
+  margin: 10px 0 20px 20px;
+}
+
+.windows-only {
+  margin-top: 10px;
 }
 
 .hero-guarantees {
@@ -818,7 +826,7 @@ h4 {
   margin-bottom: 20px;
 }
 
-.cta-content p {
+.cta-content .description {
   font-size: 1.2rem;
   margin-bottom: 40px;
 }

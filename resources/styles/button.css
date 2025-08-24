@@ -9,6 +9,7 @@
   display: block;
   text-align: center;
   width: 180px;
+  max-height: 70px;
 }
 
 .btn-white {

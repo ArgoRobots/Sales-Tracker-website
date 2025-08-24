@@ -69,7 +69,7 @@
     <div class="download-button-container">
         <a href="/download" class="btn btn-blue" style="width: auto; padding: 10px 50px;">Download latest
             release</a>
-        <p>*Windows only</p>
+        <p>Windows only</p>
     </div>
 
     <div class="container">
