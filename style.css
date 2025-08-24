@@ -148,7 +148,7 @@ h4 {
 .btn-primary {
   background: linear-gradient(
     135deg,
-    var(--primary-blue) 0%,
+    #3370d5 0%,
     var(--primary-blue-dark) 100%
   );
   color: white;
