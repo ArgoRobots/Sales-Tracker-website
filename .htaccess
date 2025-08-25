@@ -1,3 +1,5 @@
+Header set X-Robots-Tag "noindex, nofollow"
+
 # Deny access to database directory
 <Files ~ "\.sqlite$">
 Order allow,deny
@@ -155,18 +157,26 @@ php_flag display_errors Off
 php_flag log_errors On
 php_value error_log error_log.txt
 
-# ALL REWRITE RULES IN ONE BLOCK
+# Rewrite rules
 <IfModule mod_rewrite.c>
     RewriteEngine On
     
     # Protect database directory
     RewriteRule ^database/ - [F,L]
     
-    # Download handling rules with filename in URL
+    # Download handling rules with filename in URL for new structure
+    # Handle versioned installer downloads: /download/1.0.5/filename.exe
+    RewriteRule ^download/([0-9]+\.[0-9]+\.[0-9]+)/([^/]+\.exe)$ get_installer.php?version=$1&filename=$2 [L,QSA]
+    
+    # Handle general installer downloads (will get latest)
     RewriteRule ^download/([^/]+\.exe)$ get_installer.php?filename=$1 [L,QSA]
     RewriteRule ^download/?$ get_installer.php [L,QSA]
     
-    # Allow direct access to installer files but track downloads
+    # Allow direct access to version-specific installer files via get_installer.php
     RewriteCond %{REQUEST_FILENAME} \.(exe|msi)$ [NC]
-    RewriteRule ^resources/downloads/(.+)$ track_and_serve.php?file=$1 [L,QSA]
+    RewriteRule ^resources/downloads/versions/([^/]+)/(.+)$ get_installer.php?version=$1&filename=$2 [L,QSA]
+    
+    # Handle /download (redirect to get_installer.php)
+    RewriteCond %{REQUEST_FILENAME} \.(exe|msi)$ [NC]
+    RewriteRule ^resources/downloads/([^/]+\.exe)$ get_installer.php?filename=$1 [L,QSA]
 </IfModule>

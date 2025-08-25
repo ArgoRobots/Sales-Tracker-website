@@ -1,0 +1,253 @@
+/* Base styles */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.hero {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  margin: 0 0 15px 0;
+  font-weight: 700;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.description-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Warning box */
+.warning-box {
+  background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+  border: 1px solid #f0c040;
+  border-radius: 12px;
+  padding: 24px;
+  margin: 40px auto;
+  max-width: 800px;
+  color: #856404;
+  box-shadow: 0 4px 12px rgba(240, 192, 64, 0.15);
+}
+
+.warning-box h3 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  color: #856404;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.warning-box p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.warning-box a {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.warning-box a:hover {
+  text-decoration: underline;
+}
+
+/* Version cards */
+.version-grid {
+  display: grid;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.version-download-card {
+  background: white;
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: start;
+  gap: 32px;
+  transition: all 0.3s ease;
+}
+
+.version-download-card:hover {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+  border-color: #d1d5db;
+}
+
+.version-info h3 {
+  margin: 0 0 16px 0;
+  color: #1f2937;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.version-meta {
+  margin-bottom: 20px;
+}
+
+.meta-item {
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+  line-height: 1.5;
+}
+
+.meta-item strong {
+  color: #374151;
+  font-weight: 600;
+  min-width: 80px;
+  display: inline-block;
+}
+
+.download-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  min-width: 200px;
+}
+
+.version-badge {
+  background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+  color: #6b7280;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+/* No versions available state */
+.version-card {
+  background: white;
+  border-radius: 20px;
+  padding: 60px 40px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
+}
+
+.no-versions h3 {
+  color: #1f2937;
+  font-size: 1.5rem;
+  margin-bottom: 16px;
+  font-weight: 700;
+}
+
+.no-versions p {
+  color: #6b7280;
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: 400px;
+  margin: 0 auto 24px;
+}
+
+.no-versions .btn {
+  display: inline-block;
+  margin: 0 auto;
+}
+
+/* Additional info section */
+.additional-info {
+  background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 32px;
+  margin-top: 40px;
+}
+
+.additional-info h3 {
+  color: #1f2937;
+  font-size: 1.25rem;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.btn-large {
+  width: 280px !important;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .hero {
+    padding: 40px 20px;
+  }
+
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+  }
+
+  .container {
+    padding: 15px;
+  }
+
+  .warning-box {
+    margin: 30px 15px;
+    padding: 20px;
+  }
+
+  .version-download-card {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 24px;
+  }
+
+  .download-section {
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .download-btn {
+    justify-content: center !important;
+  }
+
+  .version-badge {
+    align-self: center;
+    margin-top: 8px;
+  }
+
+  .no-versions {
+    padding: 40px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .version-download-card {
+    padding: 20px;
+  }
+
+  .download-btn {
+    padding: 12px 20px !important;
+    font-size: 0.9rem !important;
+  }
+
+  .hero h1 {
+    font-size: 1.75rem;
+  }
+
+  .version-info h3 {
+    font-size: 1.25rem;
+  }
+}

@@ -48,7 +48,6 @@
 
 <script>
   const menu = document.getElementById('menu');
-  const menuHeight = menu.scrollHeight;
   const header = document.querySelector('header');
   const menuBtn = document.getElementById('menu-btn');
   const menuIcon = document.getElementById('menu-icon');
@@ -58,7 +57,11 @@
     if (!menu.classList.contains('active')) {
       // Opening the menu
       menu.classList.add('active');
-      menu.style.height = menuHeight + 'px';
+
+      // Get the current scroll height
+      const currentMenuHeight = menu.scrollHeight;
+      menu.style.height = currentMenuHeight + 'px';
+
       document.body.classList.add('menu-open');
     } else {
       // Closing the menu
@@ -98,6 +101,15 @@
 
     // Close only if menu is active and click is outside
     if (menu.classList.contains('active') && !header.contains(e.target)) {
+      menuBtn.checked = false;
+      headerToggleMenu();
+    }
+  });
+
+  // Handle window resize to ensure menu works properly
+  window.addEventListener('resize', function () {
+    // If menu is open and we resize to desktop, close it
+    if (window.innerWidth > 900 && menu.classList.contains('active')) {
       menuBtn.checked = false;
       headerToggleMenu();
     }

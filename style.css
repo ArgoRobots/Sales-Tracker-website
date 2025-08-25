@@ -174,18 +174,6 @@ h4 {
   transform: translateY(-2px);
 }
 
-.btn-outline {
-  background: transparent;
-  color: var(--gray-600);
-  border: 2px solid var(--gray-300);
-}
-
-.btn-outline:hover {
-  background: var(--gray-50);
-  border-color: var(--gray-400);
-  color: var(--gray-700);
-}
-
 .btn-subtext {
   display: block;
   font-size: 0.85rem;

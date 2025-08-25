@@ -128,7 +128,6 @@ if (!isset($page_title)) {
 
             <script>
                 const menu = document.getElementById('menu');
-                const menuHeight = menu.scrollHeight;
                 const header = document.querySelector('.admin-header');
                 const menuBtn = document.getElementById('menu-btn');
                 const menuIcon = document.getElementById('menu-icon');
@@ -137,7 +136,11 @@ if (!isset($page_title)) {
                     if (!menu.classList.contains('active')) {
                         // Opening the menu
                         menu.classList.add('active');
-                        menu.style.height = menuHeight + 'px';
+
+                        // Get the current scroll height
+                        const currentMenuHeight = menu.scrollHeight;
+                        menu.style.height = currentMenuHeight + 'px';
+
                         document.body.classList.add('menu-open');
                     } else {
                         // Closing the menu
