@@ -1,4 +1,5 @@
 <?php
+namespace {
 require_once __DIR__ . '/../../email_sender.php';
 
 /**
@@ -570,12 +571,14 @@ function require_login($redirect_url = '', $force_redirect = false)
     }
 }
 
+}
+namespace CommunityUsers {
 /**
- * Get current logged in user data
- * 
+ * Get the current logged-in user's data
+ *
  * @return array|null User data or null if not logged in
  */
-function get_current_user_ID()
+function get_current_user()
 {
     if (!isset($_SESSION['user_id'])) {
         return null;
@@ -607,13 +610,16 @@ function get_current_user_ID()
 
     return $user;
 }
+}
 
+namespace {
 /**
  * Generate a 6-digit verification code
- * 
+ *
  * @return string 6-digit code
  */
 function generate_verification_code()
 {
     return sprintf('%06d', mt_rand(100000, 999999));
+}
 }

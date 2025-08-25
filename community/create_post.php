@@ -7,7 +7,7 @@ include_once 'rate_limit.php';
 require_once 'formatting/formatting_functions.php';
 
 require_login('', true);
-$current_user = get_current_user_ID();
+$current_user = \CommunityUsers\get_current_user();
 
 $html_message = '';
 $error_message = '';
