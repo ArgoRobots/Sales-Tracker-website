@@ -91,7 +91,7 @@ if (isset($_SESSION['contact_error'])) {
 
           <!-- Feedback containers -->
           <div class="support-container">
-            <h2 class="sub-title"> Leave feedback</h2>
+            <h2 class="sub-title">Leave feedback</h2>
             <p class="description">Provide feedback at <a
                 href="mailto:feedback@argorobots.com">feedback@argorobots.com</a>.
               We're always striving to better serve our customers. You can influence our business and help us improve.
