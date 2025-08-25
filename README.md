@@ -69,6 +69,15 @@ This will download all required dependencies into the `vendor/` folder.
 
 > Note: The `vendor/` folder has been removed from the repository and is ignored via `.gitignore`. Always use `composer install` to set up dependencies.
 
+## Running Tests
+To execute the project's test suite, run the following command:
+
+```bash
+vendor/bin/phpunit tests
+```
+
+This runs all test files located in the `tests/` directory.
+
 ## Publishing a new version of Argo Sales Tracker
 1. Update the version in the files 'download.php' and 'update.xml' to the same version as the .exe file.
 2. Upload the new .exe file to resources/downloads
