@@ -10,6 +10,11 @@ require_once 'db_connect.php';
  */
 function track_event($event_type, $event_data = '')
 {
+    // Don't track admin events
+    if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
+        return true;
+    }
+
     $db = get_db_connection();
     $ip_address = $_SERVER['REMOTE_ADDR'];
     $user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
