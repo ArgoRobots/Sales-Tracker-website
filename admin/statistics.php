@@ -1092,17 +1092,17 @@ include 'admin_header.php';
                     subtext: 'users'
                 },
                 {
-                    title: 'License Purchases',
+                    title: 'Licenses Purchased',
                     value: totalLicenses.toLocaleString(),
                     subtext: 'licenses sold'
                 },
                 {
-                    title: 'View Growth Rate',
+                    title: 'Views Growth Rate',
                     value: (viewGrowthRate >= 0 ? '+' : '') + viewGrowthRate + '%',
                     subtext: 'period over period'
                 },
                 {
-                    title: 'Download Growth Rate',
+                    title: 'Downloads Growth Rate',
                     value: (downloadGrowthRate >= 0 ? '+' : '') + downloadGrowthRate + '%',
                     subtext: 'period over period'
                 },
