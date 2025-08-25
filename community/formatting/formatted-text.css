@@ -66,7 +66,7 @@
 }
 
 .formatting-toolbar .help-btn:hover {
-  background-color: #2563eb;
+  background-color: var(--blue-600);
   transform: scale(1.1);
 }
 
@@ -114,7 +114,7 @@
 }
 
 .invalid-link-warning {
-  color: #dc2626;
+  color: var(--redHover);
   font-size: 0.9em;
   font-style: italic;
 }

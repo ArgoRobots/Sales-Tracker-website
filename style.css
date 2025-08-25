@@ -1,7 +1,7 @@
 body {
   line-height: 1.6;
   color: var(--gray-800);
-  background-color: #ffffff;
+  background-color: var(--white);
   overflow-x: hidden;
 }
 
@@ -48,7 +48,7 @@ h4 {
 }
 
 .card {
-  background: white;
+  background: var(--white);
   padding: 40px 32px;
   border-radius: 20px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
@@ -148,10 +148,10 @@ h4 {
 .btn-primary {
   background: linear-gradient(
     135deg,
-    #3370d5 0%,
+    var(--primary-blue-light) 0%,
     var(--primary-blue-dark) 100%
   );
-  color: white;
+  color: var(--white);
   box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
   width: 250px !important;
 }
@@ -162,7 +162,7 @@ h4 {
 }
 
 .btn-secondary {
-  background: white;
+  background: var(--white);
   color: var(--primary-blue);
   border: 2px solid var(--primary-blue);
   display: flex !important;
@@ -170,7 +170,7 @@ h4 {
 
 .btn-secondary:hover {
   background: var(--primary-blue);
-  color: white;
+  color: var(--white);
   transform: translateY(-2px);
 }
 
@@ -268,7 +268,7 @@ h4 {
 }
 
 .hero-content {
-  color: white;
+  color: var(--white);
 }
 
 .hero-badge {
@@ -389,7 +389,7 @@ h4 {
 
 .floating-metric {
   position: absolute;
-  background: white;
+  background: var(--white);
   border-radius: 16px;
   padding: 16px 20px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
@@ -465,8 +465,8 @@ h4 {
 
 .feature-badge {
   display: inline-block;
-  background: linear-gradient(135deg, var(--success-green), #059669);
-  color: white;
+  background: linear-gradient(135deg, var(--success-green), var(--success-green-dark));
+  color: var(--white);
   padding: 6px 16px;
   border-radius: 20px;
   font-size: 0.8rem;
@@ -514,7 +514,7 @@ h4 {
 }
 
 .insight-card {
-  background: white;
+  background: var(--white);
   padding: 16px 20px;
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
@@ -542,7 +542,7 @@ h4 {
 
 /* Comparison Table */
 .comparison-table {
-  background: white;
+  background: var(--white);
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
@@ -556,7 +556,7 @@ h4 {
   display: grid;
   grid-template-columns: 2fr 1.5fr 1.5fr;
   background: var(--primary-blue);
-  color: white;
+  color: var(--white);
 }
 
 .header-item {
@@ -571,7 +571,7 @@ h4 {
 }
 
 .header-item.featured {
-  background: linear-gradient(135deg, var(--success-green), #059669);
+  background: linear-gradient(135deg, var(--success-green), var(--success-green-dark));
 }
 
 .comparison-row {
@@ -607,13 +607,13 @@ h4 {
 }
 
 .row-item.negative {
-  background: #fef2f2;
-  color: #991b1b;
+  background: var(--red-50);
+  color: var(--red-800);
 }
 
 .row-item.positive {
-  background: #f0fdf4;
-  color: #166534;
+  background: var(--green-50);
+  color: var(--green-800);
 }
 
 /* Security Features */
@@ -676,7 +676,7 @@ h4 {
   border-radius: 20px;
   font-size: 0.8rem;
   font-weight: 600;
-  color: white;
+  color: var(--white);
 }
 
 .plan-badge.popular {
@@ -743,7 +743,7 @@ h4 {
 }
 
 .feature-item.premium-feature {
-  background: #fef3c7;
+  background: var(--yellow-50);
   padding: 8px 12px;
   border-radius: 8px;
   border: 1px solid var(--warning-yellow);
@@ -778,7 +778,7 @@ h4 {
   display: inline-flex;
   align-items: center;
   gap: 16px;
-  background: white;
+  background: var(--white);
   padding: 20px 32px;
   border-radius: 16px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
@@ -805,7 +805,7 @@ h4 {
     var(--primary-blue-dark) 0%,
     var(--primary-blue) 100%
   );
-  color: white;
+  color: var(--white);
   text-align: center;
 }
 
@@ -939,7 +939,7 @@ h4 {
 
   .comparison-row {
     display: block;
-    background: white;
+    background: var(--white);
     border-radius: 16px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     margin-bottom: 20px;

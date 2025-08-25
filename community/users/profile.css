@@ -503,7 +503,7 @@
 
 .reputation-value.negative {
   background-color: #fee2e2;
-  color: #dc2626;
+  color: var(--redHover);
 }
 
 .reputation-details {
