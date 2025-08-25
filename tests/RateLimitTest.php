@@ -21,7 +21,12 @@ class FakeResult {
         $this->count = $count;
     }
     public function fetch_assoc() {
-        return ['count' => $this->count];
+        $now = date('Y-m-d H:i:s');
+        return [
+            'count' => $this->count,
+            'period_start' => $now,
+            'last_action_at' => $now,
+        ];
     }
 }
 
@@ -45,15 +50,18 @@ class FakeStatement {
 }
 
 class FakeDB {
-    private $counts = [];
-    public function __construct(array $counts) {
-        $this->counts = $counts;
-    }
+    private $postCount = 0;
+
     public function prepare($sql) {
         return new FakeStatement($this);
     }
+
     public function nextCount() {
-        return count($this->counts) ? array_shift($this->counts) : 0;
+        return $this->postCount;
+    }
+
+    public function incrementPostCount(): void {
+        $this->postCount++;
     }
 }
 
@@ -65,8 +73,7 @@ class RateLimitTest extends TestCase
     protected function setUp(): void
     {
         global $fakeDb;
-        // First call: short=0, long=0; second call short=1
-        $fakeDb = new FakeDB([0, 0, 1]);
+        $fakeDb = new FakeDB();
         $_SESSION = ['user_id' => 1, 'role' => 'user'];
     }
 
@@ -77,8 +84,11 @@ class RateLimitTest extends TestCase
 
     public function testExceedingThresholdReturnsHtmlMessage(): void
     {
+        global $fakeDb;
         // First call within limits
         $this->assertFalse(check_rate_limit(1, 'post'));
+        // Simulate post being created
+        $fakeDb->incrementPostCount();
         // Second call exceeds short-term limit
         $result = check_rate_limit(1, 'post');
         $this->assertIsString($result);
