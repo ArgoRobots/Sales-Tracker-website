@@ -174,12 +174,12 @@ header .header-inner .menu-container .menu .community:after {
 }
 
 .post-status.open {
-  background-color: #f0fdf4;
+  background-color: var(--green-50);
   color: #16a34a;
 }
 
 .post-status.in_progress {
-  background-color: #fef3c7;
+  background-color: var(--yellow-50);
   color: #d97706;
 }
 
@@ -189,8 +189,8 @@ header .header-inner .menu-container .menu .community:after {
 }
 
 .post-status.declined {
-  background-color: #fef2f2;
-  color: #dc2626;
+  background-color: var(--red-50);
+  color: var(--redHover);
 }
 
 .post-body {
@@ -247,14 +247,14 @@ header .header-inner .menu-container .menu .community:after {
   padding: 5px 8px;
   border: 1px solid #d1d5db;
   border-radius: 4px;
-  background-color: white;
+  background-color: var(--white);
   font-size: 14px;
   min-height: 40px;
 }
 
 .delete-post-btn {
   background-color: #fee2e2;
-  color: #dc2626;
+  color: var(--redHover);
   border: none;
   padding: 5px 10px;
   border-radius: 4px;
@@ -327,12 +327,12 @@ header .header-inner .menu-container .menu .community:after {
 
 .delete-comment-btn {
   background-color: #fee2e2;
-  color: #dc2626;
+  color: var(--redHover);
 }
 
 /* Comment form */
 .comment-form {
-  background-color: white;
+  background-color: var(--white);
   border-radius: 6px;
 }
 
@@ -433,7 +433,7 @@ header .header-inner .menu-container .menu .community:after {
 }
 
 .comment-vote-btn.voted.downvote {
-  color: #dc2626;
+  color: var(--redHover);
 }
 
 /* Vote count display */
@@ -447,7 +447,7 @@ header .header-inner .menu-container .menu .community:after {
 .comment-main {
   flex: 1;
   padding: 8px;
-  background-color: white;
+  background-color: var(--white);
   border: 1px solid #e5e7eb;
   border-left: none;
   border-radius: 0 6px 6px 0;
@@ -752,7 +752,7 @@ header .header-inner .menu-container .menu .community:after {
 }
 
 .bug-info-item {
-  background-color: white;
+  background-color: var(--white);
   border: 1px solid #e5e7eb;
   border-radius: 6px;
   padding: 12px 15px;
@@ -772,7 +772,7 @@ header .header-inner .menu-container .menu .community:after {
 
 /* Bug detailed sections */
 .bug-info-section {
-  background-color: white;
+  background-color: var(--white);
   border: 1px solid #e5e7eb;
   border-radius: 6px;
   padding: 15px;

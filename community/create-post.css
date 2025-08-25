@@ -211,8 +211,8 @@ header .header-inner .menu-container .menu .community:after {
 }
 
 .preview-type-badge.bug {
-  background-color: #fef2f2;
-  color: #dc2626;
+  background-color: var(--red-50);
+  color: var(--redHover);
   border: 1px solid #fecaca;
 }
 

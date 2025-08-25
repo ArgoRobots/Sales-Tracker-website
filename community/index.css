@@ -181,15 +181,15 @@ header .header-inner .menu-container .menu .community:after {
 }
 
 .vote-btn:hover {
-  color: #1e40af;
+  color: var(--primary-blue-dark);
 }
 
 .vote-btn.voted.upvote {
-  color: #2563eb;
+  color: var(--blue-600);
 }
 
 .vote-btn.voted.downvote {
-  color: #dc2626;
+  color: var(--redHover);
 }
 
 .vote-count {
@@ -264,12 +264,12 @@ header .header-inner .menu-container .menu .community:after {
 }
 
 .post-status.open {
-  background-color: #f0fdf4;
+  background-color: var(--green-50);
   color: #16a34a;
 }
 
 .post-status.in_progress {
-  background-color: #fef3c7;
+  background-color: var(--yellow-50);
   color: #d97706;
 }
 
@@ -279,8 +279,8 @@ header .header-inner .menu-container .menu .community:after {
 }
 
 .post-status.declined {
-  background-color: #fef2f2;
-  color: #dc2626;
+  background-color: var(--red-50);
+  color: var(--redHover);
 }
 
 .post-footer {
@@ -335,12 +335,12 @@ header .header-inner .menu-container .menu .community:after {
   padding: 5px 8px;
   border: 1px solid #d1d5db;
   border-radius: 4px;
-  background-color: white;
+  background-color: var(--white);
 }
 
 .delete-post-btn {
   background-color: #fee2e2;
-  color: #dc2626;
+  color: var(--redHover);
   border: none;
   padding: 5px 10px;
   border-radius: 4px;

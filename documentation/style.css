@@ -357,7 +357,7 @@ body {
 }
 
 .warning-box {
-  background: #fef3c7;
+  background: var(--yellow-50);
   border-left: 4px solid #d97706;
   padding: 1rem;
   margin: 1rem 0;

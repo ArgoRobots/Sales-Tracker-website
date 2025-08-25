@@ -86,7 +86,7 @@ body.menu-open::after {
 }
 
 .menu-icon .nav-icon {
-  background: #333;
+  background: var(--dark-gray);
   display: block;
   height: 1px;
   position: relative;
@@ -96,7 +96,7 @@ body.menu-open::after {
 
 .menu-icon .nav-icon:before,
 .menu-icon .nav-icon:after {
-  background: #333;
+  background: var(--dark-gray);
   content: "";
   display: block;
   height: 100%;
@@ -195,7 +195,7 @@ body.menu-open::after {
 }
 
 .hamburger-nav-menu ul li a.logout-link {
-  color: #dc2626;
+  color: var(--redHover);
   font-weight: 500;
 }
 
@@ -226,7 +226,7 @@ body.menu-open::after {
 .header-title {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #333;
+  color: var(--dark-gray);
 }
 
 /* Desktop Navigation */
@@ -250,7 +250,7 @@ body.menu-open::after {
 }
 
 .header-link:hover {
-  color: #333;
+  color: var(--dark-gray);
   background: #f0f0f0;
 }
 
@@ -325,7 +325,7 @@ body.menu-open::after {
 .page-title {
   font-size: 1.75rem;
   font-weight: 600;
-  color: #333;
+  color: var(--dark-gray);
   margin: 0 0 0.5rem 0;
 }
 
@@ -362,7 +362,7 @@ h3 {
 }
 
 .btn-green:hover {
-  background: #059669;
+  background: var(--success-green-dark);
 }
 
 .btn-deactivate {
@@ -513,7 +513,7 @@ tbody tr:hover {
 }
 
 .badge-pending {
-  background-color: #fef3c7;
+  background-color: var(--yellow-50);
   color: #92400e;
 }
 
