@@ -96,6 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="create-post.css">
     <link rel="stylesheet" href="rate-limit.css">
     <link rel="stylesheet" href="formatting/formatted-text.css">
+    <link rel="stylesheet" href="view-post.css">
     <link rel="stylesheet" href="../resources/styles/button.css">
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../resources/header/style.css">
@@ -118,80 +119,92 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div class="community-wrapper">
         <div class="post-form-container">
-            <?php if ($error_message): ?>
-                <div class="error-message">
-                    <?php echo htmlspecialchars($error_message); ?>
-                </div>
-            <?php endif; ?>
-
             <div class="post-form">
                 <h2>Create New Post</h2>
 
-                <?php if ($html_message): ?>
-                    <?php echo $html_message; ?>
-                <?php endif; ?>
+                <!-- Preview Toggle -->
+                <div class="preview-toggle">
+                    <button type="button" id="edit-tab" class="active">Edit</button>
+                    <button type="button" id="preview-tab">Preview</button>
+                </div>
 
-                <form id="community-post-form" method="post" action="create_post.php">
-                    <div class="form-group">
-                        <label for="post_title">Title</label>
-                        <input type="text" id="post_title" name="post_title" value="<?php echo isset($_POST['post_title']) ? htmlspecialchars($_POST['post_title']) : ''; ?>" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="post_type">Post Type</label>
-                        <select id="post_type" name="post_type" required>
-                            <option value="">-- Select Type --</option>
-                            <option value="bug" <?php echo (isset($_POST['post_type']) && $_POST['post_type'] === 'bug') ? 'selected' : ''; ?>>Bug Report</option>
-                            <option value="feature" <?php echo (isset($_POST['post_type']) && $_POST['post_type'] === 'feature') ? 'selected' : ''; ?>>Feature Request</option>
-                        </select>
-                    </div>
-
-                    <!-- Bug Report Specific Fields - Initially Hidden -->
-                    <div id="bug-specific-fields" style="display: none;">
+                <!-- Edit Form -->
+                <div class="edit-form-container" id="edit-container">
+                    <form id="community-post-form" method="post" action="create_post.php">
                         <div class="form-group">
-                            <label for="bug_location">Where did you find this bug?</label>
-                            <select id="bug_location" name="bug_location">
-                                <option value="">-- Select Location --</option>
-                                <option value="website">Website</option>
-                                <option value="sales_tracker">Sales Tracker Application</option>
+                            <label for="post_title">Title</label>
+                            <input type="text" id="post_title" name="post_title" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="post_type">Post Type</label>
+                            <select id="post_type" name="post_type" required>
+                                <option value="">Select post type</option>
+                                <option value="bug">Bug Report</option>
+                                <option value="feature">Feature Request</option>
                             </select>
                         </div>
 
-                        <div class="form-group">
-                            <label for="bug_version">Browser or Sales Tracker Version</label>
-                            <input type="text" id="bug_version" name="bug_version" placeholder="e.g., Chrome 99.0.4844 or Sales Tracker v2.1.3">
+                        <!-- Bug-specific fields -->
+                        <div id="bug-specific-fields" class="form-section hidden">
+                            <div class="form-section-title">
+                                Bug Report Details
+                            </div>
+
+                            <div class="form-group">
+                                <label for="bug_location">Where did you encounter this bug?</label>
+                                <input type="text" id="bug_location" name="bug_location" placeholder="e.g., Dashboard > Sales Report, Login page">
+                                <small class="field-hint">Specify the page, feature, or area where the issue occurred</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="bug_version">Version/Browser</label>
+                                <input type="text" id="bug_version" name="bug_version" placeholder="e.g., Chrome 118, Mobile app v2.1">
+                                <small class="field-hint">Browser version, app version, or device info</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="bug_steps">Steps to Reproduce</label>
+                                <textarea id="bug_steps" name="bug_steps" placeholder="1. Navigate to...&#10;2. Click on...&#10;3. Notice that..."></textarea>
+                                <small class="field-hint">Detailed steps to help us reproduce the issue</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="bug_expected">Expected Behavior</label>
+                                <textarea id="bug_expected" name="bug_expected" placeholder="What should have happened?"></textarea>
+                                <small class="field-hint">Describe what you expected to happen</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="bug_actual">Actual Behavior</label>
+                                <textarea id="bug_actual" name="bug_actual" placeholder="What actually happened?"></textarea>
+                                <small class="field-hint">Describe what actually occurred</small>
+                            </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="bug_steps">Steps to Reproduce</label>
-                            <textarea id="bug_steps" name="bug_steps" class="formattable mentionable" rows="4" placeholder="Please provide step-by-step instructions to reproduce the issue"></textarea>
-                            <?php add_formatting_toolbar('post_content'); ?>
+                            <label for="post_content" id="content_label">Content</label>
+                            <textarea id="post_content" name="post_content" class="formattable mentionable" required></textarea>
                         </div>
 
-                        <div class="form-group">
-                            <label for="bug_expected">Expected Result</label>
-                            <textarea id="bug_expected" name="bug_expected" rows="3" class="formattable mentionable" placeholder="What you expected to happen"></textarea>
-                            <?php add_formatting_toolbar('post_content'); ?>
+                        <div class="form-actions">
+                            <a href="index.php" class="btn btn-black">Cancel</a>
+                            <button type="submit" class="btn btn-blue">Create Post</button>
                         </div>
+                    </form>
+                </div>
 
-                        <div class="form-group">
-                            <label for="bug_actual">Actual Result</label>
-                            <textarea id="bug_actual" name="bug_actual" rows="3" class="formattable mentionable" placeholder="What actually happened"></textarea>
-                            <?php add_formatting_toolbar('post_content'); ?>
+                <!-- Preview Container -->
+                <div class="preview-container" id="preview-container">
+                    <div class="preview-post">
+                        <div id="preview-content">
+                            <div class="preview-empty-state">
+                                <div class="preview-empty-icon">👁️</div>
+                                <p>Fill out the form to see a preview of your post</p>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="form-group">
-                        <label for="post_content">Additional Details</label>
-                        <textarea id="post_content" name="post_content" class="formattable mentionable" required><?php echo isset($_POST['post_content']) ? htmlspecialchars($_POST['post_content']) : ''; ?></textarea>
-                        <?php add_formatting_toolbar('post_content'); ?>
-                    </div>
-
-                    <div class="form-actions">
-                        <a href="index.php" class="btn btn-black">Cancel</a>
-                        <button type="submit" class="btn btn-blue <?php if (isset($html_message) && $html_message) echo 'btn-disabled'; ?>" <?php if (isset($html_message) && $html_message) echo 'disabled'; ?>>Submit Post</button>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
@@ -200,53 +213,316 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div id="includeFooter"></div>
     </footer>
 
+    <!-- Mention dropdown -->
+    <div class="mention-dropdown" id="mentionDropdown"></div>
+
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const countdownElements = document.querySelectorAll('.countdown-timer');
+        document.addEventListener('DOMContentLoaded', function() {
+            const editTab = document.getElementById('edit-tab');
+            const previewTab = document.getElementById('preview-tab');
+            const editContainer = document.getElementById('edit-container');
+            const previewContainer = document.getElementById('preview-container');
+            const previewContent = document.getElementById('preview-content');
 
-            countdownElements.forEach(el => {
-                const targetTime = parseInt(el.dataset.resetTimestamp, 10);
+            const postTitle = document.getElementById('post_title');
+            const postType = document.getElementById('post_type');
+            const postContent = document.getElementById('post_content');
+            const bugFields = document.getElementById('bug-specific-fields');
+            const contentLabel = document.getElementById('content_label');
 
-                function updateCountdown() {
-                    const now = Math.floor(Date.now() / 1000);
-                    const remaining = targetTime - now;
+            // Bug-specific fields
+            const bugLocation = document.getElementById('bug_location');
+            const bugVersion = document.getElementById('bug_version');
+            const bugSteps = document.getElementById('bug_steps');
+            const bugExpected = document.getElementById('bug_expected');
+            const bugActual = document.getElementById('bug_actual');
 
-                    if (remaining <= 0) {
-                        el.textContent = 'now';
-                        return;
-                    }
+            // Mock user data (in real implementation, this would come from PHP)
+            const currentUser = {
+                username: 'Current User', // This would be populated from session
+                avatar: null
+            };
 
-                    const minutes = Math.floor(remaining / 60);
-                    const seconds = remaining % 60;
-                    el.textContent = `${minutes}m ${seconds}s`;
-                }
-
-                updateCountdown();
-                const interval = setInterval(() => {
-                    updateCountdown();
-                    if (Math.floor(Date.now() / 1000) >= targetTime) {
-                        clearInterval(interval);
-                    }
-                }, 1000);
+            // Tab switching
+            editTab.addEventListener('click', function() {
+                switchToEdit();
             });
 
-            const postTypeSelect = document.getElementById('post_type');
-            const bugFields = document.getElementById('bug-specific-fields');
-            const postContentLabel = document.querySelector('label[for="post_content"]');
+            previewTab.addEventListener('click', function() {
+                switchToPreview();
+            });
 
-            // Function to show/hide fields based on post type
-            function toggleFields() {
-                const selectedType = postTypeSelect.value;
+            function switchToEdit() {
+                editTab.classList.add('active');
+                previewTab.classList.remove('active');
+                editContainer.style.display = 'block';
+                previewContainer.classList.remove('active');
+            }
+
+            function switchToPreview() {
+                editTab.classList.remove('active');
+                previewTab.classList.add('active');
+                editContainer.style.display = 'none';
+                previewContainer.classList.add('active');
+                updatePreview();
+            }
+
+            // Post type change handler
+            postType.addEventListener('change', function() {
+                const selectedType = this.value;
 
                 if (selectedType === 'bug') {
                     bugFields.style.display = 'block';
+                    bugFields.classList.remove('hidden');
+                    contentLabel.textContent = 'Additional Details or Context';
                 } else {
                     bugFields.style.display = 'none';
+                    bugFields.classList.add('hidden');
+                    contentLabel.textContent = 'Content';
                 }
+
+                // Update preview if we're on preview tab
+                if (previewTab.classList.contains('active')) {
+                    updatePreview();
+                }
+            });
+
+            // Update preview when any field changes
+            const formFields = [postTitle, postType, postContent, bugLocation, bugVersion, bugSteps, bugExpected, bugActual];
+            formFields.forEach(field => {
+                if (field) {
+                    field.addEventListener('input', function() {
+                        if (previewTab.classList.contains('active')) {
+                            updatePreview();
+                        }
+                    });
+                }
+            });
+
+            let previewTimeout;
+
+            function updatePreview() {
+                const title = postTitle.value.trim();
+                const type = postType.value;
+                const content = postContent.value.trim();
+
+                // If no content, show empty state
+                if (!title && !type && !content) {
+                    previewContent.innerHTML = `
+                        <div class="preview-empty-state">
+                            <div class="preview-empty-icon">👁️</div>
+                            <p>Fill out the form to see a preview of your post</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Clear existing timeout
+                if (previewTimeout) {
+                    clearTimeout(previewTimeout);
+                }
+
+                // Show loading state
+                previewContent.innerHTML = `
+                    <div class="preview-empty-state">
+                        <div class="preview-empty-icon">⏳</div>
+                        <p>Generating preview...</p>
+                    </div>
+                `;
+
+                // Debounce the AJAX request
+                previewTimeout = setTimeout(() => {
+                    fetchServerPreview();
+                }, 300);
             }
 
-            toggleFields();
-            postTypeSelect.addEventListener('change', toggleFields);
+            function fetchServerPreview() {
+                const formData = new FormData();
+                formData.append('preview_request', '1');
+                formData.append('title', postTitle.value);
+                formData.append('content', postContent.value);
+                formData.append('post_type', postType.value);
+
+                // Add bug-specific fields
+                if (bugLocation) formData.append('bug_location', bugLocation.value);
+                if (bugVersion) formData.append('bug_version', bugVersion.value);
+                if (bugSteps) formData.append('bug_steps', bugSteps.value);
+                if (bugExpected) formData.append('bug_expected', bugExpected.value);
+                if (bugActual) formData.append('bug_actual', bugActual.value);
+
+                fetch('preview_handler.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            throw new Error(data.error);
+                        }
+                        renderPreview(data);
+                    })
+                    .catch(error => {
+                        console.error('Preview error:', error);
+                        // Fallback to client-side preview
+                        renderClientSidePreview();
+                    });
+            }
+
+            function renderPreview(data) {
+                let previewHTML = '';
+
+                // Post header
+                previewHTML += '<div class="preview-header">';
+                previewHTML += `<h1 class="preview-title">${data.title || 'Untitled Post'}</h1>`;
+                if (data.post_type) {
+                    const typeName = data.post_type === 'bug' ? 'Bug Report' : 'Feature Request';
+                    previewHTML += `<span class="preview-type-badge ${data.post_type}">${typeName}</span>`;
+                }
+                previewHTML += '</div>';
+
+                // Post meta
+                previewHTML += '<div class="preview-meta">';
+                previewHTML += '<div class="preview-author">';
+
+                if (data.user.avatar) {
+                    previewHTML += `<img src="${data.user.avatar}" alt="${data.user.username}" class="preview-avatar">`;
+                } else {
+                    previewHTML += `<div class="preview-avatar">${data.user.username.charAt(0).toUpperCase()}</div>`;
+                }
+
+                previewHTML += `<span>Posted by ${data.user.username}</span>`;
+                previewHTML += '</div>';
+                previewHTML += '</div>';
+
+                // Bug-specific content
+                if (data.post_type === 'bug' && data.bug_metadata) {
+                    const bug = data.bug_metadata;
+                    const hasMetadata = Object.values(bug).some(field => field.raw);
+
+                    if (hasMetadata) {
+                        previewHTML += '<div class="preview-bug-info">';
+
+                        if (bug.location.raw) {
+                            previewHTML += '<div class="preview-bug-section">';
+                            previewHTML += '<div class="preview-bug-section-title">Location</div>';
+                            previewHTML += `<div class="preview-bug-section-content">${bug.location.formatted}</div>`;
+                            previewHTML += '</div>';
+                        }
+
+                        if (bug.version.raw) {
+                            previewHTML += '<div class="preview-bug-section">';
+                            previewHTML += '<div class="preview-bug-section-title">Version/Browser</div>';
+                            previewHTML += `<div class="preview-bug-section-content">${bug.version.formatted}</div>`;
+                            previewHTML += '</div>';
+                        }
+
+                        if (bug.steps.raw) {
+                            previewHTML += '<div class="preview-bug-section">';
+                            previewHTML += '<div class="preview-bug-section-title">Steps to Reproduce</div>';
+                            previewHTML += `<div class="preview-bug-section-content">${bug.steps.formatted}</div>`;
+                            previewHTML += '</div>';
+                        }
+
+                        if (bug.expected.raw) {
+                            previewHTML += '<div class="preview-bug-section">';
+                            previewHTML += '<div class="preview-bug-section-title">Expected Behavior</div>';
+                            previewHTML += `<div class="preview-bug-section-content">${bug.expected.formatted}</div>`;
+                            previewHTML += '</div>';
+                        }
+
+                        if (bug.actual.raw) {
+                            previewHTML += '<div class="preview-bug-section">';
+                            previewHTML += '<div class="preview-bug-section-title">Actual Behavior</div>';
+                            previewHTML += `<div class="preview-bug-section-content">${bug.actual.formatted}</div>`;
+                            previewHTML += '</div>';
+                        }
+
+                        if (data.content) {
+                            previewHTML += '<div class="preview-bug-section">';
+                            previewHTML += '<div class="preview-bug-section-title">Additional Details</div>';
+                            previewHTML += `<div class="preview-bug-section-content">${data.content}</div>`;
+                            previewHTML += '</div>';
+                        }
+
+                        previewHTML += '</div>';
+                    } else if (data.content) {
+                        previewHTML += `<div class="preview-content">${data.content}</div>`;
+                    }
+                } else {
+                    // Regular content
+                    if (data.content) {
+                        previewHTML += `<div class="preview-content">${data.content}</div>`;
+                    }
+                }
+
+                previewContent.innerHTML = previewHTML;
+            }
+
+            function renderClientSidePreview() {
+                // Fallback to basic client-side preview
+                const title = postTitle.value.trim();
+                const type = postType.value;
+                const content = postContent.value.trim();
+
+                let previewHTML = '';
+
+                // Post header
+                previewHTML += '<div class="preview-header">';
+                previewHTML += `<h1 class="preview-title">${escapeHtml(title) || 'Untitled Post'}</h1>`;
+                if (type) {
+                    previewHTML += `<span class="preview-type-badge ${type}">${type === 'bug' ? 'Bug Report' : 'Feature Request'}</span>`;
+                }
+                previewHTML += '</div>';
+
+                // Post meta
+                previewHTML += '<div class="preview-meta">';
+                previewHTML += '<div class="preview-author">';
+                previewHTML += `<div class="preview-avatar">${currentUser.username.charAt(0).toUpperCase()}</div>`;
+                previewHTML += `<span>Posted by ${escapeHtml(currentUser.username)}</span>`;
+                previewHTML += '</div>';
+                previewHTML += '</div>';
+
+                // Basic content
+                if (content) {
+                    previewHTML += `<div class="preview-content">${formatText(content)}</div>`;
+                }
+
+                previewContent.innerHTML = previewHTML;
+            }
+
+            // Basic text formatting (simplified version)
+            function formatText(text) {
+                if (!text) return '';
+
+                // Escape HTML first
+                text = escapeHtml(text);
+
+                // Convert line breaks
+                text = text.replace(/\n/g, '<br>');
+
+                // Basic markdown-style formatting
+                text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'); // Bold
+                text = text.replace(/\*(.*?)\*/g, '<em>$1</em>'); // Italic
+                text = text.replace(/`(.*?)`/g, '<code>$1</code>'); // Code
+
+                // Simple @mention detection (just highlighting)
+                text = text.replace(/@(\w+)/g, '<span style="color: #2563eb; font-weight: 500;">@$1</span>');
+
+                return text;
+            }
+
+            function escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+
+            // Initialize form state
+            if (postType.value === 'bug') {
+                bugFields.style.display = 'block';
+                bugFields.classList.remove('hidden');
+                contentLabel.textContent = 'Additional Details or Context';
+            }
         });
     </script>
 
