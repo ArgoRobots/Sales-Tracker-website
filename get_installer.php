@@ -1,4 +1,7 @@
 <?php
+// Start session to check for admin status
+session_start();
+
 // Get available versions from filesystem
 function getOlderVersions()
 {
@@ -69,6 +72,11 @@ function getLatestVersion()
 
 function logDownloadAttempt($version, $filename, $userAgent, $ip, $success = true)
 {
+    // Don't track downloads from admin users
+    if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
+        return;
+    }
+
     $logData = [
         'timestamp' => date('Y-m-d H:i:s'),
         'type' => 'installer_request',
@@ -101,7 +109,7 @@ function serveFile($filepath, $filename, $version)
     header('Pragma: no-cache');
     header('Expires: 0');
 
-    // Log the successful download
+    // Log the successful download (will be skipped if admin)
     $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? 'Unknown';
     $ip = $_SERVER['REMOTE_ADDR'] ?? 'Unknown';
     logDownloadAttempt($version, $filename, $userAgent, $ip, true);
