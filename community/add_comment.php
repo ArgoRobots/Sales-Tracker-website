@@ -21,7 +21,7 @@ if (!is_user_logged_in()) {
 }
 
 $user_id = $_SESSION['user_id'] ?? 0;
-$current_user = get_current_user_ID();
+$current_user = \CommunityUsers\get_current_user();
 
 // Only accept POST requests
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

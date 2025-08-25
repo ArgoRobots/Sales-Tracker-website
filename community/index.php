@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
 
 $posts = get_all_posts();
 $is_logged_in = is_user_logged_in();
-$current_user = $is_logged_in ? get_current_user_ID() : null;
+$current_user = $is_logged_in ? \CommunityUsers\get_current_user() : null;
 
 ?>
 <!DOCTYPE html>
