@@ -1066,10 +1066,20 @@ include 'admin_header.php';
             const totalLicenses = sumArray(licensesData);
             const totalPageViews = sumArray(pageViewsData);
             const activationRate = <?php echo $activation_percentage; ?>;
-            const growthRate = <?php echo $latest_growth; ?>;
+            const downloadGrowthRate = <?php echo $latest_growth; ?>;
             const postViews = <?php echo str_replace(',', '', $total_post_views); ?>;
             const avgViewsPerPost = <?php echo $avg_post_views; ?>;
             const mostViewed = <?php echo str_replace(',', '', $most_viewed); ?>;
+
+            // Add this new calculation for view growth rate:
+            let viewGrowthRate = 0;
+            if (pageViewsData.length >= 2) {
+                const latestViews = pageViewsData[pageViewsData.length - 1];
+                const previousViews = pageViewsData[pageViewsData.length - 2];
+                if (previousViews > 0) {
+                    viewGrowthRate = Math.round(((latestViews - previousViews) / previousViews) * 100 * 10) / 10;
+                }
+            }
 
             const stats = [{
                     title: 'Total Downloads',
@@ -1087,29 +1097,19 @@ include 'admin_header.php';
                     subtext: 'licenses sold'
                 },
                 {
-                    title: 'Activation Rate',
-                    value: activationRate + '%',
-                    subtext: 'license activation'
+                    title: 'View Growth Rate',
+                    value: (viewGrowthRate >= 0 ? '+' : '') + viewGrowthRate + '%',
+                    subtext: 'period over period'
                 },
                 {
-                    title: 'Growth Rate',
-                    value: (growthRate >= 0 ? '+' : '') + growthRate + '%',
+                    title: 'Download Growth Rate',
+                    value: (downloadGrowthRate >= 0 ? '+' : '') + downloadGrowthRate + '%',
                     subtext: 'period over period'
                 },
                 {
                     title: 'Page Views',
                     value: totalPageViews.toLocaleString(),
                     subtext: 'total views'
-                },
-                {
-                    title: 'Post Views',
-                    value: postViews.toLocaleString(),
-                    subtext: 'community posts'
-                },
-                {
-                    title: 'Avg Views/Post',
-                    value: avgViewsPerPost.toLocaleString(),
-                    subtext: 'average engagement'
                 }
             ];
 
