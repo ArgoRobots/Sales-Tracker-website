@@ -61,27 +61,35 @@ function check_rate_limit($user_id, $action_type)
         }
 
         // Short-term limit check
-        if (strtotime($row['last_action_at']) > $now - ($short_limit['minutes'] * 60) &&
-            $row['count'] >= $short_limit['count']) {
-            return build_rate_limit_message($action_type, $short_limit['minutes'] * 60);
+        $last_action_timestamp = strtotime($row['last_action_at']);
+        $short_cooldown_end = $last_action_timestamp + ($short_limit['minutes'] * 60);
+
+        if ($last_action_timestamp > $now - ($short_limit['minutes'] * 60) && $row['count'] >= $short_limit['count']) {
+            $remaining_seconds = $short_cooldown_end - $now;
+            return build_rate_limit_message($action_type, $remaining_seconds, $row['last_action_at']);
         }
 
         // Long-term limit check
         if ($row['count'] >= $long_limit['count']) {
             $remaining = ($long_limit['hours'] * 3600) - ($now - strtotime($row['period_start']));
-            return build_rate_limit_message($action_type, $remaining);
+            return build_rate_limit_message($action_type, $remaining, $row['period_start']);
         }
     }
 
     // Record this action
-    $stmt = $db->prepare(
-        'INSERT INTO rate_limits (user_id, action_type, count, period_start, last_action_at) ' .
-        'VALUES (?, ?, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP) ' .
-        'ON DUPLICATE KEY UPDATE count = count + 1, last_action_at = CURRENT_TIMESTAMP'
-    );
-    $stmt->bind_param('is', $user_id, $action_type);
-    $stmt->execute();
-    $stmt->close();
+    if ($row) {
+        // Update existing record
+        $stmt = $db->prepare('UPDATE rate_limits SET count = count + 1, last_action_at = CURRENT_TIMESTAMP WHERE user_id = ? AND action_type = ?');
+        $stmt->bind_param('is', $user_id, $action_type);
+        $stmt->execute();
+        $stmt->close();
+    } else {
+        // Insert new record
+        $stmt = $db->prepare('INSERT INTO rate_limits (user_id, action_type, count, period_start, last_action_at) VALUES (?, ?, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)');
+        $stmt->bind_param('is', $user_id, $action_type);
+        $stmt->execute();
+        $stmt->close();
+    }
 
     return false;
 }
@@ -91,18 +99,30 @@ function check_rate_limit($user_id, $action_type)
  *
  * @param string $action_type Action type ('post' or 'comment')
  * @param int    $wait_seconds Wait time in seconds
+ * @param string $last_action_time The timestamp of the last action (from database)
  * @return string HTML message
  */
-function build_rate_limit_message($action_type, $wait_seconds)
+function build_rate_limit_message($action_type, $wait_seconds, $last_action_time = null)
 {
-    $minutes = floor($wait_seconds / 60);
-    $seconds = $wait_seconds % 60;
+    // Calculate actual reset time based on when the rate limit was triggered
+    if ($last_action_time) {
+        $reset_timestamp = strtotime($last_action_time) + $wait_seconds;
+    } else {
+        $reset_timestamp = time() + $wait_seconds;
+    }
+
+    // Make sure we don't show negative time
+    $current_wait = $reset_timestamp - time();
+    if ($current_wait <= 0) {
+        return false; // Rate limit has expired
+    }
+
+    $minutes = floor($current_wait / 60);
+    $seconds = $current_wait % 60;
     $time_str = sprintf('%dm %02ds', $minutes, $seconds);
-    $reset_timestamp = time() + $wait_seconds;
 
     return '<div class="rate-limit-message">'
         . 'You are ' . ($action_type === 'post' ? 'posting' : 'commenting') . ' too frequently. '
         . 'Please wait <span class="countdown-timer" data-reset-timestamp="' . $reset_timestamp . '">' . $time_str . '</span> before '
         . ($action_type === 'post' ? 'posting' : 'commenting') . ' again.</div>';
 }
-?>

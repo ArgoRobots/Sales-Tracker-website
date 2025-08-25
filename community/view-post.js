@@ -15,17 +15,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (timeLeft <= 0) {
         element.textContent = "now";
-        // Re-enable the submit button
-        const submitBtn = document.querySelector(
+
+        // Re-enable submit buttons (both comment and post)
+        const commentSubmitBtn = document.querySelector(
           ".comment-form button[type='submit']"
         );
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.classList.remove("btn-disabled");
-        }
+        const postSubmitBtn = document.querySelector(
+          ".post-form button[type='submit']"
+        );
+        const createPostBtn = document.querySelector("#create-post-btn");
+
+        [commentSubmitBtn, postSubmitBtn, createPostBtn].forEach((btn) => {
+          if (btn) {
+            btn.disabled = false;
+            btn.classList.remove("btn-disabled");
+          }
+        });
 
         // Remove the rate limit message
-        const rateMessage = document.querySelector(".rate-limit-message");
+        const rateMessage = element.closest(".rate-limit-message");
         if (rateMessage) {
           rateMessage.style.opacity = "0";
           setTimeout(() => {
@@ -40,8 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const minutes = Math.floor(timeLeft / 60);
       const seconds = timeLeft % 60;
-      element.textContent =
-        minutes + "m " + (seconds < 10 ? "0" : "") + seconds + "s";
+      element.textContent = minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
       setTimeout(updateCountdown, 1000);
     }
 
@@ -108,6 +115,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Handle rate limit error display
   function handleRateLimitError(data, formContainer, submitButton) {
+    // Preserve form content before clearing
+    const preservedFormData = {};
+    const formInputs = formContainer.querySelectorAll(
+      "input, textarea, select"
+    );
+    formInputs.forEach((input) => {
+      if (input.name) {
+        preservedFormData[input.name] = input.value;
+      }
+    });
+
     // Remove any existing rate limit messages first
     const existingMessages = document.querySelectorAll(".rate-limit-message");
     existingMessages.forEach((el) => el.remove());
@@ -116,6 +134,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const messageContainer = document.createElement("div");
     messageContainer.className = "rate-limit-message";
 
+    let messageHTML;
     // If there's custom HTML provided, use it but clean it first
     if (data.html_message) {
       // Extract just the inner content if it's wrapped in a div with the same class
@@ -148,10 +167,15 @@ document.addEventListener("DOMContentLoaded", function () {
     if (commentForm) {
       formContainer.insertBefore(messageContainer, commentForm);
 
-      // Hide the form if needed
-      if (data.hide_form) {
-        commentForm.style.display = "none";
-      }
+      // Restore form content
+      setTimeout(() => {
+        Object.keys(preservedFormData).forEach((name) => {
+          const input = commentForm.querySelector(`[name="${name}"]`);
+          if (input) {
+            input.value = preservedFormData[name];
+          }
+        });
+      }, 100);
 
       // Start countdown
       const countdownElement =

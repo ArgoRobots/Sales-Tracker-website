@@ -14,10 +14,42 @@ $error_message = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user_id = $current_user['id'];
-    $html_message = check_rate_limit($user_id, 'post');
 
-    if ($html_message === false) {
-        // Validate inputs
+    // Check if this is an AJAX request
+    $is_ajax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+        strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
+
+    // Check rate limit
+    $rate_limit_message = check_rate_limit($user_id, 'post');
+
+    if ($rate_limit_message !== false) {
+        if ($is_ajax) {
+            // Return JSON for AJAX requests
+            header('Content-Type: application/json');
+
+            $response = [
+                'success' => false,
+                'message' => 'You are posting too frequently',
+                'rate_limited' => true,
+                'html_message' => $rate_limit_message
+            ];
+
+            // Extract reset timestamp from the message for frontend countdown
+            if (preg_match('/data-reset-timestamp="(\d+)"/', $rate_limit_message, $matches)) {
+                $response['reset_timestamp'] = intval($matches[1]);
+            } else {
+                // Fallback to 5 minutes from now if no timestamp found
+                $response['reset_timestamp'] = time() + 300;
+            }
+
+            echo json_encode($response);
+            exit;
+        } else {
+            // For regular form submissions, keep the existing behavior
+            $html_message = $rate_limit_message;
+        }
+    } else {
+        // Process the form normally
         $title = isset($_POST['post_title']) ? trim($_POST['post_title']) : '';
         $content = isset($_POST['post_content']) ? trim($_POST['post_content']) : '';
         $post_type = isset($_POST['post_type']) ? trim($_POST['post_type']) : '';
@@ -32,9 +64,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'bug_expected' => isset($_POST['bug_expected']) ? trim($_POST['bug_expected']) : '',
                 'bug_actual' => isset($_POST['bug_actual']) ? trim($_POST['bug_actual']) : ''
             ];
-
-            // We'll store the raw content as is, without formatting/duplication
-            // The structured fields will be stored in metadata
         }
 
         // Basic validation
@@ -59,7 +88,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 // Save bug metadata as JSON in a separate field or table if needed
                 if ($post_type === 'bug' && !empty($bug_metadata)) {
-                    // Save metadata as JSON
                     $metadata_json = json_encode($bug_metadata);
                     $stmt = $db->prepare('UPDATE community_posts SET metadata = ? WHERE id = ?');
                     $stmt->bind_param('si', $metadata_json, $post_id);
@@ -68,12 +96,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $stmt->close();
 
-                // Redirect immediately to view page with success message
-                header("Location: view_post.php?id=$post_id&created=1");
-                exit;
+                if ($is_ajax) {
+                    // Return JSON success response for AJAX
+                    header('Content-Type: application/json');
+                    echo json_encode([
+                        'success' => true,
+                        'post_id' => $post_id,
+                        'message' => 'Post created successfully'
+                    ]);
+                    exit;
+                } else {
+                    // Regular redirect for non-AJAX requests
+                    header("Location: view_post.php?id=$post_id&created=1");
+                    exit;
+                }
             } else {
                 $error_message = 'Error adding post to the database';
+
+                if ($is_ajax) {
+                    header('Content-Type: application/json');
+                    echo json_encode([
+                        'success' => false,
+                        'message' => $error_message
+                    ]);
+                    exit;
+                }
             }
+        }
+
+        // Handle validation errors for AJAX requests
+        if ($is_ajax && !empty($error_message)) {
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => false,
+                'message' => $error_message
+            ]);
+            exit;
         }
     }
 }
@@ -119,6 +177,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div class="community-wrapper">
         <div class="post-form-container">
+            <?php if ($html_message): ?>
+                <?php echo $html_message; ?>
+            <?php endif; ?>
+            <?php if (!empty($error_message)): ?>
+                <div class="error-message">
+                    <?php echo htmlspecialchars($error_message); ?>
+                </div>
+            <?php endif; ?>
             <div class="post-form">
                 <h2>Create New Post</h2>
 
@@ -242,6 +308,209 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 username: 'Current User', // This would be populated from session
                 avatar: null
             };
+
+            // Initialize any existing countdown timers on page load
+            function startCountdown(element, endTime) {
+                if (!element) return;
+
+                function updateCountdown() {
+                    const now = Math.floor(Date.now() / 1000);
+                    const timeLeft = endTime - now;
+
+                    if (timeLeft <= 0) {
+                        element.textContent = "now";
+
+                        // Re-enable the form when countdown expires
+                        const postForm = document.getElementById('community-post-form');
+                        const submitBtn = postForm?.querySelector('button[type="submit"]');
+
+                        if (submitBtn) {
+                            submitBtn.disabled = false;
+                            submitBtn.classList.remove("btn-disabled");
+                        }
+
+                        // Remove the rate limit message
+                        const rateMessage = element.closest(".rate-limit-message");
+                        if (rateMessage) {
+                            rateMessage.style.opacity = "0";
+                            setTimeout(() => {
+                                if (rateMessage && rateMessage.parentNode) {
+                                    rateMessage.parentNode.removeChild(rateMessage);
+                                }
+                            }, 500);
+                        }
+
+                        return;
+                    }
+
+                    const minutes = Math.floor(timeLeft / 60);
+                    const seconds = timeLeft % 60;
+                    element.textContent = minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+                    setTimeout(updateCountdown, 1000);
+                }
+
+                updateCountdown();
+            }
+
+            // Start any existing countdown timers
+            document.querySelectorAll(".countdown-timer").forEach((element) => {
+                if (element.dataset.resetTimestamp) {
+                    startCountdown(element, parseInt(element.dataset.resetTimestamp, 10));
+
+                    // Also disable the submit button while rate limited
+                    const submitBtn = document.querySelector('#community-post-form button[type="submit"]');
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.classList.add("btn-disabled");
+                    }
+                }
+            });
+
+            // Handle rate limit error for posts (similar to comments)
+            function handlePostRateLimitError(data, formContainer, submitButton) {
+                // Preserve all form content before clearing
+                const preservedFormData = {};
+                const formInputs = formContainer.querySelectorAll('input, textarea, select');
+                formInputs.forEach(input => {
+                    if (input.name) {
+                        if (input.type === 'checkbox' || input.type === 'radio') {
+                            preservedFormData[input.name] = input.checked;
+                        } else {
+                            preservedFormData[input.name] = input.value;
+                        }
+                    }
+                });
+
+                // Remove any existing rate limit messages first
+                const existingMessages = document.querySelectorAll(".rate-limit-message");
+                existingMessages.forEach((el) => el.remove());
+
+                // Create rate limit message container
+                const messageContainer = document.createElement("div");
+                messageContainer.className = "rate-limit-message";
+
+                let messageHTML;
+                if (data.html_message) {
+                    // Use server-provided HTML message
+                    if (data.html_message.includes('class="rate-limit-message"')) {
+                        const tempDiv = document.createElement("div");
+                        tempDiv.innerHTML = data.html_message;
+                        const innerMessage = tempDiv.querySelector(".rate-limit-message");
+                        if (innerMessage) {
+                            messageHTML = innerMessage.innerHTML;
+                        } else {
+                            messageHTML = data.html_message;
+                        }
+                    } else {
+                        messageHTML = data.html_message;
+                    }
+                } else {
+                    // Create our own message with countdown
+                    messageHTML = `You are posting too frequently. 
+                    Please wait <span class="countdown-timer" data-reset-timestamp="${data.reset_timestamp}">5m 00s</span> 
+                    before posting again.`;
+                }
+
+                messageContainer.innerHTML = messageHTML;
+
+                // Insert message at the top of the form container
+                const postForm = document.querySelector('.post-form');
+                if (postForm) {
+                    postForm.insertBefore(messageContainer, postForm.firstChild);
+
+                    // Restore all form content
+                    setTimeout(() => {
+                        Object.keys(preservedFormData).forEach(name => {
+                            const input = document.querySelector(`[name="${name}"]`);
+                            if (input) {
+                                if (input.type === 'checkbox' || input.type === 'radio') {
+                                    input.checked = preservedFormData[name];
+                                } else {
+                                    input.value = preservedFormData[name];
+                                }
+                            }
+                        });
+
+                        // Trigger post type change event if needed to show/hide bug fields
+                        const postTypeSelect = document.getElementById('post_type');
+                        if (postTypeSelect && postTypeSelect.value === 'bug') {
+                            postTypeSelect.dispatchEvent(new Event('change'));
+                        }
+                    }, 100);
+
+                    // Start countdown
+                    const countdownElement = messageContainer.querySelector(".countdown-timer");
+                    if (countdownElement && data.reset_timestamp) {
+                        startCountdown(countdownElement, parseInt(data.reset_timestamp, 10));
+                    }
+
+                    // Keep submit button disabled
+                    if (submitButton) {
+                        submitButton.disabled = true;
+                        submitButton.classList.add("btn-disabled");
+                        submitButton.textContent = "Create Post";
+                    }
+                }
+            }
+
+            // AJAX form submission with rate limit handling
+            const postForm = document.getElementById('community-post-form');
+
+            if (postForm) {
+                postForm.addEventListener('submit', function(e) {
+                    e.preventDefault(); // Prevent normal form submission
+
+                    const submitBtn = this.querySelector('button[type="submit"]');
+                    const formContainer = document.querySelector('.post-form-container');
+
+                    // Disable submit button while processing
+                    submitBtn.disabled = true;
+                    submitBtn.classList.add("btn-disabled");
+                    submitBtn.textContent = "Creating Post...";
+
+                    // Create FormData from the form
+                    const formData = new FormData(this);
+
+                    fetch('create_post.php', {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest'
+                            }
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! Status: ${response.status}`);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.success) {
+                                // Redirect to the new post
+                                window.location.href = `view_post.php?id=${data.post_id}&created=1`;
+                            } else {
+                                // Check for rate limit errors
+                                if (data.rate_limited) {
+                                    handlePostRateLimitError(data, formContainer, submitBtn);
+                                } else {
+                                    alert('Error creating post: ' + data.message);
+                                    // Re-enable submit button
+                                    submitBtn.disabled = false;
+                                    submitBtn.classList.remove("btn-disabled");
+                                    submitBtn.textContent = "Create Post";
+                                }
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('An error occurred while creating the post: ' + error.message);
+                            // Re-enable submit button
+                            submitBtn.disabled = false;
+                            submitBtn.classList.remove("btn-disabled");
+                            submitBtn.textContent = "Create Post";
+                        });
+                });
+            }
 
             // Tab switching
             editTab.addEventListener('click', function() {
