@@ -249,23 +249,24 @@ document.addEventListener("DOMContentLoaded", function () {
     )[0];
     const peakHourText = peakHour ? `${peakHour[0]}:00` : "N/A";
 
-    // Calculate Average File Size
-    const fileSizes = exportData
-      .map((d) => parseInt(d.FileSize || 0))
-      .filter((size) => size > 0);
-    const avgFileSize =
-      fileSizes.length > 0
-        ? Math.round(
-            fileSizes.reduce((sum, size) => sum + size, 0) / fileSizes.length
-          )
-        : 0;
-
-    // Estimate API Costs (rough estimate based on tokens)
-    const totalTokens = openaiData.reduce(
-      (sum, item) => sum + parseInt(item.TokensUsed || 0),
-      0
+    // Calculate Average Session Duration
+    const sessionEndData = sessionData.filter(
+      (s) => s.action === "SessionEnd" && s.duration > 0
     );
-    const estimatedCost = ((totalTokens * 0.03) / 1000).toFixed(2); // Rough estimate
+    const avgSessionDuration =
+      sessionEndData.length > 0
+        ? (
+            sessionEndData.reduce(
+              (sum, s) => sum + parseFloat(s.duration),
+              0
+            ) / sessionEndData.length
+          ).toFixed(1)
+        : "0";
+
+    // Calculate Unique Countries
+    const uniqueCountries = new Set(
+      allData.map((d) => d.country).filter((c) => c && c !== "Unknown")
+    ).size;
 
     // Calculate Data Quality Score
     let dataQualityScore = 100;
@@ -298,10 +299,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const activeUsersToday = new Set(todaysSessions.map((s) => s.hashedIP))
       .size;
 
-    // Calculate User Retention (sessions per unique user)
+    // Calculate User Retention as percentage of returning sessions
     const uniqueUsers = new Set(sessionData.map((s) => s.hashedIP)).size;
-    const userRetention =
-      uniqueUsers > 0 ? (totalSessions / uniqueUsers).toFixed(1) : "0";
+    const userRetentionRate =
+      uniqueUsers > 0
+        ? (((totalSessions - uniqueUsers) / uniqueUsers) * 100).toFixed(1)
+        : "0";
 
     // Version Adoption Rate (percentage using latest version)
     const allDataWithVersion = [
@@ -368,21 +371,21 @@ document.addEventListener("DOMContentLoaded", function () {
         subtext: peakHour ? `${peakHour[1]} operations` : "No data",
       },
       {
-        title: "Avg File Size",
-        value: avgFileSize > 0 ? formatFileSize(avgFileSize) : "N/A",
-        subtext: fileSizes.length > 0 ? `${fileSizes.length} files` : "No data",
+        title: "Avg Session Duration",
+        value: avgSessionDuration + "s",
+        subtext:
+          sessionEndData.length > 0
+            ? `${sessionEndData.length} sessions`
+            : "No data",
       },
       {
-        title: "API Cost Estimate",
-        value: totalTokens > 0 ? `$${estimatedCost}` : "$0",
-        subtext:
-          totalTokens > 0
-            ? `${totalTokens.toLocaleString()} tokens`
-            : "No usage",
+        title: "Unique Countries",
+        value: uniqueCountries.toString(),
+        subtext: uniqueCountries > 0 ? "geo-distribution" : "No data",
       },
       {
         title: "User Retention",
-        value: userRetention + "x",
+        value: userRetentionRate + "%",
         subtext: `${uniqueUsers} unique users`,
       },
       {
