@@ -3,6 +3,7 @@ session_start();
 require_once '../db_connect.php';
 require_once 'mentions/mentions.php';
 require_once 'community_functions.php';
+require_once 'users/user_functions.php';
 require_once 'formatting/formatting_functions.php';
 
 // Check for remember me cookie and auto-login user if valid
@@ -10,12 +11,11 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     check_remember_me();
 }
 
-$is_logged_in = isset($_SESSION['user_id']);
+$is_logged_in = is_user_logged_in();
 $user_id = $is_logged_in ? $_SESSION['user_id'] : 0;
 $username = $is_logged_in ? ($_SESSION['username'] ?? 'Unknown') : '';
 $email = $is_logged_in ? ($_SESSION['email'] ?? '') : '';
 $role = $is_logged_in ? ($_SESSION['role'] ?? 'user') : '';
-
 
 $post_id = isset($_GET['id']) ? intval($_GET['id']) : 0; // Get post ID from URL parameter
 $post = get_post($post_id);
@@ -62,9 +62,13 @@ $result = $stmt->get_result();
 $post_last_edit = $result->fetch_assoc();
 $stmt->close();
 
+$current_user = $is_logged_in ? \CommunityUsers\get_current_user() : null;
+
 // Increment view count (only once per session to count unique views)
 $viewed_posts = isset($_SESSION['viewed_posts']) ? $_SESSION['viewed_posts'] : array();
-if (!in_array($post_id, $viewed_posts)) {
+$is_admin = $is_logged_in && (isset($current_user['role']) && $current_user['role'] === 'admin');
+
+if (!$is_admin && !in_array($post_id, $viewed_posts)) {
     // Update view count in database
     $db = get_db_connection();
     $stmt = $db->prepare('UPDATE community_posts SET views = views + 1 WHERE id = ?');
