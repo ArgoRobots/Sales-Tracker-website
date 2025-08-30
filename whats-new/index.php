@@ -80,6 +80,81 @@
     <div class="container">
         <div class="version-grid">
 
+            <!-- Version 1.0.7 -->
+            <div class="version-card">
+                <div class="version-header">
+                    <span class="version-tag">Version 1.0.7</span>
+                    <span class="date-tag">August 29 2025</span>
+                </div>
+
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <div class="icon icon-check"></div>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Language Switching Label Alignment<span class="type-tag fix">Fix</span></h3>
+                            <p>Fixed an issue causing some labels not to be aligned correctly after changing the
+                                application language.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <div class="icon icon-check"></div>
+                        </div>
+                        <div class="feature-content">
+                            <h3>SearchBox Positioning Fix<span class="type-tag fix">Fix</span></h3>
+                            <p>Fixed the SearchBox size and location not being set correctly when renaming companies on
+                                the Get Started Form.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <div class="icon icon-check"></div>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Font Scaling in Recent Companies Panel<span class="type-tag fix">Fix</span></h3>
+                            <p>Fixed the font size not scaling correctly in the 'recently opened companies' panel,
+                                ensuring text remains readable and properly proportioned across different display
+                                settings and screen resolutions.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <div class="icon icon-check"></div>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Date Range Panel Translation<span class="type-tag fix">Fix</span></h3>
+                            <p>Fixed an issue causing the date range panel not to translate languages in some cases.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <div class="icon icon-lightning"></div>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Enhanced Security<span class="type-tag enhancement">Enhancement</span></h3>
+                            <p>Improved security measures throughout the application to better protect your
+                                business data.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <div class="icon icon-lightning"></div>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Faster Startup Performance<span class="type-tag enhancement">Enhancement</span></h3>
+                            <p>Optimized application startup sequence, allowing the program to open faster.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Version 1.0.6 -->
             <div class="version-card">
                 <div class="version-header">
