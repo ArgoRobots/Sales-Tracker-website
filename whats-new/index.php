@@ -9,14 +9,14 @@
 
     <!-- SEO Meta Tags -->
     <meta name="description"
-        content="Latest updates and new features in Argo Sales Tracker. Version 1.0.4 includes product returns management, enhanced loading controls, and bug fixes. Download the latest Windows release.">
+        content="Latest updates and new features in Argo Sales Tracker. Download the latest Windows release.">
     <meta name="keywords"
         content="argo sales tracker updates, new features, version history, changelog, release notes, software updates, latest version, product improvements, Windows software updates">
 
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="What's New - Argo Sales Tracker | Latest Features & Updates">
     <meta property="og:description"
-        content="Latest updates and new features in Argo Sales Tracker. Version 1.0.4 includes product returns management, enhanced loading controls, and bug fixes. Download the latest Windows release.">
+        content="Latest updates and new features in Argo Sales Tracker. Download the latest Windows release.">
     <meta property="og:url" content="https://argorobots.com/whats-new/">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Argo Sales Tracker">
@@ -26,7 +26,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="What's New - Argo Sales Tracker | Latest Features & Updates">
     <meta name="twitter:description"
-        content="Latest updates and new features in Argo Sales Tracker. Version 1.0.4 includes product returns management, enhanced loading controls, and bug fixes. Download the latest Windows release.">
+        content="Latest updates and new features in Argo Sales Tracker. Download the latest Windows release.">
 
     <!-- Additional SEO Meta Tags -->
     <meta name="geo.region" content="CA-AB">
