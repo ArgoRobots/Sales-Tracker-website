@@ -188,18 +188,51 @@ input[type="password"]::-webkit-credentials-auto-fill-button {
   display: none !important;
 }
 
-/* Hide WebKit password reveal button */
 input[type="password"]::-webkit-textfield-decoration-container {
   visibility: hidden;
 }
 
-/* Additional fallback for various browsers */
 input[type="password"] {
   -webkit-text-security: disc;
 }
 
-/* Hide any custom eye icons that might be added via pseudo-elements */
 .form-group input[type="password"]::after,
 .form-group input[type="password"]::before {
   display: none !important;
+}
+
+/* Show new password reveal button  */
+.password-field-wrapper {
+  position: relative;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #666;
+  z-index: 10;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggle-password:hover {
+  color: var(--primary-blue);
+}
+
+.toggle-password.active i.fa-eye {
+  display: none;
+}
+
+.toggle-password.active i.fa-eye-slash {
+  display: inline;
+}
+
+.toggle-password i.fa-eye-slash {
+  display: none;
 }
