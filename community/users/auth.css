@@ -69,36 +69,6 @@
   outline: none;
 }
 
-/* Checkbox styling */
-.checkbox-group {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 25px;
-}
-
-.checkbox-group input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  margin: 0;
-  cursor: pointer;
-  accent-color: var(--primary-blue);
-}
-
-.checkbox-group label {
-  font-weight: 400;
-  cursor: pointer;
-  display: inline;
-  margin: 0;
-  color: #4b5563;
-  font-size: 15px;
-  user-select: none;
-}
-
-.checkbox-group:hover label {
-  color: var(--primary-blue);
-}
-
 /* Button styling */
 .form-actions {
   margin-top: 25px;
