@@ -617,3 +617,69 @@ function generate_verification_code()
 {
     return sprintf('%06d', mt_rand(100000, 999999));
 }
+
+/**
+ * Update a user's profile information and propagate username/email changes
+ *
+ * @param int $user_id User ID
+ * @param string $username New username
+ * @param string $email New email
+ * @param string $password New password (optional)
+ * @return array Result array with success and message
+ */
+function update_user_profile($user_id, $username, $email, $password = '')
+{
+    $db = get_db_connection();
+
+    // Check username uniqueness
+    $stmt = $db->prepare('SELECT id FROM community_users WHERE username = ? AND id != ?');
+    $stmt->bind_param('si', $username, $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->fetch_assoc()) {
+        $stmt->close();
+        return ['success' => false, 'message' => 'Username already taken'];
+    }
+    $stmt->close();
+
+    // Check email uniqueness
+    $stmt = $db->prepare('SELECT id FROM community_users WHERE email = ? AND id != ?');
+    $stmt->bind_param('si', $email, $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->fetch_assoc()) {
+        $stmt->close();
+        return ['success' => false, 'message' => 'Email already taken'];
+    }
+    $stmt->close();
+
+    // Build update query
+    if (!empty($password)) {
+        $password_hash = password_hash($password, PASSWORD_DEFAULT);
+        $stmt = $db->prepare('UPDATE community_users SET username = ?, email = ?, password_hash = ? WHERE id = ?');
+        $stmt->bind_param('sssi', $username, $email, $password_hash, $user_id);
+    } else {
+        $stmt = $db->prepare('UPDATE community_users SET username = ?, email = ? WHERE id = ?');
+        $stmt->bind_param('ssi', $username, $email, $user_id);
+    }
+
+    if (!$stmt->execute()) {
+        $stmt->close();
+        return ['success' => false, 'message' => 'Failed to update user'];
+    }
+    $stmt->close();
+
+    // Update posts
+    $stmt = $db->prepare('UPDATE community_posts SET user_name = ?, user_email = ? WHERE user_id = ?');
+    $stmt->bind_param('ssi', $username, $email, $user_id);
+    $stmt->execute();
+    $stmt->close();
+
+    // Update comments
+    $stmt = $db->prepare('UPDATE community_comments SET user_name = ?, user_email = ? WHERE user_id = ?');
+    $stmt->bind_param('ssi', $username, $email, $user_id);
+    $stmt->execute();
+    $stmt->close();
+
+    return ['success' => true, 'message' => 'Profile updated'];
+}

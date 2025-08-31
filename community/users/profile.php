@@ -643,7 +643,8 @@ if ($is_own_profile && isset($user['email'])) {
                                         Notification Settings
                                     </a>
                                 <?php endif; ?>
-
+                                <a href="edit_profile.php" class="btn btn-blue">Edit Account</a>
+                                <a href="delete_account.php" class="btn btn-red">Delete Account</a>
                                 <a href="logout.php" class="btn btn-gray">Log Out</a>
                             <?php endif; ?>
                         </div>
