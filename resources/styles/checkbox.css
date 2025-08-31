@@ -1,3 +1,7 @@
+.checkbox {
+  display: flex;
+}
+
 .checkbox input[type="checkbox"] {
   margin-right: 10px;
   width: 18px;

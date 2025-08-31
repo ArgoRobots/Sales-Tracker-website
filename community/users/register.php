@@ -3,6 +3,12 @@ session_start();
 require_once '../../db_connect.php';
 require_once 'user_functions.php';
 
+// Redirect if already logged in
+if (is_user_logged_in()) {
+    header('Location: profile.php');
+    exit;
+}
+
 // Check for remember me cookie and auto-login user if valid
 if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     check_remember_me();
@@ -18,6 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = isset($_POST['email']) ? trim($_POST['email']) : '';
     $password = isset($_POST['password']) ? $_POST['password'] : '';
     $password_confirm = isset($_POST['password_confirm']) ? $_POST['password_confirm'] : '';
+    $terms_agreed = isset($_POST['terms']);
 
     // Define restricted terms for usernames
     $restricted_terms = ['argo', 'admin', 'moderator', 'mod', 'staff', 'support', 'system'];
@@ -53,6 +60,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Password must contain at least one special character';
     } elseif ($password !== $password_confirm) {
         $error = 'Passwords do not match';
+    } elseif (!$terms_agreed) {
+        $error = 'You must agree to the terms and conditions';
     } else {
         // Attempt to register user
         $result = register_user($username, $email, $password);
@@ -90,6 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="auth.css">
     <link rel="stylesheet" href="register.css">
     <link rel="stylesheet" href="../../resources/styles/custom-colors.css">
+    <link rel="stylesheet" href="../../resources/styles/checkbox.css">
     <link rel="stylesheet" href="../../resources/styles/button.css">
     <link rel="stylesheet" href="../../resources/header/style.css">
     <link rel="stylesheet" href="../../resources/footer/style.css">
@@ -165,6 +175,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="validation-feedback" id="confirm-password-feedback"></div>
                 </div>
 
+                <div class="checkbox">
+                    <input type="checkbox" id="terms" name="terms" <?php echo isset($_POST['terms']) ? 'checked' : ''; ?> required>
+                    <label for="terms">I agree to the <a href="../../legal/terms.php" target="_blank">terms and conditions</a></label>
+                </div>
+
                 <div class="form-actions">
                     <button type="submit" id="submit-button" class="btn btn-blue btn-block">Register</button>
                 </div>
@@ -199,6 +214,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             const usernameFeedback = document.getElementById('username-feedback');
             const emailFeedback = document.getElementById('email-feedback');
             const confirmPasswordFeedback = document.getElementById('confirm-password-feedback');
+            const termsGroup = document.getElementById('terms-group');
+            const termsFeedback = document.getElementById('terms-feedback');
             const passwordPolicies = document.querySelector('.password-policies');
 
             // Toggle password visibility for password field
@@ -362,15 +379,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
 
+            // Terms checkbox validation
+            function validateTerms() {
+                if (termsCheckbox.checked) {
+                    termsFeedback.textContent = "";
+                    termsGroup.classList.remove('invalid');
+                    termsGroup.classList.add('valid');
+                    return true;
+                } else {
+                    termsFeedback.textContent = "You must agree to the terms";
+                    termsGroup.classList.add('invalid');
+                    termsGroup.classList.remove('valid');
+                    return false;
+                }
+            }
+
             // Form validation
             function validateForm() {
                 const usernameValid = validateUsername();
                 const emailValid = validateEmail();
                 const passwordPoliciesValid = validatePasswordPolicy();
                 const confirmPasswordValid = validateConfirmPassword();
+                const termsValid = validateTerms();
 
                 // Enable or disable submit button
-                if (usernameValid && emailValid && passwordPoliciesValid && confirmPasswordValid) {
+                if (usernameValid && emailValid && passwordPoliciesValid && confirmPasswordValid && termsValid) {
                     submitButton.disabled = false;
                     submitButton.classList.remove('disabled');
                 } else {
@@ -410,6 +443,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             passwordConfirm.addEventListener('input', function() {
                 validateConfirmPassword();
+                validateForm();
+            });
+
+            termsCheckbox.addEventListener('change', function() {
+                validateTerms();
                 validateForm();
             });
 

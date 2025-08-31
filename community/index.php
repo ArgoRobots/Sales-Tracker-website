@@ -96,8 +96,8 @@ $current_user = $is_logged_in ? \CommunityUsers\get_current_user() : null;
             <div class="bulk-actions" style="display: none;">
                 <div class="selection-controls">
                     <div class="checkbox">
-                        <input type="checkbox" id="select-all-posts">
-                        <span class="checkbox-label">Select All</span>
+                        <input type="checkbox" id="select-all-posts" name="select-all-posts">
+                        <label for="select-all-posts">Select All</a></label>
                     </div>
                     <span class="selected-count">0 selected</span>
                 </div>
