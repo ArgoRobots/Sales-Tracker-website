@@ -15,9 +15,26 @@ require_once 'db_connect.php';
  */
 function track_event($event_type, $event_data = '')
 {
+    // Don't track statistics for logged in admins
+    if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
+        return false;
+    }
+
     $db = get_db_connection();
     $ip_address = $_SERVER['REMOTE_ADDR'];
     $user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
+
+    // Only record the first occurrence of an event for each IP and event data
+    $exists_stmt = $db->prepare('SELECT 1 FROM statistics WHERE event_type = ? AND event_data = ? AND ip_address = ? LIMIT 1');
+    $exists_stmt->bind_param('sss', $event_type, $event_data, $ip_address);
+    $exists_stmt->execute();
+    $exists_result = $exists_stmt->get_result();
+    if ($exists_result->num_rows > 0) {
+        $exists_stmt->close();
+        return false;
+    }
+    $exists_stmt->close();
+
     $country_code = null;
 
     // Check if we already have this IP's country code in our database
