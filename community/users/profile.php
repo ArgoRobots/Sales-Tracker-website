@@ -645,6 +645,7 @@ if ($is_own_profile && isset($user['email'])) {
                                 <?php endif; ?>
 
                                 <a href="logout.php" class="btn btn-gray">Log Out</a>
+                                <button type="button" id="delete-account-btn" class="btn btn-red">Delete Account</button>
                             <?php endif; ?>
                         </div>
                     </div>

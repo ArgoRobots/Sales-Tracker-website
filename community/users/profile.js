@@ -56,4 +56,34 @@ document.addEventListener("DOMContentLoaded", function () {
       sessionStorage.setItem("scrollPosition", window.scrollY);
     });
   });
+
+  const deleteBtn = document.getElementById("delete-account-btn");
+  if (deleteBtn) {
+    deleteBtn.addEventListener("click", function () {
+      if (
+        confirm(
+          "Are you sure you want to delete your account? This action cannot be undone."
+        )
+      ) {
+        fetch("delete_account.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: "confirm=1",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              window.location.href = "../index.php";
+            } else {
+              alert(data.message || "Error deleting account");
+            }
+          })
+          .catch(() => {
+            alert("Error deleting account");
+          });
+      }
+    });
+  }
 });
