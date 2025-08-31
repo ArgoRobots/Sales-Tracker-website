@@ -181,3 +181,25 @@ a:hover {
   margin: 5px;
   display: inline-block;
 }
+
+/* Hide browser default password reveal button */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-webkit-credentials-auto-fill-button {
+  display: none !important;
+}
+
+/* Hide WebKit password reveal button */
+input[type="password"]::-webkit-textfield-decoration-container {
+  visibility: hidden;
+}
+
+/* Additional fallback for various browsers */
+input[type="password"] {
+  -webkit-text-security: disc;
+}
+
+/* Hide any custom eye icons that might be added via pseudo-elements */
+.form-group input[type="password"]::after,
+.form-group input[type="password"]::before {
+  display: none !important;
+}
