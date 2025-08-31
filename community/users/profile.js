@@ -58,32 +58,48 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   const deleteBtn = document.getElementById("delete-account-btn");
-  if (deleteBtn) {
+  const deleteModal = document.getElementById("delete-account-modal");
+  const deleteInput = document.getElementById("delete-confirm-input");
+  const confirmDelete = document.getElementById("confirm-delete");
+  const cancelDelete = document.getElementById("cancel-delete");
+
+  if (deleteBtn && deleteModal) {
     deleteBtn.addEventListener("click", function () {
-      if (
-        confirm(
-          "Are you sure you want to delete your account? This action cannot be undone."
-        )
-      ) {
-        fetch("delete_account.php", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          body: "confirm=1",
+      deleteModal.style.display = "flex";
+      deleteInput.value = "";
+      confirmDelete.disabled = true;
+      deleteInput.focus();
+    });
+
+    deleteInput.addEventListener("input", function () {
+      confirmDelete.disabled =
+        deleteInput.value.trim().toLowerCase() !== "delete";
+    });
+
+    cancelDelete.addEventListener("click", function () {
+      deleteModal.style.display = "none";
+    });
+
+    confirmDelete.addEventListener("click", function () {
+      fetch("delete_account.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: "confirm=1",
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            alert(data.message || "Account scheduled for deletion");
+            window.location.href = "../index.php";
+          } else {
+            alert(data.message || "Error scheduling deletion");
+          }
         })
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.success) {
-              window.location.href = "../index.php";
-            } else {
-              alert(data.message || "Error deleting account");
-            }
-          })
-          .catch(() => {
-            alert("Error deleting account");
-          });
-      }
+        .catch(() => {
+          alert("Error scheduling deletion");
+        });
     });
   }
 });

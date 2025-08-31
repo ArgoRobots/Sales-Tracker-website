@@ -123,8 +123,8 @@ function login_user($login, $password)
 
     // Verify password
     if (password_verify($password, $user['password_hash'])) {
-        // Update last login time
-        $stmt = $db->prepare('UPDATE community_users SET last_login = NOW() WHERE id = ?');
+        // Update last login time and cancel scheduled deletion
+        $stmt = $db->prepare('UPDATE community_users SET last_login = NOW(), deletion_scheduled_at = NULL WHERE id = ?');
         $stmt->bind_param('i', $user['id']);
         $stmt->execute();
         $stmt->close();
@@ -154,6 +154,13 @@ function check_remember_me()
         $user = validate_remember_token($token);
 
         if ($user) {
+            // Update last login time and cancel scheduled deletion
+            $db = get_db_connection();
+            $stmt = $db->prepare('UPDATE community_users SET last_login = NOW(), deletion_scheduled_at = NULL WHERE id = ?');
+            $stmt->bind_param('i', $user['id']);
+            $stmt->execute();
+            $stmt->close();
+
             // Set session data
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $user['username'];
