@@ -26,7 +26,7 @@ function send_license_email($to_email, $license_key)
         <body>
             <div class="container">
                 <div class="header">
-                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Sales Tracker Logo">
+                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" style="width: 200px; height: auto; max-width: 100%; display: block; margin: 0 auto;">
                 </div>
                 
                 <div class="content">
@@ -100,7 +100,7 @@ function resend_license_email($to_email, $license_key)
         <body>
             <div class="container">
                 <div class="header">
-                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Sales Tracker Logo">
+                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" style="width: 200px; height: auto; max-width: 100%; display: block; margin: 0 auto;">
                 </div>
                 
                 <div class="content content-centered">
@@ -269,7 +269,7 @@ function send_notification_email($type, $data)
         <body>
             <div class="container">
                 <div class="header">
-                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Sales Tracker Logo">
+                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" style="width: 200px; height: auto; max-width: 100%; display: block; margin: 0 auto;">
                 </div>
                 
                 <div class="content">
@@ -312,7 +312,7 @@ HTML;
         <body>
             <div class="container">
                 <div class="header">
-                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Sales Tracker Logo">
+                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" style="width: 200px; height: auto; max-width: 100%; display: block; margin: 0 auto;">
                 </div>
                 
                 <div class="content">
@@ -401,7 +401,7 @@ function send_password_reset_email($email, $token, $username)
         <body>
             <div class="container">
                 <div class="header">
-                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo">
+                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" style="width: 200px; height: auto; max-width: 100%; display: block; margin: 0 auto;">
                 </div>
                 
                 <div class="content">
@@ -424,6 +424,166 @@ function send_password_reset_email($email, $token, $username)
                 </div>
                 
                 <div class="footer">
+                    <p>Argo Sales Tracker &copy; 2025. All rights reserved.</p>
+                    <p>This email was sent to {$email}</p>
+                </div>
+            </div>
+        </body>
+        </html>
+    HTML;
+
+    $headers = [
+        'MIME-Version: 1.0',
+        'Content-Type: text/html; charset=UTF-8',
+        'From: Argo Community <noreply@argorobots.com>',
+        'Reply-To: support@argorobots.com',
+        'X-Mailer: PHP/' . phpversion()
+    ];
+
+    $mail_result = mail($email, $subject, $email_html, implode("\r\n", $headers));
+    return $mail_result;
+}
+
+/**
+ * Send account deletion scheduled email
+ * 
+ * @param string $email User's email address
+ * @param string $username Username
+ * @param string $scheduled_date Scheduled deletion date
+ * @return bool Success status
+ */
+function send_account_deletion_scheduled_email($email, $username, $scheduled_date)
+{
+    $css = file_get_contents(__DIR__ . '/email.css');
+    $subject = 'Account Deletion Scheduled - Argo Community';
+
+    // Format the scheduled date nicely
+    $formatted_date = date('F j, Y \a\t g:i A', strtotime($scheduled_date));
+
+    $email_html = <<<HTML
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+            <title>Account Deletion Scheduled</title>
+            <style>
+                {$css}  /* Needs to be embedded for PHP mail() */
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" style="width: 200px; height: auto; max-width: 100%; display: block; margin: 0 auto;">
+                </div>
+                
+                <div class="content">
+                    <h1>Account Deletion Scheduled</h1>
+                    <p>Hello {$username},</p>
+                    
+                    <p>Your Argo Community account has been scheduled for deletion on <strong>{$formatted_date}</strong>.</p>
+                    
+                    <div style="background-color: #fff3cd; border: 1px solid #ffeaa7; padding: 16px; border-radius: 6px; margin: 20px 0;">
+                        <h3 style="color: #856404; margin: 0 0 10px 0;">Important Information:</h3>
+                        <ul style="color: #856404; margin: 0; padding-left: 20px;">
+                            <li>Your account will be permanently deleted in 30 days</li>
+                            <li>All your posts, comments, and profile data will be removed</li>
+                            <li>This action can be cancelled by logging into your account before the deletion date</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="button-container">
+                        <a href="https://argorobots.com/community/users/login.php" class="button" style="background-color: #dc3545; color: #fff">Cancel Deletion - Login Now</a>
+                    </div>
+                    
+                    <p>If you did not request this deletion, please log into your account immediately to cancel it.</p>
+                    
+                    <p>If you have any questions, please contact our support team.</p>
+                    
+                    <p>Best regards,<br>The Argo Team</p>
+                </div>
+                
+                <div class="footer">
+                    <p>This is an automated message from the Argo Community system.</p>
+                    <p>Argo Sales Tracker &copy; 2025. All rights reserved.</p>
+                    <p>This email was sent to {$email}</p>
+                </div>
+            </div>
+        </body>
+        </html>
+    HTML;
+
+    $headers = [
+        'MIME-Version: 1.0',
+        'Content-Type: text/html; charset=UTF-8',
+        'From: Argo Community <noreply@argorobots.com>',
+        'Reply-To: support@argorobots.com',
+        'X-Mailer: PHP/' . phpversion()
+    ];
+
+    $mail_result = mail($email, $subject, $email_html, implode("\r\n", $headers));
+    return $mail_result;
+}
+
+/**
+ * Send account deletion cancelled email (when user logs in after scheduling)
+ * 
+ * @param string $email User's email address
+ * @param string $username Username
+ * @return bool Success status
+ */
+function send_account_deletion_cancelled_email($email, $username)
+{
+    $css = file_get_contents(__DIR__ . '/email.css');
+    $subject = 'Account Deletion Cancelled - Argo Community';
+
+    $email_html = <<<HTML
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+            <title>Account Deletion Cancelled</title>
+            <style>
+                {$css}  /* Needs to be embedded for PHP mail() */
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" style="width: 200px; height: auto; max-width: 100%; display: block; margin: 0 auto;">
+                </div>
+                
+                <div class="content">
+                    <h1>Account Deletion Cancelled</h1>
+                    <p>Hello {$username},</p>
+                    
+                    <div style="background-color: #d1fae5; border: 1px solid #a7f3d0; padding: 16px; border-radius: 6px; margin: 20px 0;">
+                        <h3 style="color: #065f46; margin: 0 0 10px 0;">Good News!</h3>
+                        <p style="color: #065f46; margin: 0;">Your account deletion has been <strong>cancelled</strong> because you logged into your account.</p>
+                    </div>
+                    
+                    <p>Your Argo Community account is now <strong>active</strong> and will not be deleted. All your:</p>
+                    <ul>
+                        <li>Profile information</li>
+                        <li>Posts and comments</li>
+                        <li>Community contributions</li>
+                    </ul>
+                    <p>remain intact and accessible.</p>
+                    
+                    <div class="button-container">
+                        <a href="https://argorobots.com/community/users/profile.php" class="button">View Your Profile</a>
+                    </div>
+                    
+                    <p>If you decide to delete your account in the future, you can do so from your profile settings.</p>
+                    
+                    <p>Welcome back!</p>
+                    
+                    <p>Best regards,<br>The Argo Team</p>
+                </div>
+                
+                <div class="footer">
+                    <p>This is an automated message from the Argo Community system.</p>
                     <p>Argo Sales Tracker &copy; 2025. All rights reserved.</p>
                     <p>This email was sent to {$email}</p>
                 </div>
