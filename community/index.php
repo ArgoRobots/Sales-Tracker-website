@@ -49,6 +49,7 @@ $current_user = $is_logged_in ? \CommunityUsers\get_current_user() : null;
     <div class="community-header">
         <h1>Argo Sales Tracker Community</h1>
         <p>Report bugs and suggest features to help us improve</p>
+        <p class="guidelines-link"><a href="guidelines.php" class="link-no-underline">Community Guidelines</a></p>
     </div>
 
     <div class="community-wrapper">

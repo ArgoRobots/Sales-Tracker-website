@@ -48,6 +48,19 @@ header .header-inner .menu-container .menu .community:after {
   margin: 0 auto;
 }
 
+.community-header .guidelines-link {
+  margin-top: 15px;
+}
+
+.community-header .guidelines-link a {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.community-header .guidelines-link a:hover {
+  text-decoration: none;
+}
+
 .community-content {
   padding: 20px;
   background-color: #fff;
