@@ -1030,6 +1030,18 @@ if ($is_own_profile && isset($user['email'])) {
     <footer class="footer">
         <div id="includeFooter"></div>
     </footer>
+
+    <div id="delete-account-modal" class="modal">
+        <div class="modal-content">
+            <h2>Confirm Account Deletion</h2>
+            <p>Type <strong>DELETE</strong> to confirm. Your account will be scheduled for deletion in 30 days unless you log in again before then.</p>
+            <input type="text" id="delete-confirm-input" placeholder="Type DELETE to confirm">
+            <div class="modal-actions">
+                <button type="button" id="cancel-delete" class="btn btn-gray">Cancel</button>
+                <button type="button" id="confirm-delete" class="btn btn-red" disabled>Schedule Deletion</button>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
