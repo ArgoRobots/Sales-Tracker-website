@@ -1042,6 +1042,45 @@ if ($is_own_profile && isset($user['email'])) {
     <footer class="footer">
         <div id="includeFooter"></div>
     </footer>
+
+    <script>
+        // Profile Avatar Change Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const profileAvatar = document.getElementById('profile-avatar');
+            const avatarInput = document.getElementById('avatar');
+            const profileForm = document.getElementById('profile-form');
+
+            // Only add click handler if user can edit (own profile)
+            if (profileAvatar && profileAvatar.classList.contains('editable') && avatarInput) {
+                // Click handler for avatar overlay
+                profileAvatar.addEventListener('click', function() {
+                    avatarInput.click();
+                });
+
+                // File change handler
+                avatarInput.addEventListener('change', function() {
+                    if (this.files && this.files[0]) {
+                        // Auto-submit the form when file is selected
+                        if (profileForm) {
+                            profileForm.submit();
+                        } else {
+                            // If no form found, create one and submit
+                            const form = document.createElement('form');
+                            form.method = 'POST';
+                            form.enctype = 'multipart/form-data';
+
+                            // Move the input to the form
+                            form.appendChild(this);
+
+                            // Add to document and submit
+                            document.body.appendChild(form);
+                            form.submit();
+                        }
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>

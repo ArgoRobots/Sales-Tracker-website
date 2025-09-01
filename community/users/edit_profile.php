@@ -174,26 +174,45 @@ function handle_avatar_change()
         exit;
     }
 
-    // Create avatars directory if it doesn't exist
-    $avatar_dir = '../../images/avatars';
-    if (!is_dir($avatar_dir)) {
-        mkdir($avatar_dir, 0755, true);
+    // Create base uploads directory first
+    $base_dir = dirname(__DIR__) . '/uploads/';
+    if (!file_exists($base_dir)) {
+        if (!mkdir($base_dir, 0755)) {
+            $_SESSION['profile_error'] = 'Failed to create uploads directory.';
+            header('Location: edit_profile.php');
+            exit;
+        }
+        chmod($base_dir, 0755);
+    }
+
+    // Then create avatars subdirectory
+    $avatar_dir = $base_dir . 'avatars/';
+    if (!file_exists($avatar_dir)) {
+        if (!mkdir($avatar_dir, 0755)) {
+            $_SESSION['profile_error'] = 'Failed to create avatars directory.';
+            header('Location: edit_profile.php');
+            exit;
+        }
+        chmod($avatar_dir, 0755);
     }
 
     // Generate unique filename
     $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
     $filename = 'avatar_' . $user_id . '_' . time() . '.' . $extension;
-    $filepath = $avatar_dir . '/' . $filename;
+    $filepath = $avatar_dir . $filename;
 
     // Delete old avatar if it exists
-    if (!empty($user['avatar']) && file_exists('../../' . $user['avatar'])) {
-        unlink('../../' . $user['avatar']);
+    if (!empty($user['avatar']) && file_exists('../' . $user['avatar'])) {
+        unlink('../' . $user['avatar']);
     }
 
     // Move uploaded file
     if (move_uploaded_file($file['tmp_name'], $filepath)) {
-        // Update database with relative path
-        $relative_path = 'images/avatars/' . $filename;
+        // Set permissions for the file
+        chmod($filepath, 0644);
+
+        // Update database with consistent path format
+        $relative_path = 'uploads/avatars/' . $filename;
 
         $db = get_db_connection();
         $stmt = $db->prepare('UPDATE community_users SET avatar = ? WHERE id = ?');
@@ -225,9 +244,18 @@ function handle_avatar_removal()
     global $user_id, $user;
 
     if (!empty($user['avatar'])) {
-        // Delete file if it exists
-        if (file_exists('../../' . $user['avatar'])) {
-            unlink('../../' . $user['avatar']);
+        // Handle both old path formats during transition
+        $file_paths = [
+            '../../' . $user['avatar'],  // Current format
+            '../' . $user['avatar']      // Alternative format
+        ];
+
+        // Delete file if it exists in any location
+        foreach ($file_paths as $file_path) {
+            if (file_exists($file_path)) {
+                unlink($file_path);
+                break; // Only need to delete once
+            }
         }
 
         // Update database
@@ -530,8 +558,8 @@ function handle_password_change()
             <h2>Profile Picture</h2>
             <div class="avatar-section">
                 <div class="current-avatar">
-                    <?php if (!empty($user['avatar']) && file_exists('../../' . $user['avatar'])): ?>
-                        <img src="../../<?php echo htmlspecialchars($user['avatar']); ?>" alt="Current Avatar" class="avatar-preview" id="avatarPreview">
+                    <?php if (!empty($user['avatar'])): ?>
+                        <img src="../<?php echo htmlspecialchars($user['avatar']); ?>" alt="Current Avatar" class="avatar-preview" id="avatarPreview">
                     <?php else: ?>
                         <div class="avatar-preview" id="avatarPreview" style="background-color: #3b82f6; color: white; display: flex; align-items: center; justify-content: center; font-size: 48px; font-weight: bold;">
                             <?php echo strtoupper(substr($user['username'], 0, 1)); ?>
@@ -725,9 +753,7 @@ function handle_password_change()
                 <?php if (!empty($user['avatar']) && file_exists('../../' . $user['avatar'])): ?>
                     preview.innerHTML = `<img src="../../<?php echo htmlspecialchars($user['avatar']); ?>" alt="Current Avatar" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
                 <?php else: ?>
-                    preview.innerHTML = `<?php echo strtoupper(substr($user['username'], 0, 1)); ?>`;
-                    preview.style.backgroundColor = '#3b82f6';
-                    preview.style.color = 'white';
+                    preview.innerHTML = `<div style="background-color: #3b82f6; color: white; display: flex; align-items: center; justify-content: center; font-size: 48px; font-weight: bold; width: 100%; height: 100%; border-radius: 50%;"><?php echo strtoupper(substr($user['username'], 0, 1)); ?></div>`;
                 <?php endif; ?>
             }
         }

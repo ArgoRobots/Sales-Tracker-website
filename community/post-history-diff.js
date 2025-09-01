@@ -52,7 +52,7 @@ function compareTitles(currentEntry, nextEntry) {
 }
 
 /**
- * Compare content between two history entries with improved newline handling
+ * Compare content between two history entries with newline handling
  * @param {Element} currentEntry - The newer version
  * @param {Element} nextEntry - The older version
  */
@@ -309,7 +309,7 @@ function diffText(oldText, newText, characterLevel = false) {
 }
 
 /**
- * Improved character-level diff between two strings
+ * Character-level diff between two strings
  * This version better handles word-level changes while preserving formatting
  * @param {string} oldText - The old text
  * @param {string} newText - The new text

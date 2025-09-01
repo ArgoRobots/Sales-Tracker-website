@@ -341,7 +341,7 @@ header .header-inner .menu-container .menu .community:after {
   }
 }
 
-/* Improved formatting for preview content */
+/* Formatting for preview content */
 .preview-content pre,
 .preview-bug-section-content pre {
   background: #f8f9fa;
@@ -384,7 +384,7 @@ header .header-inner .menu-container .menu .community:after {
   font-size: 0.9em;
 }
 
-/* Improved spacing */
+/* Spacing */
 .preview-content p,
 .preview-bug-section-content p {
   margin-bottom: 12px;
