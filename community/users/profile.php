@@ -549,6 +549,9 @@ if ($is_own_profile && isset($user['email'])) {
                 <div class="container">
                     <div class="success-message">
                         <strong>Email verified successfully!</strong> Your account has been created.
+                        <?php if (!$has_license): ?>
+                            <br>📧 Your license key has been sent to your email address.
+                        <?php endif; ?>
                     </div>
                 </div>
             <?php endif; ?>
@@ -600,9 +603,13 @@ if ($is_own_profile && isset($user['email'])) {
                                 </p>
                             </div>
 
-                            <?php if (!empty($user['bio'])): ?>
+                            <?php if (!empty(trim($user['bio']))): ?>
                                 <div class="profile-bio">
-                                    <p><?php echo nl2br(htmlspecialchars($user['bio'])); ?></p>
+                                    <?php echo nl2br(htmlspecialchars($user['bio'])); ?>
+                                </div>
+                            <?php elseif ($is_own_profile): ?>
+                                <div class="profile-bio empty">
+                                    Add a bio to tell others about yourself!
                                 </div>
                             <?php endif; ?>
 
@@ -644,6 +651,15 @@ if ($is_own_profile && isset($user['email'])) {
                                     </a>
                                 <?php endif; ?>
 
+<<<<<<< Updated upstream
+=======
+                                <?php if (!$user['email_verified']): ?>
+                                    <a href="verify_code.php" class="btn btn-orange">Verify Email</a>
+                                <?php endif; ?>
+
+                                <a href="edit_profile.php" class="btn btn-blue">Edit Account</a>
+                                <a href="delete_account.php" class="btn btn-red">Delete Account</a>
+>>>>>>> Stashed changes
                                 <a href="logout.php" class="btn btn-gray">Log Out</a>
                                 <button type="button" id="delete-account-btn" class="btn btn-red">Delete Account</button>
                             <?php endif; ?>
@@ -970,7 +986,7 @@ if ($is_own_profile && isset($user['email'])) {
                         </div>
                     </div>
 
-                    <!-- Full Reputation History Section (For reference if needed) -->
+                    <!-- Full Reputation History Section -->
                     <?php if (count($reputation_history) > 5): ?>
                         <div class="reputation-section">
                             <h3>All Reputation History</h3>
