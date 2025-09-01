@@ -11,8 +11,18 @@ require_login('', true);
 $user_id = $_SESSION['user_id'];
 $user = get_user($user_id);
 
-$errors = [];
-$success_messages = [];
+$success_message = '';
+$error_message = '';
+
+if (isset($_SESSION['profile_success'])) {
+    $success_message = $_SESSION['profile_success'];
+    unset($_SESSION['profile_success']);
+}
+
+if (isset($_SESSION['profile_error'])) {
+    $error_message = $_SESSION['profile_error'];
+    unset($_SESSION['profile_error']);
+}
 
 // Handle form submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -43,31 +53,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Function to handle profile updates (username and bio)
 function handle_profile_update()
 {
-    global $errors, $success_messages, $user_id, $user;
+    global $user_id, $user;
 
     $username = trim($_POST['username'] ?? '');
     $bio = trim($_POST['bio'] ?? '');
 
     // Validate username
     if (empty($username)) {
-        $errors[] = 'Username is required';
-        return;
+        $_SESSION['profile_error'] = 'Username is required';
+        header('Location: edit_profile.php');
+        exit;
     }
 
     if (strlen($username) < 3 || strlen($username) > 30) {
-        $errors[] = 'Username must be between 3 and 30 characters';
-        return;
+        $_SESSION['profile_error'] = 'Username must be between 3 and 30 characters';
+        header('Location: edit_profile.php');
+        exit;
     }
 
     if (!preg_match('/^[a-zA-Z0-9_-]+$/', $username)) {
-        $errors[] = 'Username can only contain letters, numbers, underscores, and hyphens';
-        return;
+        $_SESSION['profile_error'] = 'Username can only contain letters, numbers, underscores, and hyphens';
+        header('Location: edit_profile.php');
+        exit;
     }
 
     // Validate bio length
     if (strlen($bio) > 500) {
-        $errors[] = 'Bio must be 500 characters or less';
-        return;
+        $_SESSION['profile_error'] = 'Bio must be 500 characters or less';
+        header('Location: edit_profile.php');
+        exit;
     }
 
     $db = get_db_connection();
@@ -80,8 +94,9 @@ function handle_profile_update()
         $result = $stmt->get_result();
         if ($result->fetch_assoc()) {
             $stmt->close();
-            $errors[] = 'Username is already taken';
-            return;
+            $_SESSION['profile_error'] = 'Username is already taken';
+            header('Location: edit_profile.php');
+            exit;
         }
         $stmt->close();
     }
@@ -109,31 +124,35 @@ function handle_profile_update()
             $_SESSION['username'] = $username;
         }
 
-        // Refresh user data
-        $user = get_user($user_id);
-        $success_messages[] = 'Profile updated successfully!';
+        $_SESSION['profile_success'] = 'Profile updated successfully!';
+        header('Location: edit_profile.php');
+        exit;
     } else {
         $stmt->close();
-        $errors[] = 'Failed to update profile. Please try again.';
+        $_SESSION['profile_error'] = 'Failed to update profile. Please try again.';
+        header('Location: edit_profile.php');
+        exit;
     }
 }
 
 // Function to handle avatar changes
 function handle_avatar_change()
 {
-    global $errors, $success_messages, $user_id, $user;
+    global $user_id, $user;
 
     if (!isset($_FILES['avatar']) || $_FILES['avatar']['error'] === UPLOAD_ERR_NO_FILE) {
-        $errors[] = 'Please select an image to upload';
-        return;
+        $_SESSION['profile_error'] = 'Please select an image to upload';
+        header('Location: edit_profile.php');
+        exit;
     }
 
     $file = $_FILES['avatar'];
 
     // Check for upload errors
     if ($file['error'] !== UPLOAD_ERR_OK) {
-        $errors[] = 'File upload failed. Please try again.';
-        return;
+        $_SESSION['profile_error'] = 'File upload failed. Please try again.';
+        header('Location: edit_profile.php');
+        exit;
     }
 
     // Validate file type
@@ -143,14 +162,16 @@ function handle_avatar_change()
     finfo_close($file_info);
 
     if (!in_array($mime_type, $allowed_types)) {
-        $errors[] = 'Invalid file type. Please upload a JPEG, PNG, GIF, or WebP image.';
-        return;
+        $_SESSION['profile_error'] = 'Invalid file type. Please upload a JPEG, PNG, GIF, or WebP image.';
+        header('Location: edit_profile.php');
+        exit;
     }
 
     // Validate file size (max 5MB)
     if ($file['size'] > 5 * 1024 * 1024) {
-        $errors[] = 'File is too large. Maximum size is 5MB.';
-        return;
+        $_SESSION['profile_error'] = 'File is too large. Maximum size is 5MB.';
+        header('Location: edit_profile.php');
+        exit;
     }
 
     // Create avatars directory if it doesn't exist
@@ -180,23 +201,28 @@ function handle_avatar_change()
 
         if ($stmt->execute()) {
             $stmt->close();
-            $user = get_user($user_id); // Refresh user data
-            $success_messages[] = 'Avatar updated successfully!';
+            $_SESSION['profile_success'] = 'Avatar updated successfully!';
+            header('Location: edit_profile.php');
+            exit;
         } else {
             $stmt->close();
             // Clean up uploaded file on database error
             unlink($filepath);
-            $errors[] = 'Failed to update avatar in database.';
+            $_SESSION['profile_error'] = 'Failed to update avatar in database.';
+            header('Location: edit_profile.php');
+            exit;
         }
     } else {
-        $errors[] = 'Failed to upload avatar. Please try again.';
+        $_SESSION['profile_error'] = 'Failed to upload avatar. Please try again.';
+        header('Location: edit_profile.php');
+        exit;
     }
 }
 
 // Function to handle avatar removal
 function handle_avatar_removal()
 {
-    global $errors, $success_messages, $user_id, $user;
+    global $user_id, $user;
 
     if (!empty($user['avatar'])) {
         // Delete file if it exists
@@ -211,38 +237,46 @@ function handle_avatar_removal()
 
         if ($stmt->execute()) {
             $stmt->close();
-            $user = get_user($user_id); // Refresh user data
-            $success_messages[] = 'Avatar removed successfully!';
+            $_SESSION['profile_success'] = 'Avatar removed successfully!';
+            header('Location: edit_profile.php');
+            exit;
         } else {
             $stmt->close();
-            $errors[] = 'Failed to remove avatar.';
+            $_SESSION['profile_error'] = 'Failed to remove avatar.';
+            header('Location: edit_profile.php');
+            exit;
         }
     } else {
-        $errors[] = 'No avatar to remove.';
+        $_SESSION['profile_error'] = 'No avatar to remove.';
+        header('Location: edit_profile.php');
+        exit;
     }
 }
 
 // Function to handle email changes
 function handle_email_change()
 {
-    global $errors, $success_messages, $user_id, $user;
+    global $user_id, $user;
 
     $new_email = trim($_POST['new_email'] ?? '');
     $password = $_POST['email_password'] ?? '';
 
     if (empty($new_email) || empty($password)) {
-        $errors[] = 'Email and password are required';
-        return;
+        $_SESSION['profile_error'] = 'Email and password are required';
+        header('Location: edit_profile.php');
+        exit;
     }
 
     if (!filter_var($new_email, FILTER_VALIDATE_EMAIL)) {
-        $errors[] = 'Please enter a valid email address';
-        return;
+        $_SESSION['profile_error'] = 'Please enter a valid email address';
+        header('Location: edit_profile.php');
+        exit;
     }
 
     if ($new_email === $user['email']) {
-        $errors[] = 'This is already your current email address';
-        return;
+        $_SESSION['profile_error'] = 'This is already your current email address';
+        header('Location: edit_profile.php');
+        exit;
     }
 
     $db = get_db_connection();
@@ -256,8 +290,9 @@ function handle_email_change()
     $stmt->close();
 
     if (!$password_data || !password_verify($password, $password_data['password_hash'])) {
-        $errors[] = 'Current password is incorrect';
-        return;
+        $_SESSION['profile_error'] = 'Current password is incorrect';
+        header('Location: edit_profile.php');
+        exit;
     }
 
     // Check if new email is already used
@@ -267,8 +302,9 @@ function handle_email_change()
     $result = $stmt->get_result();
     if ($result->fetch_assoc()) {
         $stmt->close();
-        $errors[] = 'This email address is already registered';
-        return;
+        $_SESSION['profile_error'] = 'This email address is already registered';
+        header('Location: edit_profile.php');
+        exit;
     }
     $stmt->close();
 
@@ -289,31 +325,39 @@ function handle_email_change()
             // Store the new email temporarily in session for verification
             $_SESSION['pending_email'] = $new_email;
             $_SESSION['email_change_pending'] = true;
-            $success_messages[] = 'Verification email sent to ' . htmlspecialchars($new_email) . '. Please check your email and enter the verification code below.';
+            $_SESSION['profile_success'] = 'Verification email sent to ' . htmlspecialchars($new_email) . '. Please check your email and enter the verification code below.';
+            header('Location: edit_profile.php');
+            exit;
         } else {
-            $errors[] = 'Failed to send verification email. Please try again.';
+            $_SESSION['profile_error'] = 'Failed to send verification email. Please try again.';
+            header('Location: edit_profile.php');
+            exit;
         }
     } else {
         $stmt->close();
-        $errors[] = 'Failed to initiate email change. Please try again.';
+        $_SESSION['profile_error'] = 'Failed to initiate email change. Please try again.';
+        header('Location: edit_profile.php');
+        exit;
     }
 }
 
 // Function to handle email verification for email changes
 function handle_email_verification()
 {
-    global $errors, $success_messages, $user_id, $user;
+    global $user_id, $user;
 
     if (!isset($_SESSION['email_change_pending']) || !isset($_SESSION['pending_email'])) {
-        $errors[] = 'No email change pending';
-        return;
+        $_SESSION['profile_error'] = 'No email change pending';
+        header('Location: edit_profile.php');
+        exit;
     }
 
     $verification_code = trim($_POST['email_verification_code'] ?? '');
 
     if (empty($verification_code)) {
-        $errors[] = 'Verification code is required';
-        return;
+        $_SESSION['profile_error'] = 'Verification code is required';
+        header('Location: edit_profile.php');
+        exit;
     }
 
     $db = get_db_connection();
@@ -327,8 +371,9 @@ function handle_email_verification()
     $stmt->close();
 
     if (!$db_data || $db_data['verification_code'] !== $verification_code) {
-        $errors[] = 'Invalid verification code';
-        return;
+        $_SESSION['profile_error'] = 'Invalid verification code';
+        header('Location: edit_profile.php');
+        exit;
     }
 
     // Update email and verify
@@ -355,36 +400,42 @@ function handle_email_verification()
         unset($_SESSION['pending_email']);
         unset($_SESSION['email_change_pending']);
 
-        $user = get_user($user_id); // Refresh user data
-        $success_messages[] = 'Email address updated successfully!';
+        $_SESSION['profile_success'] = 'Email address updated successfully!';
+        header('Location: edit_profile.php');
+        exit;
     } else {
         $stmt->close();
-        $errors[] = 'Failed to update email address.';
+        $_SESSION['profile_error'] = 'Failed to update email address.';
+        header('Location: edit_profile.php');
+        exit;
     }
 }
 
 // Function to handle password changes
 function handle_password_change()
 {
-    global $errors, $success_messages, $user_id;
+    global $user_id;
 
     $current_password = $_POST['current_password'] ?? '';
     $new_password = $_POST['new_password'] ?? '';
     $confirm_password = $_POST['confirm_password'] ?? '';
 
     if (empty($current_password) || empty($new_password) || empty($confirm_password)) {
-        $errors[] = 'All password fields are required';
-        return;
+        $_SESSION['profile_error'] = 'All password fields are required';
+        header('Location: edit_profile.php');
+        exit;
     }
 
     if ($new_password !== $confirm_password) {
-        $errors[] = 'New passwords do not match';
-        return;
+        $_SESSION['profile_error'] = 'New passwords do not match';
+        header('Location: edit_profile.php');
+        exit;
     }
 
     if (strlen($new_password) < 8) {
-        $errors[] = 'Password must be at least 8 characters long';
-        return;
+        $_SESSION['profile_error'] = 'Password must be at least 8 characters long';
+        header('Location: edit_profile.php');
+        exit;
     }
 
     $db = get_db_connection();
@@ -398,8 +449,9 @@ function handle_password_change()
     $stmt->close();
 
     if (!$password_data || !password_verify($current_password, $password_data['password_hash'])) {
-        $errors[] = 'Current password is incorrect';
-        return;
+        $_SESSION['profile_error'] = 'Current password is incorrect';
+        header('Location: edit_profile.php');
+        exit;
     }
 
     // Update password
@@ -409,10 +461,14 @@ function handle_password_change()
 
     if ($stmt->execute()) {
         $stmt->close();
-        $success_messages[] = 'Password changed successfully!';
+        $_SESSION['profile_success'] = 'Password changed successfully!';
+        header('Location: edit_profile.php');
+        exit;
     } else {
         $stmt->close();
-        $errors[] = 'Failed to change password. Please try again.';
+        $_SESSION['profile_error'] = 'Failed to change password. Please try again.';
+        header('Location: edit_profile.php');
+        exit;
     }
 }
 ?>
@@ -425,6 +481,7 @@ function handle_password_change()
     <title>Edit Account - Argo Community</title>
     <link rel="shortcut icon" type="image/x-icon" href="../../images/argo-logo/A-logo.ico">
 
+    <script src="delete-account.js" defer></script>
     <script src="../../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../../resources/scripts/main.js"></script>
     <script src="../../resources/notifications/notifications.js" defer></script>
@@ -443,27 +500,31 @@ function handle_password_change()
         <div id="includeHeader"></div>
     </header>
 
-    <div class="title-container">
-        <h1>Edit Account</h1>
-    </div>
-
-    <?php if (!empty($errors)): ?>
-        <div class="error-message">
-            <?php foreach ($errors as $error): ?>
-                <p><?php echo htmlspecialchars($error); ?></p>
-            <?php endforeach; ?>
+    <?php if (!empty($success_message)): ?>
+        <div class="success-message">
+            <p><?php echo htmlspecialchars($success_message); ?></p>
         </div>
     <?php endif; ?>
 
-    <?php if (!empty($success_messages)): ?>
-        <div class="success-message">
-            <?php foreach ($success_messages as $message): ?>
-                <p><?php echo htmlspecialchars($message); ?></p>
-            <?php endforeach; ?>
+    <?php if (!empty($error_message)): ?>
+        <div class="error-message">
+            <p><?php echo htmlspecialchars($error_message); ?></p>
         </div>
     <?php endif; ?>
 
     <div class="edit-sections">
+        <div class="title-container">
+            <h1>Edit Account</h1>
+        </div>
+
+        <a href="profile.php" class="btn btn-outline">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="25" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Back to Profile
+        </a>
+
         <!-- Avatar Section -->
         <div class="edit-section">
             <h2>Profile Picture</h2>
@@ -472,7 +533,9 @@ function handle_password_change()
                     <?php if (!empty($user['avatar']) && file_exists('../../' . $user['avatar'])): ?>
                         <img src="../../<?php echo htmlspecialchars($user['avatar']); ?>" alt="Current Avatar" class="avatar-preview" id="avatarPreview">
                     <?php else: ?>
-                        <div class="avatar-preview" id="avatarPreview">👤</div>
+                        <div class="avatar-preview" id="avatarPreview" style="background-color: #3b82f6; color: white; display: flex; align-items: center; justify-content: center; font-size: 48px; font-weight: bold;">
+                            <?php echo strtoupper(substr($user['username'], 0, 1)); ?>
+                        </div>
                     <?php endif; ?>
                 </div>
                 <div class="avatar-controls">
@@ -485,7 +548,7 @@ function handle_password_change()
                         <div class="selected-file" id="selectedFile" style="display: none;"></div>
                         <p class="info-text">Upload a profile picture (JPEG, PNG, GIF, or WebP). Maximum size: 5MB.</p>
                         <div class="form-actions" style="margin-top: 15px; padding-top: 15px; justify-content: flex-start;">
-                            <button type="submit" class="btn btn-blue">Update Avatar</button>
+                            <button type="submit" class="btn btn-blue" id="applyAvatarBtn" style="display: none;">Apply</button>
                         </div>
                     </form>
 
@@ -603,6 +666,10 @@ function handle_password_change()
                 </div>
             </form>
         </div>
+
+        <div class="delete-account-section">
+            <button onclick="showDeleteModal()" class="btn btn-red">Delete Account</button>
+        </div>
     </div>
 
     <footer class="footer">
@@ -610,11 +677,36 @@ function handle_password_change()
     </footer>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Restore scroll position if it exists in sessionStorage
+            if (sessionStorage.getItem('scrollPosition')) {
+                window.scrollTo(0, sessionStorage.getItem('scrollPosition'));
+                sessionStorage.removeItem('scrollPosition');
+            }
+
+            // Save scroll position when submitting forms
+            const forms = document.querySelectorAll('form');
+            forms.forEach(form => {
+                form.addEventListener('submit', function() {
+                    sessionStorage.setItem('scrollPosition', window.scrollY);
+                });
+            });
+
+            // Also save position when clicking links
+            const links = document.querySelectorAll('a[href^="edit_profile.php"], a[href^="profile.php"]');
+            links.forEach(link => {
+                link.addEventListener('click', function() {
+                    sessionStorage.setItem('scrollPosition', window.scrollY);
+                });
+            });
+        });
+
         // Avatar preview functionality
         function previewAvatar(input) {
             const file = input.files[0];
             const preview = document.getElementById('avatarPreview');
             const selectedFile = document.getElementById('selectedFile');
+            const applyBtn = document.getElementById('applyAvatarBtn');
 
             if (file) {
                 const reader = new FileReader();
@@ -625,8 +717,18 @@ function handle_password_change()
 
                 selectedFile.textContent = `Selected: ${file.name}`;
                 selectedFile.style.display = 'block';
+                applyBtn.style.display = 'inline-block';
             } else {
                 selectedFile.style.display = 'none';
+                applyBtn.style.display = 'none';
+                // Reset preview to original avatar
+                <?php if (!empty($user['avatar']) && file_exists('../../' . $user['avatar'])): ?>
+                    preview.innerHTML = `<img src="../../<?php echo htmlspecialchars($user['avatar']); ?>" alt="Current Avatar" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
+                <?php else: ?>
+                    preview.innerHTML = `<?php echo strtoupper(substr($user['username'], 0, 1)); ?>`;
+                    preview.style.backgroundColor = '#3b82f6';
+                    preview.style.color = 'white';
+                <?php endif; ?>
             }
         }
 
@@ -703,7 +805,26 @@ function handle_password_change()
                 matchDiv.className = 'password-strength strength-weak';
             }
         }
+
+        // Delete account functionality
+        function showDeleteModal() {
+            document.getElementById('delete-account-modal').style.display = 'block';
+            document.getElementById('delete-confirm-input').value = '';
+            document.getElementById('confirm-delete').disabled = true;
+        }
     </script>
+
+    <div id="delete-account-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2>Confirm Account Deletion</h2>
+            <p>Type <strong>DELETE</strong> to confirm. Your account will be scheduled for deletion in 30 days unless you log in again before then.</p>
+            <input type="text" id="delete-confirm-input" placeholder="Type DELETE to confirm">
+            <div class="modal-actions">
+                <button type="button" id="cancel-delete" class="btn btn-gray">Cancel</button>
+                <button type="button" id="confirm-delete" class="btn btn-red" disabled>Schedule Deletion</button>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

@@ -23,6 +23,10 @@
   margin: 0 auto;
 }
 
+.top-return-btn {
+  margin-bottom: 30px;
+}
+
 .reputation-section {
   background-color: #fff;
   border-radius: 8px;

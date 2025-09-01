@@ -36,6 +36,14 @@ require_once '../community_functions.php';
             <p>Understanding how reputation works and ways to earn it</p>
         </div>
 
+        <a href="profile.php" class="btn btn-blue top-return-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="25" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Back to Profile
+        </a>
+
         <div class="reputation-section full-padding">
             <h2>What is Reputation?</h2>
             <p>Reputation is a measurement of how much the community trusts and values your contributions. As you participate in the Argo Community by submitting bug reports, suggesting features, and helping others, you'll earn reputation points that reflect your contributions to the community.</p>

@@ -495,7 +495,6 @@ if ($is_own_profile && isset($user['email'])) {
 
     <?php include 'resources/head/google-analytics.php'; ?>
 
-    <script src="profile.js" defer></script>
     <script src="../../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../../resources/scripts/main.js"></script>
     <script src="../../resources/scripts/utc-to-local.js" defer></script>
@@ -651,17 +650,12 @@ if ($is_own_profile && isset($user['email'])) {
                                     </a>
                                 <?php endif; ?>
 
-<<<<<<< Updated upstream
-=======
                                 <?php if (!$user['email_verified']): ?>
                                     <a href="verify_code.php" class="btn btn-orange">Verify Email</a>
                                 <?php endif; ?>
 
                                 <a href="edit_profile.php" class="btn btn-blue">Edit Account</a>
-                                <a href="delete_account.php" class="btn btn-red">Delete Account</a>
->>>>>>> Stashed changes
                                 <a href="logout.php" class="btn btn-gray">Log Out</a>
-                                <button type="button" id="delete-account-btn" class="btn btn-red">Delete Account</button>
                             <?php endif; ?>
                         </div>
                     </div>
@@ -1046,18 +1040,6 @@ if ($is_own_profile && isset($user['email'])) {
     <footer class="footer">
         <div id="includeFooter"></div>
     </footer>
-
-    <div id="delete-account-modal" class="modal">
-        <div class="modal-content">
-            <h2>Confirm Account Deletion</h2>
-            <p>Type <strong>DELETE</strong> to confirm. Your account will be scheduled for deletion in 30 days unless you log in again before then.</p>
-            <input type="text" id="delete-confirm-input" placeholder="Type DELETE to confirm">
-            <div class="modal-actions">
-                <button type="button" id="cancel-delete" class="btn btn-gray">Cancel</button>
-                <button type="button" id="confirm-delete" class="btn btn-red" disabled>Schedule Deletion</button>
-            </div>
-        </div>
-    </div>
 </body>
 
 </html>
