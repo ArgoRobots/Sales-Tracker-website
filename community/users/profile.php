@@ -656,7 +656,13 @@ if ($is_own_profile && isset($user['email'])) {
                                     <a href="verify_code.php" class="btn btn-orange">Verify Email</a>
                                 <?php endif; ?>
 
-                                <a href="edit_profile.php" class="btn btn-blue">Edit Account</a>
+                                <a href="edit_profile.php" class="btn btn-blue">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                    </svg>
+                                    Edit Account
+                                </a>
                                 <a href="logout.php" class="btn btn-gray">Log Out</a>
                             <?php endif; ?>
                         </div>
