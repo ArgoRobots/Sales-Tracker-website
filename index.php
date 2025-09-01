@@ -514,12 +514,6 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                     <div class="row-item negative">Scattered everywhere 📁</div>
                     <div class="row-item positive">Attached & searchable 🔍</div>
                 </div>
-
-                <div class="comparison-row">
-                    <div class="row-label">Monthly cost</div>
-                    <div class="row-item negative">$0 (but costs a lot of time)</div>
-                    <div class="row-item positive">$0 forever</div>
-                </div>
             </div>
 
             <div class="text-center">
