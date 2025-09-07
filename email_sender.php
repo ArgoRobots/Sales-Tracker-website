@@ -75,7 +75,7 @@ function send_license_email($to_email, $license_key)
 }
 
 /**
- * Send resend license key via email using PHP mail
+ * Resend license key via email using PHP mail
  * 
  * @param string $to_email Recipient email address
  * @param string $license_key The license key to resend

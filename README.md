@@ -2,7 +2,7 @@
 ## Introduction
 This is the website for [Argo Sales Tracker](https://github.com/ArgoRobots/Sales-Tracker), a WinForms application designed to track the sales and purchases of products. This website serves as a platform for users to download the software, purchase license keys, access documentation, and has an administrative system for managing licenses, user accounts, and analytics.
 
-## Technologies used
+## Technologies Used
 ### Frontend:
 - **HTML5/CSS3**: Structure and styling
 - **JavaScript/jQuery**: Interactive elements and dynamic content loading
