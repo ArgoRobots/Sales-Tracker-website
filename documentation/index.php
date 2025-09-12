@@ -661,11 +661,6 @@
                     <li>Choose a save location</li>
                     <li>The exported file will include both the chart and the underlying data</li>
                 </ol>
-
-                <div class="info-box">
-                    <strong>File Naming:</strong> If a file with the same name already exists, the system automatically
-                    adds a number to create a unique filename.
-                </div>
             </section>
 
             <!-- Search Bar section -->
