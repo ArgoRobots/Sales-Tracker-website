@@ -1,6 +1,12 @@
 <?php
 session_start();
 
+// Load environment variables from .env file
+require_once __DIR__ . '/vendor/autoload.php';
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
 // Security headers
 header('X-Content-Type-Options: nosniff');
 header('X-Frame-Options: DENY');
@@ -15,7 +21,7 @@ define('MAX_UPLOADS_PER_HOUR', 100); // Rate limiting
 define('MAX_FILENAME_LENGTH', 255);
 
 // Authentication configuration
-define('API_KEY', 'ArgoST_9k8h3n2m4x7q1w5e6r8t0y9u2i3o5p8a7s6d4f1g3h5j7k9l'); // Must match UPLOAD_API_KEY in .env
+define('API_KEY', $_ENV['UPLOAD_API_KEY']); 
 define('ALLOWED_USER_AGENT', 'ArgoSalesTracker'); // Expected User-Agent prefix
 
 // Authenticate request

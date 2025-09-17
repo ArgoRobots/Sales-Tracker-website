@@ -1,14 +1,20 @@
 <?php
 
+// Load environment variables
+require_once __DIR__ . '/vendor/autoload.php';
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
 /**
  * Database connection function for MySQL
  */
 function get_db_connection()
 {
-    $host = 'localhost';
-    $username = 'argorobots_Admin';
-    $password = 'qDzI>-#HT6px8Xi';
-    $database = 'argorobots_argo_community';
+    $host = $_ENV['DB_HOST'] ?? 'localhost';
+    $username = $_ENV['DB_USERNAME'];
+    $password = $_ENV['DB_PASSWORD'];
+    $database = $_ENV['DB_NAME'];
 
     // Create new connection
     $db = new mysqli($host, $username, $password, $database);
