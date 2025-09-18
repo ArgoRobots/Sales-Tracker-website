@@ -162,7 +162,7 @@
             <section id="installation" class="article">
                 <h2>Installation Guide</h2>
                 <ol class="steps-list">
-                    <li>Download the installer<a class="link" href="../index.php">here</a></li>
+                    <li>Download the installer <a class="link" href="../index.php">here</a></li>
                     <li>Run the installer file (Argo Sales Tracker Installer.exe)</li>
                     <li>Follow the installation wizard</li>
                     <li>Launch Argo Sales Tracker from your desktop or start menu</li>
