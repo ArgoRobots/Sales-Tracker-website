@@ -134,10 +134,6 @@ header .header-inner .menu-container .menu .documentation:after {
   transition: background-color 0.2s;
 }
 
-.items-list li:hover {
-  background: #e2e8f0;
-}
-
 .primary-name {
   font-weight: 600;
   color: var(--primary-blue, #2563eb);
