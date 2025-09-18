@@ -11,7 +11,7 @@
     <meta name="description"
         content="Complete Argo Sales Tracker documentation and user guide. Learn installation, features, tutorials for sales tracking, product management, analytics, Excel import/export, and security settings.">
     <meta name="keywords"
-        content="argo sales tracker documentation, sales tracker tutorial, business software guide, how to use sales tracker, installation guide, user manual, sales tracking help, product management tutorial, analytics dashboard guide">
+        content="argo sales tracker documentation, sales tracker tutorial, business software guide, how to use sales tracker, installation guide, user manual, sales tracking help, product management tutorial">
 
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Documentation & User Guide - Argo Sales Tracker">
@@ -95,7 +95,6 @@
                             Management</li>
                         <li data-scroll-to="sales-tracking" title="Learn about sales tracking">Purchase/Sales Tracking
                         </li>
-                        <li data-scroll-to="analytics" title="View analytics features">Analytics Dashboard</li>
                         <li data-scroll-to="receipts" title="Learn about receipt management">Receipt Management</li>
                         <li data-scroll-to="spreadsheet-import" title="Learn about importing spreadsheets">Spreadsheet
                             Import</li>
@@ -365,99 +364,6 @@
                 <div class="info-box">
                     <strong>Tip:</strong> Use the "Multiple items" checkbox when adding multiple products to a single
                     purchase or sale.
-                </div>
-            </section>
-
-            <!-- Analytics Dashboard section -->
-            <section id="analytics" class="article">
-                <h2>Analytics Dashboard</h2>
-                <p>The Analytics Dashboard provides comprehensive insights into your business performance through
-                    interactive charts and visualizations organized into six specialized tabs. Each chart can be
-                    exported to Excel or Google Sheets for further analysis.</p>
-
-                <h3>Overview Tab</h3>
-                <p>Get a high-level view of your business performance with key metrics at a glance:</p>
-                <ul>
-                    <li><strong>Sales vs Expenses:</strong> Compares your total sales revenue against expenses over
-                        time, providing a clear view of business volume and cash flow.</li>
-                    <li><strong>Total Profits:</strong> Shows your profit margins by calculating revenue minus expenses,
-                        helping you track overall profitability trends.</li>
-                    <li><strong>Total Transactions:</strong> Displays the number of purchase and sale transactions over
-                        time, helping you understand business activity levels.</li>
-                    <li><strong>Average Transaction Value:</strong> Tracks the average value of your purchases and
-                        sales, helping identify trends in spending and revenue patterns.</li>
-                </ul>
-
-                <h3>Geographic Tab</h3>
-                <p>Analyze the geographic distribution of your business operations:</p>
-                <ul>
-                    <li><strong>Countries of Origin:</strong> Shows where your purchased products come from, helping you
-                        understand your supply chain geography.</li>
-                    <li><strong>Countries of Destination:</strong> Displays where your products are being sold to,
-                        helping track your market reach and customer base.</li>
-                    <li><strong>Companies of Origin:</strong> Visualizes your supplier distribution, showing what
-                        percentage of products come from different vendors and manufacturers.</li>
-                </ul>
-
-                <h3>Financial Tab</h3>
-                <p>Deep dive into your financial data with detailed breakdowns:</p>
-                <ul>
-                    <li><strong>Total Revenue:</strong> Line or bar chart showing total sales revenue over time.</li>
-                    <li><strong>Total Expenses:</strong> Line or bar chart displaying total purchase expenses over time.
-                    </li>
-                    <li><strong>Distribution of Revenue:</strong> Pie chart breaking down revenue by product categories,
-                        showing which categories generate the most income.</li>
-                    <li><strong>Distribution of Expenses:</strong> Pie chart showing expense breakdown by categories,
-                        including shipping, taxes, fees, and product costs.</li>
-                </ul>
-
-                <h3>Performance Tab</h3>
-                <p>Monitor your business growth and performance trends:</p>
-                <ul>
-                    <li><strong>Growth Rates:</strong> Shows percentage growth of both expenses and revenue over time,
-                        helping identify seasonal patterns and business trends.</li>
-                    <li><strong>Average Transaction Value:</strong> Tracks average purchase and sale values to
-                        understand spending and pricing patterns.</li>
-                    <li><strong>Total Transactions:</strong> Monitors transaction volume to gauge business activity
-                        levels.</li>
-                </ul>
-
-                <h3>Operational Tab</h3>
-                <p>Analyze operational aspects of your business:</p>
-                <ul>
-                    <li><strong>Transactions by Accountant:</strong> Shows the distribution of transactions handled by
-                        each accountant, helping monitor workload distribution and performance.</li>
-                    <li><strong>Average Shipping Costs:</strong> Tracks shipping expenses over time for both purchases
-                        and sales, with an option to include or exclude free shipping transactions.</li>
-                </ul>
-
-                <h3>Returns Tab</h3>
-                <p>Comprehensive analysis of product returns and their impact:</p>
-                <ul>
-                    <li><strong>Returns Over Time:</strong> Shows the number of returned transactions over time, helping
-                        identify return patterns and trends.</li>
-                    <li><strong>Return Reasons:</strong> Pie chart displaying the most common reasons for returns,
-                        helping you address quality or service issues.</li>
-                    <li><strong>Return Financial Impact:</strong> Shows the monetary value of returns over time, helping
-                        quantify the financial impact of returns on your business.</li>
-                    <li><strong>Returns by Category:</strong> Breaks down returns by product category, helping identify
-                        which product types have higher return rates.</li>
-                    <li><strong>Returns by Product:</strong> Shows which specific products are returned most frequently,
-                        helping identify problem items.</li>
-                    <li><strong>Purchase vs Sale Returns:</strong> Compares the volume of purchase returns versus sale
-                        returns, providing insight into different types of return scenarios.</li>
-                </ul>
-
-                <div class="info-box">
-                    <strong>Filtering:</strong> You can customize the time range for all charts using the date range
-                    selector, or filter results using the search bar. This allows you to focus on specific time periods
-                    or transaction types.
-                </div>
-
-                <div class="info-box">
-                    <strong>Export Options:</strong> Right-click any chart to access additional options including
-                    exporting to Microsoft Excel or Google Sheets. The exported files include both the chart
-                    visualization and the underlying data for further analysis.
                 </div>
             </section>
 
