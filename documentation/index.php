@@ -109,6 +109,8 @@
                 <div class="nav-section">
                     <h3>Reference</h3>
                     <ul class="nav-links">
+                        <li data-scroll-to="accepted-countries" title="View accepted country names">Accepted Countries
+                        </li>
                         <li data-scroll-to="supported-currencies" title="View supported currencies">Supported Currencies
                         </li>
                         <li data-scroll-to="supported-languages" title="View supported languages">Supported Languages
@@ -160,10 +162,9 @@
             <section id="installation" class="article">
                 <h2>Installation Guide</h2>
                 <ol class="steps-list">
-                    <li>Download the installer from our website <a class="link" href="../index.php">here</a>
-                    </li>
+                    <li>Download the installer<a class="link" href="../index.php">here</a></li>
                     <li>Run the installer file (Argo Sales Tracker Installer.exe)</li>
-                    <li>Follow the installation wizard instructions</li>
+                    <li>Follow the installation wizard</li>
                     <li>Launch Argo Sales Tracker from your desktop or start menu</li>
                 </ol>
 
@@ -539,7 +540,7 @@
                             products", "Purchases", "Sales" (case doesn't matter)</li>
                         <li><strong>Date format:</strong> YYYY-MM-DD (e.g., 2025-01-15)</li>
                         <li><strong>Country names:</strong> Must match the <a class="link"
-                                href="accepted_countries.php">accepted country list</a></li>
+                                href="references/accepted_countries.php">accepted country list</a></li>
                         <li><strong>Everything else:</strong> Follow the template format exactly</li>
                     </ul>
                 </div>
@@ -567,13 +568,8 @@
                 </ol>
 
                 <h3>What Gets Created Automatically</h3>
-                <p>The import system is smart about handling missing data:</p>
-                <ul>
-                    <li><strong>Companies:</strong> If a transaction references a company that doesn't exist, it will be
-                        automatically created</li>
-                    <li><strong>Categories:</strong> If a product references a category that doesn't exist, it will be
-                        automatically created</li>
-                </ul>
+                <p>The import system automatically creates any missing companies, categories, or accountants referenced
+                    in your transaction data.</p>
 
                 <h3>Receipt Import</h3>
                 <p>If you have receipt files to import alongside your data:</p>
@@ -587,19 +583,6 @@
                 <div class="info-box">
                     <strong>Tip:</strong> The system automatically looks for a receipts folder next to your
                     spreadsheet file with names like "receipts".
-                </div>
-
-                <h3>Error Handling</h3>
-                <p>If the import encounters errors (like invalid monetary values), you'll be given options to:</p>
-                <ul>
-                    <li><strong>Skip:</strong> Skip the problematic transaction and continue importing others</li>
-                    <li><strong>Retry:</strong> Correct the value in the spreadsheet and try again</li>
-                    <li><strong>Cancel:</strong> Stop the import process entirely</li>
-                </ul>
-
-                <div class="info-box">
-                    <strong>Rollback Protection:</strong> If you cancel an import or encounter serious errors, all
-                    changes are automatically rolled back, leaving your data unchanged.
                 </div>
             </section>
 
@@ -732,232 +715,54 @@
                 </div>
 
                 <div class="warning-box">
-                    AI search requires an internet connection and is only available in the paid
-                    version. <a class="link" href="../upgrade/index.php">Upgrade here</a> to access this feature.
+                    <strong>Internet Connection Required:</strong> AI search requires an internet connection and is only
+                    available in the paid version. <a class="link" href="../upgrade/index.php">Upgrade here</a> to
+                    access this feature.
                 </div>
+            </section>
+
+            <!-- Accepted Countries section -->
+            <section id="accepted-countries" class="article">
+                <h2>Accepted Countries</h2>
+                <p>When importing spreadsheet data, country names must match the system's accepted country list or use
+                    recognized variants. The system accepts standard country names, ISO codes, and common alternative
+                    names.</p>
+
+                <h3>Common Examples</h3>
+                <p>Popular countries with their accepted variants:</p>
+                <ul>
+                    <li><strong>United States:</strong> US, USA, U.S., America</li>
+                    <li><strong>United Kingdom:</strong> UK, U.K., Great Britain, Britain, England</li>
+                    <li><strong>Germany:</strong> DE, Deutschland</li>
+                </ul>
+                <br>
+                <p><a class="link" href="references/accepted_countries.php">View complete list of all accepted country
+                        names and variants</a></p>
             </section>
 
             <!-- Supported Currencies section -->
             <section id="supported-currencies" class="article">
                 <h2>Supported Currencies</h2>
-                <p>Argo Sales Tracker supports 28 international currencies for import, export, and display. The system
-                    uses real-time exchange rates to convert between currencies accurately.</p>
+                <p>Argo Sales Tracker supports 28 international currencies including USD, EUR, GBP, CAD, JPY, CNY, and
+                    others. The system uses real-time exchange rates to convert between currencies accurately for
+                    import, export, and display.</p>
 
-                <h3>Complete Currency List</h3>
-                <div class="info-box">
-                    <table class="comparison-table">
-                        <tr>
-                            <th>Currency Code</th>
-                            <th>Currency Name</th>
-                            <th>Symbol</th>
-                            <th>Country/Region</th>
-                        </tr>
-                        <tr>
-                            <td>ALL</td>
-                            <td>Albanian Lek</td>
-                            <td>L</td>
-                            <td>Albania</td>
-                        </tr>
-                        <tr>
-                            <td>AUD</td>
-                            <td>Australian Dollar</td>
-                            <td>$</td>
-                            <td>Australia</td>
-                        </tr>
-                        <tr>
-                            <td>BAM</td>
-                            <td>Bosnia and Herzegovina Convertible Mark</td>
-                            <td>KM</td>
-                            <td>Bosnia and Herzegovina</td>
-                        </tr>
-                        <tr>
-                            <td>BGN</td>
-                            <td>Bulgarian Lev</td>
-                            <td>лв</td>
-                            <td>Bulgaria</td>
-                        </tr>
-                        <tr>
-                            <td>BRL</td>
-                            <td>Brazilian Real</td>
-                            <td>R$</td>
-                            <td>Brazil</td>
-                        </tr>
-                        <tr>
-                            <td>BYN</td>
-                            <td>Belarusian Ruble</td>
-                            <td>Br</td>
-                            <td>Belarus</td>
-                        </tr>
-                        <tr>
-                            <td>CAD</td>
-                            <td>Canadian Dollar</td>
-                            <td>$</td>
-                            <td>Canada</td>
-                        </tr>
-                        <tr>
-                            <td>CHF</td>
-                            <td>Swiss Franc</td>
-                            <td>CHF</td>
-                            <td>Switzerland</td>
-                        </tr>
-                        <tr>
-                            <td>CNY</td>
-                            <td>Chinese Yuan Renminbi</td>
-                            <td>¥</td>
-                            <td>China</td>
-                        </tr>
-                        <tr>
-                            <td>CZK</td>
-                            <td>Czech Koruna</td>
-                            <td>Kč</td>
-                            <td>Czech Republic</td>
-                        </tr>
-                        <tr>
-                            <td>DKK</td>
-                            <td>Danish Krone</td>
-                            <td>kr</td>
-                            <td>Denmark</td>
-                        </tr>
-                        <tr>
-                            <td>EUR</td>
-                            <td>Euro</td>
-                            <td>€</td>
-                            <td>European Union</td>
-                        </tr>
-                        <tr>
-                            <td>GBP</td>
-                            <td>British Pound</td>
-                            <td>£</td>
-                            <td>United Kingdom</td>
-                        </tr>
-                        <tr>
-                            <td>HUF</td>
-                            <td>Hungarian Forint</td>
-                            <td>Ft</td>
-                            <td>Hungary</td>
-                        </tr>
-                        <tr>
-                            <td>ISK</td>
-                            <td>Icelandic Króna</td>
-                            <td>kr</td>
-                            <td>Iceland</td>
-                        </tr>
-                        <tr>
-                            <td>JPY</td>
-                            <td>Japanese Yen</td>
-                            <td>¥</td>
-                            <td>Japan</td>
-                        </tr>
-                        <tr>
-                            <td>KRW</td>
-                            <td>South Korean Won</td>
-                            <td>₩</td>
-                            <td>South Korea</td>
-                        </tr>
-                        <tr>
-                            <td>MKD</td>
-                            <td>Macedonian Denar</td>
-                            <td>ден</td>
-                            <td>North Macedonia</td>
-                        </tr>
-                        <tr>
-                            <td>NOK</td>
-                            <td>Norwegian Krone</td>
-                            <td>kr</td>
-                            <td>Norway</td>
-                        </tr>
-                        <tr>
-                            <td>PLN</td>
-                            <td>Polish Złoty</td>
-                            <td>zł</td>
-                            <td>Poland</td>
-                        </tr>
-                        <tr>
-                            <td>RON</td>
-                            <td>Romanian Leu</td>
-                            <td>lei</td>
-                            <td>Romania</td>
-                        </tr>
-                        <tr>
-                            <td>RSD</td>
-                            <td>Serbian Dinar</td>
-                            <td>дин</td>
-                            <td>Serbia</td>
-                        </tr>
-                        <tr>
-                            <td>RUB</td>
-                            <td>Russian Ruble</td>
-                            <td>₽</td>
-                            <td>Russia</td>
-                        </tr>
-                        <tr>
-                            <td>SEK</td>
-                            <td>Swedish Krona</td>
-                            <td>kr</td>
-                            <td>Sweden</td>
-                        </tr>
-                        <tr>
-                            <td>TRY</td>
-                            <td>Turkish Lira</td>
-                            <td>₺</td>
-                            <td>Turkey</td>
-                        </tr>
-                        <tr>
-                            <td>TWD</td>
-                            <td>Taiwan Dollar</td>
-                            <td>NT$</td>
-                            <td>Taiwan</td>
-                        </tr>
-                        <tr>
-                            <td>UAH</td>
-                            <td>Ukrainian Hryvnia</td>
-                            <td>₴</td>
-                            <td>Ukraine</td>
-                        </tr>
-                        <tr>
-                            <td>USD</td>
-                            <td>United States Dollar</td>
-                            <td>$</td>
-                            <td>United States</td>
-                        </tr>
-                    </table>
-                </div>
-
-                <h3>How Currency Conversion Works</h3>
-                <p>The system uses the OpenExchangeRates API to get accurate, historical exchange rates:</p>
-                <ul>
-                    <li><strong>Real-time rates:</strong> Exchange rates are fetched for the exact date of each
-                        transaction</li>
-                    <li><strong>Caching:</strong> Exchange rates are cached locally to minimize API calls and improve
-                        performance</li>
-                    <li><strong>Internet required:</strong> An internet connection is needed when importing or exporting
-                        data with currency conversion</li>
-                    <li><strong>Automatic detection:</strong> During import, the system can often detect the currency
-                        automatically from symbols and formatting</li>
-                </ul>
+                <p><a class="link" href="references/supported_currencies.php">View complete list of all 28 supported
+                        currencies</a></p>
 
                 <div class="warning-box">
                     <strong>Internet Connection Required:</strong> Currency conversion requires an internet connection
                     to fetch current and historical exchange rates. The rates are cached locally to minimize future
                     requests.
                 </div>
-
-                <h3>Setting Your Default Currency</h3>
-                <p>You can set your preferred default currency during initial setup or change it later in the settings.
-                    This currency will be used for:</p>
-                <ul>
-                    <li>Displaying transaction amounts in the main interface</li>
-                    <li>Analytics and chart calculations</li>
-                    <li>Default export currency (though you can choose a different one during export)</li>
-                </ul>
             </section>
 
             <!-- Supported Languages section -->
             <section id="supported-languages" class="article">
                 <h2>Supported Languages</h2>
-                <p>Argo Sales Tracker supports 54 languages to help users worldwide work in their preferred language.
-                    The installer is currently only available in English, but you can change the application language in
-                    the settings after installation.</p>
+                <p>Choose from 54 languages including English, Spanish, French, German, Chinese, Arabic, and many
+                    others. The installer is currently only available in English, but you can change the application
+                    language in "Settings > General" after installation.</p>
 
                 <h3>Changing Your Language</h3>
                 <ol class="steps-list">
@@ -966,237 +771,8 @@
                     <li>Select your preferred language from the list</li>
                 </ol>
 
-                <h3>Complete Language List</h3>
-                <div class="info-box">
-                    <table class="comparison-table">
-                        <tr>
-                            <th>Language</th>
-                            <th>Region/Countries</th>
-                        </tr>
-                        <tr>
-                            <td>Albanian</td>
-                            <td>Albania</td>
-                        </tr>
-                        <tr>
-                            <td>Arabic</td>
-                            <td>Middle East, North Africa</td>
-                        </tr>
-                        <tr>
-                            <td>Basque</td>
-                            <td>Basque Country</td>
-                        </tr>
-                        <tr>
-                            <td>Belarusian</td>
-                            <td>Belarus</td>
-                        </tr>
-                        <tr>
-                            <td>Bengali</td>
-                            <td>Bangladesh, India</td>
-                        </tr>
-                        <tr>
-                            <td>Bosnian</td>
-                            <td>Bosnia and Herzegovina</td>
-                        </tr>
-                        <tr>
-                            <td>Bulgarian</td>
-                            <td>Bulgaria</td>
-                        </tr>
-                        <tr>
-                            <td>Catalan</td>
-                            <td>Catalonia</td>
-                        </tr>
-                        <tr>
-                            <td>Chinese (Simplified)</td>
-                            <td>Mainland China</td>
-                        </tr>
-                        <tr>
-                            <td>Chinese (Traditional)</td>
-                            <td>Taiwan, Hong Kong</td>
-                        </tr>
-                        <tr>
-                            <td>Croatian</td>
-                            <td>Croatia</td>
-                        </tr>
-                        <tr>
-                            <td>Czech</td>
-                            <td>Czech Republic</td>
-                        </tr>
-                        <tr>
-                            <td>Danish</td>
-                            <td>Denmark</td>
-                        </tr>
-                        <tr>
-                            <td>Dutch</td>
-                            <td>Netherlands, Belgium</td>
-                        </tr>
-                        <tr>
-                            <td>English</td>
-                            <td>North America, UK, Australia</td>
-                        </tr>
-                        <tr>
-                            <td>Estonian</td>
-                            <td>Estonia</td>
-                        </tr>
-                        <tr>
-                            <td>Filipino</td>
-                            <td>Philippines</td>
-                        </tr>
-                        <tr>
-                            <td>Finnish</td>
-                            <td>Finland</td>
-                        </tr>
-                        <tr>
-                            <td>French</td>
-                            <td>France, Canada, Belgium</td>
-                        </tr>
-                        <tr>
-                            <td>Galician</td>
-                            <td>Galicia</td>
-                        </tr>
-                        <tr>
-                            <td>German</td>
-                            <td>Germany, Austria</td>
-                        </tr>
-                        <tr>
-                            <td>Greek</td>
-                            <td>Greece</td>
-                        </tr>
-                        <tr>
-                            <td>Hebrew</td>
-                            <td>Israel</td>
-                        </tr>
-                        <tr>
-                            <td>Hindi</td>
-                            <td>India</td>
-                        </tr>
-                        <tr>
-                            <td>Hungarian</td>
-                            <td>Hungary</td>
-                        </tr>
-                        <tr>
-                            <td>Icelandic</td>
-                            <td>Iceland</td>
-                        </tr>
-                        <tr>
-                            <td>Indonesian</td>
-                            <td>Indonesia</td>
-                        </tr>
-                        <tr>
-                            <td>Irish</td>
-                            <td>Ireland</td>
-                        </tr>
-                        <tr>
-                            <td>Italian</td>
-                            <td>Italy</td>
-                        </tr>
-                        <tr>
-                            <td>Japanese</td>
-                            <td>Japan</td>
-                        </tr>
-                        <tr>
-                            <td>Korean</td>
-                            <td>South Korea</td>
-                        </tr>
-                        <tr>
-                            <td>Latvian</td>
-                            <td>Latvia</td>
-                        </tr>
-                        <tr>
-                            <td>Lithuanian</td>
-                            <td>Lithuania</td>
-                        </tr>
-                        <tr>
-                            <td>Luxembourgish</td>
-                            <td>Luxembourg</td>
-                        </tr>
-                        <tr>
-                            <td>Macedonian</td>
-                            <td>North Macedonia</td>
-                        </tr>
-                        <tr>
-                            <td>Malay</td>
-                            <td>Malaysia, Brunei</td>
-                        </tr>
-                        <tr>
-                            <td>Maltese</td>
-                            <td>Malta</td>
-                        </tr>
-                        <tr>
-                            <td>Norwegian</td>
-                            <td>Norway</td>
-                        </tr>
-                        <tr>
-                            <td>Persian</td>
-                            <td>Iran, Afghanistan</td>
-                        </tr>
-                        <tr>
-                            <td>Polish</td>
-                            <td>Poland</td>
-                        </tr>
-                        <tr>
-                            <td>Portuguese</td>
-                            <td>Portugal, Brazil</td>
-                        </tr>
-                        <tr>
-                            <td>Romanian</td>
-                            <td>Romania</td>
-                        </tr>
-                        <tr>
-                            <td>Russian</td>
-                            <td>Russia, Eastern Europe</td>
-                        </tr>
-                        <tr>
-                            <td>Serbian</td>
-                            <td>Serbia</td>
-                        </tr>
-                        <tr>
-                            <td>Slovak</td>
-                            <td>Slovakia</td>
-                        </tr>
-                        <tr>
-                            <td>Slovenian</td>
-                            <td>Slovenia</td>
-                        </tr>
-                        <tr>
-                            <td>Spanish</td>
-                            <td>Spain, Latin America</td>
-                        </tr>
-                        <tr>
-                            <td>Swahili</td>
-                            <td>East Africa</td>
-                        </tr>
-                        <tr>
-                            <td>Swedish</td>
-                            <td>Sweden</td>
-                        </tr>
-                        <tr>
-                            <td>Thai</td>
-                            <td>Thailand</td>
-                        </tr>
-                        <tr>
-                            <td>Turkish</td>
-                            <td>Turkey</td>
-                        </tr>
-                        <tr>
-                            <td>Ukrainian</td>
-                            <td>Ukraine</td>
-                        </tr>
-                        <tr>
-                            <td>Urdu</td>
-                            <td>Pakistan, India</td>
-                        </tr>
-                        <tr>
-                            <td>Vietnamese</td>
-                            <td>Vietnam</td>
-                        </tr>
-                    </table>
-                </div>
-
-                <div class="info-box">
-                    <strong>Installation Note:</strong> The installer itself is currently only available in English, but
-                    once installed, you can switch to any of these 54 supported languages through the application
-                    settings.
-                </div>
+                <p><a class="link" href="references/supported_languages.php">View complete list of all 54 supported
+                        languages</a></p>
             </section>
 
             <!-- Security section -->
