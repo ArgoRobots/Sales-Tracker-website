@@ -1,3 +1,8 @@
+/* Underline current page */
+header .header-inner .menu-container .menu .community:after {
+  transform: translateX(-50%) scaleX(1);
+}
+
 .guidelines-container {
   max-width: 900px;
   margin: 0 auto;
