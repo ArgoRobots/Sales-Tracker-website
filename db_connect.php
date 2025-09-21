@@ -1,26 +1,21 @@
 <?php
-
-/**
- * Database connection function for MySQL
- */
 function get_db_connection()
 {
-    $host = 'localhost';
-    $username = 'argorobots_Admin';
-    $password = 'qDzI>-#HT6px8Xi';
-    $database = 'argorobots_argo_community';
+    $host = "localhost";
+    $user = "root";           // default root user
+    $pass = "";               // leave empty for XAMPP (unless you set one)
+    $db   = "argo_sales_tracker"; // your database name
 
-    // Create new connection
-    $db = new mysqli($host, $username, $password, $database);
+    // Create connection
+    $conn = new mysqli($host, $user, $pass, $db);
 
     // Check connection
-    if ($db->connect_error) {
-        error_log("Database connection error: " . $db->connect_error);
-        die("Database connection failed: " . $db->connect_error);
+    if ($conn->connect_error) {
+        die("Database connection failed: " . $conn->connect_error);
     }
 
-    // Set character set
-    $db->set_charset("utf8mb4");
+    $conn->set_charset("utf8mb4");
 
-    return $db;
+    return $conn;
 }
+?>

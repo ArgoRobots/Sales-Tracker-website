@@ -137,6 +137,30 @@ body {
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
+/* ✅ Add new figcaption styles here */
+.story-image figure {
+  margin: 0;
+  text-align: center;
+}
+
+.story-image figcaption {
+  font-size: 14px;
+  color: #6b7280;
+  margin-top: 8px;
+  font-style: italic;
+}
+
+.story-image figcaption a {
+  color: var(--primary-blue);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.story-image figcaption a:hover {
+  text-decoration: underline;
+}
+
+
 .story-content h2 {
   font-size: 36px;
   margin-bottom: 24px;

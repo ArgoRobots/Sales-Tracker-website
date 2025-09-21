@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 session_start();
 require_once 'community/users/user_functions.php';
 require_once 'statistics.php';
@@ -87,7 +89,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     <link rel="shortcut icon" type="image/x-icon" href="images/argo-logo/A-logo.ico">
     <title>Argo Sales Tracker - Save Several Hours Weekly | Free Business Automation Software</title>
 
-    <?php include 'resources/head/google-analytics.php'; ?>
+   <!--?php include 'resources/head/google-analytics.php'; ?> -->
 
     <script src="resources/scripts/jquery-3.6.0.js"></script>
     <script src="resources/scripts/main.js"></script>
@@ -132,20 +134,25 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                         and shows you exactly where your money comes from.
                     </p>
 
-                    <div class="hero-stats">
-                        <div class="stat">
-                            <span class="stat-number">22+</span>
-                            <span class="stat-label">Live Charts</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-number">95%</span>
-                            <span class="stat-label">Error Reduction</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-number">$0</span>
-                            <span class="stat-label">Monthly Fees</span>
-                        </div>
-                    </div>
+<div style="display:flex; justify-content:center; gap:4rem; margin-top:2rem; margin-bottom:3rem;">
+
+    <div style="text-align:center;">
+        <span style="display:block; font-size:2rem; font-weight:700; color:#ffcc00;">22+</span>
+        <span style="font-size:1rem; color:#ffffffcc;">Live Charts</span>
+    </div>
+
+    <div style="text-align:center; border-left:1px solid rgba(255,255,255,0.3); border-right:1px solid rgba(255,255,255,0.3); padding:0 2rem;">
+        <span style="display:block; font-size:2rem; font-weight:700; color:#ffcc00;">Significant</span>
+        <span style="font-size:1rem; color:#ffffffcc;">Error Reduction</span>
+    </div>
+
+    <div style="text-align:center;">
+        <span style="display:block; font-size:2rem; font-weight:700; color:#ffcc00;">$0</span>
+        <span style="font-size:1rem; color:#ffffffcc;">Monthly Fees</span>
+    </div>
+
+</div>
+
 
                     <div class="hero-cta">
                         <div class="text-center">
@@ -463,7 +470,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                 </div>
 
                 <div class="card text-center">
-                    <div class="result-metric">95%</div>
+                    <div class="result-metric">Significant</div>
                     <div class="result-label">Reduction in calculation errors</div>
                     <div class="result-description">Automated calculations and validation eliminate the human errors
                         common in manual spreadsheets.</div>

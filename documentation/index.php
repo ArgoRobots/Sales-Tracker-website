@@ -517,32 +517,41 @@
                     the following sheets (not all are required):</p>
 
                 <div class="info-box">
-                    <ul>
-                        <li><strong>Accountants</strong> - A simple list with accountant names</li>
-                        <li><strong>Companies</strong> - A simple list with company names</li>
-                        <li><strong>Purchase products</strong> - Products for purchasing</li>
-                        <li><strong>Sale products</strong> - Products for selling</li>
-                        <li><strong>Purchases</strong> - Purchase transaction records</li>
-                        <li><strong>Sales</strong> - Sales transaction records</li>
-                    </ul>
+                   <ul>
+  <li><strong>Accountants:</strong> Name</li>
+  <li><strong>Companies:</strong> Company Name</li>
+  <li><strong>Purchase products:</strong> Product Name, Category (optional)</li>
+  <li><strong>Sale products:</strong> Product Name, Category (optional)</li>
+  <li><strong>Purchases:</strong> Date, Product, Quantity, Cost, Returned (Yes/No), Receipt (optional)</li>
+  <li><strong>Sales:</strong> Date, Product, Quantity, Price, Returned (Yes/No), Receipt (optional)</li>
+</ul>
                 </div>
 
-                <h3>Formatting Requirements</h3>
-                <div class="info-box">
-                    <p>Download our <a class="link"
-                            href="../resources/downloads/Argo Sales Tracker format.xlsx">template spreadsheet</a> and
-                        follow the exact format shown. This is much easier than trying to remember formatting rules!</p>
+           <h3>Formatting Requirements</h3>
+<div class="info-box">
+  <p>Download our <a class="link" href="../resources/downloads/Argo Sales Tracker format.xlsx">
+    template spreadsheet</a> and follow the exact format shown.</p>
 
-                    <p>Key points:</p>
-                    <ul>
-                        <li><strong>Sheet names:</strong> Use "Accountants", "Companies", "Purchase products", "Sale
-                            products", "Purchases", "Sales" (case doesn't matter)</li>
-                        <li><strong>Date format:</strong> YYYY-MM-DD (e.g., 2025-01-15)</li>
-                        <li><strong>Country names:</strong> Must match the <a class="link"
-                                href="accepted_countries.php">accepted country list</a></li>
-                        <li><strong>Everything else:</strong> Follow the template format exactly</li>
-                    </ul>
-                </div>
+  <p>Key points:</p>
+  <ul>
+    <li><strong>Sheet names:</strong> Use "Accountants", "Companies", "Purchase products", 
+        "Sale products", "Purchases", "Sales" (case doesn't matter)</li>
+    <li><strong>Date format:</strong> YYYY-MM-DD (e.g., 2025-01-15)</li>
+    <li><strong>Returned items:</strong> Purchases and Sales sheets must include a "Returned" column (Yes/No)</li>
+    <li><strong>Everything else:</strong> Follow the template format exactly</li>
+  </ul>
+</div>
+
+<h4>Required Columns</h4>
+<ul>
+  <li><strong>Accountants:</strong> Name</li>
+  <li><strong>Companies:</strong> Company Name</li>
+  <li><strong>Purchase products:</strong> Product Name, Category (optional)</li>
+  <li><strong>Sale products:</strong> Product Name, Category (optional)</li>
+  <li><strong>Purchases:</strong> Date, Product, Quantity, Cost, Returned (Yes/No), Receipt (optional)</li>
+  <li><strong>Sales:</strong> Date, Product, Quantity, Price, Returned (Yes/No), Receipt (optional)</li>
+</ul>
+
 
                 <h3>Currency Support</h3>
                 <p>The import system supports <a class="link" data-scroll-to="supported-currencies">28 different

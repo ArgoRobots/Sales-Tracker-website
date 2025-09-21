@@ -121,23 +121,28 @@
     </section>
 
     <section class="our-story">
-        <div class="container">
-            <div class="story-grid">
-                <div class="story-image">
-                    <!--SOURCE: https://globalnews.ca/news/1643155/calgarys-changing-skyline-could-dwarf-calgary-tower-in-2024/ -->
-                    <img src="../images/calgary-skyline.jpg" alt="Calgary Skyline">
-                </div>
-                <div class="story-content">
-                    <h2>Our Story</h2>
-                    <p>From humble beginnings with a simple goal: Create the sales tracking tool we
-                        wished existed for our own small businesses.</p>
-                    <p>What sets us apart is our first-hand experience with the challenges small businesses face. We're
-                        not a large corporation with venture capital funding – we're a small, self-funded business that
-                        understands what it means to watch every dollar and make smart investments in technology.</p>
-                </div>
+    <div class="container">
+        <div class="story-grid">
+            <div class="story-image">
+  <figure>
+    <img src="../images/calgary-skyline.jpg" alt="Calgary Skyline">
+    <figcaption>
+      Photo by <a href="https://globalnews.ca/news/1643155/calgarys-changing-skyline-could-dwarf-calgary-tower-in-2024/" target="_blank">Global News</a>
+    </figcaption>
+  </figure>
+</div>
+
+            <div class="story-content">
+                <h2>Our Story</h2>
+                <p>From humble beginnings with a simple goal: Create the sales tracking tool we
+                    wished existed for our own small businesses.</p>
+                <p>What sets us apart is our first-hand experience with the challenges small businesses face. We're
+                    not a large corporation with venture capital funding – we're a small, self-funded business that
+                    understands what it means to watch every dollar and make smart investments in technology.</p>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <section class="values">
         <div class="container">

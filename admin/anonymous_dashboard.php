@@ -342,10 +342,7 @@ include 'admin_header.php';
                 </div>
 
                 <div class="chart-row">
-                    <div class="chart-container">
-                        <h2>VPN/Proxy Usage</h2>
-                        <canvas id="vpnUsageChart"></canvas>
-                    </div>
+                
                     <div class="chart-container">
                         <h2>Timezone Distribution</h2>
                         <canvas id="timezoneChart"></canvas>
