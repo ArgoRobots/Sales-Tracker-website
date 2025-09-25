@@ -80,6 +80,140 @@
     <div class="container">
         <div class="version-grid">
 
+            <!-- Version 1.0.8 -->
+            <div class="version-card">
+                <div class="version-header">
+                    <span class="version-tag">Version 1.0.8</span>
+                    <span class="date-tag">September 15 2025</span>
+                </div>
+
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <div class="icon icon-plus"></div>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Service Tracking<span class="type-tag feature">New Feature</span></h3>
+                            <p>You can now track services alongside products with the same comprehensive functionality.
+                                Manage service transactions, analytics, and reporting with the same powerful tools you
+                                use for physical products.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <div class="icon icon-plus"></div>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Geographic Map Export<span class="type-tag feature">New Feature</span></h3>
+                            <p>Right-click the Geographic Map chart to save it as an image file, making it easy to
+                                include geographic analytics in reports and presentations.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <div class="icon icon-lightning"></div>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Enhanced AI Search<span class="type-tag enhancement">Enhancement</span></h3>
+                            <p>Improved AI search capabilities to better understand natural language queries to
+                                provide better results.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <div class="icon icon-plus"></div>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Customizable Table Columns<span class="type-tag feature">New Feature</span></h3>
+                            <p>Right-click on table headers to access a new panel that lets you show or hide specific
+                                columns.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <div class="icon icon-lightning"></div>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Smart Spreadsheet Import<span class="type-tag enhancement">Enhancement</span></h3>
+                            <p>Data is now automatically detected based on column headers rather than column order,
+                                making imports more flexible and reliable even if your spreadsheet columns are
+                                rearranged. It also no longer requires some columns. We updated the documentation to
+                                include a list of required columns.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <div class="icon icon-plus"></div>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Lost and Damaged Product Tracking<span class="type-tag feature">New Feature</span></h3>
+                            <p>Beyond returns, you can now mark products as lost or damaged, providing complete
+                                inventory management. Includes a dedicated analytics tab for tracking lost and damaged
+                                products, with full Excel import/export support.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <div class="icon icon-lightning"></div>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Flexible Transaction Entry<span class="type-tag enhancement">Enhancement</span></h3>
+                            <p>Streamlined transaction entry with fewer mandatory fields, allowing for quicker data
+                                input.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <div class="icon icon-plus"></div>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Transaction Deletion Confirmation<span class="type-tag feature">New Feature</span></h3>
+                            <p>Added a confirmation dialog when deleting transactions to prevent accidental deletions
+                                and ensure data safety.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <div class="icon icon-check"></div>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Alignment Fix<span class="type-tag fix">Fix</span></h3>
+                            <p>Fixed alignment of the "No products exist" warning message on the "Add purchase" and "Add
+                                sale" forms.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <div class="icon icon-check"></div>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Chart Legend Duplication Fix<span class="type-tag fix">Fix</span></h3>
+                            <p>Resolved an issue where chart legends would sometimes duplicate when changing the color
+                                theme.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <div class="icon icon-check"></div>
+                        </div>
+                        <div class="feature-content">
+                            <h3>Receipt Management Fix<span class="type-tag fix">Fix</span></h3>
+                            <p>Fixed a bug where changing receipts in transactions would not work properly.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Version 1.0.7 -->
             <div class="version-card">
                 <div class="version-header">

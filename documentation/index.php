@@ -689,7 +689,7 @@
                     banks and military organizations.</p>
 
                 <p> Encryption is automatic and requires no additional setup from users. It's enabled by
-                    default, but can be disabled in the settings under the "Security" menu. </p>
+                    default, but can be disabled in the settings under the "Security" menu.</p>
             </section>
 
             <!-- Password Protection -->
