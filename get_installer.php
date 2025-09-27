@@ -1,6 +1,7 @@
 <?php
 // Start session to check for admin status
 session_start();
+require_once 'statistics.php';
 
 // Get available versions from filesystem
 function getOlderVersions()
@@ -8,7 +9,7 @@ function getOlderVersions()
     $versionsPath = __DIR__ . '/resources/downloads/versions/';
     $versions = [];
 
-    // Debug: Check if directory exists
+    // Check if directory exists
     if (!is_dir($versionsPath)) {
         error_log("Versions directory does not exist: " . $versionsPath);
         return $versions;
@@ -70,29 +71,6 @@ function getLatestVersion()
     return !empty($versions) ? $versions[0] : null;
 }
 
-function logDownloadAttempt($version, $filename, $userAgent, $ip, $success = true)
-{
-    // Don't track downloads from admin users
-    if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
-        return;
-    }
-
-    $logData = [
-        'timestamp' => date('Y-m-d H:i:s'),
-        'type' => 'installer_request',
-        'version' => $version,
-        'filename' => $filename,
-        'user_agent' => $userAgent,
-        'ip' => $ip,
-        'referer' => $_SERVER['HTTP_REFERER'] ?? 'direct',
-        'success' => $success
-    ];
-
-    $logLine = json_encode($logData) . "\n";
-    $logFile = __DIR__ . '/installer_logs.txt';
-    file_put_contents($logFile, $logLine, FILE_APPEND | LOCK_EX);
-}
-
 function serveFile($filepath, $filename, $version)
 {
     // Clean any output buffers
@@ -109,10 +87,8 @@ function serveFile($filepath, $filename, $version)
     header('Pragma: no-cache');
     header('Expires: 0');
 
-    // Log the successful download (will be skipped if admin)
-    $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? 'Unknown';
-    $ip = $_SERVER['REMOTE_ADDR'] ?? 'Unknown';
-    logDownloadAttempt($version, $filename, $userAgent, $ip, true);
+    // Record the download event for statistics tracking
+    track_event('download', $version);
 
     // Serve the file
     readfile($filepath);
@@ -144,7 +120,6 @@ if ($requestedVersion) {
     }
 
     // If we get here, version not found
-    logDownloadAttempt($requestedVersion, $requestedFilename ?? 'unknown', $userAgent, $ip, false);
     http_response_code(404);
     die("Version $requestedVersion not found");
 }
@@ -160,7 +135,6 @@ if ($requestedFilename) {
     }
 
     // If we get here, filename not found
-    logDownloadAttempt('unknown', $requestedFilename, $userAgent, $ip, false);
     http_response_code(404);
     die("File $requestedFilename not found");
 }
