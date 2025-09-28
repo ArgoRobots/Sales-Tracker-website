@@ -16,6 +16,7 @@ require_once '../community/formatting/formatting_functions.php';
 
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../resources/scripts/main.js"></script>
+<script src="../resources/scripts/levenshtein.js"></script>
 
     <link rel="stylesheet" href="../resources/styles/help.css">
     <link rel="stylesheet" href="accepted-countries.css">
@@ -1846,19 +1847,25 @@ require_once '../community/formatting/formatting_functions.php';
                     // Search through individual country items
                     countryItems.forEach(item => {
                         const countryText = item.textContent.toLowerCase();
-                        if (countryText.includes(searchTerm)) {
-                            item.style.display = '';
-                            hasVisibleItems = true;
-                            totalVisibleItems++;
+                  // use direct match OR fuzzy similarity
+const threshold = 0.6; // 0.0 = no match, 1.0 = perfect
+if (
+    countryText.includes(searchTerm) ||
+    getSimilarity(countryText, searchTerm) >= threshold
+) {
+    item.style.display = '';
+    hasVisibleItems = true;
+    totalVisibleItems++;
 
-                            // Show the parent group
-                            const parentGroup = item.closest('.country-group, .alphabet-section');
-                            if (parentGroup) {
-                                parentGroup.style.display = '';
-                            }
-                        } else {
-                            item.style.display = 'none';
-                        }
+    // Show the parent group
+    const parentGroup = item.closest('.country-group, .alphabet-section');
+    if (parentGroup) {
+        parentGroup.style.display = '';
+    }
+} else {
+    item.style.display = 'none';
+}
+
                     });
 
                     // Hide groups that have no visible items
