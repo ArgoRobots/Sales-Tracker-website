@@ -85,9 +85,10 @@
                 <div class="version-header">
                     <span class="version-tag">Version 1.0.7</span>
                     <span class="date-tag">August 29 2025</span>
+                     <button class="collapse-toggle">▼</button>
                 </div>
 
-                <div class="feature-list">
+             <div class="feature-list collapsible">
                     <div class="feature-item">
                         <div class="feature-icon">
                             <div class="icon icon-check"></div>
@@ -154,15 +155,17 @@
                     </div>
                 </div>
             </div>
+            
 
             <!-- Version 1.0.6 -->
             <div class="version-card">
                 <div class="version-header">
                     <span class="version-tag">Version 1.0.6</span>
                     <span class="date-tag">August 17 2025</span>
+                    <button class="collapse-toggle">▶</button>
                 </div>
 
-                <div class="feature-list">
+                 <div class="feature-list collapsible">
                     <div class="feature-item">
                         <div class="feature-icon">
                             <div class="icon icon-lightning"></div>
@@ -218,9 +221,10 @@
                 <div class="version-header">
                     <span class="version-tag">Version 1.0.5</span>
                     <span class="date-tag">August 7 2025</span>
+                    <button class="collapse-toggle">▶</button>
                 </div>
 
-                <div class="feature-list">
+                <div class="feature-list collapsible">
                     <div class="feature-item">
                         <div class="feature-icon">
                             <div class="icon icon-plus"></div>
@@ -308,9 +312,10 @@
                 <div class="version-header">
                     <span class="version-tag">Version 1.0.4</span>
                     <span class="date-tag">July 20 2025</span>
+                    <button class="collapse-toggle">▶</button>
                 </div>
 
-                <div class="feature-list">
+                <div class="feature-list collapsible">
                     <div class="feature-item">
                         <div class="feature-icon">
                             <div class="icon icon-plus"></div>
@@ -389,9 +394,10 @@
                 <div class="version-header">
                     <span class="version-tag">Version 1.0.3</span>
                     <span class="date-tag">June 28 2025</span>
+                    <button class="collapse-toggle">▶</button>
                 </div>
 
-                <div class="feature-list">
+                <div class="feature-list collapsible">
                     <div class="feature-item">
                         <div class="feature-icon">
                             <div class="icon icon-check"></div>
@@ -465,9 +471,10 @@
                 <div class="version-header">
                     <span class="version-tag">Version 1.0.2</span>
                     <span class="date-tag">June 14 2025</span>
+                    <button class="collapse-toggle">▶</button>
                 </div>
 
-                <div class="feature-list">
+                <div class="feature-list collapsible">
                     <div class="feature-item">
                         <div class="feature-icon">
                             <div class="icon icon-check"></div>
@@ -508,9 +515,10 @@
                 <div class="version-header">
                     <span class="version-tag">Version 1.0.1</span>
                     <span class="date-tag">May 10 2025</span>
+                    <button class="collapse-toggle">▶</button>
                 </div>
 
-                <div class="feature-list">
+                <div class="feature-list collapsible">
                     <div class="feature-item">
                         <div class="feature-icon">
                             <div class="icon icon-lightning"></div>
@@ -587,9 +595,10 @@
                 <div class="version-header">
                     <span class="version-tag">Version 1.0.0</span>
                     <span class="date-tag">May 1 2025</span>
+                    <button class="collapse-toggle">▶</button>
                 </div>
 
-                <div class="feature-list">
+                <div class="feature-list collapsible">
                     <div class="feature-item">
                         <div class="feature-icon">
                             <div class="icon icon-plus"></div>

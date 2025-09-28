@@ -89,4 +89,45 @@ $(document).ready(function () {
   $("#includeFooter").load("../../resources/footer/index.html", function () {
     adjustLinksAndImages("#includeFooter");
   });
+
+
+  // Apply adjustments to all pages
+$(document).ready(function () {
+  $("#includeHeader").load("../../resources/header/index.html", function () {
+    adjustLinksAndImages("#includeHeader");
+
+    // Avatar logic...
+  });
+
+  $("#includeFooter").load("../../resources/footer/index.html", function () {
+    adjustLinksAndImages("#includeFooter");
+  });
+
+  // -------------------------------
+  // Collapsible version cards logic
+  // -------------------------------
+  const versionCards = $(".version-card");
+
+  versionCards.each(function (index) {
+    const header = $(this).find(".version-header");
+    const featureList = $(this).find(".feature-list");
+    const toggleBtn = header.find(".collapse-toggle");
+
+    // open only the first (latest) version
+    if (index === 0) {
+      featureList.addClass("open");
+      toggleBtn.text("▼");
+    } else {
+      featureList.removeClass("open");
+      toggleBtn.text("▶");
+    }
+
+    // toggle expand/collapse
+    toggleBtn.on("click", function () {
+      featureList.toggleClass("open");
+      $(this).text(featureList.hasClass("open") ? "▼" : "▶");
+    });
+  });
+});
+
 });
