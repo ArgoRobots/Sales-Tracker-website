@@ -90,14 +90,6 @@ document.addEventListener("DOMContentLoaded", function () {
       exchangeRatesData
     );
     generateSessionDurationByRegionChart(sessionData);
-    generateVPNUsageChart(
-      exportData,
-      openaiData,
-      exchangeRatesData,
-      googleSheetsData,
-      sessionData,
-      errorData
-    );
     generateTimezoneChart(
       exportData,
       openaiData,
@@ -939,73 +931,6 @@ document.addEventListener("DOMContentLoaded", function () {
       },
     });
   }
-
-  function generateVPNUsageChart(
-    exportData,
-    openaiData,
-    exchangeRatesData,
-    googleSheetsData,
-    sessionData,
-    errorData
-  ) {
-    const allData = [
-      ...exportData,
-      ...openaiData,
-      ...exchangeRatesData,
-      ...googleSheetsData,
-      ...sessionData,
-      ...errorData,
-    ];
-    const vpnCount = allData.filter((item) => item.isVPN === true).length;
-    const regularCount = allData.filter(
-      (item) => item.isVPN === false || item.isVPN === undefined
-    ).length;
-
-    if (vpnCount === 0 && regularCount === 0) {
-      document.getElementById("vpnUsageChart").parentElement.innerHTML =
-        '<div class="chart-no-data">No VPN detection data available</div>';
-      return;
-    }
-
-    new Chart(document.getElementById("vpnUsageChart"), {
-      type: "doughnut",
-      data: {
-        labels: ["Regular Connections", "VPN/Proxy Connections"],
-        datasets: [
-          {
-            data: [regularCount, vpnCount],
-            backgroundColor: ["#10b981", "#f59e0b"],
-            borderColor: ["#059669", "#d97706"],
-            borderWidth: 1,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            position: "bottom",
-          },
-          tooltip: {
-            callbacks: {
-              label: function (context) {
-                const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                const percentage = Math.round((context.raw / total) * 100);
-                return `${context.label}: ${context.raw} (${percentage}%)`;
-              },
-            },
-          },
-        },
-        layout: {
-          padding: {
-            bottom: 40,
-          },
-        },
-      },
-    });
-  }
-
   function generateTimezoneChart(
     exportData,
     openaiData,
