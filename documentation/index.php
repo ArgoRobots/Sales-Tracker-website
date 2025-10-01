@@ -47,8 +47,10 @@
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../resources/scripts/main.js"></script>
     <script src="../resources/scripts/ScrollToCenter.js"></script>
+    <script src="search.js"></script>
 
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="search.css">
     <link rel="stylesheet" href="pdf-export.css">
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../resources/styles/link.css">
@@ -135,6 +137,21 @@
         <main class="content">
             <section class="article">
                 <h1>Argo Sales Tracker Documentation</h1>
+                <!-- SEARCH BAR -->
+                    <div class="search-container">
+                        <div class="search-box">
+                            <input type="text" id="docSearchInput" placeholder="Search documentation... (e.g., 'installation', 'export', 'password')" 
+                                aria-label="Search documentation">
+                            <button id="searchButton" aria-label="Search">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <path d="m21 21-4.3-4.3"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <div id="searchResults" class="search-results" style="display: none;"></div>
+                    </div>
+                <!-- SEARCH BAR -->
                 <p>Welcome to the Argo Sales Tracker documentation. This guide will help you get started and make the
                     most of our software.</p>
 
