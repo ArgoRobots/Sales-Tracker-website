@@ -20,6 +20,49 @@
     <link rel="stylesheet" href="../../resources/header/style.css">
     <link rel="stylesheet" href="../../resources/header/dark.css">
     <link rel="stylesheet" href="../../resources/footer/style.css">
+        <style>
+        /* Grid System */
+        .three-column-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 0;
+        }
+
+        .language-item {
+            background: #ffffff;
+            border-radius: 6px;
+            padding: 15px;
+            border: 1px solid #e5e7eb;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .language-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .language-item h4 {
+            margin-bottom: 10px;
+            color: #374151;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        /* Responsive design */
+        @media (max-width: 1024px) {
+            .three-column-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .three-column-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -38,52 +81,54 @@
 
         <div class="reference-category">
             <h3>Most Common Languages</h3>
-            <div class="item-group">
-                <h4>English</h4>
-                <div class="item-info">
-                    <span class="language-region">North America, UK, Australia</span>
+            <div class="item-group three-column-grid">
+                <div class="language-item">
+                    <h4>English</h4>
+                    <div class="item-info">
+                        <span class="language-region">North America, UK, Australia</span>
+                    </div>
                 </div>
-            </div>
-            <div class="item-group">
-                <h4>Spanish</h4>
-                <div class="item-info">
-                    <span class="language-region">Spain, Latin America</span>
+                <div class="language-item">
+                    <h4>Spanish</h4>
+                    <div class="item-info">
+                        <span class="language-region">Spain, Latin America</span>
+                    </div>
                 </div>
-            </div>
-            <div class="item-group">
-                <h4>French</h4>
-                <div class="item-info">
-                    <span class="language-region">France, Canada, Belgium</span>
+                <div class="language-item">
+                    <h4>French</h4>
+                    <div class="item-info">
+                        <span class="language-region">France, Canada, Belgium</span>
+                    </div>
                 </div>
-            </div>
-            <div class="item-group">
-                <h4>German</h4>
-                <div class="item-info">
-                    <span class="language-region">Germany, Austria</span>
+                <div class="language-item">
+                    <h4>German</h4>
+                    <div class="item-info">
+                        <span class="language-region">Germany, Austria</span>
+                    </div>
                 </div>
-            </div>
-            <div class="item-group">
-                <h4>Chinese (Simplified)</h4>
-                <div class="item-info">
-                    <span class="language-region">Mainland China</span>
+                <div class="language-item">
+                    <h4>Chinese (Simplified)</h4>
+                    <div class="item-info">
+                        <span class="language-region">Mainland China</span>
+                    </div>
                 </div>
-            </div>
-            <div class="item-group">
-                <h4>Chinese (Traditional)</h4>
-                <div class="item-info">
-                    <span class="language-region">Taiwan, Hong Kong</span>
+                <div class="language-item">
+                    <h4>Chinese (Traditional)</h4>
+                    <div class="item-info">
+                        <span class="language-region">Taiwan, Hong Kong</span>
+                    </div>
                 </div>
-            </div>
-            <div class="item-group">
-                <h4>Japanese</h4>
-                <div class="item-info">
-                    <span class="language-region">Japan</span>
+                <div class="language-item">
+                    <h4>Japanese</h4>
+                    <div class="item-info">
+                        <span class="language-region">Japan</span>
+                    </div>
                 </div>
-            </div>
-            <div class="item-group">
-                <h4>Arabic</h4>
-                <div class="item-info">
-                    <span class="language-region">Middle East, North Africa</span>
+                <div class="language-item">
+                    <h4>Arabic</h4>
+                    <div class="item-info">
+                        <span class="language-region">Middle East, North Africa</span>
+                    </div>
                 </div>
             </div>
         </div>
