@@ -5,11 +5,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Update the form based on payment method
   const formTitle = document.querySelector(".checkout-form h2");
-  const stripeContainer = document.getElementById("stripe-container");
-  const squareContainer = document.getElementById("square-container");
-
-  // Store original form HTML for potential reset
-  const originalFormHTML = document.querySelector(".checkout-form").innerHTML;
 
   // Customize checkout form based on payment method
   switch (paymentMethod) {
@@ -28,49 +23,6 @@ document.addEventListener("DOMContentLoaded", function () {
     default:
       formTitle.textContent = "PayPal Checkout";
       setupPayPalCheckout();
-  }
-
-  // Show error message to the user
-  function showErrorMessage(message) {
-    // Reset the form first
-    document.querySelector(".checkout-form").innerHTML = originalFormHTML;
-
-    // Re-initialize the form based on payment method
-    const formTitle = document.querySelector(".checkout-form h2");
-
-    switch (paymentMethod) {
-      case "stripe":
-        formTitle.textContent = "Stripe Checkout";
-        break;
-      case "square":
-        formTitle.textContent = "Square Checkout";
-        break;
-      default:
-        formTitle.textContent = "PayPal Checkout";
-    }
-
-    // Add error message
-    const orderSummary = document.querySelector(".order-summary");
-    if (orderSummary) {
-      const errorDiv = document.createElement("div");
-      errorDiv.className = "payment-error";
-      errorDiv.innerHTML = `
-        <p style="color: #b91c1c; background: #fee2e2; padding: 12px; border-radius: 6px; margin: 15px 0;">
-          <strong>Error:</strong> ${message}
-        </p>
-        <p>Please try again or contact support if the problem persists.</p>
-      `;
-      orderSummary.after(errorDiv);
-    }
-
-    // Re-initialize the appropriate payment method
-    if (paymentMethod === "stripe") {
-      setupStripeCheckout();
-    } else if (paymentMethod === "square") {
-      setupSquareCheckout();
-    } else {
-      setupPayPalCheckout();
-    }
   }
 
   function setupPayPalCheckout() {
