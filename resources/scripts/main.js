@@ -58,8 +58,9 @@ function setDefaultAvatar() {
   }
 }
 
-// Apply adjustments to all pages
+// ✅ Single document ready block
 $(document).ready(function () {
+  // Load header
   $("#includeHeader").load("../../resources/header/index.html", function () {
     adjustLinksAndImages("#includeHeader");
 
@@ -86,28 +87,13 @@ $(document).ready(function () {
       });
   });
 
+  // Load footer
   $("#includeFooter").load("../../resources/footer/index.html", function () {
     adjustLinksAndImages("#includeFooter");
   });
 
-
-  // Apply adjustments to all pages
-$(document).ready(function () {
-  $("#includeHeader").load("../../resources/header/index.html", function () {
-    adjustLinksAndImages("#includeHeader");
-
-    // Avatar logic...
-  });
-
-  $("#includeFooter").load("../../resources/footer/index.html", function () {
-    adjustLinksAndImages("#includeFooter");
-  });
-
-  // -------------------------------
   // Collapsible version cards logic
-  // -------------------------------
   const versionCards = $(".version-card");
-
   versionCards.each(function (index) {
     const header = $(this).find(".version-header");
     const featureList = $(this).find(".feature-list");
@@ -128,6 +114,4 @@ $(document).ready(function () {
       $(this).text(featureList.hasClass("open") ? "▼" : "▶");
     });
   });
-});
-
 });
