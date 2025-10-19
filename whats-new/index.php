@@ -159,10 +159,12 @@
                             </div>
                             <div class="feature-content">
                                 <h3>Smart Spreadsheet Import<span class="type-tag enhancement">Enhancement</span></h3>
-                                <p>Data is now automatically detected based on column headers rather than column order,
+                                <p>Data is now automatically detected based on column header names rather than column order,
                                     making imports more flexible and reliable even if your spreadsheet columns are
-                                    rearranged. It also no longer requires some columns. We updated the documentation to
-                                    include a list of required columns.</p>
+                                    rearranged. It also no longer requires certain columns. We updated the documentation to
+                                    include a list of required columns
+                                    <a class="link-no-underline" href="../documentation/index.php#spreadsheet-import">here</a>.
+                                </p>
                             </div>
                         </div>
 
