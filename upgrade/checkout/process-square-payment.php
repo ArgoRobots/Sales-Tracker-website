@@ -11,19 +11,9 @@ require_once '../../db_connect.php';
 require_once '../../license_functions.php';
 require_once '../../email_sender.php';
 
-// Log incoming request data
-$request_log = 'Square payment request received at: ' . date('Y-m-d H:i:s') . "\n";
-$request_log .= 'Request IP: ' . $_SERVER['REMOTE_ADDR'] . "\n";
-
 // Get raw POST data
 $json_data = file_get_contents('php://input');
 $data = json_decode($json_data, true);
-
-// Log the received data (but mask sensitive information)
-$masked_data = $data;
-if (isset($masked_data['source_id'])) {
-    $masked_data['source_id'] = substr($masked_data['source_id'], 0, 4) . '...' . substr($masked_data['source_id'], -4);
-}
 
 // Check for required data
 if (!$data || !isset($data['source_id']) || !isset($data['email'])) {
@@ -90,10 +80,6 @@ try {
         'reference_id' => $data['reference_id'] ?? 'Argo_Sales_Tracker_License',
         'note' => 'Argo Sales Tracker - Lifetime Access'
     ];
-
-    // Log the payment request (without sensitive data)
-    $masked_payment_data = $payment_data;
-    $masked_payment_data['source_id'] = substr($payment_data['source_id'], 0, 4) . '...' . substr($payment_data['source_id'], -4);
 
     // Process the payment through Square API using cURL
     $ch = curl_init("$api_base_url/payments");

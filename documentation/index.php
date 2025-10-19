@@ -102,6 +102,7 @@
                             Import</li>
                         <li data-scroll-to="spreadsheet-export" title="Learn about exporting spreadsheets">Spreadsheet
                             Export</li>
+                        <li data-scroll-to="report-generator" title="Learn about report generator">Report Generator</li>
                         <li data-scroll-to="search-bar" title="Learn about search features">Advanced Search</li>
                     </ul>
                 </div>
@@ -555,8 +556,7 @@
                 <ol class="steps-list">
                     <li>Select the transactions you want to export receipts for in the main view</li>
                     <li>Right-click and select "Export receipts"</li>
-                    <li>Choose a destination folder</li>
-                    <li>All receipts will be organized in a dated folder structure</li>
+                    <li>Choose a save location</li>
                 </ol>
 
                 <h3>Chart Export</h3>
@@ -565,8 +565,50 @@
                     <li>Right-click any chart in the Analytics Dashboard</li>
                     <li>Select "Export to Microsoft Excel"</li>
                     <li>Choose a save location</li>
-                    <li>The exported file will include both the chart and the underlying data</li>
                 </ol>
+            </section>
+
+            <section id="report-generator" class="article">
+                <h2>Report Generator</h2>
+                <p>Create professional, customized reports with charts and analytics for presentations, and financial analysis. The Report Generator uses a simple 3-step wizard to guide you through the process.</p>
+
+                <h3>How to Generate a Report</h3>
+                <ol class="steps-list">
+                    <li>Go to "File > Generate Report"</li>
+                    <li>Follow the 3-step wizard to create your custom report</li>
+                </ol>
+
+                <h3>Step 1: Data Selection</h3>
+                <p>Choose what data to include in your report.</p>
+                <ul>
+                    <li><strong>Start with Templates:</strong> Use pre-built templates like Monthly Sales, Financial Overview, Performance Analysis, Returns Analysis, Losses Analysis, or Geographic Analysis</li>
+                    <li><strong>Select Charts:</strong> Choose from available charts including sales, purchases, profits, distributions, returns, losses, and geographic data</li>
+                    <li><strong>Set Date Range:</strong> Use quick presets (Last Month, Last 3 Months, etc.) or choose custom dates</li>
+                    <li><strong>Apply Filters:</strong> Filter by categories, products, companies, countries, or include/exclude returns and losses</li>
+                </ul>
+
+                <h3>Step 2: Layout Designer</h3>
+                <p>Arrange your report using drag-and-drop functionality.</p>
+                <ul>
+                    <li><strong>Add Elements:</strong> Include text labels, images, logos, date ranges, and summary boxes</li>
+                    <li><strong>Drag and Drop:</strong> Click and drag elements to position them on the page</li>
+                    <li><strong>Resize:</strong> Select an element and drag the corner handles to resize</li>
+                    <li><strong>Customize:</strong> Adjust colors, borders, alignment, and other properties</li>
+                    <li><strong>Undo/Redo:</strong> Use Ctrl+Z and Ctrl+Y to undo or redo changes</li>
+                </ul>
+
+                <h3>Step 3: Preview and Export</h3>
+                <p>Review your report and export in your preferred format.</p>
+                <ul>
+                    <li><strong>Preview:</strong> Use zoom controls to examine your report in detail</li>
+                    <li><strong>Export Format:</strong> Choose PNG (high quality), JPG (smaller files), or PDF (professional printing)</li>
+                    <li><strong>Quality:</strong> Adjust the quality slider to balance file size and image quality</li>
+                    <li><strong>Export:</strong> Select your save location and click "Export"</li>
+                </ul>
+
+                <div class="info-box">
+                    <strong>Tip:</strong> The Report Generator supports keyboard shortcuts for faster workflow. <a class="link" href="references/keyboard_shortcuts.php">View all available shortcuts</a>.
+                </div>
             </section>
 
             <!-- Search Bar section -->
