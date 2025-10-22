@@ -48,6 +48,8 @@
     <script src="../resources/scripts/main.js"></script>
     <script src="../resources/scripts/ScrollToCenter.js"></script>
     <script src="../resources/scripts/levenshtein.js"></script>
+    <script src="../resources/scripts/subscribe.js"></script>
+
 
 
     <link rel="stylesheet" href="style.css">
@@ -58,6 +60,7 @@
     <link rel="stylesheet" href="../resources/header/style.css">
     <link rel="stylesheet" href="../resources/header/dark.css">
     <link rel="stylesheet" href="../resources/footer/style.css">
+
 </head>
 
 <body>
@@ -129,6 +132,20 @@
                             Usage Data</li>
                     </ul>
                 </div>
+<!-- Newsletter Signup section -->
+<div style="margin-top:2rem;padding:1rem;border:1px solid #e5e7eb;border-radius:6px;background:#f9fafb;">
+  <h3 style="font-size:1rem;margin-bottom:0.5rem;color:#374151;">Stay Updated</h3>
+  <form action="../subscribe.php" method="POST" style="display:flex;flex-direction:column;gap:0.5rem;">
+    <input type="email" name="email" placeholder="Enter your email" required
+      style="padding:0.5rem;border:1px solid #d1d5db;border-radius:6px;font-size:0.875rem;">
+    <button type="submit"
+      style="background:#2563eb;color:white;border:none;padding:0.5rem;border-radius:6px;
+             cursor:pointer;font-size:0.875rem;transition:background 0.2s ease;">
+      Subscribe
+    </button>
+  </form>
+</div>
+
             </nav>
         </aside>
 

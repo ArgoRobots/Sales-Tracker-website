@@ -216,6 +216,14 @@ CREATE TABLE IF NOT EXISTS version_history (
     UNIQUE INDEX idx_version_number (version)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- Create email_subscribers table
+CREATE TABLE IF NOT EXISTS subscribers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
 -- Add indexes for license_keys table
 CREATE INDEX idx_license_keys_transaction_id ON license_keys(transaction_id);
 CREATE INDEX idx_license_keys_email ON license_keys(email);
