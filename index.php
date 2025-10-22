@@ -1,15 +1,23 @@
 <?php
-
 session_start();
+require_once 'db_connect.php';   // <-- add this for database access
 require_once 'community/users/user_functions.php';
 require_once 'statistics.php';
 
-track_page_view($_SERVER['REQUEST_URI']);
-
-// Check for remember me cookie and auto-login user if valid
-if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
-    check_remember_me();
+// ✅ Track referral click if ?ref= is present
+if (isset($_GET['ref'])) {
+    $ref = trim($_GET['ref']);
+    if ($ref !== '') {
+        $conn = get_db_connection();
+        $stmt = $conn->prepare("UPDATE referral_links SET clicks = clicks + 1 WHERE ref_name = ?");
+        $stmt->bind_param("s", $ref);
+        $stmt->execute();
+        $stmt->close();
+        $conn->close();
+    }
 }
+
+track_page_view($_SERVER['REQUEST_URI']);
 
 ?>
 <!DOCTYPE html>

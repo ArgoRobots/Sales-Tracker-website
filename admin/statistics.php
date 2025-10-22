@@ -113,6 +113,26 @@ function get_registrations_by_period($period = 'month', $limit = 12)
     return $data;
 }
 
+// Function to get referral clicks
+function get_referrals()
+{
+    $db = get_db_connection();
+    $query = "
+        SELECT ref_name, clicks
+        FROM referral_links
+        ORDER BY clicks DESC
+        LIMIT 10
+    ";
+    $result = $db->query($query);
+
+    $data = [];
+    while ($row = $result->fetch_assoc()) {
+        $data[] = $row;
+    }
+
+    return $data;
+}
+
 // Function to get license purchases by period
 function get_licenses_by_period($period = 'month', $limit = 12)
 {
@@ -896,6 +916,17 @@ foreach ($licenses_by_country as $country) {
     $licenses_country_labels[] = $country_name_map[$code] ?? $code;
     $licenses_country_counts[] = $country['license_count'];
 }
+// Get top referrals
+$referrals = get_referrals();
+
+$referral_labels = [];
+$referral_clicks = [];
+
+foreach ($referrals as $r) {
+    $referral_labels[] = $r['ref_name'];
+    $referral_clicks[] = (int)$r['clicks'];
+}
+
 
 include 'admin_header.php';
 ?>
@@ -982,6 +1013,12 @@ include 'admin_header.php';
             <h2>Licenses by Country</h2>
             <canvas id="licensesCountryChart"></canvas>
         </div>
+   
+    <div class="chart-container">
+        <h2>Referral Clicks</h2>
+        <canvas id="referralChart"></canvas>
+</div>
+
     </div>
 
     <!-- Most active users table -->
@@ -1864,4 +1901,44 @@ include 'admin_header.php';
             });
         });
     });
+    const referralLabels = <?php echo json_encode($referral_labels); ?>;
+const referralClicks = <?php echo json_encode($referral_clicks); ?>;
+
+const ctxReferral = document.getElementById('referralChart').getContext('2d');
+new Chart(ctxReferral, {
+    type: 'bar',
+    data: {
+        labels: referralLabels,
+        datasets: [{
+            label: 'Clicks',
+            data: referralClicks,
+            backgroundColor: 'rgba(59, 130, 246, 0.7)',
+            borderColor: 'rgba(37, 99, 235, 1)',
+            borderWidth: 1,
+            borderRadius: 5
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: { precision: 0 }
+            }
+        },
+        plugins: {
+            legend: { display: false },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        return `${context.label}: ${context.raw} clicks`;
+                    }
+                }
+            }
+        },
+        layout: { padding: { bottom: 40 } }
+    }
+});
+
 </script>

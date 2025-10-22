@@ -223,6 +223,14 @@ CREATE TABLE IF NOT EXISTS subscribers (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- Create referrals table
+CREATE TABLE IF NOT EXISTS referrals (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    source VARCHAR(100) NOT NULL,
+    clicks INT DEFAULT 0,
+    last_click DATETIME DEFAULT NULL
+);
+
 
 -- Add indexes for license_keys table
 CREATE INDEX idx_license_keys_transaction_id ON license_keys(transaction_id);

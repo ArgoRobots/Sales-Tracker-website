@@ -64,6 +64,9 @@ if (!isset($page_title)) {
                     <a href="2fa-setup.php" class="header-link <?php echo $current_page === '2fa-setup.php' ? 'active' : ''; ?>">
                         2FA Settings
                     </a>
+                    <a href="referrals.php" class="header-link <?php echo $current_page === 'referrals.php' ? 'active' : ''; ?>">
+    Referrals
+</a>
                 </nav>
 
                 <!-- Desktop Actions -->
@@ -95,6 +98,8 @@ if (!isset($page_title)) {
                     <li><a href="users.php" class="<?php echo $current_page === 'users.php' ? 'active' : ''; ?>">Users</a></li>
                     <li><a href="2fa-setup.php" class="<?php echo $current_page === '2fa-setup.php' ? 'active' : ''; ?>">2FA Settings</a></li>
                     <li><a href="logout.php" class="logout-link">Logout</a></li>
+                    <li><a href="referrals.php" class="<?php echo $current_page === 'referrals.php' ? 'active' : ''; ?>">Referrals</a></li>
+
                 </ul>
             </div>
         </header>

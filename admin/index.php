@@ -9,6 +9,7 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
     exit;
 }
 
+
 // Set page variables for the header
 $page_title = "License Key Administration";
 $page_description = "Manage license keys, view statistics, and administer user accounts";
