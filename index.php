@@ -22,7 +22,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
 
     <!-- SEO Meta Tags -->
     <meta name="description"
-        content="Transform your small business with Argo Sales Tracker. Save several hours weekly, reduce errors by 95%, and boost profits. Free Windows software with 22+ interactive charts. No monthly fees.">
+        content="Transform your small business with Argo Sales Tracker. Save several hours weekly, reduce errors and boost profits. Free Windows software with 22+ interactive charts. No monthly fees.">
     <meta name="keywords"
         content="sales tracker, business software, profit tracking, inventory management, small business automation, Windows software, Calgary business software, time saving, error reduction">
 
@@ -132,21 +132,6 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                         and shows you exactly where your money comes from.
                     </p>
 
-                    <div class="hero-stats">
-                        <div class="stat">
-                            <span class="stat-number">22+</span>
-                            <span class="stat-label">Live Charts</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-number">95%</span>
-                            <span class="stat-label">Error Reduction</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-number">$0</span>
-                            <span class="stat-label">Monthly Fees</span>
-                        </div>
-                    </div>
-
                     <div class="hero-cta">
                         <div class="text-center">
                             <a href="/download" class="btn btn-primary btn-large">
@@ -251,7 +236,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                     <div class="feature-benefits">
                         <div class="icon-text">
                             <span class="icon-text__icon">⚡</span>
-                            <span><strong>95% faster</strong> than spreadsheets</span>
+                            <span><strong>Faster</strong> than spreadsheets</span>
                         </div>
                         <div class="icon-text">
                             <span class="icon-text__icon">🎯</span>
@@ -463,7 +448,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                 </div>
 
                 <div class="card text-center">
-                    <div class="result-metric">95%</div>
+                    <div class="result-metric">Less errors</div>
                     <div class="result-label">Reduction in calculation errors</div>
                     <div class="result-description">Automated calculations and validation eliminate the human errors
                         common in manual spreadsheets.</div>

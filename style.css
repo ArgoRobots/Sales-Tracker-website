@@ -316,28 +316,6 @@ h4 {
   line-height: 1.6;
 }
 
-.hero-stats {
-  display: flex;
-  gap: 40px;
-  margin-bottom: 40px;
-}
-
-.stat {
-  text-align: center;
-}
-
-.stat-number {
-  display: block;
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: var(--warning-yellow);
-}
-
-.stat-label {
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.8);
-}
-
 .hero-cta {
   display: flex;
   gap: 16px;
@@ -465,7 +443,11 @@ h4 {
 
 .feature-badge {
   display: inline-block;
-  background: linear-gradient(135deg, var(--success-green), var(--success-green-dark));
+  background: linear-gradient(
+    135deg,
+    var(--success-green),
+    var(--success-green-dark)
+  );
   color: var(--white);
   padding: 6px 16px;
   border-radius: 20px;
@@ -571,7 +553,11 @@ h4 {
 }
 
 .header-item.featured {
-  background: linear-gradient(135deg, var(--success-green), var(--success-green-dark));
+  background: linear-gradient(
+    135deg,
+    var(--success-green),
+    var(--success-green-dark)
+  );
 }
 
 .comparison-row {
