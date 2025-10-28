@@ -89,7 +89,7 @@
             <p>We retain your personal information only for as long as necessary to fulfill the purposes for which we
                 collected it, including for the purposes of satisfying any legal, accounting, or reporting requirements.
             </p>
-            <p>Website user accounts that remain inactive for over 5 years may be removed from our system. Before
+            <p>Website user accounts that remain inactive for over 10 years may be removed from our system. Before
                 removing any inactive account, we will send an email notification to the registered email address at
                 least 30 days prior to deletion. This notice will include instructions on how to keep your account
                 active. If we do not receive a response or account activity within the 30-day notice period, the account
@@ -156,6 +156,7 @@
             <p>We use this data to:</p>
             <ul>
                 <li>Understand how users interact with our desktop software globally</li>
+                <li>Identify and fix errors and bugs that users encounter</li>
                 <li>Identify performance issues and bottlenecks in different regions</li>
                 <li>Prioritize feature development based on actual usage patterns</li>
                 <li>Optimize the software for different geographic regions and network conditions</li>
@@ -166,7 +167,7 @@
             <p>You have full control over anonymous data collection in the desktop application:</p>
             <ul>
                 <li><strong>Opt-out</strong>: While enabled by default, you can disable anonymous data collection at any
-                    time in the desktop software under Settings > Privacy</li>
+                    time in the desktop software under Settings > General</li>
                 <li><strong>Export your data</strong>: You can export all collected data as a JSON file for your review
                     directly from the desktop application</li>
                 <li><strong>Delete your data</strong>: You can delete all anonymous data stored on your device at any
@@ -176,6 +177,15 @@
             <p>No anonymous data is sent to our servers without your permission. All data is stored locally on
                 your device until you choose to share it with us.</p>
 
+            <h2>Google API Services</h2>
+            <p>When you use the export to Google Sheets feature in our desktop application, we request access to your Google account to:</p>
+            <ul>
+                <li>Create spreadsheets in your Google Drive</li>
+                <li>Write chart data to those spreadsheets</li>
+            </ul>
+            <p>We use this data only to perform the export you requested. We do not store, share, or use your Google data for any other purpose. All data remains in your Google Drive under your control.</p>
+            <p>Our use of information received from Google APIs adheres to the <a class="link" href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank">Google API Services User Data Policy</a>, including the Limited Use requirements.</p>
+            <p>The first time you use the Google Sheets export feature, you will be prompted to sign in to your Google account and grant permission to the application. You can revoke this access at any time through your <a class="link" href="https://myaccount.google.com/permissions" target="_blank">Google Account permissions page</a>.</p>
             <h2>Changes to This Privacy Policy</h2>
             <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new
                 Privacy Policy on this page and updating the "Last updated" date.</p>
@@ -188,7 +198,7 @@
                 <li>By email: <a class="link" href="mailto:contact@argorobots.com">contact@argorobots.com</a></li>
             </ul>
 
-            <p class="last-updated">Last updated: July 22, 2025</p>
+            <p class="last-updated">Last updated: October 28, 2025</p>
         </div>
     </div>
 
