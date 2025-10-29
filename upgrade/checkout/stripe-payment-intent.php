@@ -25,8 +25,14 @@ try {
         exit;
     }
 
+    // Get Stripe API key based on environment
+    $is_production = $_ENV['APP_ENV'] === 'production';
+    $stripe_secret_key = $is_production
+        ? $_ENV['STRIPE_LIVE_SECRET_KEY']
+        : $_ENV['STRIPE_SANDBOX_SECRET_KEY'];
+
     // Initialize Stripe API
-    \Stripe\Stripe::setApiKey("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");
+    \Stripe\Stripe::setApiKey($stripe_secret_key);
 
     // Pre-generate license key for the customer (we'll store it temporarily)
     $customer_email = isset($data['email']) ? $data['email'] : '';

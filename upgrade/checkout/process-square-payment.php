@@ -33,15 +33,19 @@ $response = [
 ];
 
 try {
-    // Square API credentials
-    $square_access_token = 'EAAAl8Gk1ywNhT-TTxh1v47ZXHH5x39glYRkUSVk3_jGNXxbTaLhaTnlz0zd7nH6';
-    $square_location_id = 'L30NT6Z9HKW81';
-    $is_production = true;
+    // Get Square API credentials based on environment
+    $is_production = $_ENV['APP_ENV'] === 'production';
+    $square_access_token = $is_production
+        ? $_ENV['SQUARE_LIVE_ACCESS_TOKEN']
+        : $_ENV['SQUARE_SANDBOX_ACCESS_TOKEN'];
+    $square_location_id = $is_production
+        ? $_ENV['SQUARE_LIVE_LOCATION_ID']
+        : $_ENV['SQUARE_SANDBOX_LOCATION_ID'];
 
     // Base URL for Square API
-    $api_base_url = $is_production ?
-        'https://connect.squareup.com/v2' :
-        'https://connect.squareupsandbox.com/v2';
+    $api_base_url = $is_production
+        ? 'https://connect.squareup.com/v2'
+        : 'https://connect.squareupsandbox.com/v2';
 
     // Database connection
     $db = get_db_connection();
@@ -88,7 +92,7 @@ try {
         CURLOPT_CUSTOMREQUEST => 'POST',
         CURLOPT_POSTFIELDS => json_encode($payment_data),
         CURLOPT_HTTPHEADER => [
-            "Square-Version: 2023-06-08",
+            "Square-Version: 2025-10-16",
             "Authorization: Bearer $square_access_token",
             "Content-Type: application/json"
         ]
