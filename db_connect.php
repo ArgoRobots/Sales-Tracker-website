@@ -11,7 +11,7 @@ $dotenv->load();
  */
 function get_db_connection()
 {
-    $host = $_ENV['DB_HOST'] ?? 'localhost';
+    $host = $_ENV['DB_HOST'];
     $username = $_ENV['DB_USERNAME'];
     $password = $_ENV['DB_PASSWORD'];
     $database = $_ENV['DB_NAME'];

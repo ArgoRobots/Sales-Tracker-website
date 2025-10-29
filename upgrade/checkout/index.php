@@ -11,6 +11,48 @@
     <link rel="shortcut icon" type="image/x-icon" href="../../images/argo-logo/A-logo.ico">
     <title>Checkout - Argo Sales Tracker</title>
 
+    <?php
+    // Load environment variables
+    require_once '../../db_connect.php';
+
+    // Get environment-based keys
+    $is_production = $_ENV['APP_ENV'] === 'production';
+
+    $stripe_publishable_key = $is_production
+        ? $_ENV['STRIPE_LIVE_PUBLISHABLE_KEY']
+        : $_ENV['STRIPE_SANDBOX_PUBLISHABLE_KEY'];
+
+    $paypal_client_id = $is_production
+        ? $_ENV['PAYPAL_LIVE_CLIENT_ID']
+        : $_ENV['PAYPAL_SANDBOX_CLIENT_ID'];
+
+    $square_app_id = $is_production
+        ? $_ENV['SQUARE_LIVE_APP_ID']
+        : $_ENV['SQUARE_SANDBOX_APP_ID'];
+
+    $square_location_id = $is_production
+        ? $_ENV['SQUARE_LIVE_LOCATION_ID']
+        : $_ENV['SQUARE_SANDBOX_LOCATION_ID'];
+
+    $square_environment = $is_production ? 'production' : 'sandbox';
+    ?>
+
+    <!-- Payment processor keys -->
+    <script>
+        window.PAYMENT_CONFIG = {
+            stripe: {
+                publishableKey: '<?php echo $stripe_publishable_key; ?>'
+            },
+            paypal: {
+                clientId: '<?php echo $paypal_client_id; ?>'
+            },
+            square: {
+                appId: '<?php echo $square_app_id; ?>',
+                locationId: '<?php echo $square_location_id; ?>'
+            }
+        };
+    </script>
+
     <?php include 'resources/head/google-analytics.php'; ?>
 
     <script src="main.js"></script>

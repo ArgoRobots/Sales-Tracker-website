@@ -46,8 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Load PayPal SDK dynamically if not available
       const paypalScript = document.createElement("script");
-      paypalScript.src =
-        "https://www.paypal.com/sdk/js?client-id=AaXh6OUCT8DLYES-I_sVj24PeifEmN207ufVjZOavXOufkhMOzTGNB2Tk1YBQ4nYv4CNJDcjqn8fxLln&currency=CAD";
+      paypalScript.src = `https://www.paypal.com/sdk/js?client-id=${window.PAYMENT_CONFIG.paypal.clientId}&currency=CAD`;
       paypalScript.onload = initializePayPal;
       paypalScript.onerror = () => {
         paypalContainer.innerHTML = `
@@ -204,9 +203,7 @@ document.addEventListener("DOMContentLoaded", function () {
     `;
 
       // Initialize Stripe
-      const stripe = Stripe(
-        "pk_live_51PKOfZFxK6AutkEZGGKjiTTL8EdPCOcbAp9ozLxCXi9UxeiUSSqA4SERUCIpRJDDs48wXeNjxmC1qIMZ437eVYlW00ZgneHz6C"
-      );
+      const stripe = Stripe(window.PAYMENT_CONFIG.stripe.publishableKey);
       const elements = stripe.elements();
 
       // Create card element
@@ -461,7 +458,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         const script = document.createElement("script");
-        script.src = "https://web.squarecdn.com/v1/square.js";
+        // Use sandbox SDK if app ID starts with 'sandbox-'
+        const isSandbox =
+          window.PAYMENT_CONFIG?.square?.appId?.startsWith("sandbox-");
+        script.src = isSandbox
+          ? "https://sandbox.web.squarecdn.com/v1/square.js" // Sandbox SDK
+          : "https://web.squarecdn.com/v1/square.js"; // Production SDK
         script.onload = () => {
           if (window.Square) {
             resolve(window.Square);
@@ -477,8 +479,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // Initialize Square payment form
     loadSquareSDK()
       .then((Square) => {
-        const appId = "sq0idp-3njfUbN00L39E79k62fTCg"; // Your Square application ID
-        const locationId = "LBR20K6QEPC4H"; // Your Square location ID
+        const appId = window.PAYMENT_CONFIG.square.appId;
+        const locationId = window.PAYMENT_CONFIG.square.locationId;
 
         // Initialize payments
         const payments = Square.payments(appId, locationId);

@@ -24,10 +24,17 @@ if (!$data || !isset($data['orderID']) || !isset($data['payer_email'])) {
     exit;
 }
 
-// PayPal API credentials
-$client_id = 'AaXh6OUCT8DLYES-I_sVj24PeifEmN207ufVjZOavXOufkhMOzTGNB2Tk1YBQ4nYv4CNJDcjqn8fxLln';
-$client_secret = 'EHdLlciwyzqlJujTnqir9wFsBHf5MGt0YVK8vS5xDH_UIFxKjy44udzy7FkSZdZdL9POu_tdf-gcydzk';
-$paypal_api_url = 'https://api-m.paypal.com';
+// Get PayPal API credentials based on environment
+$is_production = $_ENV['APP_ENV'] === 'production';
+$client_id = $is_production
+    ? $_ENV['PAYPAL_LIVE_CLIENT_ID']
+    : $_ENV['PAYPAL_SANDBOX_CLIENT_ID'];
+$client_secret = $is_production
+    ? $_ENV['PAYPAL_LIVE_CLIENT_SECRET']
+    : $_ENV['PAYPAL_SANDBOX_CLIENT_SECRET'];
+$paypal_api_url = $is_production
+    ? 'https://api-m.paypal.com'
+    : 'https://api-m.sandbox.paypal.com';
 
 // Initialize response
 $response = [
