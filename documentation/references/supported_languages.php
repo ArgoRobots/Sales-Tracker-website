@@ -11,6 +11,7 @@
 
     <script src="../../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../../resources/scripts/main.js"></script>
+    <script src="../../resources/scripts/levenshtein.js"></script>
 
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="../../resources/styles/help.css">
@@ -521,6 +522,7 @@
             const searchBox = document.getElementById('languageSearch');
             const categories = document.querySelectorAll('.reference-category');
             const noResults = document.getElementById('noResults');
+            const similarityThreshold = 0.6; // 0.0 = no match, 1.0 = perfect match
 
             searchBox.addEventListener('input', function() {
                 const searchTerm = this.value.toLowerCase();
@@ -532,7 +534,20 @@
 
                     languageGroups.forEach(group => {
                         const groupText = group.textContent.toLowerCase();
+                        let isMatch = false;
+
+                        // Check for exact substring match first (faster)
                         if (groupText.includes(searchTerm) || searchTerm === '') {
+                            isMatch = true;
+                        } else {
+                            // Fuzzy matching with Levenshtein distance
+                            const words = groupText.split(/\s+/);
+                            isMatch = words.some(word =>
+                                getSimilarity(word, searchTerm) >= similarityThreshold
+                            );
+                        }
+
+                        if (isMatch) {
                             group.style.display = '';
                             hasVisibleItems = true;
                             totalVisibleItems++;
