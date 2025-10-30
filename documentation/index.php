@@ -47,6 +47,7 @@
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../resources/scripts/main.js"></script>
     <script src="../resources/scripts/ScrollToCenter.js"></script>
+    <script src="../resources/scripts/levenshtein.js"></script>
     <script src="search.js"></script>
 
     <link rel="stylesheet" href="style.css">
