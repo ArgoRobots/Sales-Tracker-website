@@ -1,5 +1,3 @@
-Header set X-Robots-Tag "noindex, nofollow"
-
 # Deny access to database directory
 <Files ~ "\.sqlite$">
 Order allow,deny

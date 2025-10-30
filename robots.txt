@@ -1,0 +1,33 @@
+# robots.txt for ArgoRobots Sales Tracker
+# Last updated: 2025-10-30
+
+# Allow all search engines to crawl the site
+User-agent: *
+Allow: /
+
+# Disallow admin areas
+Disallow: /admin/
+
+# Disallow user profile pages in community
+Disallow: /community/users/
+
+# Disallow database directory
+Disallow: /database/
+
+# Disallow resources directory (backend files)
+Disallow: /resources/
+
+# Disallow error pages
+Disallow: /error-pages/
+
+# Disallow specific file types
+Disallow: /*.sqlite$
+Disallow: /*.sql$
+Disallow: /composer.json
+Disallow: /composer.lock
+
+# Crawl delay (optional - can be adjusted or removed)
+# Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://argorobots.com/sitemap.xml
