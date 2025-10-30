@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+    <!-- Home Page -->
+    <url>
+        <loc>https://argorobots.com/</loc>
+        <lastmod>2025-10-30</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+    </url>
+
+    <!-- About Us -->
+    <url>
+        <loc>https://argorobots.com/about-us/</loc>
+        <lastmod>2025-10-30</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <!-- Documentation -->
+    <url>
+        <loc>https://argorobots.com/documentation/</loc>
+        <lastmod>2025-10-30</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <!-- Upgrade/Pricing -->
+    <url>
+        <loc>https://argorobots.com/upgrade/</loc>
+        <lastmod>2025-10-30</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <!-- Contact Us -->
+    <url>
+        <loc>https://argorobots.com/contact-us/</loc>
+        <lastmod>2025-10-30</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- What's New -->
+    <url>
+        <loc>https://argorobots.com/whats-new/</loc>
+        <lastmod>2025-10-30</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <!-- Community -->
+    <url>
+        <loc>https://argorobots.com/community/</loc>
+        <lastmod>2025-10-30</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.6</priority>
+    </url>
+
+    <!-- Older Versions -->
+    <url>
+        <loc>https://argorobots.com/older-versions/</loc>
+        <lastmod>2025-10-30</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+
+    <!-- Legal Pages -->
+    <url>
+        <loc>https://argorobots.com/legal/privacy.php</loc>
+        <lastmod>2025-10-30</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.4</priority>
+    </url>
+
+    <url>
+        <loc>https://argorobots.com/legal/terms.php</loc>
+        <lastmod>2025-10-30</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.4</priority>
+    </url>
+
+    <url>
+        <loc>https://argorobots.com/legal/eula.php</loc>
+        <lastmod>2025-10-30</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.4</priority>
+    </url>
+
+    <url>
+        <loc>https://argorobots.com/legal/refund.php</loc>
+        <lastmod>2025-10-30</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.4</priority>
+    </url>
+
+</urlset>

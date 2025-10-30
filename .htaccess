@@ -1,4 +1,5 @@
-Header set X-Robots-Tag "noindex, nofollow"
+# SEO: Removed noindex directive to allow search engine indexing
+# Header set X-Robots-Tag "noindex, nofollow"
 
 # Deny access to database directory
 <Files ~ "\.sqlite$">
