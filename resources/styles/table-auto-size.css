@@ -1,0 +1,24 @@
+/* Auto-size table columns without overflow */
+table {
+    table-layout: auto;
+    width: 100%;
+}
+
+table th,
+table td {
+    overflow-wrap: break-word;
+    word-break: break-word;
+    max-width: 300px; /* Prevents any single column from being too wide */
+}
+
+/* For very long content like emails/URLs - truncate with ellipsis */
+table td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Allow action buttons column to wrap naturally */
+table td.action-buttons {
+    white-space: normal;
+}

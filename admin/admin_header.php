@@ -24,6 +24,7 @@ if (!isset($page_title)) {
     <link rel="stylesheet" href="../resources/styles/button.css">
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../resources/notifications/notifications.css">
+     <link rel="stylesheet" href="../resources/styles/table-auto-size.css">
 </head>
 
 <body>
