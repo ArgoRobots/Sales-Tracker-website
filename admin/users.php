@@ -141,17 +141,17 @@ include 'admin_header.php';
         </div>
     <?php endif; ?>
 
-    <div class="search-container box-shadow">
-        <form method="get" action="users.php">
-            <input type="text" name="search" placeholder="Search by username or email..." value="<?php echo htmlspecialchars($search); ?>">
-            <button type="submit" class="btn btn-blue">Search</button>
-        </form>
-    </div>
-
     <div class="table-container">
         <div class="table-header">
             <h2>Registered Users</h2>
             <span class="total-count">Total: <?php echo count($users); ?></span>
+        </div>
+
+        <div class="search-container">
+            <form method="get" action="users.php">
+                <input type="text" name="search" placeholder="Search by username or email..." value="<?php echo htmlspecialchars($search); ?>">
+                <button type="submit" class="btn btn-blue">Search</button>
+            </form>
         </div>
 
         <?php if (!empty($search)): ?>
