@@ -127,15 +127,8 @@
         left: 1rem;
         right: 1rem;
     }
-
+    
     #docSearchInput {
         font-size: 16px; /* Prevents zoom on iOS */
-    }
-}
-
-/* Hide search box when printing/exporting to PDF */
-@media print {
-    .search-container {
-        display: none !important;
     }
 }
