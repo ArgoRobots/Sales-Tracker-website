@@ -92,12 +92,32 @@ class DocumentationSearch {
     }
     
     searchSections(query) {
+        const similarityThreshold = 0.6; // 0.0 = no match, 1.0 = perfect match
+
         return this.sections.filter(section => {
-            // Search in title and content
-            const titleMatch = section.title.toLowerCase().includes(query);
-            const contentMatch = section.content.toLowerCase().includes(query);
-            
-            return titleMatch || contentMatch;
+            // Exact match check first (faster)
+            const titleLower = section.title.toLowerCase();
+            const contentLower = section.content.toLowerCase();
+
+            if (titleLower.includes(query) || contentLower.includes(query)) {
+                return true;
+            }
+
+            // Fuzzy matching with Levenshtein distance for title words
+            const titleWords = titleLower.split(/\s+/);
+            const titleMatch = titleWords.some(word =>
+                getSimilarity(word, query) >= similarityThreshold
+            );
+
+            if (titleMatch) return true;
+
+            // Fuzzy matching for content words (check a sample for performance)
+            const contentWords = contentLower.split(/\s+/).slice(0, 200); // Limit for performance
+            const contentMatch = contentWords.some(word =>
+                getSimilarity(word, query) >= similarityThreshold
+            );
+
+            return contentMatch;
         });
     }
     

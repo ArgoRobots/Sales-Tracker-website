@@ -2,6 +2,12 @@ function preparePDFExport() {
   // Create a clone of the document to manipulate
   const contentClone = document.querySelector(".content").cloneNode(true);
 
+  // Remove search box from the clone
+  const searchContainer = contentClone.querySelector('.search-container');
+  if (searchContainer) {
+    searchContainer.remove();
+  }
+
   // Create a clean document for printing
   const printWindow = window.open("", "_blank");
   printWindow.document.write("<html><head>");
