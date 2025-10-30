@@ -39,46 +39,48 @@
 
         <div class="reference-category">
             <h3>Most Common Currencies</h3>
-            <div class="item-group">
-                <h4>United States Dollar (USD)</h4>
-                <div class="item-info">
-                    <span class="currency-symbol">$</span>
-                    <span class="currency-region">United States</span>
+            <div class="item-group three-column-grid">
+                <div class="currency-item">
+                    <h4>United States Dollar (USD)</h4>
+                    <div class="item-info">
+                        <span class="currency-symbol">$</span>
+                        <span class="currency-region">United States</span>
+                    </div>
                 </div>
-            </div>
-            <div class="item-group">
-                <h4>Euro (EUR)</h4>
-                <div class="item-info">
-                    <span class="currency-symbol">€</span>
-                    <span class="currency-region">European Union</span>
+                <div class="currency-item">
+                    <h4>Euro (EUR)</h4>
+                    <div class="item-info">
+                        <span class="currency-symbol">€</span>
+                        <span class="currency-region">European Union</span>
+                    </div>
                 </div>
-            </div>
-            <div class="item-group">
-                <h4>British Pound (GBP)</h4>
-                <div class="item-info">
-                    <span class="currency-symbol">£</span>
-                    <span class="currency-region">United Kingdom</span>
+                <div class="currency-item">
+                    <h4>British Pound (GBP)</h4>
+                    <div class="item-info">
+                        <span class="currency-symbol">£</span>
+                        <span class="currency-region">United Kingdom</span>
+                    </div>
                 </div>
-            </div>
-            <div class="item-group">
-                <h4>Canadian Dollar (CAD)</h4>
-                <div class="item-info">
-                    <span class="currency-symbol">$</span>
-                    <span class="currency-region">Canada</span>
+                <div class="currency-item">
+                    <h4>Canadian Dollar (CAD)</h4>
+                    <div class="item-info">
+                        <span class="currency-symbol">$</span>
+                        <span class="currency-region">Canada</span>
+                    </div>
                 </div>
-            </div>
-            <div class="item-group">
-                <h4>Japanese Yen (JPY)</h4>
-                <div class="item-info">
-                    <span class="currency-symbol">¥</span>
-                    <span class="currency-region">Japan</span>
+                <div class="currency-item">
+                    <h4>Japanese Yen (JPY)</h4>
+                    <div class="item-info">
+                        <span class="currency-symbol">¥</span>
+                        <span class="currency-region">Japan</span>
+                    </div>
                 </div>
-            </div>
-            <div class="item-group">
-                <h4>Chinese Yuan (CNY)</h4>
-                <div class="item-info">
-                    <span class="currency-symbol">¥</span>
-                    <span class="currency-region">China</span>
+                <div class="currency-item">
+                    <h4>Chinese Yuan (CNY)</h4>
+                    <div class="item-info">
+                        <span class="currency-symbol">¥</span>
+                        <span class="currency-region">China</span>
+                    </div>
                 </div>
             </div>
         </div>
