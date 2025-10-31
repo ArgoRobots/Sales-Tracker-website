@@ -24,6 +24,10 @@ $active_licenses = $result->fetch_assoc()['count'] ?? 0;
 $result = $db->query('SELECT COUNT(*) as count FROM community_users');
 $total_users = $result->fetch_assoc()['count'] ?? 0;
 
+// Total community posts (for website statistics)
+$result = $db->query('SELECT COUNT(*) as count FROM community_posts');
+$total_posts = $result->fetch_assoc()['count'] ?? 0;
+
 // Recent activity (last 7 days)
 $result = $db->query('SELECT COUNT(*) as count FROM license_keys WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)');
 $recent_activity = $result->fetch_assoc()['count'] ?? 0;
@@ -61,19 +65,131 @@ usort($recent_items, function ($a, $b) {
 // Keep only 10 most recent
 $recent_items = array_slice($recent_items, 0, 10);
 
-// System health checks
-$system_health = [
-    'database' => 'operational',
-    'api' => 'operational',
-    'storage' => 'operational'
-];
+// System health checks - comprehensive production-ready implementation
+$system_health = [];
+$health_details = [];
+$overall_status = 'operational';
 
-// Check database
+// 1. Database connectivity and performance
 try {
+    $start_time = microtime(true);
     $db->query('SELECT 1');
+    $db_response_time = round((microtime(true) - $start_time) * 1000, 2);
+
+    // Get MySQL version
+    $mysql_version_result = $db->query('SELECT VERSION() as version');
+    $mysql_version = $mysql_version_result->fetch_assoc()['version'] ?? 'Unknown';
+
+    // Get database size
+    $db_name = $db->query("SELECT DATABASE() as db_name")->fetch_assoc()['db_name'];
+    $size_result = $db->query("SELECT ROUND(SUM(data_length + index_length) / 1024 / 1024, 2) AS size_mb FROM information_schema.TABLES WHERE table_schema = '$db_name'");
+    $db_size = $size_result->fetch_assoc()['size_mb'] ?? 0;
+
+    $system_health['database'] = $db_response_time < 100 ? 'operational' : 'warning';
+    $health_details['database'] = [
+        'response_time' => $db_response_time . ' ms',
+        'version' => $mysql_version,
+        'size' => $db_size . ' MB'
+    ];
 } catch (Exception $e) {
     $system_health['database'] = 'error';
+    $health_details['database'] = ['error' => 'Connection failed'];
+    $overall_status = 'error';
 }
+
+// 2. Disk Storage
+try {
+    $disk_free = disk_free_space('/');
+    $disk_total = disk_total_space('/');
+
+    if ($disk_free !== false && $disk_total !== false) {
+        $disk_used = $disk_total - $disk_free;
+        $disk_usage_percent = round(($disk_used / $disk_total) * 100, 2);
+        $disk_free_gb = round($disk_free / 1024 / 1024 / 1024, 2);
+        $disk_total_gb = round($disk_total / 1024 / 1024 / 1024, 2);
+
+        if ($disk_usage_percent > 90) {
+            $system_health['storage'] = 'error';
+            $overall_status = 'warning';
+        } elseif ($disk_usage_percent > 80) {
+            $system_health['storage'] = 'warning';
+            if ($overall_status === 'operational') {
+                $overall_status = 'warning';
+            }
+        } else {
+            $system_health['storage'] = 'operational';
+        }
+
+        $health_details['storage'] = [
+            'free' => $disk_free_gb . ' GB',
+            'total' => $disk_total_gb . ' GB',
+            'usage' => $disk_usage_percent . '%'
+        ];
+    } else {
+        $system_health['storage'] = 'warning';
+        $health_details['storage'] = ['status' => 'Unable to read disk space'];
+    }
+} catch (Exception $e) {
+    $system_health['storage'] = 'warning';
+    $health_details['storage'] = ['status' => 'Unavailable'];
+}
+
+// 3. PHP Environment
+$php_version = phpversion();
+$memory_limit = ini_get('memory_limit');
+$memory_usage = round(memory_get_usage(true) / 1024 / 1024, 2);
+$max_execution_time = ini_get('max_execution_time');
+
+$system_health['php'] = 'operational';
+$health_details['php'] = [
+    'version' => $php_version,
+    'memory_usage' => $memory_usage . ' MB',
+    'memory_limit' => $memory_limit,
+    'max_execution' => $max_execution_time . 's'
+];
+
+// 4. Session Directory
+$session_path = session_save_path() ?: sys_get_temp_dir();
+$session_writable = is_writable($session_path);
+$system_health['sessions'] = $session_writable ? 'operational' : 'error';
+$health_details['sessions'] = [
+    'path' => $session_path,
+    'writable' => $session_writable ? 'Yes' : 'No'
+];
+
+if (!$session_writable && $overall_status === 'operational') {
+    $overall_status = 'warning';
+}
+
+// 5. Upload Directory
+$upload_path = $_SERVER['DOCUMENT_ROOT'] . '/../uploads';
+if (!file_exists($upload_path)) {
+    $upload_path = $_SERVER['DOCUMENT_ROOT'] . '/uploads';
+}
+
+if (file_exists($upload_path)) {
+    $upload_writable = is_writable($upload_path);
+    $system_health['uploads'] = $upload_writable ? 'operational' : 'warning';
+    $health_details['uploads'] = [
+        'writable' => $upload_writable ? 'Yes' : 'No'
+    ];
+
+    if (!$upload_writable && $overall_status === 'operational') {
+        $overall_status = 'warning';
+    }
+} else {
+    $system_health['uploads'] = 'warning';
+    $health_details['uploads'] = ['status' => 'Directory not found'];
+}
+
+// 6. Error Logging
+$error_log_enabled = ini_get('log_errors');
+$error_log_path = ini_get('error_log');
+$system_health['error_logging'] = $error_log_enabled ? 'operational' : 'warning';
+$health_details['error_logging'] = [
+    'enabled' => $error_log_enabled ? 'Yes' : 'No',
+    'path' => $error_log_path ?: 'Default'
+];
 
 // Calculate activation rate
 $activation_rate = $total_licenses > 0 ? round(($active_licenses / $total_licenses) * 100) : 0;
@@ -149,8 +265,8 @@ include 'admin_header.php';
             <div class="nav-card-title">Website Statistics</div>
             <div class="nav-card-description">View website analytics and metrics</div>
             <div class="nav-card-stat">
-                <span class="nav-card-stat-label">Community</span>
-                <span class="nav-card-stat-value"><?php echo number_format($total_users); ?></span>
+                <span class="nav-card-stat-label">Total Posts</span>
+                <span class="nav-card-stat-value"><?php echo number_format($total_posts); ?></span>
             </div>
         </a>
 
@@ -209,17 +325,42 @@ include 'admin_header.php';
             <div class="health-items">
                 <?php foreach ($system_health as $component => $status): ?>
                     <div class="health-item">
-                        <span class="health-item-name"><?php echo ucfirst($component); ?></span>
-                        <div class="health-status">
-                            <div class="health-indicator <?php echo $status === 'error' ? 'error' : ''; ?>"></div>
-                            <span><?php echo ucfirst($status); ?></span>
+                        <div class="health-item-header">
+                            <span class="health-item-name"><?php echo ucfirst(str_replace('_', ' ', $component)); ?></span>
+                            <div class="health-status">
+                                <div class="health-indicator <?php echo $status === 'error' ? 'error' : ($status === 'warning' ? 'warning' : ''); ?>"></div>
+                                <span><?php echo ucfirst($status); ?></span>
+                            </div>
                         </div>
+                        <?php if (isset($health_details[$component]) && !empty($health_details[$component])): ?>
+                            <div class="health-details">
+                                <?php foreach ($health_details[$component] as $key => $value): ?>
+                                    <div class="health-detail-item">
+                                        <span class="health-detail-label"><?php echo ucfirst(str_replace('_', ' ', $key)); ?>:</span>
+                                        <span class="health-detail-value"><?php echo htmlspecialchars($value); ?></span>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 <?php endforeach; ?>
             </div>
             <div class="health-divider"></div>
             <div class="health-summary">
-                <div class="health-summary-text">All systems operational</div>
+                <div class="health-summary-text">
+                    <?php
+                    if ($overall_status === 'operational') {
+                        echo 'All systems operational';
+                    } elseif ($overall_status === 'warning') {
+                        echo 'Some systems require attention';
+                    } else {
+                        echo 'Critical issues detected';
+                    }
+                    ?>
+                </div>
+                <div class="health-summary-status <?php echo $overall_status; ?>">
+                    <?php echo strtoupper($overall_status); ?>
+                </div>
             </div>
         </div>
     </div>
