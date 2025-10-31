@@ -51,19 +51,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['bulk_action'])) {
     }
 }
 
-// Function to get all users
-function get_all_users($search = '')
+// Function to get all users with optional filters
+function get_all_users($search = '', $date_from = '', $date_to = '')
 {
     $db = get_db_connection();
     $users = [];
 
+    $query = 'SELECT * FROM community_users WHERE 1=1';
+    $types = '';
+    $params = [];
+
     if (!empty($search)) {
+        $query .= ' AND (username LIKE ? OR email LIKE ?)';
         $search_param = '%' . $search . '%';
-        $stmt = $db->prepare('SELECT * FROM community_users 
-                             WHERE username LIKE ? 
-                             OR email LIKE ? 
-                             ORDER BY created_at DESC');
-        $stmt->bind_param('ss', $search_param, $search_param);
+        $types .= 'ss';
+        $params[] = $search_param;
+        $params[] = $search_param;
+    }
+
+    if (!empty($date_from)) {
+        $query .= ' AND DATE(created_at) >= ?';
+        $types .= 's';
+        $params[] = $date_from;
+    }
+
+    if (!empty($date_to)) {
+        $query .= ' AND DATE(created_at) <= ?';
+        $types .= 's';
+        $params[] = $date_to;
+    }
+
+    $query .= ' ORDER BY created_at DESC';
+
+    if (!empty($params)) {
+        $stmt = $db->prepare($query);
+        $stmt->bind_param($types, ...$params);
         $stmt->execute();
         $result = $stmt->get_result();
 
@@ -71,7 +93,7 @@ function get_all_users($search = '')
             $users[] = $row;
         }
     } else {
-        $result = $db->query('SELECT * FROM community_users ORDER BY created_at DESC');
+        $result = $db->query($query);
 
         while ($row = $result->fetch_assoc()) {
             $users[] = $row;
@@ -81,11 +103,40 @@ function get_all_users($search = '')
     return $users;
 }
 
-// Get search parameter
+// Get filter parameters
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
+$date_preset = isset($_GET['date_preset']) ? trim($_GET['date_preset']) : '';
+$date_from = isset($_GET['date_from']) ? trim($_GET['date_from']) : '';
+$date_to = isset($_GET['date_to']) ? trim($_GET['date_to']) : '';
 
-// Get users
-$users = get_all_users($search);
+// Calculate date range based on preset
+if (!empty($date_preset) && $date_preset !== 'custom') {
+    $date_to = date('Y-m-d'); // Today
+
+    switch ($date_preset) {
+        case 'today':
+            $date_from = date('Y-m-d');
+            break;
+        case 'last_week':
+            $date_from = date('Y-m-d', strtotime('-7 days'));
+            break;
+        case 'last_month':
+            $date_from = date('Y-m-d', strtotime('-30 days'));
+            break;
+        case 'last_year':
+            $date_from = date('Y-m-d', strtotime('-365 days'));
+            break;
+        case 'last_3_years':
+            $date_from = date('Y-m-d', strtotime('-1095 days'));
+            break;
+        case 'last_5_years':
+            $date_from = date('Y-m-d', strtotime('-1825 days'));
+            break;
+    }
+}
+
+// Get users (filtered)
+$users = get_all_users($search, $date_from, $date_to);
 
 // Get user statistics for dashboard
 $db = get_db_connection();
@@ -131,6 +182,7 @@ if (isset($_SESSION['message'])) {
 include 'admin_header.php';
 ?>
 <link rel="stylesheet" href="index.css">
+<link rel="stylesheet" href="../resources/styles/checkbox.css">
 
 <div class="container">
     <!-- Statistics Cards -->
@@ -164,16 +216,67 @@ include 'admin_header.php';
             <h2>Registered Users</h2>
         </div>
 
-        <div class="search-container">
-            <form method="get" action="users.php">
-                <input type="text" name="search" placeholder="Search by username or email..." value="<?php echo htmlspecialchars($search); ?>">
-                <button type="submit" class="btn btn-blue">Search</button>
-            </form>
-        </div>
+        <!-- Filter Container -->
+        <form method="get" action="users.php" id="filter-form">
+            <div class="filter-container">
+                <div class="filter-group search-group">
+                    <label for="search">Search</label>
+                    <input type="text" id="search" name="search" placeholder="Username or email..." value="<?php echo htmlspecialchars($search); ?>">
+                </div>
 
-        <?php if (!empty($search)): ?>
+                <div class="filter-group date-filter-group">
+                    <label for="date_preset">Date Range</label>
+                    <select id="date_preset" name="date_preset" class="date-preset-select">
+                        <option value="" <?php echo empty($date_preset) ? 'selected' : ''; ?>>All Time</option>
+                        <option value="today" <?php echo $date_preset === 'today' ? 'selected' : ''; ?>>Today</option>
+                        <option value="last_week" <?php echo $date_preset === 'last_week' ? 'selected' : ''; ?>>Last 7 Days</option>
+                        <option value="last_month" <?php echo $date_preset === 'last_month' ? 'selected' : ''; ?>>Last 30 Days</option>
+                        <option value="last_year" <?php echo $date_preset === 'last_year' ? 'selected' : ''; ?>>Last Year</option>
+                        <option value="last_3_years" <?php echo $date_preset === 'last_3_years' ? 'selected' : ''; ?>>Last 3 Years</option>
+                        <option value="last_5_years" <?php echo $date_preset === 'last_5_years' ? 'selected' : ''; ?>>Last 5 Years</option>
+                        <option value="custom" <?php echo $date_preset === 'custom' ? 'selected' : ''; ?>>Custom Range</option>
+                    </select>
+
+                    <div class="custom-date-range" id="custom_date_range" style="display: <?php echo $date_preset === 'custom' ? 'flex' : 'none'; ?>;">
+                        <div class="date-input-group">
+                            <label for="date_from">From</label>
+                            <input type="date" id="date_from" name="date_from" value="<?php echo $date_preset === 'custom' ? htmlspecialchars($date_from) : ''; ?>">
+                        </div>
+                        <div class="date-input-group">
+                            <label for="date_to">To</label>
+                            <input type="date" id="date_to" name="date_to" value="<?php echo $date_preset === 'custom' ? htmlspecialchars($date_to) : ''; ?>">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-actions">
+                    <button type="submit" class="btn btn-blue">Apply</button>
+                </div>
+            </div>
+        </form>
+
+        <?php if (!empty($search) || !empty($date_preset)): ?>
             <div class="search-results">
-                Showing results for: "<?php echo htmlspecialchars($search); ?>" (<?php echo count($users); ?> results)
+                <?php
+                $filters = [];
+                if (!empty($search)) $filters[] = "search: \"" . htmlspecialchars($search) . "\"";
+                if (!empty($date_preset)) {
+                    if ($date_preset === 'custom') {
+                        $filters[] = "date: " . htmlspecialchars($date_from) . " to " . htmlspecialchars($date_to);
+                    } else {
+                        $preset_labels = [
+                            'today' => 'Today',
+                            'last_week' => 'Last 7 Days',
+                            'last_month' => 'Last 30 Days',
+                            'last_year' => 'Last Year',
+                            'last_3_years' => 'Last 3 Years',
+                            'last_5_years' => 'Last 5 Years'
+                        ];
+                        $filters[] = "date: " . $preset_labels[$date_preset];
+                    }
+                }
+                echo "Showing results for " . implode(", ", $filters) . " (" . count($users) . " results)";
+                ?>
             </div>
         <?php endif; ?>
 
@@ -199,57 +302,57 @@ include 'admin_header.php';
 
                 <input type="hidden" name="bulk_action" id="bulk_action_input">
 
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="checkbox-column">
-                                <div class="checkbox">
-                                    <input type="checkbox" id="select-all">
-                                    <label for="select-all"></label>
-                                </div>
-                            </th>
-                            <th>Username</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                            <th>Verified</th>
-                            <th>Created</th>
-                            <th>Last Login</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($users as $user): ?>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
                             <tr>
-                                <td class="checkbox-column">
+                                <th class="checkbox-column">
                                     <div class="checkbox">
-                                        <input type="checkbox" 
-                                            name="selected_ids[]" 
-                                            value="<?php echo htmlspecialchars($user['id']); ?>"
-                                            class="row-checkbox"
-                                            id="user-<?php echo htmlspecialchars($user['id']); ?>">
-                                        <label for="user-<?php echo htmlspecialchars($user['id']); ?>"></label>
+                                        <input type="checkbox" id="select-all">
+                                        <label for="select-all"></label>
                                     </div>
-                                </td>
-                                <td><?php echo htmlspecialchars($user['username']); ?></td>
-                                <td><?php echo htmlspecialchars($user['email']); ?></td>
-                                <td>
-                                    <span class="badge badge-<?php echo $user['role'] === 'admin' ? 'admin' : 'user'; ?>">
-                                        <?php echo htmlspecialchars(ucfirst($user['role'])); ?>
-                                    </span>
-                                </td>
-                                <td>
-                                    <?php if ($user['email_verified']): ?>
-                                        <span class="badge badge-success">Verified</span>
-                                    <?php else: ?>
-                                        <span class="badge badge-pending">Pending</span>
-                                    <?php endif; ?>
-                                </td>
-                                <td><?php echo htmlspecialchars(date('Y-m-d', strtotime($user['created_at']))); ?></td>
-                                <td><?php echo $user['last_login'] ? htmlspecialchars(date('Y-m-d', strtotime($user['last_login']))) : 'Never'; ?></td>
+                                </th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Verified</th>
+                                <th>Created</th>
+                                <th>Last Login</th>
                             </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($users as $user): ?>
+                                <tr>
+                                    <td class="checkbox-column">
+                                        <div class="checkbox">
+                                            <input type="checkbox" 
+                                                name="selected_ids[]" 
+                                                value="<?php echo htmlspecialchars($user['id']); ?>"
+                                                class="row-checkbox"
+                                                id="user-<?php echo htmlspecialchars($user['id']); ?>">
+                                            <label for="user-<?php echo htmlspecialchars($user['id']); ?>"></label>
+                                        </div>
+                                    </td>
+                                    <td><?php echo htmlspecialchars($user['username']); ?></td>
+                                    <td><?php echo htmlspecialchars($user['email']); ?></td>
+                                    <td>
+                                        <span class="badge badge-<?php echo $user['role'] === 'admin' ? 'admin' : 'user'; ?>">
+                                            <?php echo htmlspecialchars(ucfirst($user['role'])); ?>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <?php if ($user['email_verified']): ?>
+                                            <span class="badge badge-success">Verified</span>
+                                        <?php else: ?>
+                                            <span class="badge badge-pending">Pending</span>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td><?php echo htmlspecialchars(date('Y-m-d', strtotime($user['created_at']))); ?></td>
+                                    <td><?php echo $user['last_login'] ? htmlspecialchars(date('Y-m-d', strtotime($user['last_login']))) : 'Never'; ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
                 </div>
             </form>
         <?php endif; ?>
@@ -328,6 +431,27 @@ include 'admin_header.php';
         // Initial count
         updateSelectedCount();
 
+        // Date preset select handling
+        const datePresetSelect = document.getElementById('date_preset');
+        const customDateRange = document.getElementById('custom_date_range');
+
+        datePresetSelect.addEventListener('change', function() {
+            if (this.value === 'custom') {
+                customDateRange.style.display = 'flex';
+            } else {
+                customDateRange.style.display = 'none';
+            }
+        });
+
+        // If user clicks on date inputs, select custom option
+        const dateInputs = customDateRange.querySelectorAll('input[type="date"]');
+        dateInputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                datePresetSelect.value = 'custom';
+                customDateRange.style.display = 'flex';
+            });
+        });
+
         // Restore scroll position if it exists in sessionStorage
         if (sessionStorage.getItem('scrollPosition')) {
             window.scrollTo(0, sessionStorage.getItem('scrollPosition'));
@@ -351,12 +475,16 @@ include 'admin_header.php';
         });
 
         // Auto-clear search when textbox is emptied
-        const searchInput = document.querySelector('input[name="search"]');
+        const searchInput = document.querySelector('#search');
         if (searchInput) {
             searchInput.addEventListener('input', function() {
                 if (this.value.trim() === '') {
-                    sessionStorage.setItem('scrollPosition', window.scrollY);
-                    window.location.href = 'users.php';
+                    const datePreset = document.getElementById('date_preset').value;
+
+                    if (!datePreset) {
+                        sessionStorage.setItem('scrollPosition', window.scrollY);
+                        window.location.href = 'users.php';
+                    }
                 }
             });
 
@@ -364,7 +492,11 @@ include 'admin_header.php';
                 if (e.key === 'Escape') {
                     sessionStorage.setItem('scrollPosition', window.scrollY);
                     this.value = '';
-                    window.location.href = 'users.php';
+                    const datePreset = document.getElementById('date_preset').value;
+
+                    if (!datePreset) {
+                        window.location.href = 'users.php';
+                    }
                 }
             });
         }

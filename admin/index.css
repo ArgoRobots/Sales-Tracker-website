@@ -20,6 +20,27 @@
     font-size: 14px;
     font-weight: 600;
     color: var(--gray-700);
+    margin-bottom: 6px;
+}
+
+/* Search Input */
+.filter-group input[type="text"] {
+    padding: 8px 12px;
+    border: 1px solid var(--gray-300);
+    border-radius: 4px;
+    font-size: 14px;
+    background: white;
+    transition: all 0.2s;
+}
+
+.filter-group input[type="text"]:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.filter-group input[type="text"]:hover {
+    border-color: var(--primary-blue);
 }
 
 /* Date Preset Select */
@@ -67,6 +88,28 @@
     color: var(--gray-600);
 }
 
+/* Date Input Fields */
+.date-input-group input[type="date"] {
+    padding: 8px 12px;
+    border: 1px solid var(--gray-300);
+    border-radius: 4px;
+    font-size: 14px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.date-input-group input[type="date"]:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.date-input-group input[type="date"]:hover {
+    border-color: var(--primary-blue);
+}
+
+/* Filter Actions */
 .filter-actions {
     display: flex;
     flex-direction: column;
