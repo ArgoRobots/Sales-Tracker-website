@@ -1159,11 +1159,6 @@ include 'admin_header.php';
                             }
                         }
                     }
-                },
-                layout: {
-                    padding: {
-                        bottom: 40
-                    }
                 }
             }
         });
@@ -1212,11 +1207,6 @@ include 'admin_header.php';
                     },
                     legend: {
                         position: 'top',
-                    }
-                },
-                layout: {
-                    padding: {
-                        bottom: 40
                     }
                 }
             }
@@ -1267,11 +1257,6 @@ include 'admin_header.php';
                     legend: {
                         position: 'top',
                     }
-                },
-                layout: {
-                    padding: {
-                        bottom: 40
-                    }
                 }
             }
         });
@@ -1321,11 +1306,6 @@ include 'admin_header.php';
                     legend: {
                         position: 'top',
                     }
-                },
-                layout: {
-                    padding: {
-                        bottom: 40
-                    }
                 }
             }
         });
@@ -1370,11 +1350,6 @@ include 'admin_header.php';
                                 return `${label}: ${value} posts (${percentage}%)`;
                             }
                         }
-                    }
-                },
-                layout: {
-                    padding: {
-                        bottom: 40
                     }
                 }
             }
@@ -1431,11 +1406,6 @@ include 'admin_header.php';
                             }
                         }
                     }
-                },
-                layout: {
-                    padding: {
-                        bottom: 60
-                    }
                 }
             }
         });
@@ -1481,11 +1451,6 @@ include 'admin_header.php';
                                 return `${label}: ${value} page views (${percentage}%)`;
                             }
                         }
-                    }
-                },
-                layout: {
-                    padding: {
-                        bottom: 60
                     }
                 }
             }
@@ -1533,11 +1498,6 @@ include 'admin_header.php';
                             }
                         }
                     }
-                },
-                layout: {
-                    padding: {
-                        bottom: 60
-                    }
                 }
             }
         });
@@ -1583,11 +1543,6 @@ include 'admin_header.php';
                                 return `${label}: ${value} licenses (${percentage}%)`;
                             }
                         }
-                    }
-                },
-                layout: {
-                    padding: {
-                        bottom: 60
                     }
                 }
             }
@@ -1637,11 +1592,6 @@ include 'admin_header.php';
                                 return `${label}: ${value} (${percentage}%)`;
                             }
                         }
-                    }
-                },
-                layout: {
-                    padding: {
-                        bottom: 40
                     }
                 }
             }

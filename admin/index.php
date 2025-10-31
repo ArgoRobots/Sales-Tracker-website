@@ -158,7 +158,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!empty($_GET['date_preset'])) $redirect_params[] = 'date_preset=' . urlencode($_GET['date_preset']);
             if (!empty($_GET['date_from']) && $_GET['date_preset'] === 'custom') $redirect_params[] = 'date_from=' . urlencode($_GET['date_from']);
             if (!empty($_GET['date_to']) && $_GET['date_preset'] === 'custom') $redirect_params[] = 'date_to=' . urlencode($_GET['date_to']);
-            
+
             $redirect_url = 'index.php' . (!empty($redirect_params) ? '?' . implode('&', $redirect_params) : '');
             header('Location: ' . $redirect_url);
             exit;
@@ -191,7 +191,7 @@ $date_to = isset($_GET['date_to']) ? trim($_GET['date_to']) : '';
 // Calculate date range based on preset
 if (!empty($date_preset) && $date_preset !== 'custom') {
     $date_to = date('Y-m-d'); // Today
-    
+
     switch ($date_preset) {
         case 'today':
             $date_from = date('Y-m-d');
@@ -291,9 +291,7 @@ include 'admin_header.php';
     <!-- Chart -->
     <div class="chart-container">
         <h2>License Keys Generated Over Time</h2>
-        <div class="chart-wrapper">
-            <canvas id="keysChart"></canvas>
-        </div>
+        <canvas id="keysChart"></canvas>
     </div>
 
     <!-- Key Generation Form -->
@@ -324,7 +322,7 @@ include 'admin_header.php';
             <div class="form-group">
                 <label for="email">Customer Email:</label>
                 <div class="input-button-wrapper">
-                    <input type="email" id="email" name="email" required>
+                    <input type="email" id="email" name="email" placeholder="Email or license key..." required>
                     <button type="submit" name="generate_key" class="btn btn-blue">Generate Key</button>
                 </div>
             </div>
@@ -335,45 +333,43 @@ include 'admin_header.php';
         <h2>License Keys</h2>
 
         <!-- Filter Container -->
-        <div class="filter-container">
-            <form method="get" action="index.php" id="filter-form">
-                <div class="filter-row">
-                    <div class="filter-group search-group">
-                        <label for="search">Search</label>
-                        <input type="text" id="search" name="search" placeholder="Email or license key..." value="<?php echo htmlspecialchars($search); ?>">
-                    </div>
-                    
-                    <div class="filter-group date-filter-group">
-                        <label for="date_preset">Date Range</label>
-                        <select id="date_preset" name="date_preset" class="date-preset-select">
-                            <option value="" <?php echo empty($date_preset) ? 'selected' : ''; ?>>All Time</option>
-                            <option value="today" <?php echo $date_preset === 'today' ? 'selected' : ''; ?>>Today</option>
-                            <option value="last_week" <?php echo $date_preset === 'last_week' ? 'selected' : ''; ?>>Last 7 Days</option>
-                            <option value="last_month" <?php echo $date_preset === 'last_month' ? 'selected' : ''; ?>>Last 30 Days</option>
-                            <option value="last_year" <?php echo $date_preset === 'last_year' ? 'selected' : ''; ?>>Last Year</option>
-                            <option value="last_3_years" <?php echo $date_preset === 'last_3_years' ? 'selected' : ''; ?>>Last 3 Years</option>
-                            <option value="last_5_years" <?php echo $date_preset === 'last_5_years' ? 'selected' : ''; ?>>Last 5 Years</option>
-                            <option value="custom" <?php echo $date_preset === 'custom' ? 'selected' : ''; ?>>Custom Range</option>
-                        </select>
-                        
-                        <div class="custom-date-range" id="custom_date_range" style="display: <?php echo $date_preset === 'custom' ? 'flex' : 'none'; ?>;">
-                            <div class="date-input-group">
-                                <label for="date_from">From</label>
-                                <input type="date" id="date_from" name="date_from" value="<?php echo $date_preset === 'custom' ? htmlspecialchars($date_from) : ''; ?>">
-                            </div>
-                            <div class="date-input-group">
-                                <label for="date_to">To</label>
-                                <input type="date" id="date_to" name="date_to" value="<?php echo $date_preset === 'custom' ? htmlspecialchars($date_to) : ''; ?>">
-                            </div>
+        <form method="get" action="index.php" id="filter-form">
+            <div class="filter-container">
+                <div class="filter-group search-group">
+                    <label for="search">Search</label>
+                    <input type="text" id="search" name="search" placeholder="Email or license key..." value="<?php echo htmlspecialchars($search); ?>">
+                </div>
+
+                <div class="filter-group date-filter-group">
+                    <label for="date_preset">Date Range</label>
+                    <select id="date_preset" name="date_preset" class="date-preset-select">
+                        <option value="" <?php echo empty($date_preset) ? 'selected' : ''; ?>>All Time</option>
+                        <option value="today" <?php echo $date_preset === 'today' ? 'selected' : ''; ?>>Today</option>
+                        <option value="last_week" <?php echo $date_preset === 'last_week' ? 'selected' : ''; ?>>Last 7 Days</option>
+                        <option value="last_month" <?php echo $date_preset === 'last_month' ? 'selected' : ''; ?>>Last 30 Days</option>
+                        <option value="last_year" <?php echo $date_preset === 'last_year' ? 'selected' : ''; ?>>Last Year</option>
+                        <option value="last_3_years" <?php echo $date_preset === 'last_3_years' ? 'selected' : ''; ?>>Last 3 Years</option>
+                        <option value="last_5_years" <?php echo $date_preset === 'last_5_years' ? 'selected' : ''; ?>>Last 5 Years</option>
+                        <option value="custom" <?php echo $date_preset === 'custom' ? 'selected' : ''; ?>>Custom Range</option>
+                    </select>
+
+                    <div class="custom-date-range" id="custom_date_range" style="display: <?php echo $date_preset === 'custom' ? 'flex' : 'none'; ?>;">
+                        <div class="date-input-group">
+                            <label for="date_from">From</label>
+                            <input type="date" id="date_from" name="date_from" value="<?php echo $date_preset === 'custom' ? htmlspecialchars($date_from) : ''; ?>">
+                        </div>
+                        <div class="date-input-group">
+                            <label for="date_to">To</label>
+                            <input type="date" id="date_to" name="date_to" value="<?php echo $date_preset === 'custom' ? htmlspecialchars($date_to) : ''; ?>">
                         </div>
                     </div>
-                    
-                    <div class="filter-actions">
-                        <button type="submit" class="btn btn-blue">Apply</button>
-                    </div>
                 </div>
-            </form>
-        </div>
+
+                <div class="filter-actions">
+                    <button type="submit" class="btn btn-blue">Apply</button>
+                </div>
+            </div>
+        </form>
 
         <!-- Bulk Actions -->
         <div class="bulk-actions-container">
@@ -383,32 +379,30 @@ include 'admin_header.php';
             <div class="bulk-buttons">
                 <button type="button" class="btn btn-bulk btn-email" data-action="resend_email" disabled>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
                     </svg>
                     Send Email
                 </button>
                 <button type="button" class="btn btn-bulk btn-activate" data-action="activate" disabled>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
                     </svg>
                     Activate
                 </button>
                 <button type="button" class="btn btn-bulk btn-deactivate" data-action="deactivate" disabled>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
                     </svg>
                     Deactivate
                 </button>
                 <button type="button" class="btn btn-bulk btn-delete" data-action="delete" disabled>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" />
                     </svg>
                     Delete
                 </button>
             </div>
         </div>
-
-        <span class="total-keys">Total: <?php echo count($licenses); ?></span>
 
         <?php if (!empty($message)): ?>
             <div class="<?php echo $message_type === 'success' ? 'success-message' : 'error-message'; ?>">
@@ -427,7 +421,7 @@ include 'admin_header.php';
         <?php else: ?>
             <form id="bulk-form" method="post">
                 <input type="hidden" name="bulk_action" id="bulk_action_input">
-                
+
                 <table>
                     <thead>
                         <tr>
@@ -449,11 +443,11 @@ include 'admin_header.php';
                             <tr>
                                 <td class="checkbox-column">
                                     <div class="checkbox">
-                                        <input type="checkbox" 
-                                               name="selected_keys[]" 
-                                               value="<?php echo htmlspecialchars($license['id']); ?>" 
-                                               class="row-checkbox"
-                                               id="key-<?php echo htmlspecialchars($license['id']); ?>">
+                                        <input type="checkbox"
+                                            name="selected_keys[]"
+                                            value="<?php echo htmlspecialchars($license['id']); ?>"
+                                            class="row-checkbox"
+                                            id="key-<?php echo htmlspecialchars($license['id']); ?>">
                                         <label for="key-<?php echo htmlspecialchars($license['id']); ?>"></label>
                                     </div>
                                 </td>

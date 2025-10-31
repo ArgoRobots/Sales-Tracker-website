@@ -8,17 +8,18 @@ table th,
 table td {
     overflow-wrap: break-word;
     word-break: break-word;
-    max-width: 300px; /* Prevents any single column from being too wide */
+    max-width: 300px;
+    white-space: normal;
 }
 
-/* For very long content like emails/URLs - truncate with ellipsis */
+/* Only truncate if there's enough space */
 table td {
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
 }
 
 /* Allow action buttons column to wrap naturally */
 table td.action-buttons {
     white-space: normal;
+    max-width: none;
 }

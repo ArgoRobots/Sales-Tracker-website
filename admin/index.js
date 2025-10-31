@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Chart initialization
     const labels = chartData.map(item => item.date);
     const counts = chartData.map(item => item.count);
@@ -43,11 +43,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     position: 'top',
                 }
             },
-            layout: {
-                padding: {
-                    bottom: 60
-                }
-            }
         }
     });
 
@@ -55,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const datePresetSelect = document.getElementById('date_preset');
     const customDateRange = document.getElementById('custom_date_range');
 
-    datePresetSelect.addEventListener('change', function() {
+    datePresetSelect.addEventListener('change', function () {
         if (this.value === 'custom') {
             customDateRange.style.display = 'flex';
         } else {
@@ -66,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // If user clicks on date inputs, select custom option
     const dateInputs = customDateRange.querySelectorAll('input[type="date"]');
     dateInputs.forEach(input => {
-        input.addEventListener('focus', function() {
+        input.addEventListener('focus', function () {
             datePresetSelect.value = 'custom';
             customDateRange.style.display = 'flex';
         });
@@ -104,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Select all functionality
-    selectAllCheckbox.addEventListener('change', function() {
+    selectAllCheckbox.addEventListener('change', function () {
         rowCheckboxes.forEach(checkbox => {
             checkbox.checked = this.checked;
         });
@@ -118,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Bulk action buttons
     bulkButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function () {
             const action = this.dataset.action;
             const checkedBoxes = document.querySelectorAll('.row-checkbox:checked');
             const count = checkedBoxes.length;
@@ -128,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
             let actionText = '';
             let confirmMessage = '';
 
-            switch(action) {
+            switch (action) {
                 case 'resend_email':
                     actionText = 'send email to';
                     confirmMessage = `Are you sure you want to send emails for ${count} license key${count > 1 ? 's' : ''}?`;
@@ -161,7 +156,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Save scroll position when filter form is submitted
     const filterForm = document.getElementById('filter-form');
     if (filterForm) {
-        filterForm.addEventListener('submit', function() {
+        filterForm.addEventListener('submit', function () {
             sessionStorage.setItem('scrollPosition', window.scrollY);
         });
     }
@@ -169,11 +164,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Auto-clear search when textbox is emptied
     const searchInput = document.querySelector('#search');
     if (searchInput) {
-        searchInput.addEventListener('input', function() {
+        searchInput.addEventListener('input', function () {
             if (this.value.trim() === '') {
-                const form = this.closest('form');
                 const datePreset = document.getElementById('date_preset').value;
-                
+
                 if (!datePreset) {
                     sessionStorage.setItem('scrollPosition', window.scrollY);
                     window.location.href = 'index.php';
@@ -181,12 +175,12 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        searchInput.addEventListener('keydown', function(e) {
+        searchInput.addEventListener('keydown', function (e) {
             if (e.key === 'Escape') {
                 sessionStorage.setItem('scrollPosition', window.scrollY);
                 this.value = '';
                 const datePreset = document.getElementById('date_preset').value;
-                
+
                 if (!datePreset) {
                     window.location.href = 'index.php';
                 }
@@ -196,14 +190,14 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Restore scroll position after page fully loads
-window.addEventListener('load', function() {
+window.addEventListener('load', function () {
     if (sessionStorage.getItem('scrollPosition')) {
         const scrollPos = sessionStorage.getItem('scrollPosition');
         sessionStorage.removeItem('scrollPosition');
-        
+
         // Use requestAnimationFrame to ensure page is fully rendered
-        requestAnimationFrame(function() {
-            requestAnimationFrame(function() {
+        requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
                 window.scrollTo(0, parseInt(scrollPos));
             });
         });
