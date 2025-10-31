@@ -855,6 +855,33 @@ tbody tr:hover {
   color: #374151;
 }
 
+/* Table Responsive Wrapper */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.table-responsive::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
 /* Responsive Design */
 @media (max-width: 900px) {
   .period-selection {
@@ -965,6 +992,23 @@ tbody tr:hover {
 @media (max-width: 768px) {
   .chart-container {
     height: 300px;
+  }
+
+  /* Make tables scrollable on mobile */
+  table {
+    min-width: 800px;
+  }
+
+  /* Reduce padding on mobile */
+  th,
+  td {
+    padding: 10px 8px;
+    font-size: 14px;
+  }
+
+  /* Make checkboxes visible on mobile */
+  .checkbox-column {
+    min-width: 50px;
   }
 }
 

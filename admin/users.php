@@ -130,9 +130,7 @@ if (isset($_SESSION['message'])) {
 
 include 'admin_header.php';
 ?>
-
 <link rel="stylesheet" href="index.css">
-<link rel="stylesheet" href="../resources/styles/checkbox.css">
 
 <div class="container">
     <!-- Statistics Cards -->
@@ -201,56 +199,58 @@ include 'admin_header.php';
 
                 <input type="hidden" name="bulk_action" id="bulk_action_input">
 
-            <table>
-                <thead>
-                    <tr>
-                        <th class="checkbox-column">
-                            <div class="checkbox">
-                                <input type="checkbox" id="select-all">
-                                <label for="select-all"></label>
-                            </div>
-                        </th>
-                        <th>Username</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>Verified</th>
-                        <th>Created</th>
-                        <th>Last Login</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($users as $user): ?>
+            <div class="table-responsive">
+                <table>
+                    <thead>
                         <tr>
-                            <td class="checkbox-column">
+                            <th class="checkbox-column">
                                 <div class="checkbox">
-                                    <input type="checkbox" 
-                                        name="selected_ids[]" 
-                                        value="<?php echo htmlspecialchars($user['id']); ?>"
-                                        class="row-checkbox"
-                                        id="user-<?php echo htmlspecialchars($user['id']); ?>">
-                                    <label for="user-<?php echo htmlspecialchars($user['id']); ?>"></label>
+                                    <input type="checkbox" id="select-all">
+                                    <label for="select-all"></label>
                                 </div>
-                            </td>
-                            <td><?php echo htmlspecialchars($user['username']); ?></td>
-                            <td><?php echo htmlspecialchars($user['email']); ?></td>
-                            <td>
-                                <span class="badge badge-<?php echo $user['role'] === 'admin' ? 'admin' : 'user'; ?>">
-                                    <?php echo htmlspecialchars(ucfirst($user['role'])); ?>
-                                </span>
-                            </td>
-                            <td>
-                                <?php if ($user['email_verified']): ?>
-                                    <span class="badge badge-success">Verified</span>
-                                <?php else: ?>
-                                    <span class="badge badge-pending">Pending</span>
-                                <?php endif; ?>
-                            </td>
-                            <td><?php echo htmlspecialchars(date('Y-m-d', strtotime($user['created_at']))); ?></td>
-                            <td><?php echo $user['last_login'] ? htmlspecialchars(date('Y-m-d', strtotime($user['last_login']))) : 'Never'; ?></td>
+                            </th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Verified</th>
+                            <th>Created</th>
+                            <th>Last Login</th>
                         </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($users as $user): ?>
+                            <tr>
+                                <td class="checkbox-column">
+                                    <div class="checkbox">
+                                        <input type="checkbox" 
+                                            name="selected_ids[]" 
+                                            value="<?php echo htmlspecialchars($user['id']); ?>"
+                                            class="row-checkbox"
+                                            id="user-<?php echo htmlspecialchars($user['id']); ?>">
+                                        <label for="user-<?php echo htmlspecialchars($user['id']); ?>"></label>
+                                    </div>
+                                </td>
+                                <td><?php echo htmlspecialchars($user['username']); ?></td>
+                                <td><?php echo htmlspecialchars($user['email']); ?></td>
+                                <td>
+                                    <span class="badge badge-<?php echo $user['role'] === 'admin' ? 'admin' : 'user'; ?>">
+                                        <?php echo htmlspecialchars(ucfirst($user['role'])); ?>
+                                    </span>
+                                </td>
+                                <td>
+                                    <?php if ($user['email_verified']): ?>
+                                        <span class="badge badge-success">Verified</span>
+                                    <?php else: ?>
+                                        <span class="badge badge-pending">Pending</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td><?php echo htmlspecialchars(date('Y-m-d', strtotime($user['created_at']))); ?></td>
+                                <td><?php echo $user['last_login'] ? htmlspecialchars(date('Y-m-d', strtotime($user['last_login']))) : 'Never'; ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+                </div>
             </form>
         <?php endif; ?>
     </div>

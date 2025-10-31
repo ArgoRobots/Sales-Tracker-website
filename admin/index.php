@@ -422,50 +422,52 @@ include 'admin_header.php';
             <form id="bulk-form" method="post">
                 <input type="hidden" name="bulk_action" id="bulk_action_input">
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="checkbox-column">
-                                <div class="checkbox">
-                                    <input type="checkbox" id="select-all">
-                                    <label for="select-all"></label>
-                                </div>
-                            </th>
-                            <th>License Key</th>
-                            <th>Email</th>
-                            <th>Created</th>
-                            <th>Status</th>
-                            <th>Activation Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($licenses as $license): ?>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
                             <tr>
-                                <td class="checkbox-column">
+                                <th class="checkbox-column">
                                     <div class="checkbox">
-                                        <input type="checkbox"
-                                            name="selected_keys[]"
-                                            value="<?php echo htmlspecialchars($license['id']); ?>"
-                                            class="row-checkbox"
-                                            id="key-<?php echo htmlspecialchars($license['id']); ?>">
-                                        <label for="key-<?php echo htmlspecialchars($license['id']); ?>"></label>
+                                        <input type="checkbox" id="select-all">
+                                        <label for="select-all"></label>
                                     </div>
-                                </td>
-                                <td class="key-field"><?php echo htmlspecialchars($license['license_key']); ?></td>
-                                <td><?php echo htmlspecialchars($license['email']); ?></td>
-                                <td><?php echo htmlspecialchars($license['created_at']); ?></td>
-                                <td>
-                                    <?php if ($license['activated']): ?>
-                                        <span class="badge badge-success">Active</span>
-                                    <?php else: ?>
-                                        <span class="badge badge-pending">Pending</span>
-                                    <?php endif; ?>
-                                </td>
-                                <td><?php echo $license['activation_date'] ? htmlspecialchars($license['activation_date']) : 'N/A'; ?></td>
+                                </th>
+                                <th>License Key</th>
+                                <th>Email</th>
+                                <th>Created</th>
+                                <th>Status</th>
+                                <th>Activation Date</th>
                             </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($licenses as $license): ?>
+                                <tr>
+                                    <td class="checkbox-column">
+                                        <div class="checkbox">
+                                            <input type="checkbox"
+                                                name="selected_keys[]"
+                                                value="<?php echo htmlspecialchars($license['id']); ?>"
+                                                class="row-checkbox"
+                                                id="key-<?php echo htmlspecialchars($license['id']); ?>">
+                                            <label for="key-<?php echo htmlspecialchars($license['id']); ?>"></label>
+                                        </div>
+                                    </td>
+                                    <td class="key-field"><?php echo htmlspecialchars($license['license_key']); ?></td>
+                                    <td><?php echo htmlspecialchars($license['email']); ?></td>
+                                    <td><?php echo htmlspecialchars($license['created_at']); ?></td>
+                                    <td>
+                                        <?php if ($license['activated']): ?>
+                                            <span class="badge badge-success">Active</span>
+                                        <?php else: ?>
+                                            <span class="badge badge-pending">Pending</span>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td><?php echo $license['activation_date'] ? htmlspecialchars($license['activation_date']) : 'N/A'; ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
             </form>
         <?php endif; ?>
     </div>

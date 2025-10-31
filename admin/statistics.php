@@ -987,30 +987,32 @@ include 'admin_header.php';
     <!-- Most active users table -->
     <div class="table-container">
         <h2>Most Active Community Users</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Posts</th>
-                    <th>Comments</th>
-                    <th>Total Views</th>
-                    <th>Activity Score</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($active_users as $user): ?>
+        <div class="table-responsive">
+            <table>
+                <thead>
                     <tr>
-                        <td><?php echo htmlspecialchars($user['username']); ?></td>
-                        <td><?php echo htmlspecialchars($user['email']); ?></td>
-                        <td><?php echo $user['post_count']; ?></td>
-                        <td><?php echo $user['comment_count']; ?></td>
-                        <td><?php echo number_format($user['total_views']); ?></td>
-                        <td><?php echo $user['activity_score']; ?></td>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Posts</th>
+                        <th>Comments</th>
+                        <th>Total Views</th>
+                        <th>Activity Score</th>
                     </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <?php foreach ($active_users as $user): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($user['username']); ?></td>
+                            <td><?php echo htmlspecialchars($user['email']); ?></td>
+                            <td><?php echo $user['post_count']; ?></td>
+                            <td><?php echo $user['comment_count']; ?></td>
+                            <td><?php echo number_format($user['total_views']); ?></td>
+                            <td><?php echo $user['activity_score']; ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <!-- Export options -->
