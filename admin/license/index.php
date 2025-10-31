@@ -239,8 +239,8 @@ if (isset($_SESSION['message'])) {
 include '../admin_header.php';
 ?>
 
-<link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="../resources/styles/checkbox.css">
+<link rel="stylesheet" href="../search.css">
+<link rel="stylesheet" href="../../resources/styles/checkbox.css">
 
 <script>
     const chartData = <?php echo json_encode($chart_data); ?>;
