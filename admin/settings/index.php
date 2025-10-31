@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../db_connect.php';
+require_once '../../db_connect.php';
 require_once '2fa.php';
 
 // Check if user is logged in
@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enable_2fa'])) {
     }
 }
 
-include 'admin_header.php';
+include '../admin_header.php';
 ?>
 
 <div class="container">

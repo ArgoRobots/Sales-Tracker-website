@@ -1,11 +1,12 @@
 <?php
-// Get current page for navigation highlighting
+// Get current page and directory for navigation highlighting
 $current_page = basename($_SERVER['PHP_SELF']);
+$current_dir = basename(dirname($_SERVER['PHP_SELF']));
 
-// Set default page title if not already set
-if (!isset($page_title)) {
-    $page_title = 'Admin Dashboard';
-}
+// Determine base path for assets (different for subdirectories vs root)
+$in_subdir = ($current_dir !== 'admin');
+$base_path = $in_subdir ? '../' : '';
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,18 +14,18 @@ if (!isset($page_title)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="<?php echo $base_path; ?>../images/argo-logo/A-logo.ico">
     <title><?php echo htmlspecialchars($page_title); ?> - Argo Sales Tracker</title>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-    <script src="../resources/notifications/notifications.js" defer></script>
+    <script src="<?php echo $base_path; ?>../resources/notifications/notifications.js" defer></script>
 
-    <link rel="stylesheet" href="unified-admin.css">
-    <link rel="stylesheet" href="../resources/styles/link.css">
-    <link rel="stylesheet" href="../resources/styles/button.css">
-    <link rel="stylesheet" href="../resources/styles/custom-colors.css">
-    <link rel="stylesheet" href="../resources/notifications/notifications.css">
-     <link rel="stylesheet" href="../resources/styles/table-auto-size.css">
+    <link rel="stylesheet" href="<?php echo $base_path; ?>common-style.css">
+    <link rel="stylesheet" href="<?php echo $base_path; ?>../resources/styles/link.css">
+    <link rel="stylesheet" href="<?php echo $base_path; ?>../resources/styles/button.css">
+    <link rel="stylesheet" href="<?php echo $base_path; ?>../resources/styles/custom-colors.css">
+    <link rel="stylesheet" href="<?php echo $base_path; ?>../resources/notifications/notifications.css">
+     <link rel="stylesheet" href="<?php echo $base_path; ?>../resources/styles/table-auto-size.css">
 </head>
 
 <body>
@@ -36,33 +37,33 @@ if (!isset($page_title)) {
             <label class="menu-icon" id="menu-icon" for="menu-btn"><span class="nav-icon"></span></label>
 
             <div class="header-container">
-                <a href="../index.php" class="btn-small btn-home" title="Go to Main Site">
+                <a href="<?php echo $base_path; ?>../index.php" class="btn-small btn-home" title="Go to Main Site">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
                     </svg>
                     <span class="home-text">Home</span>
                 </a>
 
-                <div class="logo-section">
-                    <img src="../images/argo-logo/A-logo.ico" alt="Argo Logo" class="header-logo">
+                <a href="<?php echo $base_path; ?>index.php" class="logo-section">
+                    <img src="<?php echo $base_path; ?>../images/argo-logo/A-logo.ico" alt="Argo Logo" class="header-logo">
                     <span class="header-title">Admin Dashboard</span>
-                </div>
+                </a>
 
                 <!-- Desktop Navigation -->
                 <nav class="header-nav desktop-nav">
-                    <a href="index.php" class="header-link <?php echo $current_page === 'index.php' ? 'active' : ''; ?>">
+                    <a href="<?php echo $base_path; ?>license/" class="header-link <?php echo $current_dir === 'license' ? 'active' : ''; ?>">
                         License Keys
                     </a>
-                    <a href="statistics.php" class="header-link <?php echo $current_page === 'statistics.php' ? 'active' : ''; ?>">
-                        Statistics
+                    <a href="<?php echo $base_path; ?>app-stats/" class="header-link <?php echo $current_dir === 'app-stats' ? 'active' : ''; ?>">
+                        App Stats
                     </a>
-                    <a href="anonymous_dashboard.php" class="header-link <?php echo $current_page === 'anonymous_dashboard.php' ? 'active' : ''; ?>">
-                        Anonymous Data
+                    <a href="<?php echo $base_path; ?>website-stats/" class="header-link <?php echo $current_dir === 'website-stats' ? 'active' : ''; ?>">
+                        Website Stats
                     </a>
-                    <a href="users.php" class="header-link <?php echo $current_page === 'users.php' ? 'active' : ''; ?>">
+                    <a href="<?php echo $base_path; ?>users/" class="header-link <?php echo $current_dir === 'users' ? 'active' : ''; ?>">
                         Users
                     </a>
-                    <a href="2fa-setup.php" class="header-link <?php echo $current_page === '2fa-setup.php' ? 'active' : ''; ?>">
+                    <a href="<?php echo $base_path; ?>settings/" class="header-link <?php echo $current_dir === 'settings' && $current_page === '2fa.php' ? 'active' : ''; ?>">
                         2FA Settings
                     </a>
                 </nav>
@@ -70,7 +71,7 @@ if (!isset($page_title)) {
                 <!-- Desktop Actions -->
                 <div class="header-actions desktop-actions">
                     <span class="user-name"><?php echo htmlspecialchars($_SESSION['admin_username'] ?? 'Admin'); ?></span>
-                    <a href="logout.php" class="btn btn-small btn-red">Logout</a>
+                    <a href="<?php echo $base_path; ?>logout.php" class="btn btn-small btn-red">Logout</a>
                 </div>
 
                 <!-- Mobile User Name (right side) -->
@@ -83,19 +84,19 @@ if (!isset($page_title)) {
             <div id="menu" class="hamburger-nav-menu">
                 <ul>
                     <li>
-                        <a href="../index.php" class="home-link">
+                        <a href="<?php echo $base_path; ?>../index.php" class="home-link">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
                             </svg>
                             Home
                         </a>
                     </li>
-                    <li><a href="index.php" class="<?php echo $current_page === 'index.php' ? 'active' : ''; ?>">License Keys</a></li>
-                    <li><a href="statistics.php" class="<?php echo $current_page === 'statistics.php' ? 'active' : ''; ?>">Statistics</a></li>
-                    <li><a href="anonymous_dashboard.php" class="<?php echo $current_page === 'anonymous_dashboard.php' ? 'active' : ''; ?>">Anonymous Data</a></li>
-                    <li><a href="users.php" class="<?php echo $current_page === 'users.php' ? 'active' : ''; ?>">Users</a></li>
-                    <li><a href="2fa-setup.php" class="<?php echo $current_page === '2fa-setup.php' ? 'active' : ''; ?>">2FA Settings</a></li>
-                    <li><a href="logout.php" class="logout-link">Logout</a></li>
+                    <li><a href="<?php echo $base_path; ?>license/" class="<?php echo $current_dir === 'license' ? 'active' : ''; ?>">License Keys</a></li>
+                    <li><a href="<?php echo $base_path; ?>app-stats/" class="<?php echo $current_dir === 'app-stats' ? 'active' : ''; ?>">App Stats</a></li>
+                    <li><a href="<?php echo $base_path; ?>website-stats/" class="<?php echo $current_dir === 'website-stats' ? 'active' : ''; ?>">Website Stats</a></li>
+                    <li><a href="<?php echo $base_path; ?>users/" class="<?php echo $current_dir === 'users' ? 'active' : ''; ?>">Users</a></li>
+                    <li><a href="<?php echo $base_path; ?>settings/" class="<?php echo $current_dir === 'settings' && $current_page === '2fa.php' ? 'active' : ''; ?>">2FA Settings</a></li>
+                    <li><a href="<?php echo $base_path; ?>logout.php" class="logout-link">Logout</a></li>
                 </ul>
             </div>
         </header>

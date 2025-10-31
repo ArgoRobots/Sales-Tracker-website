@@ -99,7 +99,7 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
     <title>Admin Login - Argo Sales Tracker</title>
 
-    <link rel="stylesheet" href="unified-admin.css">
+    <link rel="stylesheet" href="common-style.css">
     <link rel="stylesheet" href="../resources/styles/button.css">
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
 </head>
