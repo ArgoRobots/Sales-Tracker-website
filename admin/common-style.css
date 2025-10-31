@@ -216,6 +216,13 @@ body.menu-open::after {
   align-items: center;
   gap: 0.5rem;
   flex-shrink: 0;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.logo-section:hover .header-title {
+    opacity: 0.8;
 }
 
 .header-logo {

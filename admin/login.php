@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once '../db_connect.php';
-require_once '2fa.php';
+require_once 'settings/2fa.php';
 
 // Check if user is already logged in
 if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
@@ -99,7 +99,7 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
     <title>Admin Login - Argo Sales Tracker</title>
 
-    <link rel="stylesheet" href="unified-admin.css">
+    <link rel="stylesheet" href="common-style.css">
     <link rel="stylesheet" href="../resources/styles/button.css">
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
 </head>
