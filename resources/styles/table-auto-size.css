@@ -1,0 +1,25 @@
+/* Auto-size table columns without overflow */
+table {
+    table-layout: auto;
+    width: 100%;
+}
+
+table th,
+table td {
+    overflow-wrap: break-word;
+    word-break: break-word;
+    max-width: 300px;
+    white-space: normal;
+}
+
+/* Only truncate if there's enough space */
+table td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Allow action buttons column to wrap naturally */
+table td.action-buttons {
+    white-space: normal;
+    max-width: none;
+}

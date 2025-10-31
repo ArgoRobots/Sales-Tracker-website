@@ -13,17 +13,41 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 $page_title = "License Key Administration";
 $page_description = "Manage license keys, view statistics, and administer user accounts";
 
-// Function to get all license keys with optional email filter
-function get_license_keys($search_filter = '')
+// Function to get all license keys with optional filters
+function get_license_keys($search_filter = '', $date_from = '', $date_to = '')
 {
     $db = get_db_connection();
     $licenses = [];
 
+    $query = 'SELECT * FROM license_keys WHERE 1=1';
+    $types = '';
+    $params = [];
+
     if (!empty($search_filter)) {
+        $query .= ' AND (email LIKE ? OR license_key LIKE ?)';
         $search_param = '%' . $search_filter . '%';
-        // Search both email and license_key fields
-        $stmt = $db->prepare('SELECT * FROM license_keys WHERE email LIKE ? OR license_key LIKE ? ORDER BY created_at DESC');
-        $stmt->bind_param('ss', $search_param, $search_param);
+        $types .= 'ss';
+        $params[] = $search_param;
+        $params[] = $search_param;
+    }
+
+    if (!empty($date_from)) {
+        $query .= ' AND DATE(created_at) >= ?';
+        $types .= 's';
+        $params[] = $date_from;
+    }
+
+    if (!empty($date_to)) {
+        $query .= ' AND DATE(created_at) <= ?';
+        $types .= 's';
+        $params[] = $date_to;
+    }
+
+    $query .= ' ORDER BY created_at DESC';
+
+    if (!empty($params)) {
+        $stmt = $db->prepare($query);
+        $stmt->bind_param($types, ...$params);
         $stmt->execute();
         $result = $stmt->get_result();
 
@@ -31,7 +55,7 @@ function get_license_keys($search_filter = '')
             $licenses[] = $row;
         }
     } else {
-        $result = $db->query('SELECT * FROM license_keys ORDER BY created_at DESC');
+        $result = $db->query($query);
 
         while ($row = $result->fetch_assoc()) {
             $licenses[] = $row;
@@ -79,64 +103,66 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header('Location: index.php');
             exit;
         }
-    } elseif (isset($_POST['activate_key'])) {
-        // Handle activation
-        $key_id = $_POST['key_id'];
+    } elseif (isset($_POST['bulk_action'])) {
+        // Handle bulk actions
+        $action = $_POST['bulk_action'];
+        $key_ids = $_POST['selected_keys'] ?? [];
 
-        $db = get_db_connection();
-        $stmt = $db->prepare('UPDATE license_keys SET activated = 1, activation_date = CURRENT_TIMESTAMP WHERE id = ?');
-        $stmt->bind_param('i', $key_id);
-        $stmt->execute();
+        if (!empty($key_ids)) {
+            $db = get_db_connection();
+            $count = count($key_ids);
+            $placeholders = implode(',', array_fill(0, $count, '?'));
 
-        $_SESSION['message'] = 'License key activated successfully.';
-        $_SESSION['message_type'] = 'success';
+            if ($action === 'activate') {
+                $stmt = $db->prepare("UPDATE license_keys SET activated = 1, activation_date = CURRENT_TIMESTAMP WHERE id IN ($placeholders)");
+                $stmt->bind_param(str_repeat('i', $count), ...$key_ids);
+                $stmt->execute();
 
-        header('Location: index.php' . (isset($_GET['search']) ? '?search=' . urlencode($_GET['search']) : ''));
-        exit;
-    } elseif (isset($_POST['deactivate_key'])) {
-        // Handle deactivation
-        $key_id = $_POST['key_id'];
+                $_SESSION['message'] = "$count license key(s) activated successfully.";
+                $_SESSION['message_type'] = 'success';
+            } elseif ($action === 'deactivate') {
+                $stmt = $db->prepare("UPDATE license_keys SET activated = 0, activation_date = NULL WHERE id IN ($placeholders)");
+                $stmt->bind_param(str_repeat('i', $count), ...$key_ids);
+                $stmt->execute();
 
-        $db = get_db_connection();
-        $stmt = $db->prepare('UPDATE license_keys SET activated = 0, activation_date = NULL WHERE id = ?');
-        $stmt->bind_param('i', $key_id);
-        $stmt->execute();
+                $_SESSION['message'] = "$count license key(s) deactivated successfully.";
+                $_SESSION['message_type'] = 'success';
+            } elseif ($action === 'delete') {
+                $stmt = $db->prepare("DELETE FROM license_keys WHERE id IN ($placeholders)");
+                $stmt->bind_param(str_repeat('i', $count), ...$key_ids);
+                $stmt->execute();
 
-        $_SESSION['message'] = 'License key deactivated successfully.';
-        $_SESSION['message_type'] = 'success';
+                $_SESSION['message'] = "$count license key(s) deleted successfully.";
+                $_SESSION['message_type'] = 'success';
+            } elseif ($action === 'resend_email') {
+                // Get emails and keys for selected IDs
+                $stmt = $db->prepare("SELECT id, email, license_key FROM license_keys WHERE id IN ($placeholders)");
+                $stmt->bind_param(str_repeat('i', $count), ...$key_ids);
+                $stmt->execute();
+                $result = $stmt->get_result();
 
-        header('Location: index.php' . (isset($_GET['search']) ? '?search=' . urlencode($_GET['search']) : ''));
-        exit;
-    } elseif (isset($_POST['delete_key'])) {
-        // Handle deletion
-        $key_id = $_POST['key_id'];
+                $success_count = 0;
+                while ($row = $result->fetch_assoc()) {
+                    if (send_license_email($row['email'], $row['license_key'])) {
+                        $success_count++;
+                    }
+                }
 
-        $db = get_db_connection();
-        $stmt = $db->prepare('DELETE FROM license_keys WHERE id = ?');
-        $stmt->bind_param('i', $key_id);
-        $stmt->execute();
+                $_SESSION['message'] = "$success_count out of $count email(s) sent successfully.";
+                $_SESSION['message_type'] = $success_count > 0 ? 'success' : 'error';
+            }
 
-        $_SESSION['message'] = 'License key deleted successfully.';
-        $_SESSION['message_type'] = 'success';
+            // Build redirect URL with search params
+            $redirect_params = [];
+            if (!empty($_GET['search'])) $redirect_params[] = 'search=' . urlencode($_GET['search']);
+            if (!empty($_GET['date_preset'])) $redirect_params[] = 'date_preset=' . urlencode($_GET['date_preset']);
+            if (!empty($_GET['date_from']) && $_GET['date_preset'] === 'custom') $redirect_params[] = 'date_from=' . urlencode($_GET['date_from']);
+            if (!empty($_GET['date_to']) && $_GET['date_preset'] === 'custom') $redirect_params[] = 'date_to=' . urlencode($_GET['date_to']);
 
-        header('Location: index.php' . (isset($_GET['search']) ? '?search=' . urlencode($_GET['search']) : ''));
-        exit;
-    } elseif (isset($_POST['resend_email'])) {
-        // Handle email resending
-        $key_id = $_POST['key_id'];
-        $email = $_POST['email'];
-        $license_key = $_POST['key'];
-
-        // Send the license key via email
-        $email_status = send_license_email($email, $license_key);
-
-        $_SESSION['message'] = $email_status
-            ? "Email successfully sent to {$email}"
-            : "Failed to send email to {$email}";
-        $_SESSION['message_type'] = $email_status ? 'success' : 'error';
-
-        header('Location: index.php' . (isset($_GET['search']) ? '?search=' . urlencode($_GET['search']) : ''));
-        exit;
+            $redirect_url = 'index.php' . (!empty($redirect_params) ? '?' . implode('&', $redirect_params) : '');
+            header('Location: ' . $redirect_url);
+            exit;
+        }
     }
 }
 
@@ -156,11 +182,40 @@ if (isset($_SESSION['email_status'])) {
 $customer_email = $_SESSION['customer_email'] ?? '';
 unset($_SESSION['customer_email']);
 
-// Get search parameter
+// Get filter parameters
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
+$date_preset = isset($_GET['date_preset']) ? trim($_GET['date_preset']) : '';
+$date_from = isset($_GET['date_from']) ? trim($_GET['date_from']) : '';
+$date_to = isset($_GET['date_to']) ? trim($_GET['date_to']) : '';
 
-// Get license keys (filtered by search if provided)
-$licenses = get_license_keys($search);
+// Calculate date range based on preset
+if (!empty($date_preset) && $date_preset !== 'custom') {
+    $date_to = date('Y-m-d'); // Today
+
+    switch ($date_preset) {
+        case 'today':
+            $date_from = date('Y-m-d');
+            break;
+        case 'last_week':
+            $date_from = date('Y-m-d', strtotime('-7 days'));
+            break;
+        case 'last_month':
+            $date_from = date('Y-m-d', strtotime('-30 days'));
+            break;
+        case 'last_year':
+            $date_from = date('Y-m-d', strtotime('-365 days'));
+            break;
+        case 'last_3_years':
+            $date_from = date('Y-m-d', strtotime('-1095 days'));
+            break;
+        case 'last_5_years':
+            $date_from = date('Y-m-d', strtotime('-1825 days'));
+            break;
+    }
+}
+
+// Get license keys (filtered)
+$licenses = get_license_keys($search, $date_from, $date_to);
 
 // Get chart data
 $chart_data = get_chart_data();
@@ -183,6 +238,14 @@ if (isset($_SESSION['message'])) {
 
 include 'admin_header.php';
 ?>
+
+<link rel="stylesheet" href="index.css">
+<link rel="stylesheet" href="../resources/styles/checkbox.css">
+
+<script>
+    const chartData = <?php echo json_encode($chart_data); ?>;
+</script>
+<script src="index.js"></script>
 
 <div class="container">
     <!-- Statistics Cards -->
@@ -207,7 +270,17 @@ include 'admin_header.php';
         </div>
         <div class="stat-card">
             <h3>Pending Keys</h3>
-            <div class="stat-value"><?php echo count($licenses) - $active_count; ?></div>
+            <div class="stat-value">
+                <?php
+                $pending_count = 0;
+                foreach ($licenses as $license) {
+                    if (!$license['activated']) {
+                        $pending_count++;
+                    }
+                }
+                echo $pending_count;
+                ?>
+            </div>
         </div>
         <div class="stat-card">
             <h3>Registered Users</h3>
@@ -215,33 +288,33 @@ include 'admin_header.php';
         </div>
     </div>
 
-    <?php if (!empty($message)): ?>
-        <div class="<?php echo $message_type === 'success' ? 'success-message' : 'error-message'; ?>">
-            <?php echo htmlspecialchars($message); ?>
-        </div>
-    <?php endif; ?>
-
     <!-- Chart -->
     <div class="chart-container">
         <h2>License Keys Generated Over Time</h2>
         <canvas id="keysChart"></canvas>
     </div>
 
-    <div class="form-container">
+    <!-- Key Generation Form -->
+    <div class="table-container">
         <h2>Generate New License Key</h2>
+
         <?php if ($generated_key): ?>
             <div class="success-message">
-                New key generated: <?php echo htmlspecialchars($generated_key); ?>
+                <strong>License key generated successfully!</strong><br>
+                Key: <span class="generated-key"><?php echo htmlspecialchars($generated_key); ?></span><br>
+                Email: <?php echo htmlspecialchars($customer_email); ?>
             </div>
 
             <?php if ($email_status !== null): ?>
-                <div class="<?php echo $email_status ? 'success-message' : 'error-message'; ?>">
-                    <?php if ($email_status): ?>
-                        <span>Email with license key was successfully sent to <strong><?php echo htmlspecialchars($customer_email); ?></strong></span>
-                    <?php else: ?>
-                        <span>Failed to send email with license key. Please check your server configuration or try again.</span>
-                    <?php endif; ?>
-                </div>
+                <?php if ($email_status): ?>
+                    <div class="success-message">
+                        Email successfully sent to <?php echo htmlspecialchars($customer_email); ?>
+                    </div>
+                <?php else: ?>
+                    <div class="error-message">
+                        Failed to send email to <?php echo htmlspecialchars($customer_email); ?>
+                    </div>
+                <?php endif; ?>
             <?php endif; ?>
         <?php endif; ?>
 
@@ -249,7 +322,7 @@ include 'admin_header.php';
             <div class="form-group">
                 <label for="email">Customer Email:</label>
                 <div class="input-button-wrapper">
-                    <input type="email" id="email" name="email" required>
+                    <input type="email" id="email" name="email" placeholder="Email or license key..." required>
                     <button type="submit" name="generate_key" class="btn btn-blue">Generate Key</button>
                 </div>
             </div>
@@ -259,184 +332,143 @@ include 'admin_header.php';
     <div class="table-container">
         <h2>License Keys</h2>
 
-        <div class="search-container">
-            <form method="get" action="index.php">
-                <input type="text" name="search" placeholder="Search by email..." value="<?php echo htmlspecialchars($search); ?>">
-                <button type="submit" class="btn btn-blue">Search</button>
-            </form>
+        <!-- Filter Container -->
+        <form method="get" action="index.php" id="filter-form">
+            <div class="filter-container">
+                <div class="filter-group search-group">
+                    <label for="search">Search</label>
+                    <input type="text" id="search" name="search" placeholder="Email or license key..." value="<?php echo htmlspecialchars($search); ?>">
+                </div>
+
+                <div class="filter-group date-filter-group">
+                    <label for="date_preset">Date Range</label>
+                    <select id="date_preset" name="date_preset" class="date-preset-select">
+                        <option value="" <?php echo empty($date_preset) ? 'selected' : ''; ?>>All Time</option>
+                        <option value="today" <?php echo $date_preset === 'today' ? 'selected' : ''; ?>>Today</option>
+                        <option value="last_week" <?php echo $date_preset === 'last_week' ? 'selected' : ''; ?>>Last 7 Days</option>
+                        <option value="last_month" <?php echo $date_preset === 'last_month' ? 'selected' : ''; ?>>Last 30 Days</option>
+                        <option value="last_year" <?php echo $date_preset === 'last_year' ? 'selected' : ''; ?>>Last Year</option>
+                        <option value="last_3_years" <?php echo $date_preset === 'last_3_years' ? 'selected' : ''; ?>>Last 3 Years</option>
+                        <option value="last_5_years" <?php echo $date_preset === 'last_5_years' ? 'selected' : ''; ?>>Last 5 Years</option>
+                        <option value="custom" <?php echo $date_preset === 'custom' ? 'selected' : ''; ?>>Custom Range</option>
+                    </select>
+
+                    <div class="custom-date-range" id="custom_date_range" style="display: <?php echo $date_preset === 'custom' ? 'flex' : 'none'; ?>;">
+                        <div class="date-input-group">
+                            <label for="date_from">From</label>
+                            <input type="date" id="date_from" name="date_from" value="<?php echo $date_preset === 'custom' ? htmlspecialchars($date_from) : ''; ?>">
+                        </div>
+                        <div class="date-input-group">
+                            <label for="date_to">To</label>
+                            <input type="date" id="date_to" name="date_to" value="<?php echo $date_preset === 'custom' ? htmlspecialchars($date_to) : ''; ?>">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-actions">
+                    <button type="submit" class="btn btn-blue">Apply</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Bulk Actions -->
+        <div class="bulk-actions-container">
+            <div class="selection-info">
+                <span id="selected-count">0</span> selected
+            </div>
+            <div class="bulk-buttons">
+                <button type="button" class="btn btn-bulk btn-email" data-action="resend_email" disabled>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                    </svg>
+                    Send Email
+                </button>
+                <button type="button" class="btn btn-bulk btn-activate" data-action="activate" disabled>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                    </svg>
+                    Activate
+                </button>
+                <button type="button" class="btn btn-bulk btn-deactivate" data-action="deactivate" disabled>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                    </svg>
+                    Deactivate
+                </button>
+                <button type="button" class="btn btn-bulk btn-delete" data-action="delete" disabled>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" />
+                    </svg>
+                    Delete
+                </button>
+            </div>
         </div>
 
-        <span class="total-keys">Total: <?php echo count($licenses); ?></span>
+        <?php if (!empty($message)): ?>
+            <div class="<?php echo $message_type === 'success' ? 'success-message' : 'error-message'; ?>">
+                <?php echo htmlspecialchars($message); ?>
+            </div>
+        <?php endif; ?>
 
-        <?php if (!empty($search)): ?>
+        <?php if (!empty($search) || !empty($date_preset)): ?>
             <div class="search-results">
-                Showing results for: "<?php echo htmlspecialchars($search); ?>" (<?php echo count($licenses); ?> results)
+                Showing filtered results (<?php echo count($licenses); ?> keys)
             </div>
         <?php endif; ?>
 
         <?php if (empty($licenses)): ?>
             <p>No license keys found.</p>
         <?php else: ?>
-            <table>
-                <thead>
-                    <tr>
-                        <th>License Key</th>
-                        <th>Email</th>
-                        <th>Created</th>
-                        <th>Status</th>
-                        <th>Activation Date</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($licenses as $license): ?>
-                        <tr>
-                            <td class="key-field"><?php echo htmlspecialchars($license['license_key']); ?></td>
-                            <td><?php echo htmlspecialchars($license['email']); ?></td>
-                            <td><?php echo htmlspecialchars($license['created_at']); ?></td>
-                            <td>
-                                <?php if ($license['activated']): ?>
-                                    <span class="badge badge-success">Active</span>
-                                <?php else: ?>
-                                    <span class="badge badge-pending">Pending</span>
-                                <?php endif; ?>
-                            </td>
-                            <td><?php echo $license['activation_date'] ? htmlspecialchars($license['activation_date']) : 'N/A'; ?></td>
-                            <td class="action-buttons">
-                                <!-- Resend Email Button -->
-                                <form method="post" onsubmit="return confirm('Are you sure you want to resend the license key email?');">
-                                    <input type="hidden" name="key_id" value="<?php echo htmlspecialchars($license['id']); ?>">
-                                    <input type="hidden" name="email" value="<?php echo htmlspecialchars($license['email']); ?>">
-                                    <input type="hidden" name="key" value="<?php echo htmlspecialchars($license['license_key']); ?>">
-                                    <button type="submit" name="resend_email" class="btn btn-small btn-email">Send Email</button>
-                                </form>
+            <form id="bulk-form" method="post">
+                <input type="hidden" name="bulk_action" id="bulk_action_input">
 
-                                <?php if (!$license['activated']): ?>
-                                    <form method="post" onsubmit="return confirm('Are you sure you want to activate this license key?');">
-                                        <input type="hidden" name="key_id" value="<?php echo htmlspecialchars($license['id']); ?>">
-                                        <input type="hidden" name="key" value="<?php echo htmlspecialchars($license['license_key']); ?>">
-                                        <button type="submit" name="activate_key" class="btn btn-small btn-green">Activate</button>
-                                    </form>
-                                <?php else: ?>
-                                    <form method="post" onsubmit="return confirm('Are you sure you want to deactivate this license key?');">
-                                        <input type="hidden" name="key_id" value="<?php echo htmlspecialchars($license['id']); ?>">
-                                        <button type="submit" name="deactivate_key" class="btn btn-small btn-deactivate">Deactivate</button>
-                                    </form>
-                                <?php endif; ?>
-                                <form method="post" onsubmit="return confirm('Are you sure you want to delete this license key? This action cannot be undone.');">
-                                    <input type="hidden" name="key_id" value="<?php echo htmlspecialchars($license['id']); ?>">
-                                    <button type="submit" name="delete_key" class="btn btn-small btn-red">Delete</button>
-                                </form>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="checkbox-column">
+                                    <div class="checkbox">
+                                        <input type="checkbox" id="select-all">
+                                        <label for="select-all"></label>
+                                    </div>
+                                </th>
+                                <th>License Key</th>
+                                <th>Email</th>
+                                <th>Created</th>
+                                <th>Status</th>
+                                <th>Activation Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($licenses as $license): ?>
+                                <tr>
+                                    <td class="checkbox-column">
+                                        <div class="checkbox">
+                                            <input type="checkbox"
+                                                name="selected_keys[]"
+                                                value="<?php echo htmlspecialchars($license['id']); ?>"
+                                                class="row-checkbox"
+                                                id="key-<?php echo htmlspecialchars($license['id']); ?>">
+                                            <label for="key-<?php echo htmlspecialchars($license['id']); ?>"></label>
+                                        </div>
+                                    </td>
+                                    <td class="key-field"><?php echo htmlspecialchars($license['license_key']); ?></td>
+                                    <td><?php echo htmlspecialchars($license['email']); ?></td>
+                                    <td><?php echo htmlspecialchars($license['created_at']); ?></td>
+                                    <td>
+                                        <?php if ($license['activated']): ?>
+                                            <span class="badge badge-success">Active</span>
+                                        <?php else: ?>
+                                            <span class="badge badge-pending">Pending</span>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td><?php echo $license['activation_date'] ? htmlspecialchars($license['activation_date']) : 'N/A'; ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
         <?php endif; ?>
     </div>
 </div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Chart initialization
-        const chartData = <?php echo json_encode($chart_data); ?>;
-        const labels = chartData.map(item => item.date);
-        const counts = chartData.map(item => item.count);
-
-        const ctx = document.getElementById('keysChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'License Keys Generated',
-                    data: counts,
-                    backgroundColor: 'rgba(37, 99, 235, 0.2)',
-                    borderColor: 'rgba(37, 99, 235, 1)',
-                    borderWidth: 2,
-                    tension: 0.3,
-                    pointRadius: 4,
-                    pointBackgroundColor: 'rgba(37, 99, 235, 1)'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            precision: 0
-                        }
-                    },
-                    x: {
-                        ticks: {
-                            padding: 10
-                        }
-                    }
-                },
-                plugins: {
-                    title: {
-                        display: false
-                    },
-                    legend: {
-                        position: 'top',
-                    }
-                },
-                layout: {
-                    padding: {
-                        bottom: 60
-                    }
-                }
-            }
-        });
-
-        // Restore scroll position if it exists in sessionStorage
-        if (sessionStorage.getItem('scrollPosition')) {
-            window.scrollTo(0, sessionStorage.getItem('scrollPosition'));
-            sessionStorage.removeItem('scrollPosition');
-        }
-
-        // Save scroll position when submitting forms
-        const forms = document.querySelectorAll('form');
-        forms.forEach(form => {
-            form.addEventListener('submit', function() {
-                sessionStorage.setItem('scrollPosition', window.scrollY);
-            });
-        });
-
-        // Also save position when clicking links (for the "Clear" button)
-        const links = document.querySelectorAll('a[href^="index.php"]');
-        links.forEach(link => {
-            link.addEventListener('click', function() {
-                sessionStorage.setItem('scrollPosition', window.scrollY);
-            });
-        });
-
-        // Auto-clear search when textbox is emptied, preserving scroll position
-        const searchInput = document.querySelector('input[name="search"]');
-        if (searchInput) {
-            let typingTimer;
-
-            searchInput.addEventListener('input', function() {
-                clearTimeout(typingTimer);
-
-                if (this.value.trim() === '') {
-                    // Save current scroll position before redirecting
-                    sessionStorage.setItem('scrollPosition', window.scrollY);
-                    window.location.href = 'index.php';
-                }
-            });
-
-            // Add ability to press Escape key to clear search
-            searchInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    // Save current scroll position before redirecting
-                    sessionStorage.setItem('scrollPosition', window.scrollY);
-                    this.value = '';
-                    window.location.href = 'index.php';
-                }
-            });
-        }
-    });
-</script>

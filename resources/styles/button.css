@@ -2,7 +2,7 @@
   padding: 10px 0;
   border-radius: 5px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease;
   border: none;
   font-weight: bold;
   text-decoration: none;

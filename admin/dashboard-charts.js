@@ -90,14 +90,6 @@ document.addEventListener("DOMContentLoaded", function () {
       exchangeRatesData
     );
     generateSessionDurationByRegionChart(sessionData);
-    generateVPNUsageChart(
-      exportData,
-      openaiData,
-      exchangeRatesData,
-      googleSheetsData,
-      sessionData,
-      errorData
-    );
     generateTimezoneChart(
       exportData,
       openaiData,
@@ -256,11 +248,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const avgSessionDuration =
       sessionEndData.length > 0
         ? (
-            sessionEndData.reduce(
-              (sum, s) => sum + parseFloat(s.duration),
-              0
-            ) / sessionEndData.length
-          ).toFixed(1)
+          sessionEndData.reduce(
+            (sum, s) => sum + parseFloat(s.duration),
+            0
+          ) / sessionEndData.length
+        ).toFixed(1)
         : "0";
 
     // Calculate Unique Countries
@@ -342,8 +334,8 @@ document.addEventListener("DOMContentLoaded", function () {
           healthScore > 90
             ? "Excellent"
             : healthScore > 70
-            ? "Good"
-            : "Needs attention",
+              ? "Good"
+              : "Needs attention",
       },
       {
         title: "Performance Score",
@@ -411,11 +403,10 @@ document.addEventListener("DOMContentLoaded", function () {
             <div class="stat-card">
                 <h3>${stat.title}</h3>
                 <div class="value">${stat.value}</div>
-                ${
-                  stat.subtext
-                    ? `<div class="subtext">${stat.subtext}</div>`
-                    : ""
-                }
+                ${stat.subtext
+            ? `<div class="subtext">${stat.subtext}</div>`
+            : ""
+          }
             </div>
         `
       )
@@ -502,12 +493,7 @@ document.addEventListener("DOMContentLoaded", function () {
               text: "Number of Operations",
             },
           },
-        },
-        layout: {
-          padding: {
-            bottom: 40,
-          },
-        },
+        }
       },
     });
   }
@@ -596,12 +582,7 @@ document.addEventListener("DOMContentLoaded", function () {
               },
             },
           },
-        },
-        layout: {
-          padding: {
-            bottom: 40,
-          },
-        },
+        }
       },
     });
   }
@@ -679,12 +660,7 @@ document.addEventListener("DOMContentLoaded", function () {
           legend: {
             position: "bottom",
           },
-        },
-        layout: {
-          padding: {
-            bottom: 40,
-          },
-        },
+        }
       },
     });
   }
@@ -763,12 +739,7 @@ document.addEventListener("DOMContentLoaded", function () {
               text: "Average Duration (ms)",
             },
           },
-        },
-        layout: {
-          padding: {
-            bottom: 40,
-          },
-        },
+        }
       },
     });
   }
@@ -841,9 +812,8 @@ document.addEventListener("DOMContentLoaded", function () {
             callbacks: {
               label: function (context) {
                 const item = countryErrorRates[context.dataIndex];
-                return `${item.country}: ${item.errorRate.toFixed(2)}% (${
-                  item.errors
-                }/${item.operations})`;
+                return `${item.country}: ${item.errorRate.toFixed(2)}% (${item.errors
+                  }/${item.operations})`;
               },
             },
           },
@@ -856,12 +826,7 @@ document.addEventListener("DOMContentLoaded", function () {
               text: "Error Rate (%)",
             },
           },
-        },
-        layout: {
-          padding: {
-            bottom: 40,
-          },
-        },
+        }
       },
     });
   }
@@ -930,78 +895,7 @@ document.addEventListener("DOMContentLoaded", function () {
               text: "Average Duration (seconds)",
             },
           },
-        },
-        layout: {
-          padding: {
-            bottom: 40,
-          },
-        },
-      },
-    });
-  }
-
-  function generateVPNUsageChart(
-    exportData,
-    openaiData,
-    exchangeRatesData,
-    googleSheetsData,
-    sessionData,
-    errorData
-  ) {
-    const allData = [
-      ...exportData,
-      ...openaiData,
-      ...exchangeRatesData,
-      ...googleSheetsData,
-      ...sessionData,
-      ...errorData,
-    ];
-    const vpnCount = allData.filter((item) => item.isVPN === true).length;
-    const regularCount = allData.filter(
-      (item) => item.isVPN === false || item.isVPN === undefined
-    ).length;
-
-    if (vpnCount === 0 && regularCount === 0) {
-      document.getElementById("vpnUsageChart").parentElement.innerHTML =
-        '<div class="chart-no-data">No VPN detection data available</div>';
-      return;
-    }
-
-    new Chart(document.getElementById("vpnUsageChart"), {
-      type: "doughnut",
-      data: {
-        labels: ["Regular Connections", "VPN/Proxy Connections"],
-        datasets: [
-          {
-            data: [regularCount, vpnCount],
-            backgroundColor: ["#10b981", "#f59e0b"],
-            borderColor: ["#059669", "#d97706"],
-            borderWidth: 1,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            position: "bottom",
-          },
-          tooltip: {
-            callbacks: {
-              label: function (context) {
-                const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                const percentage = Math.round((context.raw / total) * 100);
-                return `${context.label}: ${context.raw} (${percentage}%)`;
-              },
-            },
-          },
-        },
-        layout: {
-          padding: {
-            bottom: 40,
-          },
-        },
+        }
       },
     });
   }
@@ -1076,12 +970,7 @@ document.addEventListener("DOMContentLoaded", function () {
               maxRotation: 45,
             },
           },
-        },
-        layout: {
-          padding: {
-            bottom: 40,
-          },
-        },
+        }
       },
     });
   }
@@ -1170,12 +1059,7 @@ document.addEventListener("DOMContentLoaded", function () {
               },
             },
           },
-        },
-        layout: {
-          padding: {
-            bottom: 40,
-          },
-        },
+        }
       },
     });
   }
@@ -1267,12 +1151,7 @@ document.addEventListener("DOMContentLoaded", function () {
               maxRotation: 45,
             },
           },
-        },
-        layout: {
-          padding: {
-            bottom: 40,
-          },
-        },
+        }
       },
     });
   }
@@ -1396,12 +1275,7 @@ document.addEventListener("DOMContentLoaded", function () {
           legend: {
             position: "bottom",
           },
-        },
-        layout: {
-          padding: {
-            bottom: 40,
-          },
-        },
+        }
       },
     });
   }
@@ -1500,12 +1374,7 @@ document.addEventListener("DOMContentLoaded", function () {
               text: "Average Duration (ms)",
             },
           },
-        },
-        layout: {
-          padding: {
-            bottom: 40,
-          },
-        },
+        }
       },
     });
   }
@@ -1585,12 +1454,7 @@ document.addEventListener("DOMContentLoaded", function () {
               text: "Average Duration (seconds)",
             },
           },
-        },
-        layout: {
-          padding: {
-            bottom: 40,
-          },
-        },
+        }
       },
     });
   }
@@ -1672,9 +1536,8 @@ document.addEventListener("DOMContentLoaded", function () {
             callbacks: {
               label: function (context) {
                 const item = versionErrorRates[context.dataIndex];
-                return `v${item.version}: ${item.errorRate.toFixed(2)}% (${
-                  item.errors
-                }/${item.operations})`;
+                return `v${item.version}: ${item.errorRate.toFixed(2)}% (${item.errors
+                  }/${item.operations})`;
               },
             },
           },
@@ -1687,12 +1550,7 @@ document.addEventListener("DOMContentLoaded", function () {
               text: "Error Rate (%)",
             },
           },
-        },
-        layout: {
-          padding: {
-            bottom: 40,
-          },
-        },
+        }
       },
     });
   }
@@ -1755,12 +1613,7 @@ document.addEventListener("DOMContentLoaded", function () {
               },
             },
           },
-        },
-        layout: {
-          padding: {
-            bottom: 40,
-          },
-        },
+        }
       },
     });
   }
@@ -1813,12 +1666,7 @@ document.addEventListener("DOMContentLoaded", function () {
               text: "Number of Occurrences",
             },
           },
-        },
-        layout: {
-          padding: {
-            bottom: 40,
-          },
-        },
+        }
       },
     });
   }
@@ -1876,12 +1724,7 @@ document.addEventListener("DOMContentLoaded", function () {
               maxRotation: 45,
             },
           },
-        },
-        layout: {
-          padding: {
-            bottom: 40,
-          },
-        },
+        }
       },
     });
   }
@@ -1932,18 +1775,12 @@ document.addEventListener("DOMContentLoaded", function () {
               label: function (context) {
                 const total = context.dataset.data.reduce((a, b) => a + b, 0);
                 const percentage = Math.round((context.raw / total) * 100);
-                return `${
-                  context.label
-                }: ${context.raw.toLocaleString()} (${percentage}%)`;
+                return `${context.label
+                  }: ${context.raw.toLocaleString()} (${percentage}%)`;
               },
             },
           },
-        },
-        layout: {
-          padding: {
-            bottom: 40,
-          },
-        },
+        }
       },
     });
   }
@@ -2013,12 +1850,7 @@ document.addEventListener("DOMContentLoaded", function () {
               maxRotation: 45,
             },
           },
-        },
-        layout: {
-          padding: {
-            bottom: 40,
-          },
-        },
+        }
       },
     });
   }
@@ -2071,12 +1903,7 @@ document.addEventListener("DOMContentLoaded", function () {
               },
             },
           },
-        },
-        layout: {
-          padding: {
-            bottom: 40,
-          },
-        },
+        }
       },
     });
   }
@@ -2151,12 +1978,7 @@ document.addEventListener("DOMContentLoaded", function () {
               text: "Duration (ms)",
             },
           },
-        },
-        layout: {
-          padding: {
-            bottom: 40,
-          },
-        },
+        }
       },
     });
   }
@@ -2240,12 +2062,7 @@ document.addEventListener("DOMContentLoaded", function () {
               },
             },
           },
-        },
-        layout: {
-          padding: {
-            bottom: 40,
-          },
-        },
+        }
       },
     });
   }
@@ -2315,12 +2132,7 @@ document.addEventListener("DOMContentLoaded", function () {
               text: "Duration (milliseconds)",
             },
           },
-        },
-        layout: {
-          padding: {
-            bottom: 40,
-          },
-        },
+        }
       },
     });
   }
@@ -2363,12 +2175,7 @@ document.addEventListener("DOMContentLoaded", function () {
           legend: {
             position: "bottom",
           },
-        },
-        layout: {
-          padding: {
-            bottom: 40,
-          },
-        },
+        }
       },
     });
   }
@@ -2414,12 +2221,7 @@ document.addEventListener("DOMContentLoaded", function () {
               text: "Tokens",
             },
           },
-        },
-        layout: {
-          padding: {
-            bottom: 40,
-          },
-        },
+        }
       },
     });
   }
@@ -2468,12 +2270,7 @@ document.addEventListener("DOMContentLoaded", function () {
               text: "Duration (ms)",
             },
           },
-        },
-        layout: {
-          padding: {
-            bottom: 40,
-          },
-        },
+        }
       },
     });
   }
@@ -2546,12 +2343,7 @@ document.addEventListener("DOMContentLoaded", function () {
               },
             },
           },
-        },
-        layout: {
-          padding: {
-            bottom: 40,
-          },
-        },
+        }
       },
     });
   }
@@ -2679,12 +2471,7 @@ document.addEventListener("DOMContentLoaded", function () {
           legend: {
             position: "bottom",
           },
-        },
-        layout: {
-          padding: {
-            bottom: 40,
-          },
-        },
+        }
       },
     });
   }
