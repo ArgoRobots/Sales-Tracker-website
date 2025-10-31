@@ -461,6 +461,7 @@ td {
 th {
   background-color: #f8fafc;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 tbody tr {
@@ -482,6 +483,7 @@ tbody tr:hover {
   border-radius: 4px;
   font-size: 12px;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .badge-success {
