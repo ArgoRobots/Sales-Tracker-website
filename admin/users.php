@@ -12,26 +12,43 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 $page_title = "User Account Management";
 $page_description = "Manage community user accounts, view user statistics, and moderate users";
 
-// Handle user deletion
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_user'])) {
-    $user_id = $_POST['user_id'];
+// Handle bulk user deletion
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['bulk_action'])) {
+    $action = $_POST['bulk_action'];
+    $selected_ids = $_POST['selected_ids'] ?? [];
 
-    $db = get_db_connection();
-    $stmt = $db->prepare('DELETE FROM community_users WHERE id = ?');
-    $stmt->bind_param('i', $user_id);
-    $result = $stmt->execute();
+    if (!empty($selected_ids) && $action === 'delete') {
+        $db = get_db_connection();
+        $success_count = 0;
+        $fail_count = 0;
 
-    if ($result) {
-        $_SESSION['message'] = 'User deleted successfully.';
-        $_SESSION['message_type'] = 'success';
-    } else {
-        $_SESSION['message'] = 'Failed to delete user.';
-        $_SESSION['message_type'] = 'error';
+        foreach ($selected_ids as $user_id) {
+            $stmt = $db->prepare('DELETE FROM community_users WHERE id = ?');
+            $stmt->bind_param('i', $user_id);
+            
+            if ($stmt->execute()) {
+                $success_count++;
+            } else {
+                $fail_count++;
+            }
+        }
+
+        if ($success_count > 0) {
+            $msg = $success_count . ' user' . ($success_count > 1 ? 's' : '') . ' deleted successfully.';
+            if ($fail_count > 0) {
+                $msg .= ' ' . $fail_count . ' failed.';
+            }
+            $_SESSION['message'] = $msg;
+            $_SESSION['message_type'] = 'success';
+        } else {
+            $_SESSION['message'] = 'Failed to delete users.';
+            $_SESSION['message_type'] = 'error';
+        }
+
+        // Redirect to prevent form resubmission
+        header('Location: users.php' . (!empty($search) ? '?search=' . urlencode($search) : ''));
+        exit;
     }
-
-    // Redirect to prevent form resubmission
-    header('Location: users.php');
-    exit;
 }
 
 // Function to get all users
@@ -114,6 +131,9 @@ if (isset($_SESSION['message'])) {
 include 'admin_header.php';
 ?>
 
+<link rel="stylesheet" href="index.css">
+<link rel="stylesheet" href="../resources/styles/checkbox.css">
+
 <div class="container">
     <!-- Statistics Cards -->
     <div class="stats-grid">
@@ -144,7 +164,6 @@ include 'admin_header.php';
     <div class="table-container">
         <div class="table-header">
             <h2>Registered Users</h2>
-            <span class="total-count">Total: <?php echo count($users); ?></span>
         </div>
 
         <div class="search-container">
@@ -163,21 +182,55 @@ include 'admin_header.php';
         <?php if (empty($users)): ?>
             <p>No users found.</p>
         <?php else: ?>
+            <!-- Bulk Actions Form -->
+            <form method="post" id="bulk-form">
+                <!-- Bulk Actions Container -->
+                <div class="bulk-actions-container">
+                    <div class="selection-info">
+                        <span id="selected-count">0</span> user(s) selected
+                    </div>
+                    <div class="bulk-buttons">
+                        <button type="button" class="btn btn-bulk btn-delete" data-action="delete" disabled>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+                            </svg>
+                            Delete Selected
+                        </button>
+                    </div>
+                </div>
+
+                <input type="hidden" name="bulk_action" id="bulk_action_input">
+
             <table>
                 <thead>
                     <tr>
+                        <th class="checkbox-column">
+                            <div class="checkbox">
+                                <input type="checkbox" id="select-all">
+                                <label for="select-all"></label>
+                            </div>
+                        </th>
                         <th>Username</th>
                         <th>Email</th>
                         <th>Role</th>
                         <th>Verified</th>
                         <th>Created</th>
                         <th>Last Login</th>
-                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($users as $user): ?>
                         <tr>
+                            <td class="checkbox-column">
+                                <div class="checkbox">
+                                    <input type="checkbox" 
+                                        name="selected_ids[]" 
+                                        value="<?php echo htmlspecialchars($user['id']); ?>"
+                                        class="row-checkbox"
+                                        id="user-<?php echo htmlspecialchars($user['id']); ?>">
+                                    <label for="user-<?php echo htmlspecialchars($user['id']); ?>"></label>
+                                </div>
+                            </td>
                             <td><?php echo htmlspecialchars($user['username']); ?></td>
                             <td><?php echo htmlspecialchars($user['email']); ?></td>
                             <td>
@@ -194,22 +247,87 @@ include 'admin_header.php';
                             </td>
                             <td><?php echo htmlspecialchars(date('Y-m-d', strtotime($user['created_at']))); ?></td>
                             <td><?php echo $user['last_login'] ? htmlspecialchars(date('Y-m-d', strtotime($user['last_login']))) : 'Never'; ?></td>
-                            <td class="action-buttons">
-                                <form method="post" onsubmit="return confirm('Are you sure you want to delete this user? This action cannot be undone.');">
-                                    <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($user['id']); ?>">
-                                    <button type="submit" name="delete_user" class="btn btn-small btn-red">Delete</button>
-                                </form>
-                            </td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
+            </form>
         <?php endif; ?>
     </div>
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Bulk selection functionality
+        const selectAllCheckbox = document.getElementById('select-all');
+        const rowCheckboxes = document.querySelectorAll('.row-checkbox');
+        const bulkButtons = document.querySelectorAll('.btn-bulk');
+        const selectedCountSpan = document.getElementById('selected-count');
+        const bulkForm = document.getElementById('bulk-form');
+        const bulkActionInput = document.getElementById('bulk_action_input');
+
+        function updateSelectedCount() {
+            const checkedBoxes = document.querySelectorAll('.row-checkbox:checked');
+            const count = checkedBoxes.length;
+            selectedCountSpan.textContent = count;
+
+            // Enable/disable buttons
+            bulkButtons.forEach(btn => {
+                btn.disabled = count === 0;
+            });
+
+            // Update select-all checkbox state
+            if (count === 0) {
+                selectAllCheckbox.checked = false;
+                selectAllCheckbox.indeterminate = false;
+            } else if (count === rowCheckboxes.length) {
+                selectAllCheckbox.checked = true;
+                selectAllCheckbox.indeterminate = false;
+            } else {
+                selectAllCheckbox.checked = false;
+                selectAllCheckbox.indeterminate = true;
+            }
+        }
+
+        // Select all functionality
+        selectAllCheckbox.addEventListener('change', function() {
+            rowCheckboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+            });
+            updateSelectedCount();
+        });
+
+        // Individual checkbox changes
+        rowCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateSelectedCount);
+        });
+
+        // Bulk action buttons
+        bulkButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const action = this.dataset.action;
+                const checkedBoxes = document.querySelectorAll('.row-checkbox:checked');
+                const count = checkedBoxes.length;
+
+                if (count === 0) return;
+
+                let confirmMessage = '';
+
+                if (action === 'delete') {
+                    confirmMessage = `Are you sure you want to delete ${count} user${count > 1 ? 's' : ''}? This action cannot be undone.`;
+                }
+
+                if (confirm(confirmMessage)) {
+                    bulkActionInput.value = action;
+                    sessionStorage.setItem('scrollPosition', window.scrollY);
+                    bulkForm.submit();
+                }
+            });
+        });
+
+        // Initial count
+        updateSelectedCount();
+
         // Restore scroll position if it exists in sessionStorage
         if (sessionStorage.getItem('scrollPosition')) {
             window.scrollTo(0, sessionStorage.getItem('scrollPosition'));
@@ -224,7 +342,7 @@ include 'admin_header.php';
             });
         });
 
-        // Also save position when clicking links (for the "Clear" button)
+        // Also save position when clicking links
         const links = document.querySelectorAll('a[href^="users.php"]');
         links.forEach(link => {
             link.addEventListener('click', function() {
@@ -232,25 +350,18 @@ include 'admin_header.php';
             });
         });
 
-        // Auto-clear search when textbox is emptied, preserving scroll position
+        // Auto-clear search when textbox is emptied
         const searchInput = document.querySelector('input[name="search"]');
         if (searchInput) {
-            let typingTimer;
-
             searchInput.addEventListener('input', function() {
-                clearTimeout(typingTimer);
-
                 if (this.value.trim() === '') {
-                    // Save current scroll position before redirecting
                     sessionStorage.setItem('scrollPosition', window.scrollY);
                     window.location.href = 'users.php';
                 }
             });
 
-            // Add ability to press Escape key to clear search
             searchInput.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
-                    // Save current scroll position before redirecting
                     sessionStorage.setItem('scrollPosition', window.scrollY);
                     this.value = '';
                     window.location.href = 'users.php';
