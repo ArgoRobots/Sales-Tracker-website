@@ -97,44 +97,7 @@ try {
     $overall_status = 'error';
 }
 
-// 2. Disk Storage
-try {
-    $disk_free = disk_free_space('/');
-    $disk_total = disk_total_space('/');
-
-    if ($disk_free !== false && $disk_total !== false) {
-        $disk_used = $disk_total - $disk_free;
-        $disk_usage_percent = round(($disk_used / $disk_total) * 100, 2);
-        $disk_free_gb = round($disk_free / 1024 / 1024 / 1024, 2);
-        $disk_total_gb = round($disk_total / 1024 / 1024 / 1024, 2);
-
-        if ($disk_usage_percent > 90) {
-            $system_health['storage'] = 'error';
-            $overall_status = 'warning';
-        } elseif ($disk_usage_percent > 80) {
-            $system_health['storage'] = 'warning';
-            if ($overall_status === 'operational') {
-                $overall_status = 'warning';
-            }
-        } else {
-            $system_health['storage'] = 'operational';
-        }
-
-        $health_details['storage'] = [
-            'free' => $disk_free_gb . ' GB',
-            'total' => $disk_total_gb . ' GB',
-            'usage' => $disk_usage_percent . '%'
-        ];
-    } else {
-        $system_health['storage'] = 'warning';
-        $health_details['storage'] = ['status' => 'Unable to read disk space'];
-    }
-} catch (Exception $e) {
-    $system_health['storage'] = 'warning';
-    $health_details['storage'] = ['status' => 'Unavailable'];
-}
-
-// 3. PHP Environment
+// 2. PHP Environment
 $php_version = phpversion();
 $memory_limit = ini_get('memory_limit');
 $memory_usage = round(memory_get_usage(true) / 1024 / 1024, 2);
@@ -148,7 +111,7 @@ $health_details['php'] = [
     'max_execution' => $max_execution_time . 's'
 ];
 
-// 4. Session Directory
+// 3. Session Directory
 $session_path = session_save_path() ?: sys_get_temp_dir();
 $session_writable = is_writable($session_path);
 $system_health['sessions'] = $session_writable ? 'operational' : 'error';
@@ -161,7 +124,7 @@ if (!$session_writable && $overall_status === 'operational') {
     $overall_status = 'warning';
 }
 
-// 5. Upload Directory
+// 4. Upload Directory
 $upload_path = $_SERVER['DOCUMENT_ROOT'] . '/../uploads';
 if (!file_exists($upload_path)) {
     $upload_path = $_SERVER['DOCUMENT_ROOT'] . '/uploads';
@@ -182,7 +145,7 @@ if (file_exists($upload_path)) {
     $health_details['uploads'] = ['status' => 'Directory not found'];
 }
 
-// 6. Error Logging
+// 5. Error Logging
 $error_log_enabled = ini_get('log_errors');
 $error_log_path = ini_get('error_log');
 $system_health['error_logging'] = $error_log_enabled ? 'operational' : 'warning';
