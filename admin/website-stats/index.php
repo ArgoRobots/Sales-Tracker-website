@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../db_connect.php';
+require_once '../../db_connect.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
@@ -9,7 +9,7 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 }
 
 // Set page variables for the header
-$page_title = "Statistics Dashboard";
+$page_title = "Website Statistics";
 $page_description = "View comprehensive analytics, user statistics, and performance metrics";
 
 // Function to get download statistics by period
@@ -897,7 +897,7 @@ foreach ($licenses_by_country as $country) {
     $licenses_country_counts[] = $country['license_count'];
 }
 
-include 'admin_header.php';
+include '../admin_header.php';
 ?>
 
 <div class="container">

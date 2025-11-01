@@ -16,7 +16,7 @@ header('Content-Type: application/json');
 // Configuration
 define('MAX_FILE_SIZE', 10 * 1024 * 1024); // 10MB max
 define('ALLOWED_MIME_TYPES', ['application/json', 'text/plain']);
-define('DATA_DIR', 'admin/data_logs');
+define('DATA_DIR', 'admin/data-logs');
 define('MAX_UPLOADS_PER_HOUR', 100); // Rate limiting
 define('MAX_FILENAME_LENGTH', 255);
 

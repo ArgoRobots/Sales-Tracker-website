@@ -36,16 +36,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const sessionData = rawData.dataPoints.Session || [];
   const errorData = rawData.dataPoints.Error || [];
 
-  console.log("Data loaded:", {
-    exports: exportData.length,
-    openai: openaiData.length,
-    exchangeRates: exchangeRatesData.length,
-    googleSheets: googleSheetsData.length,
-    sessions: sessionData.length,
-    errors: errorData.length,
-    geoEnabled: isGeoEnabled,
-  });
-
   // Initialize all charts
   generateStatistics(
     exportData,
