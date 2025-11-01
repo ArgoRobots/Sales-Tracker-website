@@ -32,6 +32,14 @@ $total_posts = $result->fetch_assoc()['count'] ?? 0;
 $result = $db->query('SELECT COUNT(*) as count FROM license_keys WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)');
 $recent_activity = $result->fetch_assoc()['count'] ?? 0;
 
+// Monthly active users (active in last 30 days)
+$result = $db->query('SELECT COUNT(*) as count FROM community_users WHERE last_login >= DATE_SUB(NOW(), INTERVAL 30 DAY)');
+$monthly_active_users = $result->fetch_assoc()['count'] ?? 0;
+
+// Licenses created this month
+$result = $db->query('SELECT COUNT(*) as count FROM license_keys WHERE created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)');
+$monthly_licenses = $result->fetch_assoc()['count'] ?? 0;
+
 // Get recent activity items for timeline
 $recent_items = [];
 
@@ -147,9 +155,6 @@ if (file_exists($upload_path)) {
     $health_details['uploads'] = ['status' => 'Directory not found'];
 }
 
-// Calculate activation rate
-$activation_rate = $total_licenses > 0 ? round(($active_licenses / $total_licenses) * 100) : 0;
-
 include 'admin_header.php';
 ?>
 
@@ -169,8 +174,8 @@ include 'admin_header.php';
             <div class="stat-value"><?php echo number_format($total_licenses); ?></div>
         </div>
         <div class="stat-card">
-            <div class="stat-label">Active Licenses</div>
-            <div class="stat-value"><?php echo number_format($active_licenses); ?></div>
+            <div class="stat-label">Community Posts</div>
+            <div class="stat-value"><?php echo number_format($total_posts); ?></div>
         </div>
         <div class="stat-card">
             <div class="stat-label">Total Users</div>
@@ -193,8 +198,8 @@ include 'admin_header.php';
             <div class="nav-card-title">License Keys</div>
             <div class="nav-card-description">Manage and generate license keys</div>
             <div class="nav-card-stat">
-                <span class="nav-card-stat-label">Activation Rate</span>
-                <span class="nav-card-stat-value"><?php echo $activation_rate; ?>%</span>
+                <span class="nav-card-stat-label">This Month</span>
+                <span class="nav-card-stat-value"><?php echo number_format($monthly_licenses); ?></span>
             </div>
         </a>
 
@@ -207,8 +212,8 @@ include 'admin_header.php';
             <div class="nav-card-title">App Statistics</div>
             <div class="nav-card-description">View application analytics and metrics</div>
             <div class="nav-card-stat">
-                <span class="nav-card-stat-label">Active Users</span>
-                <span class="nav-card-stat-value"><?php echo number_format($active_licenses); ?></span>
+                <span class="nav-card-stat-label">Monthly Users</span>
+                <span class="nav-card-stat-value"><?php echo number_format($monthly_active_users); ?></span>
             </div>
         </a>
 
