@@ -89,7 +89,7 @@ try {
     $health_details['database'] = [
         'response_time' => $db_response_time . ' ms',
         'version' => $mysql_version,
-        'size' => $db_size . ' MB'
+        'size' => $db_size . ' MB / 10 GB'
     ];
 } catch (Exception $e) {
     $system_health['database'] = 'error';
@@ -100,6 +100,12 @@ try {
 // 2. PHP Environment
 $php_version = phpversion();
 $memory_limit = ini_get('memory_limit');
+
+// Convert shorthand to full notation (128M -> 128 MB)
+if (preg_match('/^(\d+)([KMG])$/', $memory_limit, $matches)) {
+    $memory_limit = $matches[1] . ' ' . $matches[2] . 'B';
+}
+
 $memory_usage = round(memory_get_usage(true) / 1024 / 1024, 2);
 $max_execution_time = ini_get('max_execution_time');
 
@@ -108,7 +114,7 @@ $health_details['php'] = [
     'version' => $php_version,
     'memory_usage' => $memory_usage . ' MB',
     'memory_limit' => $memory_limit,
-    'max_execution' => $max_execution_time . 's'
+    'max_execution_time' => $max_execution_time . 's'
 ];
 
 // 3. Session Directory
@@ -116,7 +122,6 @@ $session_path = session_save_path() ?: sys_get_temp_dir();
 $session_writable = is_writable($session_path);
 $system_health['sessions'] = $session_writable ? 'operational' : 'error';
 $health_details['sessions'] = [
-    'path' => $session_path,
     'writable' => $session_writable ? 'Yes' : 'No'
 ];
 
@@ -125,10 +130,7 @@ if (!$session_writable && $overall_status === 'operational') {
 }
 
 // 4. Upload Directory
-$upload_path = $_SERVER['DOCUMENT_ROOT'] . '/../uploads';
-if (!file_exists($upload_path)) {
-    $upload_path = $_SERVER['DOCUMENT_ROOT'] . '/uploads';
-}
+$upload_path = $_SERVER['DOCUMENT_ROOT'] . '/admin/data-logs';
 
 if (file_exists($upload_path)) {
     $upload_writable = is_writable($upload_path);
@@ -144,15 +146,6 @@ if (file_exists($upload_path)) {
     $system_health['uploads'] = 'warning';
     $health_details['uploads'] = ['status' => 'Directory not found'];
 }
-
-// 5. Error Logging
-$error_log_enabled = ini_get('log_errors');
-$error_log_path = ini_get('error_log');
-$system_health['error_logging'] = $error_log_enabled ? 'operational' : 'warning';
-$health_details['error_logging'] = [
-    'enabled' => $error_log_enabled ? 'Yes' : 'No',
-    'path' => $error_log_path ?: 'Default'
-];
 
 // Calculate activation rate
 $activation_rate = $total_licenses > 0 ? round(($active_licenses / $total_licenses) * 100) : 0;
