@@ -178,11 +178,11 @@ include 'admin_header.php';
             <div class="stat-value"><?php echo number_format($total_posts); ?></div>
         </div>
         <div class="stat-card">
-            <div class="stat-label">Total Users</div>
+            <div class="stat-label">Total Accounts</div>
             <div class="stat-value"><?php echo number_format($total_users); ?></div>
         </div>
         <div class="stat-card">
-            <div class="stat-label">This Week</div>
+            <div class="stat-label">Accounts Made This Week</div>
             <div class="stat-value"><?php echo number_format($recent_activity); ?></div>
         </div>
     </div>
