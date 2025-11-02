@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../db_connect.php';
+require_once '../../db_connect.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
@@ -9,10 +9,10 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 }
 
 // Set page variables for header
-$page_title = "Anonymous Data Dashboard";
+$page_title = "Argo Sales Tracker Statistics";
 $page_description = "View and analyze anonymous user data with geo-location insights from the Sales Tracker application";
 
-$dataDir = 'data_logs/';
+$dataDir = '../data-logs/';
 $errorMessage = '';
 $aggregatedData = [
     'dataPoints' => [
@@ -34,7 +34,7 @@ $aggregatedData = [
 $fileInfo = [];
 
 if (!is_dir($dataDir)) {
-    $errorMessage = "Directory 'data_logs/' does not exist.";
+    $errorMessage = "Directory 'data-logs/' does not exist.";
 } else {
     $dataFiles = glob($dataDir . '*.json');
     if (!$dataFiles || count($dataFiles) === 0) {
@@ -123,7 +123,7 @@ if (!is_dir($dataDir)) {
 $jsonData = json_encode($aggregatedData);
 
 // Include the shared header
-include 'admin_header.php';
+include '../admin_header.php';
 ?>
 
 <style>
@@ -266,7 +266,7 @@ include 'admin_header.php';
         <div class="no-data">
             <h3>No Data Available</h3>
             <p>No anonymous data has been collected yet. Data will appear here once users start using the application and uploading their analytics.</p>
-            <p><small>Data files are automatically uploaded to: <code>admin/data_logs/</code></small></p>
+            <p><small>Data files are automatically uploaded to: <code>admin/data-logs/</code></small></p>
         </div>
     <?php else: ?>
         <div class="data-info">
@@ -516,4 +516,4 @@ function switchTab(tabName) {
 // Pass PHP data to JavaScript
 window.dashboardData = <?= $jsonData ?>;
 </script>
-<script src="dashboard-charts.js"></script>
+<script src="main.js"></script>

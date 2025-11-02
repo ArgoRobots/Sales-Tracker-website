@@ -216,6 +216,13 @@ body.menu-open::after {
   align-items: center;
   gap: 0.5rem;
   flex-shrink: 0;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.logo-section:hover .header-title {
+    opacity: 0.8;
 }
 
 .header-logo {
@@ -579,7 +586,7 @@ tbody tr:hover {
 
 .chart-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1.5rem;
 }
 
@@ -1011,6 +1018,20 @@ tbody tr:hover {
   /* Make checkboxes visible on mobile */
   .checkbox-column {
     min-width: 50px;
+  }
+}
+
+@media (max-width: 600px) {
+  .input-button-wrapper {
+    flex-direction: column;
+  }
+
+  .input-button-wrapper input {
+    width: 100%;
+  }
+
+  .input-button-wrapper button {
+    width: 100%;
   }
 }
 

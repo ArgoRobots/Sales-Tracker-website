@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../db_connect.php';
+require_once '../../db_connect.php';
 
 // Check if user is already logged in
 if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['bulk_action'])) {
         }
 
         // Redirect to prevent form resubmission
-        header('Location: users.php' . (!empty($search) ? '?search=' . urlencode($search) : ''));
+        header('Location: index.php' . (!empty($search) ? '?search=' . urlencode($search) : ''));
         exit;
     }
 }
@@ -179,10 +179,11 @@ if (isset($_SESSION['message'])) {
     unset($_SESSION['message_type']);
 }
 
-include 'admin_header.php';
+include '../admin_header.php';
 ?>
-<link rel="stylesheet" href="index.css">
-<link rel="stylesheet" href="../resources/styles/checkbox.css">
+
+<link rel="stylesheet" href="../search.css">
+<link rel="stylesheet" href="../../resources/styles/checkbox.css">
 
 <div class="container">
     <!-- Statistics Cards -->
@@ -217,7 +218,7 @@ include 'admin_header.php';
         </div>
 
         <!-- Filter Container -->
-        <form method="get" action="users.php" id="filter-form">
+        <form method="get" action="index.php" id="filter-form">
             <div class="filter-container">
                 <div class="filter-group search-group">
                     <label for="search">Search</label>
@@ -467,7 +468,7 @@ include 'admin_header.php';
         });
 
         // Also save position when clicking links
-        const links = document.querySelectorAll('a[href^="users.php"]');
+        const links = document.querySelectorAll('a[href^="index.php"]');
         links.forEach(link => {
             link.addEventListener('click', function() {
                 sessionStorage.setItem('scrollPosition', window.scrollY);
@@ -483,7 +484,7 @@ include 'admin_header.php';
 
                     if (!datePreset) {
                         sessionStorage.setItem('scrollPosition', window.scrollY);
-                        window.location.href = 'users.php';
+                        window.location.href = 'index.php';
                     }
                 }
             });
@@ -495,7 +496,7 @@ include 'admin_header.php';
                     const datePreset = document.getElementById('date_preset').value;
 
                     if (!datePreset) {
-                        window.location.href = 'users.php';
+                        window.location.href = 'index.php';
                     }
                 }
             });

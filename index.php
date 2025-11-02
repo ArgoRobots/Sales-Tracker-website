@@ -124,7 +124,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                     </div>
 
                     <h1 class="hero-title">
-                        Transform your business with smart sales tracking
+                        Transform your business with Argo Sales Tracker
                     </h1>
 
                     <p class="hero-subtitle">
