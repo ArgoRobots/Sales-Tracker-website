@@ -181,36 +181,6 @@
     border-top: 1px solid #e5e7eb;
 }
 
-.btn-secondary {
-    background-color: #f3f4f6;
-    color: #374151;
-    border: 1px solid #d1d5db;
-}
-
-.btn-secondary:hover {
-    background-color: #e5e7eb;
-}
-
-.btn-danger {
-    background-color: #dc2626;
-    color: #ffffff;
-    border: none;
-}
-
-.btn-danger:hover {
-    background-color: #b91c1c;
-}
-
-.btn-secondary,
-.btn-danger {
-    padding: 10px 20px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .report-modal-content {

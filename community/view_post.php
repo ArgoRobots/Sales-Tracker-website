@@ -354,7 +354,12 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
 
             <!-- Comments -->
             <div class="comments-section">
-                <h3><?php echo count($comments); ?> Comments</h3>
+                <h3>
+                    <?php 
+                        $count = count($comments);
+                        echo $count . ' comment' . ($count != 1 ? 's' : '');
+                    ?>
+                </h3>
 
                 <div class="comments-container">
                     <?php foreach ($comments as $comment): ?>
@@ -451,7 +456,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
 
                         <?php if ($post['status'] !== 'completed' && $post['status'] !== 'declined'): ?>
                             <form id="add-comment-form" data-post-id="<?php echo $post['id']; ?>">
-                                <h4>Add a Comment</h4>
+                                <h4>Add a comment</h4>
                                 <input type="hidden" name="post_id" value="<?php echo $post['id']; ?>">
                                 <div class="form-group">
                                     <textarea id="comment_content" name="comment_content" class="mentionable" rows="4" required></textarea>
@@ -512,7 +517,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
 
                 <div class="report-modal-actions">
                     <button type="button" class="btn btn-secondary report-modal-cancel">Cancel</button>
-                    <button type="submit" class="btn btn-danger">Submit Report</button>
+                    <button type="submit" class="btn btn-red">Submit Report</button>
                 </div>
             </form>
         </div>
