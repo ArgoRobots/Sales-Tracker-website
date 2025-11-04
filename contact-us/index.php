@@ -51,8 +51,6 @@ if (isset($_SESSION['contact_error'])) {
   <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
   <title>Contact Us - Argo Sales Tracker Support | Calgary Software Company</title>
 
-  <?php include 'resources/head/google-analytics.php'; ?>
-
   <script src="../resources/scripts/jquery-3.6.0.js"></script>
   <script src="../resources/scripts/main.js"></script>
   <script src="main.js"></script>

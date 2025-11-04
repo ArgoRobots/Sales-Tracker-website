@@ -12,8 +12,6 @@ require_once '../../community/formatting/formatting_functions.php';
     <link rel="shortcut icon" type="image/x-icon" href="../../images/argo-logo/A-logo.ico">
     <title>Accepted Country Names - Argo Community</title>
 
-    <?php include 'resources/head/google-analytics.php'; ?>
-
     <script src="../../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../../resources/scripts/main.js"></script>
 

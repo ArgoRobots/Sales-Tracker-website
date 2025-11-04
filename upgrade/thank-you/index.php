@@ -11,19 +11,39 @@
     <link rel="shortcut icon" type="image/x-icon" href="../../images/argo-logo/A-logo.ico">
     <title>Thank You - Argo Sales Tracker</title>
 
-    <?php include 'resources/head/google-analytics.php'; ?>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17210317271"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'AW-17210317271');
+    </script>
 
     <!-- Event snippet for Purchase conversion page -->
     <script>
-        // Wait for DOM to load, then get transaction ID from URL
         document.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);
-            const transactionID = urlParams.get('license') || '';
-
-            gtag('event', 'conversion', {
-                'send_to': 'AW-17210317271/u-kiCL2u0_oaENezwo5A',
-                'transaction_id': transactionID
-            });
+            const transactionID = urlParams.get('transaction_id') || urlParams.get('license') || '';
+            
+            // Only fire conversion once per session to prevent duplicates on refresh
+            const trackingKey = 'conversion_tracked_' + transactionID;
+            if (transactionID && !sessionStorage.getItem(trackingKey)) {
+                gtag('event', 'conversion', {
+                    'send_to': 'AW-17210317271/u-kiCL2u0_oaENezwo5A',
+                    'value': 20.00,
+                    'currency': 'CAD',
+                    'transaction_id': transactionID
+                });
+                
+                // Mark as tracked for this browser session
+                sessionStorage.setItem(trackingKey, 'true');
+                console.log('Conversion tracked:', transactionID);
+            } else if (!transactionID) {
+                console.warn('No transaction ID found in URL');
+            } else {
+                console.log('Conversion already tracked for this session');
+            }
         });
     </script>
 

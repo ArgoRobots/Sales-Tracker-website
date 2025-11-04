@@ -40,8 +40,6 @@
     <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
     <title>Documentation & User Guide - Argo Sales Tracker</title>
 
-    <?php include 'resources/head/google-analytics.php'; ?>
-
     <script src="main.js"></script>
     <script src="pdf-export.js"></script>
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
