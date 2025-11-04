@@ -50,6 +50,15 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     <!-- Canonical URL -->
     <link rel="canonical" href="https://argorobots.com/">
 
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17210317271"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'AW-17210317271');
+    </script>
     <!-- Schema.org Structured Data -->
     <script type="application/ld+json">
         {
@@ -86,8 +95,6 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
 
     <link rel="shortcut icon" type="image/x-icon" href="images/argo-logo/A-logo.ico">
     <title>Argo Sales Tracker - Save Several Hours Weekly | Free Business Automation Software</title>
-
-    <?php include 'resources/head/google-analytics.php'; ?>
 
     <script src="resources/scripts/jquery-3.6.0.js"></script>
     <script src="resources/scripts/main.js"></script>
@@ -735,6 +742,27 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     <footer class="footer">
         <div id="includeFooter"></div>
     </footer>
+
+    <!-- Download Conversion Tracking -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get all download buttons
+        const downloadLinks = document.querySelectorAll('a[href="/download"]');
+        
+        downloadLinks.forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                // Fire Google Ads conversion
+                gtag('event', 'conversion', {
+                    'send_to': 'AW-17210317271/niGZCJv2vbkbENezwo5A'
+                });
+                
+                console.log('Download conversion tracked');
+                
+                // Let the link navigate normally - this will trigger the internal statistics tracking
+            });
+        });
+    });
+    </script>
 </body>
 
 </html>

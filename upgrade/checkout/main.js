@@ -295,7 +295,7 @@ document.addEventListener("DOMContentLoaded", function () {
         try {
           // Create payment intent
           const paymentIntentResponse = await fetch(
-            "create-payment-intent.php",
+            "stripe-payment-intent.php",
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },

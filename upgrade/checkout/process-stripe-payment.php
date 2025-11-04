@@ -40,6 +40,8 @@ try {
         $response = [
             'success' => true,
             'license_key' => $row['license_key'],
+            'transaction_id' => $data['payment_intent_id'],
+            'order_id' => $data['payment_method_id'] ?? '',
             'message' => 'Payment already processed'
         ];
         $stmt->close();
@@ -107,6 +109,8 @@ try {
                 $response = [
                     'success' => true,
                     'license_key' => $license_key,
+                    'transaction_id' => $data['payment_intent_id'],
+                    'order_id' => $order_id,
                     'email_sent' => $email_sent,
                     'message' => 'Payment processed successfully'
                 ];

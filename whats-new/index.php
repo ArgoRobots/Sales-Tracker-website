@@ -40,8 +40,6 @@
     <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
     <title>What's New - Argo Sales Tracker | Latest Features & Updates</title>
 
-    <?php include 'resources/head/google-analytics.php'; ?>
-
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../resources/scripts/main.js"></script>
 
