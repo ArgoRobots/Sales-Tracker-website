@@ -50,6 +50,15 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     <!-- Canonical URL -->
     <link rel="canonical" href="https://argorobots.com/">
 
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17210317271"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'AW-17210317271');
+    </script>
     <!-- Schema.org Structured Data -->
     <script type="application/ld+json">
         {
@@ -733,6 +742,32 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     <footer class="footer">
         <div id="includeFooter"></div>
     </footer>
+
+    <!-- Download Conversion Tracking -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get all download buttons
+        const downloadLinks = document.querySelectorAll('a[href="/download"]');
+        
+        downloadLinks.forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                e.preventDefault(); // Stop immediate navigation
+                
+                // Fire conversion
+                gtag('event', 'conversion', {
+                    'send_to': 'AW-17210317271/niGZCJv2vbkbENezwo5A'
+                });
+                
+                console.log('Download conversion tracked');
+                
+                // Navigate after brief delay to ensure tracking fires
+                setTimeout(function() {
+                    window.location.href = '/download';
+                }, 300);
+            });
+        });
+    });
+    </script>
 </body>
 
 </html>
