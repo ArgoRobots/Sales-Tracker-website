@@ -527,7 +527,7 @@ function send_account_deletion_scheduled_email($email, $username, $scheduled_dat
 
 /**
  * Send account deletion cancelled email (when user logs in after scheduling)
- * 
+ *
  * @param string $email User's email address
  * @param string $username Username
  * @return bool Success status
@@ -553,16 +553,16 @@ function send_account_deletion_cancelled_email($email, $username)
                 <div class="header">
                     <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" style="width: 200px; height: auto; max-width: 100%; display: block; margin: 0 auto;">
                 </div>
-                
+
                 <div class="content">
                     <h1>Account Deletion Cancelled</h1>
                     <p>Hello {$username},</p>
-                    
+
                     <div style="background-color: #d1fae5; border: 1px solid #a7f3d0; padding: 16px; border-radius: 6px; margin: 20px 0;">
                         <h3 style="color: #065f46; margin: 0 0 10px 0;">Good News!</h3>
                         <p style="color: #065f46; margin: 0;">Your account deletion has been <strong>cancelled</strong> because you logged into your account.</p>
                     </div>
-                    
+
                     <p>Your Argo Community account is now <strong>active</strong> and will not be deleted. All your:</p>
                     <ul>
                         <li>Profile information</li>
@@ -570,20 +570,133 @@ function send_account_deletion_cancelled_email($email, $username)
                         <li>Community contributions</li>
                     </ul>
                     <p>remain intact and accessible.</p>
-                    
+
                     <div class="button-container">
                         <a href="https://argorobots.com/community/users/profile.php" class="button">View Your Profile</a>
                     </div>
-                    
+
                     <p>If you decide to delete your account in the future, you can do so from your profile settings.</p>
-                    
+
                     <p>Welcome back!</p>
-                    
+
                     <p>Best regards,<br>The Argo Team</p>
                 </div>
-                
+
                 <div class="footer">
                     <p>This is an automated message from the Argo Community system.</p>
+                    <p>Argo Sales Tracker &copy; 2025. All rights reserved.</p>
+                    <p>This email was sent to {$email}</p>
+                </div>
+            </div>
+        </body>
+        </html>
+    HTML;
+
+    $headers = [
+        'MIME-Version: 1.0',
+        'Content-Type: text/html; charset=UTF-8',
+        'From: Argo Community <noreply@argorobots.com>',
+        'Reply-To: support@argorobots.com',
+        'X-Mailer: PHP/' . phpversion()
+    ];
+
+    $mail_result = mail($email, $subject, $email_html, implode("\r\n", $headers));
+    return $mail_result;
+}
+
+/**
+ * Send ban notification email to banned user
+ *
+ * @param string $email User's email address
+ * @param string $username Username
+ * @param string $ban_reason Reason for ban
+ * @param string $ban_duration Duration of ban (30_days, 1_year, permanent)
+ * @param string|null $expires_at Expiration date for temporary bans
+ * @return bool Success status
+ */
+function send_ban_notification_email($email, $username, $ban_reason, $ban_duration, $expires_at = null)
+{
+    $css = file_get_contents(__DIR__ . '/email.css');
+    $subject = 'Community Ban Notification - Argo Sales Tracker';
+
+    // Format duration text
+    $duration_text = '';
+    $can_appeal = true;
+
+    switch ($ban_duration) {
+        case '30_days':
+            $duration_text = '30 days';
+            break;
+        case '1_year':
+            $duration_text = '1 year';
+            break;
+        case 'permanent':
+            $duration_text = 'permanently';
+            $can_appeal = true;
+            break;
+    }
+
+    // Format expiration date if available
+    $expiration_info = '';
+    if ($expires_at) {
+        $formatted_date = date('F j, Y \a\t g:i A', strtotime($expires_at));
+        $expiration_info = "<p>Your ban will expire on <strong>{$formatted_date}</strong>.</p>";
+    }
+
+    $appeal_text = $can_appeal ? '<p>If you believe this ban was issued in error, you can <a href="https://argorobots.com/contact-us/index.php" style="color: #2563eb;">contact our support team</a> to request a review. Please include your username and explain why you believe the ban should be reconsidered.</p>' : '';
+
+    $email_html = <<<HTML
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+            <title>Community Ban Notification</title>
+            <style>
+                {$css}  /* Needs to be embedded for PHP mail() */
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" style="width: 200px; height: auto; max-width: 100%; display: block; margin: 0 auto;">
+                </div>
+
+                <div class="content">
+                    <h1>Community Ban Notification</h1>
+                    <p>Hello {$username},</p>
+
+                    <div style="background-color: #fee2e2; border: 1px solid #fecaca; padding: 16px; border-radius: 6px; margin: 20px 0;">
+                        <h3 style="color: #991b1b; margin: 0 0 10px 0;">Your account has been banned</h3>
+                        <p style="color: #991b1b; margin: 0;">You have been banned from posting content on the Argo Community for <strong>{$duration_text}</strong>.</p>
+                    </div>
+
+                    {$expiration_info}
+
+                    <div style="background-color: #f9fafb; border-left: 4px solid #3b82f6; padding: 16px; margin: 20px 0;">
+                        <h4 style="margin: 0 0 10px 0; color: #1f2937;">Reason for ban:</h4>
+                        <p style="margin: 0; color: #374151;">{$ban_reason}</p>
+                    </div>
+
+                    <div style="background-color: #fef3c7; border: 1px solid #fde68a; padding: 16px; border-radius: 6px; margin: 20px 0;">
+                        <h3 style="color: #92400e; margin: 0 0 10px 0;">Important Information:</h3>
+                        <ul style="color: #92400e; margin: 0; padding-left: 20px;">
+                            <li>You can still use the Argo Sales Tracker application</li>
+                            <li>You can still view posts and comments on the community page</li>
+                            <li>You cannot create new posts or comments during the ban period</li>
+                            <li>Repeated violations may result in a permanent ban</li>
+                        </ul>
+                    </div>
+
+                    {$appeal_text}
+
+                    <p>We strive to maintain a respectful and helpful community for all users. Please review our <a href="https://argorobots.com/community/guidelines.php" style="color: #2563eb;">community guidelines</a> to ensure future compliance.</p>
+
+                    <p>Best regards,<br>The Argo Team</p>
+                </div>
+
+                <div class="footer">
+                    <p>This is an automated message from the Argo Community moderation system.</p>
                     <p>Argo Sales Tracker &copy; 2025. All rights reserved.</p>
                     <p>This email was sent to {$email}</p>
                 </div>

@@ -5,6 +5,7 @@ require_once 'community_functions.php';
 require_once 'users/user_functions.php';
 include_once 'rate_limit.php';
 require_once 'formatting/formatting_functions.php';
+require_once 'ban_check.php';
 
 require_login('', true);
 $current_user = \CommunityUsers\get_current_user();
@@ -19,8 +20,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $is_ajax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
         strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
 
+    // Check if user is banned
+    $ban = is_user_banned($user_id);
+    if ($ban) {
+        $ban_message = get_ban_message($ban);
+        if ($is_ajax) {
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => false,
+                'message' => $ban_message,
+                'banned' => true
+            ]);
+            exit;
+        } else {
+            $error_message = $ban_message;
+        }
+    }
+
     // Check rate limit
-    $rate_limit_message = check_rate_limit($user_id, 'post');
+    if (empty($error_message)) {
+        $rate_limit_message = check_rate_limit($user_id, 'post');
+    } else {
+        $rate_limit_message = false;
+    }
 
     if ($rate_limit_message !== false) {
         if ($is_ajax) {

@@ -119,6 +119,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
     <link rel="stylesheet" href="view-post.css">
     <link rel="stylesheet" href="rate-limit.css">
     <link rel="stylesheet" href="formatting/formatted-text.css">
+    <link rel="stylesheet" href="report.css">
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../resources/styles/button.css">
     <link rel="stylesheet" href="../resources/styles/link.css">
@@ -337,6 +338,16 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                                 </span>
                             <?php endif; ?>
                         </div>
+
+                        <!-- Report button -->
+                        <?php if ($is_logged_in && $post['user_id'] != $user_id): ?>
+                            <button class="report-btn" data-content-type="post" data-content-id="<?php echo $post['id']; ?>" title="Report this post">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+                                    <line x1="4" y1="22" x2="4" y2="15"></line>
+                                </svg>
+                            </button>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -391,17 +402,29 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                                         </span>
                                     </div>
                                     <div class="comment-controls">
-                                        <?php if ($can_edit_comment || $can_delete_comment): ?>
-                                            <div class="comment-actions">
-                                                <?php if ($can_edit_comment): ?>
-                                                    <button class="edit-comment-btn" data-comment-id="<?php echo $comment['id']; ?>">Edit</button>
-                                                <?php endif; ?>
+                                        <div class="comment-actions-wrapper">
+                                            <?php if ($can_edit_comment || $can_delete_comment): ?>
+                                                <div class="comment-actions">
+                                                    <?php if ($can_edit_comment): ?>
+                                                        <button class="edit-comment-btn" data-comment-id="<?php echo $comment['id']; ?>">Edit</button>
+                                                    <?php endif; ?>
 
-                                                <?php if ($can_delete_comment): ?>
-                                                    <button class="delete-comment-btn" data-comment-id="<?php echo $comment['id']; ?>">Delete</button>
-                                                <?php endif; ?>
-                                            </div>
-                                        <?php endif; ?>
+                                                    <?php if ($can_delete_comment): ?>
+                                                        <button class="delete-comment-btn" data-comment-id="<?php echo $comment['id']; ?>">Delete</button>
+                                                    <?php endif; ?>
+                                                </div>
+                                            <?php endif; ?>
+
+                                            <!-- Report button -->
+                                            <?php if ($is_logged_in && $comment['user_id'] != $user_id): ?>
+                                                <button class="report-btn report-btn-comment" data-content-type="comment" data-content-id="<?php echo $comment['id']; ?>" title="Report this comment">
+                                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                        <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+                                                        <line x1="4" y1="22" x2="4" y2="15"></line>
+                                                    </svg>
+                                                </button>
+                                            <?php endif; ?>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="comment-content">
@@ -456,6 +479,46 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
 
     <!-- This will be used by mentions.js -->
     <div class="mention-dropdown" id="mentionDropdown"></div>
+
+    <!-- Report Modal -->
+    <div id="reportModal" class="report-modal" style="display: none;">
+        <div class="report-modal-content">
+            <div class="report-modal-header">
+                <h3>Report Content</h3>
+                <button class="report-modal-close">&times;</button>
+            </div>
+            <form id="reportForm">
+                <input type="hidden" id="reportContentType" name="content_type">
+                <input type="hidden" id="reportContentId" name="content_id">
+
+                <div class="form-group">
+                    <label for="violationType">This content violates our policy because:</label>
+                    <select id="violationType" name="violation_type" required>
+                        <option value="">Select a reason...</option>
+                        <option value="spam">Spam or advertising</option>
+                        <option value="harassment">Harassment or bullying</option>
+                        <option value="hateful">Hateful or discriminatory content</option>
+                        <option value="inappropriate">Inappropriate or offensive content</option>
+                        <option value="misinformation">Misinformation or false information</option>
+                        <option value="off-topic">Off-topic or irrelevant</option>
+                        <option value="other">Other (please specify below)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="additionalInfo">Additional information (optional):</label>
+                    <textarea id="additionalInfo" name="additional_info" rows="4" placeholder="Please provide any additional details that might help us understand your report..."></textarea>
+                </div>
+
+                <div class="report-modal-actions">
+                    <button type="button" class="btn btn-secondary report-modal-cancel">Cancel</button>
+                    <button type="submit" class="btn btn-danger">Submit Report</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="report.js" defer></script>
 </body>
 
 </html>
