@@ -38,7 +38,7 @@
                 
                 // Mark as tracked for this browser session
                 sessionStorage.setItem(trackingKey, 'true');
-                console.log('Conversion tracked:', transactionID);
+                console.log('Purchase conversion tracked:', transactionID);
             } else if (!transactionID) {
                 console.warn('No transaction ID found in URL');
             } else {

@@ -751,19 +751,14 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
         
         downloadLinks.forEach(function(link) {
             link.addEventListener('click', function(e) {
-                e.preventDefault(); // Stop immediate navigation
-                
-                // Fire conversion
+                // Fire Google Ads conversion
                 gtag('event', 'conversion', {
                     'send_to': 'AW-17210317271/niGZCJv2vbkbENezwo5A'
                 });
                 
                 console.log('Download conversion tracked');
                 
-                // Navigate after brief delay to ensure tracking fires
-                setTimeout(function() {
-                    window.location.href = '/download';
-                }, 300);
+                // Let the link navigate normally - this will trigger the internal statistics tracking
             });
         });
     });
