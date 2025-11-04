@@ -155,7 +155,6 @@ try {
 
         if ($stmt->execute()) {
             $stmt->close();
-            echo json_encode(['success' => true, 'message' => 'Report dismissed']);
         } else {
             $stmt->close();
             echo json_encode(['success' => false, 'message' => 'Failed to dismiss report']);

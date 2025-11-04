@@ -512,11 +512,11 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
 
                 <div class="form-group">
                     <label for="additionalInfo">Additional information (optional):</label>
-                    <textarea id="additionalInfo" name="additional_info" rows="4" placeholder="Please provide any additional details that might help us understand your report..."></textarea>
+                    <textarea id="additionalInfo" name="additional_info" rows="4" placeholder="Please provide any additional details..."></textarea>
                 </div>
 
                 <div class="report-modal-actions">
-                    <button type="button" class="btn btn-secondary report-modal-cancel">Cancel</button>
+                    <button type="button" class="btn btn-outline report-modal-cancel">Cancel</button>
                     <button type="submit" class="btn btn-red">Submit Report</button>
                 </div>
             </form>
