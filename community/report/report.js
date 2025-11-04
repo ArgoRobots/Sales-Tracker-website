@@ -68,7 +68,7 @@
         submitBtn.disabled = true;
         submitBtn.textContent = 'Submitting...';
 
-        fetch('report_content.php', {
+        fetch('report/report_content.php', {
             method: 'POST',
             body: formData
         })

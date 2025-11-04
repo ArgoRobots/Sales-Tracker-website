@@ -4,7 +4,7 @@ require_once '../db_connect.php';
 require_once 'community_functions.php';
 require_once 'users/user_functions.php';
 require_once 'formatting/formatting_functions.php';
-require_once 'ban_check.php';
+require_once 'report/ban_check.php';
 
 // Check for remember me cookie and auto-login user if valid
 if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {

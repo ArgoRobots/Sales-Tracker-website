@@ -119,7 +119,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
     <link rel="stylesheet" href="view-post.css">
     <link rel="stylesheet" href="rate-limit.css">
     <link rel="stylesheet" href="formatting/formatted-text.css">
-    <link rel="stylesheet" href="report.css">
+    <link rel="stylesheet" href="report/report.css">
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../resources/styles/button.css">
     <link rel="stylesheet" href="../resources/styles/link.css">
@@ -523,7 +523,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
         </div>
     </div>
 
-    <script src="report.js" defer></script>
+    <script src="report/report.js" defer></script>
 </body>
 
 </html>
