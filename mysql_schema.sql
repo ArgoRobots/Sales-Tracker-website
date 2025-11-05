@@ -255,7 +255,7 @@ CREATE TABLE IF NOT EXISTS content_reports (
     id INT PRIMARY KEY AUTO_INCREMENT,
     reporter_user_id INT,
     reporter_email VARCHAR(100) NOT NULL,
-    content_type ENUM('post', 'comment') NOT NULL,
+    content_type ENUM('post', 'comment', 'user') NOT NULL,
     content_id INT NOT NULL,
     violation_type VARCHAR(50) NOT NULL,
     additional_info TEXT,
