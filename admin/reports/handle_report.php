@@ -26,7 +26,7 @@ if ($report_id <= 0) {
     exit;
 }
 
-if (!in_array($action, ['delete', 'ban', 'dismiss'])) {
+if (!in_array($action, ['delete', 'ban', 'dismiss', 'reset_username', 'clear_bio'])) {
     echo json_encode(['success' => false, 'message' => 'Invalid action']);
     exit;
 }
@@ -141,17 +141,18 @@ try {
         $stmt = $db->prepare('UPDATE content_reports r
             LEFT JOIN community_posts p ON r.content_type = "post" AND r.content_id = p.id
             LEFT JOIN community_comments c ON r.content_type = "comment" AND r.content_id = c.id
-            SET r.status = "resolved", 
-                r.resolved_by = ?, 
-                r.resolved_at = NOW(), 
+            SET r.status = "resolved",
+                r.resolved_by = ?,
+                r.resolved_at = NOW(),
                 r.resolution_action = "user_banned"
-            WHERE r.status = "pending" 
+            WHERE r.status = "pending"
             AND r.id != ?
             AND (
                 (r.content_type = "post" AND p.user_id = ?) OR
-                (r.content_type = "comment" AND c.user_id = ?)
+                (r.content_type = "comment" AND c.user_id = ?) OR
+                (r.content_type = "user" AND r.content_id = ?)
             )');
-        $stmt->bind_param('iiii', $admin_user_id, $report_id, $user_id, $user_id);
+        $stmt->bind_param('iiiii', $admin_user_id, $report_id, $user_id, $user_id, $user_id);
         $stmt->execute();
         $affected_reports = $stmt->affected_rows;
         $stmt->close();
@@ -173,10 +174,86 @@ try {
 
         if ($stmt->execute()) {
             $stmt->close();
+            echo json_encode(['success' => true, 'message' => 'Report dismissed successfully']);
         } else {
             $stmt->close();
             echo json_encode(['success' => false, 'message' => 'Failed to dismiss report']);
+            exit;
         }
+
+    } elseif ($action === 'reset_username') {
+        $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : 0;
+
+        if ($user_id <= 0) {
+            echo json_encode(['success' => false, 'message' => 'Invalid user ID']);
+            exit;
+        }
+
+        // Generate a random username
+        $random_username = 'user_' . bin2hex(random_bytes(8));
+
+        // Check if username already exists (very unlikely but let's be safe)
+        $attempts = 0;
+        while ($attempts < 5) {
+            $stmt = $db->prepare('SELECT id FROM community_users WHERE username = ?');
+            $stmt->bind_param('s', $random_username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $stmt->close();
+
+            if ($result->num_rows === 0) {
+                break;
+            }
+
+            $random_username = 'user_' . bin2hex(random_bytes(8));
+            $attempts++;
+        }
+
+        // Update username
+        $stmt = $db->prepare('UPDATE community_users SET username = ? WHERE id = ?');
+        $stmt->bind_param('si', $random_username, $user_id);
+
+        if (!$stmt->execute()) {
+            $stmt->close();
+            echo json_encode(['success' => false, 'message' => 'Failed to reset username']);
+            exit;
+        }
+        $stmt->close();
+
+        // Mark report as resolved
+        $stmt = $db->prepare('UPDATE content_reports SET status = "resolved", resolved_by = ?, resolved_at = NOW(), resolution_action = "username_reset" WHERE id = ?');
+        $stmt->bind_param('ii', $admin_user_id, $report_id);
+        $stmt->execute();
+        $stmt->close();
+
+        echo json_encode(['success' => true, 'message' => "Username reset to: {$random_username}"]);
+
+    } elseif ($action === 'clear_bio') {
+        $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : 0;
+
+        if ($user_id <= 0) {
+            echo json_encode(['success' => false, 'message' => 'Invalid user ID']);
+            exit;
+        }
+
+        // Clear the bio
+        $stmt = $db->prepare('UPDATE community_users SET bio = NULL WHERE id = ?');
+        $stmt->bind_param('i', $user_id);
+
+        if (!$stmt->execute()) {
+            $stmt->close();
+            echo json_encode(['success' => false, 'message' => 'Failed to clear bio']);
+            exit;
+        }
+        $stmt->close();
+
+        // Mark report as resolved
+        $stmt = $db->prepare('UPDATE content_reports SET status = "resolved", resolved_by = ?, resolved_at = NOW(), resolution_action = "bio_cleared" WHERE id = ?');
+        $stmt->bind_param('ii', $admin_user_id, $report_id);
+        $stmt->execute();
+        $stmt->close();
+
+        echo json_encode(['success' => true, 'message' => 'Bio cleared successfully']);
     }
 
 } catch (Exception $e) {

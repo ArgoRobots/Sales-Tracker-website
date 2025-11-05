@@ -225,6 +225,15 @@
     background: #d97706;
 }
 
+.btn-warning {
+    background: #eab308;
+    color: white;
+}
+
+.btn-warning:hover {
+    background: #ca8a04;
+}
+
 .btn-dismiss {
     background: #6b7280;
     color: white;

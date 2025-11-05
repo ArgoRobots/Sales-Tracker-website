@@ -36,13 +36,16 @@ function get_reports($status = 'pending', $content_type = 'all')
         reported_user.username AS reported_user_username,
         reported_user.email AS reported_user_email,
         reported_user.role AS reported_user_role,
+        reported_user.bio AS reported_user_bio,
         CASE
             WHEN r.content_type = "post" THEN p.title
             WHEN r.content_type = "comment" THEN CONCAT("Comment on: ", post.title)
+            WHEN r.content_type = "user" THEN CONCAT("User Profile: ", reported_user.username)
         END AS content_title,
         CASE
             WHEN r.content_type = "post" THEN p.content
             WHEN r.content_type = "comment" THEN c.content
+            WHEN r.content_type = "user" THEN CONCAT("Username: ", reported_user.username, "\nBio: ", COALESCE(reported_user.bio, "(No bio)"))
         END AS content_text
     FROM content_reports r
     LEFT JOIN community_users reporter ON r.reporter_user_id = reporter.id
@@ -51,7 +54,8 @@ function get_reports($status = 'pending', $content_type = 'all')
     LEFT JOIN community_posts post ON c.post_id = post.id
     LEFT JOIN community_users reported_user ON (
         (r.content_type = "post" AND p.user_id = reported_user.id) OR
-        (r.content_type = "comment" AND c.user_id = reported_user.id)
+        (r.content_type = "comment" AND c.user_id = reported_user.id) OR
+        (r.content_type = "user" AND r.content_id = reported_user.id)
     )
     WHERE 1=1';
 
@@ -147,6 +151,7 @@ include '../admin_header.php';
                     <option value="all" <?php echo $content_type_filter === 'all' ? 'selected' : ''; ?>>All</option>
                     <option value="post" <?php echo $content_type_filter === 'post' ? 'selected' : ''; ?>>Posts</option>
                     <option value="comment" <?php echo $content_type_filter === 'comment' ? 'selected' : ''; ?>>Comments</option>
+                    <option value="user" <?php echo $content_type_filter === 'user' ? 'selected' : ''; ?>>Users</option>
                 </select>
             </div>
         </div>
@@ -196,12 +201,24 @@ include '../admin_header.php';
 
                 <?php if ($report['status'] === 'pending'): ?>
                     <div class="report-actions">
-                        <?php if ($report['content_text']): ?>
+                        <?php if ($report['content_type'] !== 'user' && $report['content_text']): ?>
                             <a href="../../community/<?php echo $report['content_type'] === 'post' ? 'view_post.php?id=' . $report['content_id'] : 'view_post.php?id=' . $report['content_id']; ?>"
                                class="btn-small btn-view" target="_blank">View Content</a>
+                        <?php elseif ($report['content_type'] === 'user'): ?>
+                            <a href="../../community/users/profile.php?username=<?php echo urlencode($report['reported_user_username']); ?>"
+                               class="btn-small btn-view" target="_blank">View Profile</a>
                         <?php endif; ?>
+
                         <?php if ($report['reported_user_role'] !== 'admin'): ?>
-                            <button class="btn-small btn-delete" onclick="handleReport(<?php echo $report['id']; ?>, 'delete', '<?php echo $report['content_type']; ?>', <?php echo $report['content_id']; ?>)">Delete Content</button>
+                            <?php if ($report['content_type'] === 'user'): ?>
+                                <!-- User report specific actions -->
+                                <button class="btn-small btn-warning" onclick="handleUserReport(<?php echo $report['id']; ?>, 'reset_username', <?php echo $report['reported_user_id']; ?>, '<?php echo htmlspecialchars($report['reported_user_username']); ?>')">Reset Username</button>
+                                <button class="btn-small btn-warning" onclick="handleUserReport(<?php echo $report['id']; ?>, 'clear_bio', <?php echo $report['reported_user_id']; ?>, '<?php echo htmlspecialchars($report['reported_user_username']); ?>')">Clear Bio</button>
+                            <?php else: ?>
+                                <!-- Post/Comment specific actions -->
+                                <button class="btn-small btn-delete" onclick="handleReport(<?php echo $report['id']; ?>, 'delete', '<?php echo $report['content_type']; ?>', <?php echo $report['content_id']; ?>)">Delete Content</button>
+                            <?php endif; ?>
+
                             <?php if ($report['reported_user_id']): ?>
                                 <button class="btn-small btn-ban" onclick="showBanModal(<?php echo $report['id']; ?>, <?php echo $report['reported_user_id']; ?>, '<?php echo htmlspecialchars($report['reported_user_username']); ?>')">Ban User</button>
                             <?php endif; ?>

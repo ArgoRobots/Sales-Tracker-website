@@ -76,6 +76,62 @@ function handleReport(reportId, action, contentType = null, contentId = null) {
         });
 }
 
+// Handle user report actions (reset username, clear bio)
+function handleUserReport(reportId, action, userId, username) {
+    let actionText = '';
+    let confirmText = '';
+
+    if (action === 'reset_username') {
+        actionText = 'reset the username';
+        confirmText = `Are you sure you want to reset the username for "${username}"? This will replace their username with a random string.`;
+    } else if (action === 'clear_bio') {
+        actionText = 'clear the bio';
+        confirmText = `Are you sure you want to clear the bio for "${username}"?`;
+    }
+
+    if (!confirm(confirmText)) {
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('report_id', reportId);
+    formData.append('action', action);
+    formData.append('user_id', userId);
+
+    fetch('handle_report.php', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                if (typeof showNotification === 'function') {
+                    showNotification(data.message, 'success');
+                } else {
+                    alert(data.message);
+                }
+                // Reload page after a short delay
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+            } else {
+                if (typeof showNotification === 'function') {
+                    showNotification(data.message || 'Action failed', 'error');
+                } else {
+                    alert(data.message || 'Action failed');
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            if (typeof showNotification === 'function') {
+                showNotification('An error occurred', 'error');
+            } else {
+                alert('An error occurred');
+            }
+        });
+}
+
 // Submit ban
 function submitBan() {
     const reportId = document.getElementById('banReportId').value;
