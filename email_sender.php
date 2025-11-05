@@ -996,3 +996,86 @@ function send_bio_cleared_email($email, $username, $violation_type, $additional_
     $mail_result = mail($email, $subject, $email_html, implode("\r\n", $headers));
     return $mail_result;
 }
+
+/**
+ * Send new report notification email to admins
+ *
+ * @param string $email Admin email address
+ * @param int $report_id Report ID
+ * @param string $content_type Type of content reported
+ * @param string $violation_type Type of violation
+ * @param string $reporter_username Username of reporter
+ * @param string $reported_username Username of reported user (or N/A)
+ * @return bool Success status
+ */
+function send_new_report_notification($email, $report_id, $content_type, $violation_type, $reporter_username, $reported_username = 'N/A')
+{
+    $css = file_get_contents(__DIR__ . '/email.css');
+    $subject = 'New Content Report - Argo Community';
+
+    // Format content type and violation type
+    $content_type_text = ucfirst($content_type);
+    $violation_text = ucfirst(str_replace('_', ' ', $violation_type));
+
+    $email_html = <<<HTML
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+            <title>New Report Notification</title>
+            <style>
+                {$css}
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" style="width: 200px; height: auto; max-width: 100%; display: block; margin: 0 auto;">
+                </div>
+
+                <div class="content">
+                    <h1>New Content Report</h1>
+                    <p>A new content report has been submitted and requires your attention.</p>
+
+                    <div style="background-color: #fef3c7; border: 1px solid #fde68a; padding: 16px; border-radius: 6px; margin: 20px 0;">
+                        <h3 style="color: #92400e; margin: 0 0 10px 0;">Report Details</h3>
+                        <ul style="color: #92400e; margin: 0; padding-left: 20px;">
+                            <li><strong>Report ID:</strong> #{$report_id}</li>
+                            <li><strong>Content Type:</strong> {$content_type_text}</li>
+                            <li><strong>Violation Type:</strong> {$violation_text}</li>
+                            <li><strong>Reported by:</strong> {$reporter_username}</li>
+                            <li><strong>Reported user:</strong> {$reported_username}</li>
+                        </ul>
+                    </div>
+
+                    <div style="background-color: #dbeafe; border: 1px solid #93c5fd; padding: 16px; border-radius: 6px; margin: 20px 0;">
+                        <h3 style="color: #1e40af; margin: 0 0 10px 0;">Action Required</h3>
+                        <p style="color: #1e40af; margin: 0 0 10px 0;">Please review this report in the admin panel and take appropriate action.</p>
+                        <a href="https://argorobots.com/admin/reports/" style="display: inline-block; background-color: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: 600; margin-top: 10px;">View Reports</a>
+                    </div>
+
+                    <p style="color: #6b7280; font-size: 14px; margin-top: 20px;">This report is currently in <strong>pending</strong> status and awaits your review.</p>
+                </div>
+
+                <div class="footer">
+                    <p>This is an automated notification from the Argo Community moderation system.</p>
+                    <p>Argo Sales Tracker &copy; 2025. All rights reserved.</p>
+                    <p>This email was sent to {$email}</p>
+                </div>
+            </div>
+        </body>
+        </html>
+    HTML;
+
+    $headers = [
+        'MIME-Version: 1.0',
+        'Content-Type: text/html; charset=UTF-8',
+        'From: Argo Community <noreply@argorobots.com>',
+        'Reply-To: support@argorobots.com',
+        'X-Mailer: PHP/' . phpversion()
+    ];
+
+    $mail_result = mail($email, $subject, $email_html, implode("\r\n", $headers));
+    return $mail_result;
+}

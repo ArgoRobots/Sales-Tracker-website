@@ -162,6 +162,7 @@ CREATE TABLE IF NOT EXISTS admin_notification_settings (
     user_id INT NOT NULL,
     notify_new_posts BOOLEAN DEFAULT 1,
     notify_new_comments BOOLEAN DEFAULT 1,
+    notify_new_reports BOOLEAN DEFAULT 1,
     notification_email VARCHAR(100) NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

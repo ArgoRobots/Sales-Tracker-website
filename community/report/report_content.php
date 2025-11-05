@@ -2,6 +2,7 @@
 session_start();
 require_once '../../db_connect.php';
 require_once '../users/user_functions.php';
+require_once '../../email_sender.php';
 
 header('Content-Type: application/json');
 
@@ -128,7 +129,62 @@ try {
     $stmt->bind_param('ississ', $reporter_user_id, $reporter_email, $content_type, $content_id, $violation_type, $additional_info);
 
     if ($stmt->execute()) {
+        $report_id = $stmt->insert_id;
         $stmt->close();
+
+        // Send notification to admins who have opted in
+        $stmt = $db->prepare('
+            SELECT ans.notification_email
+            FROM admin_notification_settings ans
+            JOIN community_users cu ON ans.user_id = cu.id
+            WHERE cu.role = "admin" AND ans.notify_new_reports = 1
+        ');
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        // Get reporter username
+        $stmt2 = $db->prepare('SELECT username FROM community_users WHERE id = ?');
+        $stmt2->bind_param('i', $reporter_user_id);
+        $stmt2->execute();
+        $reporter_result = $stmt2->get_result();
+        $reporter = $reporter_result->fetch_assoc();
+        $reporter_username = $reporter ? $reporter['username'] : $reporter_email;
+        $stmt2->close();
+
+        // Get reported username if applicable
+        $reported_username = 'N/A';
+        if ($content_type === 'user') {
+            $reported_username = $content['username'] ?? 'Unknown';
+        } elseif ($content_type === 'post' && isset($content['user_id'])) {
+            $stmt3 = $db->prepare('SELECT username FROM community_users WHERE id = ?');
+            $stmt3->bind_param('i', $content['user_id']);
+            $stmt3->execute();
+            $user_result = $stmt3->get_result();
+            $user_data = $user_result->fetch_assoc();
+            $reported_username = $user_data ? $user_data['username'] : 'Unknown';
+            $stmt3->close();
+        } elseif ($content_type === 'comment' && isset($content['user_id'])) {
+            $stmt3 = $db->prepare('SELECT username FROM community_users WHERE id = ?');
+            $stmt3->bind_param('i', $content['user_id']);
+            $stmt3->execute();
+            $user_result = $stmt3->get_result();
+            $user_data = $user_result->fetch_assoc();
+            $reported_username = $user_data ? $user_data['username'] : 'Unknown';
+            $stmt3->close();
+        }
+
+        while ($admin = $result->fetch_assoc()) {
+            send_new_report_notification(
+                $admin['notification_email'],
+                $report_id,
+                $content_type,
+                $violation_type,
+                $reporter_username,
+                $reported_username
+            );
+        }
+        $stmt->close();
+
         echo json_encode(['success' => true, 'message' => 'Report submitted successfully.']);
     } else {
         $stmt->close();
