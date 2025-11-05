@@ -605,10 +605,13 @@ function handle_password_change()
                 <div class="form-group">
                     <label for="bio">Bio</label>
                     <textarea id="bio" name="bio" placeholder="Tell us about yourself..." oninput="updateCharCount(this)"><?php echo htmlspecialchars($user['bio'] ?? ''); ?></textarea>
-                    <div class="char-counter">
-                        <span id="bioCharCount"><?php echo strlen($user['bio'] ?? ''); ?></span>/500 characters
+                  
+                    <div class="text-container">
+                        <p class="info-text">Write a short bio that will be displayed on your profile page.</p>
+                        <div class="char-counter">
+                            <span id="bioCharCount"><?php echo strlen($user['bio'] ?? ''); ?></span>/500 characters
+                        </div>
                     </div>
-                    <p class="info-text">Write a short bio that will be displayed on your profile page.</p>
                 </div>
 
                 <div class="form-actions">
@@ -621,13 +624,7 @@ function handle_password_change()
         <!-- Email Section -->
         <div class="edit-section">
             <h2>Email Address</h2>
-            <p><strong>Current Email:</strong> <?php echo htmlspecialchars($user['email']); ?>
-                <?php if ($user['email_verified']): ?>
-                    <span style="color: #16a34a; font-weight: 600;">✓ Verified</span>
-                <?php else: ?>
-                    <span style="color: #dc2626; font-weight: 600;">⚠ Not Verified</span>
-                <?php endif; ?>
-            </p>
+            <p class="current-email"><strong>Current Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
 
             <?php if (isset($_SESSION['email_change_pending']) && $_SESSION['email_change_pending']): ?>
                 <div class="verification-pending">
