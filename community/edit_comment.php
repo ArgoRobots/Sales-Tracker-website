@@ -3,6 +3,7 @@ session_start();
 require_once '../db_connect.php';
 require_once 'community_functions.php';
 require_once 'mentions/mentions.php';
+require_once 'report/ban_check.php';
 
 header('Content-Type: application/json');
 
@@ -15,6 +16,17 @@ $response = [
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     $response['message'] = 'You must be logged in to edit comments';
+    echo json_encode($response);
+    exit;
+}
+
+// Check if user is banned
+$user_id = $_SESSION['user_id'];
+$ban = is_user_banned($user_id);
+if ($ban) {
+    $response['success'] = false;
+    $response['message'] = get_ban_message($ban);
+    $response['banned'] = true;
     echo json_encode($response);
     exit;
 }

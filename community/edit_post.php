@@ -4,6 +4,7 @@ require_once '../db_connect.php';
 require_once 'community_functions.php';
 require_once 'users/user_functions.php';
 require_once 'formatting/formatting_functions.php';
+require_once 'report/ban_check.php';
 
 // Check for remember me cookie and auto-login user if valid
 if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
@@ -13,6 +14,15 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     header('Location: users/login.php');
+    exit;
+}
+
+// Check if user is banned
+$user_id = $_SESSION['user_id'];
+$ban = is_user_banned($user_id);
+if ($ban) {
+    $_SESSION['error_message'] = get_ban_message($ban);
+    header('Location: index.php');
     exit;
 }
 

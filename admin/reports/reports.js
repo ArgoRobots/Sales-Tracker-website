@@ -1,0 +1,140 @@
+// Modal handling
+let banModal = document.getElementById('banModal');
+
+function showBanModal(reportId, userId, username) {
+    document.getElementById('banReportId').value = reportId;
+    document.getElementById('banUserId').value = userId;
+    document.getElementById('banUsername').textContent = username;
+    document.getElementById('banReason').value = '';
+    banModal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeBanModal() {
+    banModal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+// Close modal when clicking outside
+banModal.addEventListener('click', function (e) {
+    if (e.target === banModal) {
+        closeBanModal();
+    }
+});
+
+// Close modal on Escape key
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && banModal.style.display === 'flex') {
+        closeBanModal();
+    }
+});
+
+// Handle report actions (delete content, dismiss)
+function handleReport(reportId, action, contentType = null, contentId = null) {
+    const actionText = action === 'delete' ? 'delete this content' : 'dismiss this report';
+    if (!confirm(`Are you sure you want to ${actionText}?`)) {
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('report_id', reportId);
+    formData.append('action', action);
+    if (contentType) formData.append('content_type', contentType);
+    if (contentId) formData.append('content_id', contentId);
+
+    fetch('handle_report.php', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                if (typeof showNotification === 'function') {
+                    showNotification(data.message, 'success');
+                } else {
+                    alert(data.message);
+                }
+                // Reload page after a short delay
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+            } else {
+                if (typeof showNotification === 'function') {
+                    showNotification(data.message || 'Action failed', 'error');
+                } else {
+                    alert(data.message || 'Action failed');
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            if (typeof showNotification === 'function') {
+                showNotification('An error occurred', 'error');
+            } else {
+                alert('An error occurred');
+            }
+        });
+}
+
+// Submit ban
+function submitBan() {
+    const reportId = document.getElementById('banReportId').value;
+    const userId = document.getElementById('banUserId').value;
+    const reason = document.getElementById('banReason').value.trim();
+    const duration = document.getElementById('banDuration').value;
+
+    if (!reason) {
+        alert('Please provide a ban reason');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('report_id', reportId);
+    formData.append('action', 'ban');
+    formData.append('user_id', userId);
+    formData.append('ban_reason', reason);
+    formData.append('ban_duration', duration);
+
+    // Disable button
+    const submitBtn = event.target;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Banning...';
+
+    fetch('handle_report.php', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                if (typeof showNotification === 'function') {
+                    showNotification(data.message, 'success');
+                } else {
+                    alert(data.message);
+                }
+                closeBanModal();
+                // Reload page after a short delay
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+            } else {
+                if (typeof showNotification === 'function') {
+                    showNotification(data.message || 'Failed to ban user', 'error');
+                } else {
+                    alert(data.message || 'Failed to ban user');
+                }
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Ban User';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            if (typeof showNotification === 'function') {
+                showNotification('An error occurred', 'error');
+            } else {
+                alert('An error occurred');
+            }
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Ban User';
+        });
+}

@@ -583,7 +583,7 @@ function handle_password_change()
                     <?php if (!empty($user['avatar'])): ?>
                         <form method="post" style="margin-top: 15px;">
                             <input type="hidden" name="action" value="remove_avatar">
-                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to remove your avatar?')">Remove Avatar</button>
+                            <button type="submit" class="btn btn-red" onclick="return confirm('Are you sure you want to remove your avatar?')">Remove Avatar</button>
                         </form>
                     <?php endif; ?>
                 </div>
