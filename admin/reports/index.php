@@ -212,8 +212,8 @@ include '../admin_header.php';
                         <?php if ($report['reported_user_role'] !== 'admin'): ?>
                             <?php if ($report['content_type'] === 'user'): ?>
                                 <!-- User report specific actions -->
-                                <button class="btn-small btn-warning" onclick="handleUserReport(<?php echo $report['id']; ?>, 'reset_username', <?php echo $report['reported_user_id']; ?>, '<?php echo htmlspecialchars($report['reported_user_username']); ?>')">Reset Username</button>
-                                <button class="btn-small btn-warning" onclick="handleUserReport(<?php echo $report['id']; ?>, 'clear_bio', <?php echo $report['reported_user_id']; ?>, '<?php echo htmlspecialchars($report['reported_user_username']); ?>')">Clear Bio</button>
+                                <button class="btn-small btn-warning" onclick="showResetUsernameModal(<?php echo $report['id']; ?>, <?php echo $report['reported_user_id']; ?>, '<?php echo htmlspecialchars($report['reported_user_username']); ?>')">Reset Username</button>
+                                <button class="btn-small btn-warning" onclick="showClearBioModal(<?php echo $report['id']; ?>, <?php echo $report['reported_user_id']; ?>, '<?php echo htmlspecialchars($report['reported_user_username']); ?>')">Clear Bio</button>
                             <?php else: ?>
                                 <!-- Post/Comment specific actions -->
                                 <button class="btn-small btn-delete" onclick="handleReport(<?php echo $report['id']; ?>, 'delete', '<?php echo $report['content_type']; ?>', <?php echo $report['content_id']; ?>)">Delete Content</button>
@@ -244,8 +244,25 @@ include '../admin_header.php';
             <input type="hidden" id="banUserId">
 
             <div class="form-group">
-                <label for="banReason">Ban Reason</label>
-                <textarea id="banReason" rows="4" required></textarea>
+                <label for="banViolationType">Reason for Ban</label>
+                <select id="banViolationType" required>
+                    <option value="">Select a reason...</option>
+                    <option value="spam">Spam</option>
+                    <option value="harassment">Harassment</option>
+                    <option value="hateful">Hateful Content</option>
+                    <option value="inappropriate">Inappropriate Content</option>
+                    <option value="inappropriate_username">Inappropriate Username</option>
+                    <option value="inappropriate_bio">Inappropriate Bio</option>
+                    <option value="impersonation">Impersonation</option>
+                    <option value="misinformation">Misinformation</option>
+                    <option value="repeated_violations">Repeated Violations</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="banReason">Additional Details (Optional)</label>
+                <textarea id="banReason" rows="4" placeholder="Provide additional context for the user..."></textarea>
             </div>
 
             <div class="form-group">
@@ -260,6 +277,81 @@ include '../admin_header.php';
         <div class="modal-footer">
             <button class="btn btn-outline" onclick="closeBanModal()">Cancel</button>
             <button class="btn btn-red" onclick="submitBan()">Ban User</button>
+        </div>
+    </div>
+</div>
+
+<!-- Username Reset Modal -->
+<div id="resetUsernameModal" class="modal" style="display: none;">
+    <div class="modal-content" style="max-width: 500px;">
+        <div class="modal-header">
+            <h3>Reset Username</h3>
+            <button class="modal-close" onclick="closeResetUsernameModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p>You are about to reset the username for <strong id="resetUsername"></strong></p>
+            <p class="warning-text">This will replace their username with a random string and update all their posts and comments.</p>
+            <input type="hidden" id="resetUsernameReportId">
+            <input type="hidden" id="resetUsernameUserId">
+
+            <div class="form-group">
+                <label for="resetUsernameViolationType">Reason for Reset</label>
+                <select id="resetUsernameViolationType" required>
+                    <option value="">Select a reason...</option>
+                    <option value="inappropriate_username">Inappropriate Username</option>
+                    <option value="impersonation">Impersonation</option>
+                    <option value="harassment">Harassment</option>
+                    <option value="hateful">Hateful Content</option>
+                    <option value="spam">Spam</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="resetUsernameDetails">Additional Details (Optional)</label>
+                <textarea id="resetUsernameDetails" rows="4" placeholder="Provide additional context for the user..."></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="closeResetUsernameModal()">Cancel</button>
+            <button class="btn btn-red" onclick="submitResetUsername()">Reset Username</button>
+        </div>
+    </div>
+</div>
+
+<!-- Clear Bio Modal -->
+<div id="clearBioModal" class="modal" style="display: none;">
+    <div class="modal-content" style="max-width: 500px;">
+        <div class="modal-header">
+            <h3>Clear Bio</h3>
+            <button class="modal-close" onclick="closeClearBioModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p>You are about to clear the bio for <strong id="clearBioUsername"></strong></p>
+            <input type="hidden" id="clearBioReportId">
+            <input type="hidden" id="clearBioUserId">
+
+            <div class="form-group">
+                <label for="clearBioViolationType">Reason for Clearing Bio</label>
+                <select id="clearBioViolationType" required>
+                    <option value="">Select a reason...</option>
+                    <option value="inappropriate_bio">Inappropriate Bio</option>
+                    <option value="harassment">Harassment</option>
+                    <option value="hateful">Hateful Content</option>
+                    <option value="spam">Spam</option>
+                    <option value="inappropriate">Inappropriate Content</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="clearBioDetails">Additional Details (Optional)</label>
+                <textarea id="clearBioDetails" rows="4" placeholder="Provide additional context for the user..."></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="closeClearBioModal()">Cancel</button>
+            <button class="btn btn-red" onclick="submitClearBio()">Clear Bio</button>
         </div>
     </div>
 </div>

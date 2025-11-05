@@ -80,12 +80,19 @@ try {
 
     } elseif ($action === 'ban') {
         $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : 0;
-        $ban_reason = $_POST['ban_reason'] ?? '';
+        $violation_type = $_POST['violation_type'] ?? '';
+        $additional_details = $_POST['additional_details'] ?? '';
         $ban_duration = $_POST['ban_duration'] ?? '';
 
-        if ($user_id <= 0 || empty($ban_reason) || empty($ban_duration)) {
+        if ($user_id <= 0 || empty($violation_type) || empty($ban_duration)) {
             echo json_encode(['success' => false, 'message' => 'Missing required fields']);
             exit;
+        }
+
+        // Format the ban reason from violation type and additional details
+        $ban_reason = ucfirst(str_replace('_', ' ', $violation_type));
+        if (!empty($additional_details)) {
+            $ban_reason .= ': ' . $additional_details;
         }
 
         if (!in_array($ban_duration, ['30_days', '1_year', 'permanent'])) {
@@ -183,13 +190,15 @@ try {
 
     } elseif ($action === 'reset_username') {
         $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : 0;
+        $violation_type = $_POST['violation_type'] ?? '';
+        $additional_details = $_POST['additional_details'] ?? '';
 
-        if ($user_id <= 0) {
-            echo json_encode(['success' => false, 'message' => 'Invalid user ID']);
+        if ($user_id <= 0 || empty($violation_type)) {
+            echo json_encode(['success' => false, 'message' => 'Missing required fields']);
             exit;
         }
 
-        // Get user details and report information before making changes
+        // Get user details before making changes
         $stmt = $db->prepare('SELECT username, email FROM community_users WHERE id = ?');
         $stmt->bind_param('i', $user_id);
         $stmt->execute();
@@ -204,17 +213,6 @@ try {
 
         $old_username = $user['username'];
         $user_email = $user['email'];
-
-        // Get report details for email notification
-        $stmt = $db->prepare('SELECT violation_type, additional_info FROM content_reports WHERE id = ?');
-        $stmt->bind_param('i', $report_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $report = $result->fetch_assoc();
-        $stmt->close();
-
-        $violation_type = $report['violation_type'] ?? 'policy_violation';
-        $additional_info = $report['additional_info'] ?? '';
 
         // Generate a random username
         $random_username = 'user_' . bin2hex(random_bytes(8));
@@ -265,19 +263,21 @@ try {
         $stmt->close();
 
         // Send email notification to user
-        send_username_reset_email($user_email, $old_username, $random_username, $violation_type, $additional_info);
+        send_username_reset_email($user_email, $old_username, $random_username, $violation_type, $additional_details);
 
         echo json_encode(['success' => true, 'message' => "Username reset to: {$random_username}"]);
 
     } elseif ($action === 'clear_bio') {
         $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : 0;
+        $violation_type = $_POST['violation_type'] ?? '';
+        $additional_details = $_POST['additional_details'] ?? '';
 
-        if ($user_id <= 0) {
-            echo json_encode(['success' => false, 'message' => 'Invalid user ID']);
+        if ($user_id <= 0 || empty($violation_type)) {
+            echo json_encode(['success' => false, 'message' => 'Missing required fields']);
             exit;
         }
 
-        // Get user details and report information before making changes
+        // Get user details before making changes
         $stmt = $db->prepare('SELECT username, email FROM community_users WHERE id = ?');
         $stmt->bind_param('i', $user_id);
         $stmt->execute();
@@ -292,17 +292,6 @@ try {
 
         $username = $user['username'];
         $user_email = $user['email'];
-
-        // Get report details for email notification
-        $stmt = $db->prepare('SELECT violation_type, additional_info FROM content_reports WHERE id = ?');
-        $stmt->bind_param('i', $report_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $report = $result->fetch_assoc();
-        $stmt->close();
-
-        $violation_type = $report['violation_type'] ?? 'policy_violation';
-        $additional_info = $report['additional_info'] ?? '';
 
         // Clear the bio
         $stmt = $db->prepare('UPDATE community_users SET bio = NULL WHERE id = ?');
@@ -322,7 +311,7 @@ try {
         $stmt->close();
 
         // Send email notification to user
-        send_bio_cleared_email($user_email, $username, $violation_type, $additional_info);
+        send_bio_cleared_email($user_email, $username, $violation_type, $additional_details);
 
         echo json_encode(['success' => true, 'message' => 'Bio cleared successfully']);
     }
