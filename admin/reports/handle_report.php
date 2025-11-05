@@ -34,7 +34,7 @@ if (!in_array($action, ['delete', 'ban', 'dismiss'])) {
 try {
     $db = get_db_connection();
 
-    // Get admin user ID from community_users table
+    // Get admin user ID from community_users table (may be null if admin is only in admin_users)
     $stmt = $db->prepare('SELECT id FROM community_users WHERE email = ? AND role = "admin" LIMIT 1');
     $admin_email = $_SESSION['admin_email'] ?? '';
     $stmt->bind_param('s', $admin_email);
@@ -115,13 +115,7 @@ try {
             exit;
         }
 
-        // Check if user has any existing admin role
-        if (!$admin_user_id) {
-            echo json_encode(['success' => false, 'message' => 'Admin user not found in community users table']);
-            exit;
-        }
-
-        // Insert ban record
+        // Insert ban record (banned_by can be NULL if admin is not in community_users)
         if ($expires_at) {
             $stmt = $db->prepare('INSERT INTO user_bans (user_id, banned_by, ban_reason, ban_duration, expires_at) VALUES (?, ?, ?, ?, ?)');
             $stmt->bind_param('iisss', $user_id, $admin_user_id, $ban_reason, $ban_duration, $expires_at);
@@ -137,16 +131,40 @@ try {
         }
         $stmt->close();
 
-        // Mark report as resolved
+        // Mark current report as resolved
         $stmt = $db->prepare('UPDATE content_reports SET status = "resolved", resolved_by = ?, resolved_at = NOW(), resolution_action = "user_banned" WHERE id = ?');
         $stmt->bind_param('ii', $admin_user_id, $report_id);
         $stmt->execute();
         $stmt->close();
 
+        // Mark all other pending reports for this user as resolved
+        $stmt = $db->prepare('UPDATE content_reports r
+            LEFT JOIN community_posts p ON r.content_type = "post" AND r.content_id = p.id
+            LEFT JOIN community_comments c ON r.content_type = "comment" AND r.content_id = c.id
+            SET r.status = "resolved", 
+                r.resolved_by = ?, 
+                r.resolved_at = NOW(), 
+                r.resolution_action = "user_banned"
+            WHERE r.status = "pending" 
+            AND r.id != ?
+            AND (
+                (r.content_type = "post" AND p.user_id = ?) OR
+                (r.content_type = "comment" AND c.user_id = ?)
+            )');
+        $stmt->bind_param('iiii', $admin_user_id, $report_id, $user_id, $user_id);
+        $stmt->execute();
+        $affected_reports = $stmt->affected_rows;
+        $stmt->close();
+
         // Send ban notification email
         send_ban_notification_email($user['email'], $user['username'], $ban_reason, $ban_duration, $expires_at);
 
-        echo json_encode(['success' => true, 'message' => 'User banned successfully']);
+        $message = 'User banned successfully';
+        if ($affected_reports > 0) {
+            $message .= " and {$affected_reports} other report(s) resolved";
+        }
+
+        echo json_encode(['success' => true, 'message' => $message]);
 
     } elseif ($action === 'dismiss') {
         // Mark report as dismissed

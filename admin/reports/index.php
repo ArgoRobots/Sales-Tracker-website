@@ -35,6 +35,7 @@ function get_reports($status = 'pending', $content_type = 'all')
         reported_user.id AS reported_user_id,
         reported_user.username AS reported_user_username,
         reported_user.email AS reported_user_email,
+        reported_user.role AS reported_user_role,
         CASE
             WHEN r.content_type = "post" THEN p.title
             WHEN r.content_type = "comment" THEN CONCAT("Comment on: ", post.title)
@@ -199,9 +200,11 @@ include '../admin_header.php';
                             <a href="../../community/<?php echo $report['content_type'] === 'post' ? 'view_post.php?id=' . $report['content_id'] : 'view_post.php?id=' . $report['content_id']; ?>"
                                class="btn-small btn-view" target="_blank">View Content</a>
                         <?php endif; ?>
-                        <button class="btn-small btn-delete" onclick="handleReport(<?php echo $report['id']; ?>, 'delete', '<?php echo $report['content_type']; ?>', <?php echo $report['content_id']; ?>)">Delete Content</button>
-                        <?php if ($report['reported_user_id']): ?>
-                            <button class="btn-small btn-ban" onclick="showBanModal(<?php echo $report['id']; ?>, <?php echo $report['reported_user_id']; ?>, '<?php echo htmlspecialchars($report['reported_user_username']); ?>')">Ban User</button>
+                        <?php if ($report['reported_user_role'] !== 'admin'): ?>
+                            <button class="btn-small btn-delete" onclick="handleReport(<?php echo $report['id']; ?>, 'delete', '<?php echo $report['content_type']; ?>', <?php echo $report['content_id']; ?>)">Delete Content</button>
+                            <?php if ($report['reported_user_id']): ?>
+                                <button class="btn-small btn-ban" onclick="showBanModal(<?php echo $report['id']; ?>, <?php echo $report['reported_user_id']; ?>, '<?php echo htmlspecialchars($report['reported_user_username']); ?>')">Ban User</button>
+                            <?php endif; ?>
                         <?php endif; ?>
                         <button class="btn-small btn-dismiss" onclick="handleReport(<?php echo $report['id']; ?>, 'dismiss')">Dismiss</button>
                     </div>

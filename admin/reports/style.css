@@ -69,6 +69,8 @@
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    margin: auto;
 }
 
 .report-row {
@@ -313,10 +315,11 @@
     border: 1px solid #d1d5db;
     border-radius: 6px;
     font-family: inherit;
+    box-sizing: border-box;
 }
 
 .modal-body .form-group textarea {
-    min-height: 80px;
+    min-height: 100px;
     resize: vertical;
     max-height: 500px;
     padding: 10px;
@@ -332,4 +335,11 @@
     gap: 12px;
     padding: 20px 24px;
     border-top: 1px solid #e5e7eb;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .reports-table {
+        width: 90%;
+    }
 }
