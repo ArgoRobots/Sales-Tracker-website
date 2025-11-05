@@ -92,7 +92,7 @@ try {
         }
     } else {
         // User report
-        $stmt = $db->prepare('SELECT id FROM community_users WHERE id = ?');
+        $stmt = $db->prepare('SELECT id, username FROM community_users WHERE id = ?');
         $stmt->bind_param('i', $content_id);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -132,15 +132,19 @@ try {
         $report_id = $stmt->insert_id;
         $stmt->close();
 
+        error_log("Report created with ID: " . $report_id);
+
         // Send notification to admins who have opted in
         $stmt = $db->prepare('
-            SELECT ans.notification_email
+            SELECT ans.notification_email, cu.username as admin_username
             FROM admin_notification_settings ans
             JOIN community_users cu ON ans.user_id = cu.id
             WHERE cu.role = "admin" AND ans.notify_new_reports = 1
         ');
         $stmt->execute();
         $result = $stmt->get_result();
+
+        error_log("Found " . $result->num_rows . " admins with notifications enabled");
 
         // Get reporter username
         $stmt2 = $db->prepare('SELECT username FROM community_users WHERE id = ?');
@@ -150,6 +154,8 @@ try {
         $reporter = $reporter_result->fetch_assoc();
         $reporter_username = $reporter ? $reporter['username'] : $reporter_email;
         $stmt2->close();
+
+        error_log("Reporter username: " . $reporter_username);
 
         // Get reported username if applicable
         $reported_username = 'N/A';
@@ -173,8 +179,11 @@ try {
             $stmt3->close();
         }
 
+        error_log("Reported username: " . $reported_username);
+
         while ($admin = $result->fetch_assoc()) {
-            send_new_report_notification(
+            error_log("Sending notification to: " . $admin['notification_email'] . " (admin: " . $admin['admin_username'] . ")");
+            $mail_result = send_new_report_notification(
                 $admin['notification_email'],
                 $report_id,
                 $content_type,
@@ -182,6 +191,7 @@ try {
                 $reporter_username,
                 $reported_username
             );
+            error_log("Mail result for " . $admin['notification_email'] . ": " . ($mail_result ? "success" : "failure"));
         }
         $stmt->close();
 

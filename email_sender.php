@@ -1010,6 +1010,8 @@ function send_bio_cleared_email($email, $username, $violation_type, $additional_
  */
 function send_new_report_notification($email, $report_id, $content_type, $violation_type, $reporter_username, $reported_username = 'N/A')
 {
+    error_log("send_new_report_notification called for: $email (Report #$report_id, Type: $content_type, Violation: $violation_type)");
+
     $css = file_get_contents(__DIR__ . '/email.css');
     $subject = 'New Content Report - Argo Community';
 
@@ -1077,5 +1079,7 @@ function send_new_report_notification($email, $report_id, $content_type, $violat
     ];
 
     $mail_result = mail($email, $subject, $email_html, implode("\r\n", $headers));
+    error_log("send_new_report_notification mail() result for $email: " . ($mail_result ? "TRUE" : "FALSE"));
     return $mail_result;
 }
+
