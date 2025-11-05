@@ -64,13 +64,17 @@ if ($is_logged_in && $current_user) {
             </div>
         <?php endif; ?>
 
+        <?php if ($is_logged_in && $user_ban): ?>
+            <div style="margin-bottom: 20px; padding: 16px; background-color: #fee2e2; border: 1px solid #fecaca; border-radius: 6px; color: #991b1b; text-align: center;">
+                <h4 style="margin-top: 0; color: #991b1b;">Cannot Create Posts</h4>
+                <p style="margin-bottom: 0;"><?php echo htmlspecialchars(get_ban_message($user_ban)); ?></p>
+            </div>
+        <?php endif; ?>
+
         <div class="community-actions">
             <div class="action-left">
                 <?php if ($is_logged_in && $user_ban): ?>
                     <button class="create-new-post btn btn-blue" disabled style="opacity: 0.5; cursor: not-allowed;">Create New Post</button>
-                    <div style="margin-top: 8px; padding: 12px; background-color: #fee2e2; border: 1px solid #fecaca; border-radius: 6px; color: #991b1b; font-size: 14px;">
-                        <?php echo htmlspecialchars(get_ban_message($user_ban)); ?>
-                    </div>
                 <?php elseif ($is_logged_in): ?>
                     <a href="create_post.php" class="create-new-post btn btn-blue">Create New Post</a>
                 <?php else: ?>
