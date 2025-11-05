@@ -24,7 +24,7 @@ $violation_type = $_POST['violation_type'] ?? '';
 $additional_info = $_POST['additional_info'] ?? '';
 
 // Validation
-if (!in_array($content_type, ['post', 'comment'])) {
+if (!in_array($content_type, ['post', 'comment', 'user'])) {
     echo json_encode(['success' => false, 'message' => 'Invalid content type.']);
     exit;
 }
@@ -39,7 +39,7 @@ if (empty($violation_type)) {
     exit;
 }
 
-$valid_violations = ['spam', 'harassment', 'hateful', 'inappropriate', 'misinformation', 'off-topic', 'other'];
+$valid_violations = ['spam', 'harassment', 'hateful', 'inappropriate', 'misinformation', 'off-topic', 'inappropriate_username', 'inappropriate_bio', 'impersonation', 'other'];
 if (!in_array($violation_type, $valid_violations)) {
     echo json_encode(['success' => false, 'message' => 'Invalid violation type.']);
     exit;
@@ -71,7 +71,7 @@ try {
             echo json_encode(['success' => false, 'message' => 'You cannot report your own content.']);
             exit;
         }
-    } else {
+    } elseif ($content_type === 'comment') {
         $stmt = $db->prepare('SELECT id, user_id FROM community_comments WHERE id = ?');
         $stmt->bind_param('i', $content_id);
         $stmt->execute();
@@ -87,6 +87,25 @@ try {
         // Don't allow users to report their own comments
         if ($content['user_id'] == $reporter_user_id) {
             echo json_encode(['success' => false, 'message' => 'You cannot report your own content.']);
+            exit;
+        }
+    } else {
+        // User report
+        $stmt = $db->prepare('SELECT id FROM community_users WHERE id = ?');
+        $stmt->bind_param('i', $content_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $content = $result->fetch_assoc();
+        $stmt->close();
+
+        if (!$content) {
+            echo json_encode(['success' => false, 'message' => 'User not found.']);
+            exit;
+        }
+
+        // Don't allow users to report themselves
+        if ($content_id == $reporter_user_id) {
+            echo json_encode(['success' => false, 'message' => 'You cannot report yourself.']);
             exit;
         }
     }
