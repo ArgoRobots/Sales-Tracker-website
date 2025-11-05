@@ -28,6 +28,7 @@ You can view the live website here: https://argorobots.com/
 - Free version download
 - License key purchase system
 - Comprehensive documentation
+- Community page for feature requests and bug reports
 - Support/contact system
 - About us and legal information
 
@@ -37,14 +38,6 @@ You can view the live website here: https://argorobots.com/
 - License key generation and management
 - User account administration
 - Statistics tracking and analytics dashboard
-
-## Security Features
-
-- Password hashing and secure storage
-- Two-factor authentication for admin access
-- Session management and protection
-- Rate limiting for login attempts
-- Input sanitization and validation
 
 ## Installation
 
@@ -82,9 +75,8 @@ composer install
 
 This will download all required dependencies into the `vendor/` folder.
 
-> Note: The `vendor/` folder has been removed from the repository and is ignored via `.gitignore`. Always use `composer install` to set up dependencies.
-
 ## Publishing a new version of Argo Sales Tracker
-
-1. Update the version in the files 'download.php' and 'update.xml' to the same version as the .exe file.
-2. Upload the new .exe file to resources/downloads
+1. Create a new folder in `resources/downloads/versions` named whatever the version number is
+1. Upload the new .exe and the language folder to this new directory
+2. Update the version number in `update.xml`
+3. Add the new version to whats-new/index.php
