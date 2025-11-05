@@ -3,6 +3,7 @@ session_start();
 require_once '../db_connect.php';
 require_once 'community_functions.php';
 require_once 'users/user_functions.php';
+require_once 'report/ban_check.php';
 
 // Check for remember me cookie and auto-login user if valid
 if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
@@ -12,6 +13,12 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
 $posts = get_all_posts();
 $is_logged_in = is_user_logged_in();
 $current_user = $is_logged_in ? \CommunityUsers\get_current_user() : null;
+
+// Check if user is banned
+$user_ban = null;
+if ($is_logged_in && $current_user) {
+    $user_ban = is_user_banned($current_user['id']);
+}
 
 ?>
 <!DOCTYPE html>
@@ -59,7 +66,12 @@ $current_user = $is_logged_in ? \CommunityUsers\get_current_user() : null;
 
         <div class="community-actions">
             <div class="action-left">
-                <?php if ($is_logged_in): ?>
+                <?php if ($is_logged_in && $user_ban): ?>
+                    <button class="create-new-post btn btn-blue" disabled style="opacity: 0.5; cursor: not-allowed;">Create New Post</button>
+                    <div style="margin-top: 8px; padding: 12px; background-color: #fee2e2; border: 1px solid #fecaca; border-radius: 6px; color: #991b1b; font-size: 14px;">
+                        <?php echo htmlspecialchars(get_ban_message($user_ban)); ?>
+                    </div>
+                <?php elseif ($is_logged_in): ?>
                     <a href="create_post.php" class="create-new-post btn btn-blue">Create New Post</a>
                 <?php else: ?>
                     <a href="users/login.php" class="login-to-post btn btn-blue">Log in to Post</a>
