@@ -238,7 +238,7 @@ include '../admin_header.php';
             </div>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-secondary" onclick="closeBanModal()">Cancel</button>
+            <button class="btn btn-outline" onclick="closeBanModal()">Cancel</button>
             <button class="btn btn-red" onclick="submitBan()">Ban User</button>
         </div>
     </div>

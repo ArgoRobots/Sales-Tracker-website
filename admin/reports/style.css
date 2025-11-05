@@ -1,14 +1,11 @@
 .filters-container {
-    background: white;
     padding: 20px;
-    border-radius: 8px;
     margin-bottom: 20px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .filters-row {
     display: flex;
-    gap: 5px;
+    gap: 15px;
     align-items: center;
     flex-wrap: wrap;
     justify-content: center;
@@ -17,12 +14,10 @@
 .filter-group {
     display: flex;
     flex-direction: column;
-    gap: 5px;
 }
 
 .filter-group label {
     font-size: 14px;
-    font-weight: 500;
     color: #374151;
 }
 
@@ -62,6 +57,7 @@
     font-size: 24px;
     font-weight: 700;
     color: #1f2937;
+    text-align: center;
 }
 
 .status-badge.pending .status-badge-count {
@@ -110,7 +106,7 @@
 
 .report-meta {
     display: flex;
-    gap: 15px;
+    gap: 10px;
     font-size: 13px;
     color: #6b7280;
     margin-top: 5px;
@@ -300,27 +296,34 @@
 }
 
 .modal-body {
-    padding: 24px;
+    padding: 18px 24px;
 }
 
-.modal-body .form-group {
-    margin-bottom: 20px;
+.modal-body p {
+    margin-top: 0;
 }
 
 .modal-body .form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 500;
     color: #374151;
 }
 
 .modal-body .form-group textarea,
 .modal-body .form-group select {
     width: 100%;
-    padding: 10px 12px;
     border: 1px solid #d1d5db;
     border-radius: 6px;
     font-family: inherit;
+}
+
+.modal-body .form-group textarea {
+    min-height: 80px;
+    resize: vertical;
+    max-height: 500px;
+    padding: 10px;
+}
+
+.modal-body .form-group select {
+    padding: 10px 12px;
 }
 
 .modal-footer {
