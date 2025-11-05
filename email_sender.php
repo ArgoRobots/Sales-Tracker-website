@@ -795,3 +795,204 @@ function send_unban_notification_email($email, $username)
     $mail_result = mail($email, $subject, $email_html, implode("\r\n", $headers));
     return $mail_result;
 }
+/**
+ * Send username reset notification email
+ *
+ * @param string $email User's email address
+ * @param string $old_username Original username
+ * @param string $new_username New random username
+ * @param string $violation_type Type of violation reported
+ * @param string $additional_info Additional information from report
+ * @return bool Success status
+ */
+function send_username_reset_email($email, $old_username, $new_username, $violation_type, $additional_info = '')
+{
+    $css = file_get_contents(__DIR__ . '/email.css');
+    $subject = 'Username Reset - Argo Community';
+
+    // Format violation type
+    $violation_text = ucfirst(str_replace('_', ' ', $violation_type));
+
+    // Additional info section
+    $additional_section = '';
+    if (!empty($additional_info)) {
+        $additional_section = "
+        <div style=\"background-color: #f9fafb; border-left: 4px solid #6b7280; padding: 16px; margin: 20px 0;\">
+            <h4 style=\"margin: 0 0 10px 0; color: #1f2937;\">Additional details:</h4>
+            <p style=\"margin: 0; color: #374151;\">" . htmlspecialchars($additional_info) . "</p>
+        </div>";
+    }
+
+    $email_html = <<<HTML
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+            <title>Username Reset Notification</title>
+            <style>
+                {$css}
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" style="width: 200px; height: auto; max-width: 100%; display: block; margin: 0 auto;">
+                </div>
+
+                <div class="content">
+                    <h1>Username Reset Notification</h1>
+                    <p>Hello,</p>
+
+                    <div style="background-color: #fef3c7; border: 1px solid #fde68a; padding: 16px; border-radius: 6px; margin: 20px 0;">
+                        <h3 style="color: #92400e; margin: 0 0 10px 0;">Your username has been reset</h3>
+                        <p style="color: #92400e; margin: 0;">Your username has been changed by our moderation team due to a policy violation.</p>
+                    </div>
+
+                    <div style="background-color: #f3f4f6; padding: 16px; border-radius: 6px; margin: 20px 0;">
+                        <p style="margin: 0 0 10px 0;"><strong>Previous username:</strong> <span style="text-decoration: line-through;">{$old_username}</span></p>
+                        <p style="margin: 0;"><strong>New username:</strong> <span style="color: #2563eb; font-weight: 600;">{$new_username}</span></p>
+                    </div>
+
+                    <div style="background-color: #fee2e2; border-left: 4px solid #ef4444; padding: 16px; margin: 20px 0;">
+                        <h4 style="margin: 0 0 10px 0; color: #991b1b;">Reason for action:</h4>
+                        <p style="margin: 0; color: #991b1b;">{$violation_text}</p>
+                    </div>
+
+                    {$additional_section}
+
+                    <div style="background-color: #dbeafe; border: 1px solid #93c5fd; padding: 16px; border-radius: 6px; margin: 20px 0;">
+                        <h3 style="color: #1e40af; margin: 0 0 10px 0;">What you can do:</h3>
+                        <ul style="color: #1e40af; margin: 0; padding-left: 20px;">
+                            <li>You can change your username to something appropriate by visiting your <a href="https://argorobots.com/community/users/edit_profile.php" style="color: #2563eb;">profile settings</a></li>
+                            <li>Your new username must comply with our community guidelines</li>
+                            <li>All your posts and comments have been updated with the new username</li>
+                        </ul>
+                    </div>
+
+                    <p>If you believe this action was taken in error, please <a href="https://argorobots.com/contact-us/index.php" style="color: #2563eb;">contact our support team</a> with your account details.</p>
+
+                    <p>Please review our <a href="https://argorobots.com/community/guidelines.php" style="color: #2563eb;">community guidelines</a> to ensure future compliance.</p>
+
+                    <p>Best regards,<br>The Argo Team</p>
+                </div>
+
+                <div class="footer">
+                    <p>This is an automated message from the Argo Community moderation system.</p>
+                    <p>Argo Sales Tracker &copy; 2025. All rights reserved.</p>
+                    <p>This email was sent to {$email}</p>
+                </div>
+            </div>
+        </body>
+        </html>
+    HTML;
+
+    $headers = [
+        'MIME-Version: 1.0',
+        'Content-Type: text/html; charset=UTF-8',
+        'From: Argo Community <noreply@argorobots.com>',
+        'Reply-To: support@argorobots.com',
+        'X-Mailer: PHP/' . phpversion()
+    ];
+
+    $mail_result = mail($email, $subject, $email_html, implode("\r\n", $headers));
+    return $mail_result;
+}
+
+/**
+ * Send bio cleared notification email
+ *
+ * @param string $email User's email address
+ * @param string $username Username
+ * @param string $violation_type Type of violation reported
+ * @param string $additional_info Additional information from report
+ * @return bool Success status
+ */
+function send_bio_cleared_email($email, $username, $violation_type, $additional_info = '')
+{
+    $css = file_get_contents(__DIR__ . '/email.css');
+    $subject = 'Bio Cleared - Argo Community';
+
+    // Format violation type
+    $violation_text = ucfirst(str_replace('_', ' ', $violation_type));
+
+    // Additional info section
+    $additional_section = '';
+    if (!empty($additional_info)) {
+        $additional_section = "
+        <div style=\"background-color: #f9fafb; border-left: 4px solid #6b7280; padding: 16px; margin: 20px 0;\">
+            <h4 style=\"margin: 0 0 10px 0; color: #1f2937;\">Additional details:</h4>
+            <p style=\"margin: 0; color: #374151;\">" . htmlspecialchars($additional_info) . "</p>
+        </div>";
+    }
+
+    $email_html = <<<HTML
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+            <title>Bio Cleared Notification</title>
+            <style>
+                {$css}
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" style="width: 200px; height: auto; max-width: 100%; display: block; margin: 0 auto;">
+                </div>
+
+                <div class="content">
+                    <h1>Bio Cleared Notification</h1>
+                    <p>Hello {$username},</p>
+
+                    <div style="background-color: #fef3c7; border: 1px solid #fde68a; padding: 16px; border-radius: 6px; margin: 20px 0;">
+                        <h3 style="color: #92400e; margin: 0 0 10px 0;">Your profile bio has been cleared</h3>
+                        <p style="color: #92400e; margin: 0;">Your bio has been removed by our moderation team due to a policy violation.</p>
+                    </div>
+
+                    <div style="background-color: #fee2e2; border-left: 4px solid #ef4444; padding: 16px; margin: 20px 0;">
+                        <h4 style="margin: 0 0 10px 0; color: #991b1b;">Reason for action:</h4>
+                        <p style="margin: 0; color: #991b1b;">{$violation_text}</p>
+                    </div>
+
+                    {$additional_section}
+
+                    <div style="background-color: #dbeafe; border: 1px solid #93c5fd; padding: 16px; border-radius: 6px; margin: 20px 0;">
+                        <h3 style="color: #1e40af; margin: 0 0 10px 0;">What you can do:</h3>
+                        <ul style="color: #1e40af; margin: 0; padding-left: 20px;">
+                            <li>You can add a new bio by visiting your <a href="https://argorobots.com/community/users/edit_profile.php" style="color: #2563eb;">profile settings</a></li>
+                            <li>Your new bio must comply with our community guidelines</li>
+                            <li>Ensure your bio content is appropriate and respectful</li>
+                        </ul>
+                    </div>
+
+                    <p>If you believe this action was taken in error, please <a href="https://argorobots.com/contact-us/index.php" style="color: #2563eb;">contact our support team</a> with your account details.</p>
+
+                    <p>Please review our <a href="https://argorobots.com/community/guidelines.php" style="color: #2563eb;">community guidelines</a> to ensure future compliance.</p>
+
+                    <p>Best regards,<br>The Argo Team</p>
+                </div>
+
+                <div class="footer">
+                    <p>This is an automated message from the Argo Community moderation system.</p>
+                    <p>Argo Sales Tracker &copy; 2025. All rights reserved.</p>
+                    <p>This email was sent to {$email}</p>
+                </div>
+            </div>
+        </body>
+        </html>
+    HTML;
+
+    $headers = [
+        'MIME-Version: 1.0',
+        'Content-Type: text/html; charset=UTF-8',
+        'From: Argo Community <noreply@argorobots.com>',
+        'Reply-To: support@argorobots.com',
+        'X-Mailer: PHP/' . phpversion()
+    ];
+
+    $mail_result = mail($email, $subject, $email_html, implode("\r\n", $headers));
+    return $mail_result;
+}

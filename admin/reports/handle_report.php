@@ -189,6 +189,33 @@ try {
             exit;
         }
 
+        // Get user details and report information before making changes
+        $stmt = $db->prepare('SELECT username, email FROM community_users WHERE id = ?');
+        $stmt->bind_param('i', $user_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+        $stmt->close();
+
+        if (!$user) {
+            echo json_encode(['success' => false, 'message' => 'User not found']);
+            exit;
+        }
+
+        $old_username = $user['username'];
+        $user_email = $user['email'];
+
+        // Get report details for email notification
+        $stmt = $db->prepare('SELECT violation_type, additional_info FROM content_reports WHERE id = ?');
+        $stmt->bind_param('i', $report_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $report = $result->fetch_assoc();
+        $stmt->close();
+
+        $violation_type = $report['violation_type'] ?? 'policy_violation';
+        $additional_info = $report['additional_info'] ?? '';
+
         // Generate a random username
         $random_username = 'user_' . bin2hex(random_bytes(8));
 
@@ -237,6 +264,9 @@ try {
         $stmt->execute();
         $stmt->close();
 
+        // Send email notification to user
+        send_username_reset_email($user_email, $old_username, $random_username, $violation_type, $additional_info);
+
         echo json_encode(['success' => true, 'message' => "Username reset to: {$random_username}"]);
 
     } elseif ($action === 'clear_bio') {
@@ -246,6 +276,33 @@ try {
             echo json_encode(['success' => false, 'message' => 'Invalid user ID']);
             exit;
         }
+
+        // Get user details and report information before making changes
+        $stmt = $db->prepare('SELECT username, email FROM community_users WHERE id = ?');
+        $stmt->bind_param('i', $user_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+        $stmt->close();
+
+        if (!$user) {
+            echo json_encode(['success' => false, 'message' => 'User not found']);
+            exit;
+        }
+
+        $username = $user['username'];
+        $user_email = $user['email'];
+
+        // Get report details for email notification
+        $stmt = $db->prepare('SELECT violation_type, additional_info FROM content_reports WHERE id = ?');
+        $stmt->bind_param('i', $report_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $report = $result->fetch_assoc();
+        $stmt->close();
+
+        $violation_type = $report['violation_type'] ?? 'policy_violation';
+        $additional_info = $report['additional_info'] ?? '';
 
         // Clear the bio
         $stmt = $db->prepare('UPDATE community_users SET bio = NULL WHERE id = ?');
@@ -263,6 +320,9 @@ try {
         $stmt->bind_param('ii', $admin_user_id, $report_id);
         $stmt->execute();
         $stmt->close();
+
+        // Send email notification to user
+        send_bio_cleared_email($user_email, $username, $violation_type, $additional_info);
 
         echo json_encode(['success' => true, 'message' => 'Bio cleared successfully']);
     }
