@@ -209,7 +209,7 @@ try {
             $attempts++;
         }
 
-        // Update username
+        // Update username in community_users table
         $stmt = $db->prepare('UPDATE community_users SET username = ? WHERE id = ?');
         $stmt->bind_param('si', $random_username, $user_id);
 
@@ -218,6 +218,17 @@ try {
             echo json_encode(['success' => false, 'message' => 'Failed to reset username']);
             exit;
         }
+        $stmt->close();
+
+        // Update username across all posts and comments
+        $stmt = $db->prepare('UPDATE community_posts SET user_name = ? WHERE user_id = ?');
+        $stmt->bind_param('si', $random_username, $user_id);
+        $stmt->execute();
+        $stmt->close();
+
+        $stmt = $db->prepare('UPDATE community_comments SET user_name = ? WHERE user_id = ?');
+        $stmt->bind_param('si', $random_username, $user_id);
+        $stmt->execute();
         $stmt->close();
 
         // Mark report as resolved
