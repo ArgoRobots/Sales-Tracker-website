@@ -716,3 +716,82 @@ function send_ban_notification_email($email, $username, $ban_reason, $ban_durati
     $mail_result = mail($email, $subject, $email_html, implode("\r\n", $headers));
     return $mail_result;
 }
+
+/**
+ * Send unban notification email to unbanned user
+ *
+ * @param string $email User's email address
+ * @param string $username Username
+ * @return bool Success status
+ */
+function send_unban_notification_email($email, $username)
+{
+    $css = file_get_contents(__DIR__ . '/email.css');
+    $subject = 'Account Unbanned - Argo Community';
+
+    $email_html = <<<HTML
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+            <title>Account Unbanned</title>
+            <style>
+                {$css}  /* Needs to be embedded for PHP mail() */
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" style="width: 200px; height: auto; max-width: 100%; display: block; margin: 0 auto;">
+                </div>
+
+                <div class="content">
+                    <h1>Welcome Back!</h1>
+                    <p>Hello {$username},</p>
+
+                    <div style="background-color: #d1fae5; border: 1px solid #a7f3d0; padding: 16px; border-radius: 6px; margin: 20px 0;">
+                        <h3 style="color: #065f46; margin: 0 0 10px 0;">Good News!</h3>
+                        <p style="color: #065f46; margin: 0;">Your community ban has been <strong>lifted</strong>. You can now post and comment again on the Argo Community.</p>
+                    </div>
+
+                    <div style="background-color: #fef3c7; border: 1px solid #fde68a; padding: 16px; border-radius: 6px; margin: 20px 0;">
+                        <h3 style="color: #92400e; margin: 0 0 10px 0;">Important Reminders:</h3>
+                        <ul style="color: #92400e; margin: 0; padding-left: 20px;">
+                            <li>Please review and follow our <a href="https://argorobots.com/community/guidelines.php" style="color: #92400e; text-decoration: underline;">community guidelines</a></li>
+                            <li>Be respectful and helpful to other community members</li>
+                            <li>Future violations may result in another ban</li>
+                            <li>We appreciate your participation in our community</li>
+                        </ul>
+                    </div>
+
+                    <div class="button-container">
+                        <a href="https://argorobots.com/community/" class="button">Visit Community</a>
+                    </div>
+
+                    <p>Thank you for being part of the Argo community. We're glad to have you back!</p>
+
+                    <p>Best regards,<br>The Argo Team</p>
+                </div>
+
+                <div class="footer">
+                    <p>This is an automated message from the Argo Community moderation system.</p>
+                    <p>Argo Sales Tracker &copy; 2025. All rights reserved.</p>
+                    <p>This email was sent to {$email}</p>
+                </div>
+            </div>
+        </body>
+        </html>
+    HTML;
+
+    $headers = [
+        'MIME-Version: 1.0',
+        'Content-Type: text/html; charset=UTF-8',
+        'From: Argo Community <noreply@argorobots.com>',
+        'Reply-To: support@argorobots.com',
+        'X-Mailer: PHP/' . phpversion()
+    ];
+
+    $mail_result = mail($email, $subject, $email_html, implode("\r\n", $headers));
+    return $mail_result;
+}
