@@ -508,6 +508,7 @@
 /* Reputation section */
 .reputation-help-link svg {
   color: var(--primary-blue);
+  margin-left: 5px;
 }
 
 .reputation-help-link svg:hover {

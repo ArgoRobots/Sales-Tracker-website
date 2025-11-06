@@ -181,7 +181,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="create-post.css">
     <link rel="stylesheet" href="rate-limit.css">
     <link rel="stylesheet" href="formatting/formatted-text.css">
-    <link rel="stylesheet" href="view-post.css">
     <link rel="stylesheet" href="../resources/styles/button.css">
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../resources/header/style.css">
