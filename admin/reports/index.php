@@ -268,7 +268,10 @@ include '../admin_header.php';
             <div class="form-group">
                 <label for="banDuration">Ban Duration</label>
                 <select id="banDuration">
+                    <option value="5_days">5 Days</option>
+                    <option value="10_days">10 Days</option>
                     <option value="30_days">30 Days</option>
+                    <option value="100_days">100 Days</option>
                     <option value="1_year">1 Year</option>
                     <option value="permanent">Permanent</option>
                 </select>
