@@ -631,6 +631,9 @@ function send_ban_notification_email($email, $username, $ban_reason, $ban_durati
             $duration_text = 'permanently';
             $can_appeal = true;
             break;
+        default:
+            $duration_text = 'an unspecified period';
+            break;
     }
 
     // Format expiration date if available
