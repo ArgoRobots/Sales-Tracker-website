@@ -11,6 +11,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
 
 require_login('', true);
 
+$is_logged_in = isset($_SESSION['user_id']);
 $requested_username = isset($_GET['username']) ? trim($_GET['username']) : '';
 $is_own_profile = false;
 $user = null;
@@ -505,6 +506,7 @@ if ($is_own_profile && isset($user['email'])) {
     <link rel="stylesheet" href="../../resources/header/dark.css">
     <link rel="stylesheet" href="../../resources/footer/style.css">
     <link rel="stylesheet" href="../../resources/notifications/notifications.css">
+    <link rel="stylesheet" href="../report/report.css">
 </head>
 
 <body>
@@ -538,6 +540,14 @@ if ($is_own_profile && isset($user['email'])) {
                     <?php echo htmlspecialchars($user['username']); ?>
                     <?php if ($is_admin): ?>
                         <span class="admin-badge">Admin</span>
+                    <?php endif; ?>
+                    <?php if ($is_logged_in && !$is_own_profile): ?>
+                        <button class="report-btn report-btn-user" data-content-type="user" data-content-id="<?php echo $user['id']; ?>" title="Report this user">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+                                <line x1="4" y1="22" x2="4" y2="15"></line>
+                            </svg>
+                        </button>
                     <?php endif; ?>
                 </h1>
             </div>
@@ -1047,6 +1057,155 @@ if ($is_own_profile && isset($user['email'])) {
         <div id="includeFooter"></div>
     </footer>
 
+    <!-- Report Modal -->
+    <div id="reportModal" class="report-modal" style="display: none;">
+        <div class="report-modal-content">
+            <div class="report-modal-header">
+                <h3>Report User</h3>
+                <button class="report-modal-close">&times;</button>
+            </div>
+            <form id="reportForm">
+                <input type="hidden" id="reportContentType" name="content_type">
+                <input type="hidden" id="reportContentId" name="content_id">
+
+                <div class="form-group">
+                    <label for="violationType">Reason for reporting:</label>
+                    <select id="violationType" name="violation_type" required>
+                        <option value="">Select a reason...</option>
+                        <option value="inappropriate_username">Inappropriate username</option>
+                        <option value="inappropriate_bio">Inappropriate bio</option>
+                        <option value="impersonation">Impersonation</option>
+                        <option value="harassment">Harassment</option>
+                        <option value="spam">Spam</option>
+                        <option value="hateful">Hateful content</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="additionalInfo">Additional information (optional):</label>
+                    <textarea id="additionalInfo" name="additional_info" rows="4" placeholder="Please provide any additional details..."></textarea>
+                </div>
+
+                <div class="report-modal-actions">
+                    <button type="button" class="btn btn-outline report-modal-cancel">Cancel</button>
+                    <button type="submit" class="btn btn-red">Submit Report</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Report functionality for profile page
+        (function() {
+            'use strict';
+
+            const modal = document.getElementById('reportModal');
+            const form = document.getElementById('reportForm');
+            const closeBtn = document.querySelector('.report-modal-close');
+            const cancelBtn = document.querySelector('.report-modal-cancel');
+            const contentTypeInput = document.getElementById('reportContentType');
+            const contentIdInput = document.getElementById('reportContentId');
+
+            // Open modal when report button is clicked
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.report-btn')) {
+                    e.preventDefault();
+                    const btn = e.target.closest('.report-btn');
+                    const contentType = btn.getAttribute('data-content-type');
+                    const contentId = btn.getAttribute('data-content-id');
+
+                    // Set hidden form fields
+                    contentTypeInput.value = contentType;
+                    contentIdInput.value = contentId;
+
+                    // Show modal
+                    modal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                }
+            });
+
+            // Close modal functions
+            function closeModal() {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                form.reset();
+            }
+
+            if (closeBtn) {
+                closeBtn.addEventListener('click', closeModal);
+            }
+
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', closeModal);
+            }
+
+            // Close modal when clicking outside
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+
+            // Close modal on Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modal.style.display === 'flex') {
+                    closeModal();
+                }
+            });
+
+            // Handle form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const formData = new FormData(form);
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const originalBtnText = submitBtn.textContent;
+
+                // Disable submit button
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Submitting...';
+
+                fetch('../report/report_content.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Show success notification
+                        if (typeof showNotification === 'function') {
+                            showNotification('Report submitted successfully. Our team will review it shortly.', 'success');
+                        } else {
+                            alert('Report submitted successfully. Our team will review it shortly.');
+                        }
+                        closeModal();
+                    } else {
+                        // Show error notification
+                        if (typeof showNotification === 'function') {
+                            showNotification(data.message || 'Failed to submit report. Please try again.', 'error');
+                        } else {
+                            alert(data.message || 'Failed to submit report. Please try again.');
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error submitting report:', error);
+                    if (typeof showNotification === 'function') {
+                        showNotification('An error occurred. Please try again later.', 'error');
+                    } else {
+                        alert('An error occurred. Please try again later.');
+                    }
+                })
+                .finally(() => {
+                    // Re-enable submit button
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalBtnText;
+                });
+            });
+
+        })();
+    </script>
     <script>
         // Profile Avatar Change Functionality
         document.addEventListener('DOMContentLoaded', function() {

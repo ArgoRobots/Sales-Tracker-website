@@ -28,14 +28,15 @@ if (!$settings) {
     $settings = [
         'notify_new_posts' => 1,
         'notify_new_comments' => 1,
+        'notify_new_reports' => 1,
         'notification_email' => $_SESSION['email']
     ];
 
     // Create settings row
-    $stmt = $db->prepare('INSERT INTO admin_notification_settings 
-                         (user_id, notify_new_posts, notify_new_comments, notification_email) 
-                         VALUES (?, ?, ?, ?)');
-    $stmt->bind_param('iiis', $user_id, $settings['notify_new_posts'], $settings['notify_new_comments'], $settings['notification_email']);
+    $stmt = $db->prepare('INSERT INTO admin_notification_settings
+                         (user_id, notify_new_posts, notify_new_comments, notify_new_reports, notification_email)
+                         VALUES (?, ?, ?, ?, ?)');
+    $stmt->bind_param('iiiis', $user_id, $settings['notify_new_posts'], $settings['notify_new_comments'], $settings['notify_new_reports'], $settings['notification_email']);
     $stmt->execute();
 }
 
@@ -44,6 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get form data
     $notify_new_posts = isset($_POST['notify_new_posts']) ? 1 : 0;
     $notify_new_comments = isset($_POST['notify_new_comments']) ? 1 : 0;
+    $notify_new_reports = isset($_POST['notify_new_reports']) ? 1 : 0;
     $notification_email = isset($_POST['notification_email']) ? trim($_POST['notification_email']) : '';
 
     // Validate email
@@ -51,19 +53,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error_message = 'Please enter a valid email address';
     } else {
         // Update settings
-        $stmt = $db->prepare('UPDATE admin_notification_settings 
-                             SET notify_new_posts = ?, 
-                                 notify_new_comments = ?, 
+        $stmt = $db->prepare('UPDATE admin_notification_settings
+                             SET notify_new_posts = ?,
+                                 notify_new_comments = ?,
+                                 notify_new_reports = ?,
                                  notification_email = ?,
-                                 updated_at = CURRENT_TIMESTAMP 
+                                 updated_at = CURRENT_TIMESTAMP
                              WHERE user_id = ?');
-        $stmt->bind_param('iisi', $notify_new_posts, $notify_new_comments, $notification_email, $user_id);
+        $stmt->bind_param('iiisi', $notify_new_posts, $notify_new_comments, $notify_new_reports, $notification_email, $user_id);
 
         if ($stmt->execute()) {
             $success_message = 'Notification settings updated successfully.';
             // Update settings array to reflect changes
             $settings['notify_new_posts'] = $notify_new_posts;
             $settings['notify_new_comments'] = $notify_new_comments;
+            $settings['notify_new_reports'] = $notify_new_reports;
             $settings['notification_email'] = $notification_email;
         } else {
             $error_message = 'Error updating notification settings: ' . $db->error;
@@ -133,6 +137,12 @@ $stmt->close();
                         <label for="notify_new_comments">New Comment Notifications</label>
                     </div>
                     <p class="setting-description">Receive an email notification when someone comments on any post in the community.</p>
+
+                    <div class="checkbox">
+                        <input type="checkbox" id="notify_new_reports" name="notify_new_reports" <?php echo $settings['notify_new_reports'] ? 'checked' : ''; ?>>
+                        <label for="notify_new_reports">New Report Notifications</label>
+                    </div>
+                    <p class="setting-description">Receive an email notification when a user submits a content report that requires moderation.</p>
 
                     <div class="email-field">
                         <label for="notification_email">Notification Email</label>

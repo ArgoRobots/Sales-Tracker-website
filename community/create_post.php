@@ -10,6 +10,13 @@ require_once 'report/ban_check.php';
 require_login('', true);
 $current_user = \CommunityUsers\get_current_user();
 
+// Check if user is banned and redirect to index
+$user_ban = is_user_banned($current_user['id']);
+if ($user_ban) {
+    header('Location: index.php');
+    exit;
+}
+
 $html_message = '';
 $error_message = '';
 
