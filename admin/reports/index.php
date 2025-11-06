@@ -208,7 +208,7 @@ include '../admin_header.php';
                                 ?>
                                 <span class="offense-indicator">
                                     <span class="offense-dot <?php echo $offense_class; ?>"></span>
-                                    <?php echo $offense_count . ($offense_count === 1 ? 'st' : ($offense_count === 2 ? 'nd' : ($offense_count === 3 ? 'rd' : 'th'))); ?>
+                                    <?php echo $offense_count . ($offense_count === 1 ? 'st' : ($offense_count === 2 ? 'nd' : ($offense_count === 3 ? 'rd' : 'th offence'))); ?>
                                 </span>
                             <?php endif; ?>
                         </div>
