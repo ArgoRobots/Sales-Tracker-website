@@ -1,22 +1,3 @@
-(function () {
-  // Add the async script
-  var script = document.createElement("script");
-  script.async = true;
-  script.src = "https://www.googletagmanager.com/gtag/js?id=AW-17210317271";
-  document.head.appendChild(script);
-
-  // Initialize gtag
-  window.dataLayer = window.dataLayer || [];
-  function gtag() {
-    dataLayer.push(arguments);
-  }
-  gtag("js", new Date());
-  gtag("config", "AW-17210317271");
-
-  // Make gtag available globally
-  window.gtag = gtag;
-})();
-
 function adjustLinksAndImages(containerSelector) {
   var path = window.location.pathname;
   path = path.startsWith("/") ? path.substr(1) : path;

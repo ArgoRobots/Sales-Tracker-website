@@ -157,21 +157,24 @@ header .menu-btn:checked~.menu-icon .nav-icon:after {
 }
 
 header .hamburger-nav-menu {
-  z-index: 10;
   background: #fff;
   overflow: hidden;
   position: absolute;
   top: 50px;
   width: 100%;
-  height: 100vh;
+  height: 0;
   transition: all 0.3s ease-in-out;
   opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
   z-index: 99;
 }
 
 /* Add class for when menu is active */
 header .hamburger-nav-menu.active {
   opacity: 1;
+  visibility: visible;
+  pointer-events: all;
 }
 
 header .hamburger-nav-menu ul {
