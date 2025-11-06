@@ -26,7 +26,7 @@ function send_license_email($to_email, $license_key)
         <body>
             <div class="container">
                 <div class="header">
-                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" style="width: 200px; height: auto; max-width: 100%; display: block; margin: 0 auto;">
+                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" width="140">
                 </div>
                 
                 <div class="content">
@@ -49,7 +49,7 @@ function send_license_email($to_email, $license_key)
                         <a href="https://argorobots.com/documentation/index.php" class="button">View Documentation</a>
                     </div>
                     
-                    <p>If you have any questions or need assistance, please don't hesitate to <a href="https://argorobots.com/contact-us/index.php" style="color: #2563eb;">contact our support team</a>.</p>
+                    <p>If you have any questions or need assistance, please don't hesitate to <a href="https://argorobots.com/contact-us/index.php">contact our support team</a>.</p>
                     <p>Thank you for choosing Argo Sales Tracker!</p>
                 </div>
                 
@@ -100,7 +100,7 @@ function resend_license_email($to_email, $license_key)
         <body>
             <div class="container">
                 <div class="header">
-                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" style="width: 200px; height: auto; max-width: 100%; display: block; margin: 0 auto;">
+                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" width="140">
                 </div>
                 
                 <div class="content content-centered">
@@ -123,7 +123,7 @@ function resend_license_email($to_email, $license_key)
                         <a href="https://argorobots.com/documentation/index.php" class="button button-resend">View Documentation</a>
                     </div>
                     
-                    <p>If you have any questions or need assistance, please don't hesitate to <a href="https://argorobots.com/contact-us/index.php" style="color: #2563eb;">contact our support team</a>.</p>
+                    <p>If you have any questions or need assistance, please don't hesitate to <a href="https://argorobots.com/contact-us/index.php">contact our support team</a>.</p>
                     <p>Thank you for using Argo Sales Tracker!</p>
                 </div>
                 
@@ -175,9 +175,10 @@ function send_verification_email($email, $code, $username)
         <body>
             <div class="container">
                 <div class="header">
-                    <h2>Welcome to the Argo Community!</h2>
+                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" width="140">
                 </div>
                 <div class="content">
+                    <h1>Welcome to the Argo Community!</h1>
                     <p>Hello {$username},</p>
                     <p>Thank you for registering. <strong>Email verification is required</strong> to activate your account and access your license key.</p>
                     
@@ -269,7 +270,7 @@ function send_notification_email($type, $data)
         <body>
             <div class="container">
                 <div class="header">
-                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" style="width: 200px; height: auto; max-width: 100%; display: block; margin: 0 auto;">
+                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" width="140">
                 </div>
                 
                 <div class="content">
@@ -312,7 +313,7 @@ HTML;
         <body>
             <div class="container">
                 <div class="header">
-                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" style="width: 200px; height: auto; max-width: 100%; display: block; margin: 0 auto;">
+                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" width="140">
                 </div>
                 
                 <div class="content">
@@ -401,7 +402,7 @@ function send_password_reset_email($email, $token, $username)
         <body>
             <div class="container">
                 <div class="header">
-                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" style="width: 200px; height: auto; max-width: 100%; display: block; margin: 0 auto;">
+                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" width="140">
                 </div>
                 
                 <div class="content">
@@ -474,7 +475,7 @@ function send_account_deletion_scheduled_email($email, $username, $scheduled_dat
         <body>
             <div class="container">
                 <div class="header">
-                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" style="width: 200px; height: auto; max-width: 100%; display: block; margin: 0 auto;">
+                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" width="140">
                 </div>
                 
                 <div class="content">
@@ -483,9 +484,8 @@ function send_account_deletion_scheduled_email($email, $username, $scheduled_dat
                     
                     <p>Your Argo Community account has been scheduled for deletion on <strong>{$formatted_date}</strong>.</p>
                     
-                    <div style="background-color: #fff3cd; border: 1px solid #ffeaa7; padding: 16px; border-radius: 6px; margin: 20px 0;">
-                        <h3 style="color: #856404; margin: 0 0 10px 0;">Important Information:</h3>
-                        <ul style="color: #856404; margin: 0; padding-left: 20px;">
+                    <p><strong>Important Information:</strong></p>
+                    <ul>
                             <li>Your account will be permanently deleted in 30 days</li>
                             <li>All your posts, comments, and profile data will be removed</li>
                             <li>This action can be cancelled by logging into your account before the deletion date</li>
@@ -493,7 +493,7 @@ function send_account_deletion_scheduled_email($email, $username, $scheduled_dat
                     </div>
                     
                     <div class="button-container">
-                        <a href="https://argorobots.com/community/users/login.php" class="button" style="background-color: #dc3545; color: #fff">Cancel Deletion - Login Now</a>
+                        <a href="https://argorobots.com/community/users/login.php" class="button">Cancel Deletion - Login Now</a>
                     </div>
                     
                     <p>If you did not request this deletion, please log into your account immediately to cancel it.</p>
@@ -501,7 +501,6 @@ function send_account_deletion_scheduled_email($email, $username, $scheduled_dat
                     <p>If you have any questions, please contact our support team.</p>
                     
                     <p>Best regards,<br>The Argo Team</p>
-                </div>
                 
                 <div class="footer">
                     <p>This is an automated message from the Argo Community system.</p>
@@ -551,17 +550,15 @@ function send_account_deletion_cancelled_email($email, $username)
         <body>
             <div class="container">
                 <div class="header">
-                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" style="width: 200px; height: auto; max-width: 100%; display: block; margin: 0 auto;">
+                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" width="140">
                 </div>
 
                 <div class="content">
                     <h1>Account Deletion Cancelled</h1>
                     <p>Hello {$username},</p>
 
-                    <div style="background-color: #d1fae5; border: 1px solid #a7f3d0; padding: 16px; border-radius: 6px; margin: 20px 0;">
-                        <h3 style="color: #065f46; margin: 0 0 10px 0;">Good News!</h3>
-                        <p style="color: #065f46; margin: 0;">Your account deletion has been <strong>cancelled</strong> because you logged into your account.</p>
-                    </div>
+                    <h3>Good News!</h3>
+                        <p>Your account deletion has been <strong>cancelled</strong> because you logged into your account.</p>
 
                     <p>Your Argo Community account is now <strong>active</strong> and will not be deleted. All your:</p>
                     <ul>
@@ -643,7 +640,7 @@ function send_ban_notification_email($email, $username, $ban_reason, $ban_durati
         $expiration_info = "<p>Your ban will expire on <strong>{$formatted_date}</strong>.</p>";
     }
 
-    $appeal_text = $can_appeal ? '<p>If you believe this ban was issued in error, you can <a href="https://argorobots.com/contact-us/index.php" style="color: #2563eb;">contact our support team</a> to request a review. Please include your username and explain why you believe the ban should be reconsidered.</p>' : '';
+    $appeal_text = $can_appeal ? '<p>If you believe this ban was issued in error, you can <a href="https://argorobots.com/contact-us/index.php">contact our support team</a> to request a review. Please include your username and explain why you believe the ban should be reconsidered.</p>' : '';
 
     $email_html = <<<HTML
         <!DOCTYPE html>
@@ -659,39 +656,31 @@ function send_ban_notification_email($email, $username, $ban_reason, $ban_durati
         <body>
             <div class="container">
                 <div class="header">
-                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" style="width: 200px; height: auto; max-width: 100%; display: block; margin: 0 auto;">
+                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" width="140">
                 </div>
 
                 <div class="content">
                     <h1>Community Ban Notification</h1>
                     <p>Hello {$username},</p>
-
-                    <div style="background-color: #fee2e2; border: 1px solid #fecaca; padding: 16px; border-radius: 6px; margin: 20px 0;">
-                        <h3 style="color: #991b1b; margin: 0 0 10px 0;">Your account has been banned</h3>
-                        <p style="color: #991b1b; margin: 0;">You have been banned from posting content on the Argo Community for <strong>{$duration_text}</strong>.</p>
-                    </div>
-
+                    
+                    <p>Your account has been banned from posting content on the Argo Community for <strong>{$duration_text}</strong>.</p>
+                    
                     {$expiration_info}
-
-                    <div style="background-color: #f9fafb; border-left: 4px solid #3b82f6; padding: 16px; margin: 20px 0;">
-                        <h4 style="margin: 0 0 10px 0; color: #1f2937;">Reason for ban:</h4>
-                        <p style="margin: 0; color: #374151;">{$ban_reason}</p>
-                    </div>
-
-                    <div style="background-color: #fef3c7; border: 1px solid #fde68a; padding: 16px; border-radius: 6px; margin: 20px 0;">
-                        <h3 style="color: #92400e; margin: 0 0 10px 0;">Important Information:</h3>
-                        <ul style="color: #92400e; margin: 0; padding-left: 20px;">
-                            <li>You can still use the Argo Sales Tracker application</li>
-                            <li>You can still view posts and comments on the community page</li>
-                            <li>You cannot create new posts or comments during the ban period</li>
-                            <li>Repeated violations may result in a permanent ban</li>
-                        </ul>
-                    </div>
-
+                    
+                    <p><strong>Reason:</strong> {$ban_reason}</p>
+                    
+                    <p>During this ban period:</p>
+                    <ul>
+                        <li>You can still use the Argo Sales Tracker application</li>
+                        <li>You can still view posts and comments on the community page</li>
+                        <li>You cannot create new posts or comments</li>
+                        <li>Repeated violations may result in a permanent ban</li>
+                    </ul>
+                    
                     {$appeal_text}
-
-                    <p>We strive to maintain a respectful and helpful community for all users. Please review our <a href="https://argorobots.com/community/guidelines.php" style="color: #2563eb;">community guidelines</a> to ensure future compliance.</p>
-
+                    
+                    <p>Please review our <a href="https://argorobots.com/community/guidelines.php">community guidelines</a> to ensure future compliance.</p>
+                    
                     <p>Best regards,<br>The Argo Team</p>
                 </div>
 
@@ -743,34 +732,28 @@ function send_unban_notification_email($email, $username)
         <body>
             <div class="container">
                 <div class="header">
-                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" style="width: 200px; height: auto; max-width: 100%; display: block; margin: 0 auto;">
+                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" width="140">
                 </div>
 
                 <div class="content">
-                    <h1>Welcome Back!</h1>
+                    <h1>Account Unbanned</h1>
                     <p>Hello {$username},</p>
-
-                    <div style="background-color: #d1fae5; border: 1px solid #a7f3d0; padding: 16px; border-radius: 6px; margin: 20px 0;">
-                        <h3 style="color: #065f46; margin: 0 0 10px 0;">Good News!</h3>
-                        <p style="color: #065f46; margin: 0;">Your community ban has been <strong>lifted</strong>. You can now post and comment again on the Argo Community.</p>
-                    </div>
-
-                    <div style="background-color: #fef3c7; border: 1px solid #fde68a; padding: 16px; border-radius: 6px; margin: 20px 0;">
-                        <h3 style="color: #92400e; margin: 0 0 10px 0;">Important Reminders:</h3>
-                        <ul style="color: #92400e; margin: 0; padding-left: 20px;">
-                            <li>Please review and follow our <a href="https://argorobots.com/community/guidelines.php" style="color: #92400e; text-decoration: underline;">community guidelines</a></li>
-                            <li>Be respectful and helpful to other community members</li>
-                            <li>Future violations may result in another ban</li>
-                            <li>We appreciate your participation in our community</li>
-                        </ul>
-                    </div>
-
+                    
+                    <p>Your community ban has been lifted. You can now post and comment again on the Argo Community.</p>
+                    
+                    <p>Please remember to:</p>
+                    <ul>
+                        <li>Review and follow our <a href="https://argorobots.com/community/guidelines.php">community guidelines</a></li>
+                        <li>Be respectful and helpful to other community members</li>
+                        <li>Future violations may result in another ban</li>
+                    </ul>
+                    
                     <div class="button-container">
                         <a href="https://argorobots.com/community/" class="button">Visit Community</a>
                     </div>
-
+                    
                     <p>Thank you for being part of the Argo community. We're glad to have you back!</p>
-
+                    
                     <p>Best regards,<br>The Argo Team</p>
                 </div>
 
@@ -817,10 +800,7 @@ function send_username_reset_email($email, $old_username, $new_username, $violat
     $additional_section = '';
     if (!empty($additional_info)) {
         $additional_section = "
-        <div style=\"background-color: #f9fafb; border-left: 4px solid #6b7280; padding: 16px; margin: 20px 0;\">
-            <h4 style=\"margin: 0 0 10px 0; color: #1f2937;\">Additional details:</h4>
-            <p style=\"margin: 0; color: #374151;\">" . htmlspecialchars($additional_info) . "</p>
-        </div>";
+        <p><strong>Additional details:</strong> " . htmlspecialchars($additional_info) . "</p>";
     }
 
     $email_html = <<<HTML
@@ -837,42 +817,32 @@ function send_username_reset_email($email, $old_username, $new_username, $violat
         <body>
             <div class="container">
                 <div class="header">
-                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" style="width: 200px; height: auto; max-width: 100%; display: block; margin: 0 auto;">
+                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" width="140">
                 </div>
 
                 <div class="content">
                     <h1>Username Reset Notification</h1>
                     <p>Hello,</p>
 
-                    <div style="background-color: #fef3c7; border: 1px solid #fde68a; padding: 16px; border-radius: 6px; margin: 20px 0;">
-                        <h3 style="color: #92400e; margin: 0 0 10px 0;">Your username has been reset</h3>
-                        <p style="color: #92400e; margin: 0;">Your username has been changed by our moderation team due to a policy violation.</p>
-                    </div>
+                    <p>Your username has been changed by our moderation team due to a policy violation.</p>
 
-                    <div style="background-color: #f3f4f6; padding: 16px; border-radius: 6px; margin: 20px 0;">
-                        <p style="margin: 0 0 10px 0;"><strong>Previous username:</strong> <span style="text-decoration: line-through;">{$old_username}</span></p>
-                        <p style="margin: 0;"><strong>New username:</strong> <span style="color: #2563eb; font-weight: 600;">{$new_username}</span></p>
-                    </div>
+                    <p><strong>Previous username:</strong> <del>{$old_username}</del></p>
+                    <p><strong>New username:</strong> {$new_username}</p>
 
-                    <div style="background-color: #fee2e2; border-left: 4px solid #ef4444; padding: 16px; margin: 20px 0;">
-                        <h4 style="margin: 0 0 10px 0; color: #991b1b;">Reason for action:</h4>
-                        <p style="margin: 0; color: #991b1b;">{$violation_text}</p>
-                    </div>
+                    <p><strong>Reason for action:</strong> {$violation_text}</p>
 
                     {$additional_section}
 
-                    <div style="background-color: #dbeafe; border: 1px solid #93c5fd; padding: 16px; border-radius: 6px; margin: 20px 0;">
-                        <h3 style="color: #1e40af; margin: 0 0 10px 0;">What you can do:</h3>
-                        <ul style="color: #1e40af; margin: 0; padding-left: 20px;">
-                            <li>You can change your username to something appropriate by visiting your <a href="https://argorobots.com/community/users/edit_profile.php" style="color: #2563eb;">profile settings</a></li>
-                            <li>Your new username must comply with our community guidelines</li>
-                            <li>All your posts and comments have been updated with the new username</li>
-                        </ul>
-                    </div>
+                    <p><strong>What you can do:</strong></p>
+                    <ul>
+                        <li>You can change your username to something appropriate by visiting your <a href="https://argorobots.com/community/users/edit_profile.php">profile settings</a></li>
+                        <li>Your new username must comply with our community guidelines</li>
+                        <li>All your posts and comments have been updated with the new username</li>
+                    </ul>
 
-                    <p>If you believe this action was taken in error, please <a href="https://argorobots.com/contact-us/index.php" style="color: #2563eb;">contact our support team</a> with your account details.</p>
+                    <p>If you believe this action was taken in error, please <a href="https://argorobots.com/contact-us/index.php">contact our support team</a> with your account details.</p>
 
-                    <p>Please review our <a href="https://argorobots.com/community/guidelines.php" style="color: #2563eb;">community guidelines</a> to ensure future compliance.</p>
+                    <p>Please review our <a href="https://argorobots.com/community/guidelines.php">community guidelines</a> to ensure future compliance.</p>
 
                     <p>Best regards,<br>The Argo Team</p>
                 </div>
@@ -920,10 +890,7 @@ function send_bio_cleared_email($email, $username, $violation_type, $additional_
     $additional_section = '';
     if (!empty($additional_info)) {
         $additional_section = "
-        <div style=\"background-color: #f9fafb; border-left: 4px solid #6b7280; padding: 16px; margin: 20px 0;\">
-            <h4 style=\"margin: 0 0 10px 0; color: #1f2937;\">Additional details:</h4>
-            <p style=\"margin: 0; color: #374151;\">" . htmlspecialchars($additional_info) . "</p>
-        </div>";
+        <p><strong>Additional details:</strong> " . htmlspecialchars($additional_info) . "</p>";
     }
 
     $email_html = <<<HTML
@@ -940,37 +907,29 @@ function send_bio_cleared_email($email, $username, $violation_type, $additional_
         <body>
             <div class="container">
                 <div class="header">
-                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" style="width: 200px; height: auto; max-width: 100%; display: block; margin: 0 auto;">
+                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" width="140">
                 </div>
 
                 <div class="content">
                     <h1>Bio Cleared Notification</h1>
                     <p>Hello {$username},</p>
 
-                    <div style="background-color: #fef3c7; border: 1px solid #fde68a; padding: 16px; border-radius: 6px; margin: 20px 0;">
-                        <h3 style="color: #92400e; margin: 0 0 10px 0;">Your profile bio has been cleared</h3>
-                        <p style="color: #92400e; margin: 0;">Your bio has been removed by our moderation team due to a policy violation.</p>
-                    </div>
+                    <p>Your bio has been removed by our moderation team due to a policy violation.</p>
 
-                    <div style="background-color: #fee2e2; border-left: 4px solid #ef4444; padding: 16px; margin: 20px 0;">
-                        <h4 style="margin: 0 0 10px 0; color: #991b1b;">Reason for action:</h4>
-                        <p style="margin: 0; color: #991b1b;">{$violation_text}</p>
-                    </div>
+                    <p><strong>Reason for action:</strong> {$violation_text}</p>
 
                     {$additional_section}
 
-                    <div style="background-color: #dbeafe; border: 1px solid #93c5fd; padding: 16px; border-radius: 6px; margin: 20px 0;">
-                        <h3 style="color: #1e40af; margin: 0 0 10px 0;">What you can do:</h3>
-                        <ul style="color: #1e40af; margin: 0; padding-left: 20px;">
-                            <li>You can add a new bio by visiting your <a href="https://argorobots.com/community/users/edit_profile.php" style="color: #2563eb;">profile settings</a></li>
-                            <li>Your new bio must comply with our community guidelines</li>
-                            <li>Ensure your bio content is appropriate and respectful</li>
-                        </ul>
-                    </div>
+                    <p><strong>What you can do:</strong></p>
+                    <ul>
+                        <li>You can add a new bio by visiting your <a href="https://argorobots.com/community/users/edit_profile.php">profile settings</a></li>
+                        <li>Your new bio must comply with our community guidelines</li>
+                        <li>Ensure your bio content is appropriate and respectful</li>
+                    </ul>
 
-                    <p>If you believe this action was taken in error, please <a href="https://argorobots.com/contact-us/index.php" style="color: #2563eb;">contact our support team</a> with your account details.</p>
+                    <p>If you believe this action was taken in error, please <a href="https://argorobots.com/contact-us/index.php">contact our support team</a> with your account details.</p>
 
-                    <p>Please review our <a href="https://argorobots.com/community/guidelines.php" style="color: #2563eb;">community guidelines</a> to ensure future compliance.</p>
+                    <p>Please review our <a href="https://argorobots.com/community/guidelines.php">community guidelines</a> to ensure future compliance.</p>
 
                     <p>Best regards,<br>The Argo Team</p>
                 </div>
@@ -1033,31 +992,30 @@ function send_new_report_notification($email, $report_id, $content_type, $violat
         <body>
             <div class="container">
                 <div class="header">
-                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" style="width: 200px; height: auto; max-width: 100%; display: block; margin: 0 auto;">
+                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" width="140">
                 </div>
 
                 <div class="content">
                     <h1>New Content Report</h1>
                     <p>A new content report has been submitted and requires your attention.</p>
 
-                    <div style="background-color: #fef3c7; border: 1px solid #fde68a; padding: 16px; border-radius: 6px; margin: 20px 0;">
-                        <h3 style="color: #92400e; margin: 0 0 10px 0;">Report Details</h3>
-                        <ul style="color: #92400e; margin: 0; padding-left: 20px;">
-                            <li><strong>Report ID:</strong> #{$report_id}</li>
-                            <li><strong>Content Type:</strong> {$content_type_text}</li>
-                            <li><strong>Violation Type:</strong> {$violation_text}</li>
-                            <li><strong>Reported by:</strong> {$reporter_username}</li>
-                            <li><strong>Reported user:</strong> {$reported_username}</li>
-                        </ul>
+                    <p><strong>Report Details</strong></p>
+                    <ul>
+                        <li><strong>Report ID:</strong> #{$report_id}</li>
+                        <li><strong>Content Type:</strong> {$content_type_text}</li>
+                        <li><strong>Violation Type:</strong> {$violation_text}</li>
+                        <li><strong>Reported by:</strong> {$reporter_username}</li>
+                        <li><strong>Reported user:</strong> {$reported_username}</li>
+                    </ul>
+
+                    <p><strong>Action Required</strong></p>
+                    <p>Please review this report in the admin panel and take appropriate action.</p>
+                    
+                    <div class="button-container">
+                        <a href="https://argorobots.com/admin/reports/" class="button">View Reports</a>
                     </div>
 
-                    <div style="background-color: #dbeafe; border: 1px solid #93c5fd; padding: 16px; border-radius: 6px; margin: 20px 0;">
-                        <h3 style="color: #1e40af; margin: 0 0 10px 0;">Action Required</h3>
-                        <p style="color: #1e40af; margin: 0 0 10px 0;">Please review this report in the admin panel and take appropriate action.</p>
-                        <a href="https://argorobots.com/admin/reports/" style="display: inline-block; background-color: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: 600; margin-top: 10px;">View Reports</a>
-                    </div>
-
-                    <p style="color: #6b7280; font-size: 14px; margin-top: 20px;">This report is currently in <strong>pending</strong> status and awaits your review.</p>
+                    <p>This report is currently in <strong>pending</strong> status and awaits your review.</p>
                 </div>
 
                 <div class="footer">
@@ -1082,4 +1040,3 @@ function send_new_report_notification($email, $report_id, $content_type, $violat
     error_log("send_new_report_notification mail() result for $email: " . ($mail_result ? "TRUE" : "FALSE"));
     return $mail_result;
 }
-
