@@ -513,8 +513,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         });
                 });
             }
-
-            // Preview functionality is now handled by preview.js
         });
     </script>
 
