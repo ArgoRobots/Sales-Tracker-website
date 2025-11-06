@@ -46,7 +46,20 @@ function get_reports($status = 'pending', $content_type = 'all')
             WHEN r.content_type = "post" THEN p.content
             WHEN r.content_type = "comment" THEN c.content
             WHEN r.content_type = "user" THEN CONCAT("Username: ", reported_user.username, "\nBio: ", COALESCE(reported_user.bio, "(No bio)"))
-        END AS content_text
+        END AS content_text,
+        (
+            SELECT COUNT(*) + 1
+            FROM content_reports r2
+            LEFT JOIN community_posts p2 ON r2.content_type = "post" AND r2.content_id = p2.id
+            LEFT JOIN community_comments c2 ON r2.content_type = "comment" AND r2.content_id = c2.id
+            WHERE r2.status = "resolved"
+            AND r2.created_at < r.created_at
+            AND (
+                (r2.content_type = "post" AND p2.user_id = reported_user.id) OR
+                (r2.content_type = "comment" AND c2.user_id = reported_user.id) OR
+                (r2.content_type = "user" AND r2.content_id = reported_user.id)
+            )
+        ) AS offense_count
     FROM content_reports r
     LEFT JOIN community_users reporter ON r.reporter_user_id = reporter.id
     LEFT JOIN community_posts p ON r.content_type = "post" AND r.content_id = p.id
@@ -171,19 +184,41 @@ include '../admin_header.php';
         <?php foreach ($reports as $report): ?>
             <div class="report-row" data-report-id="<?php echo $report['id']; ?>">
                 <div class="report-header">
-                    <div class="report-info">
-                        <div class="report-id">Report #<?php echo $report['id']; ?></div>
-                        <h3 class="report-title"><?php echo htmlspecialchars($report['content_title'] ?? 'Content Deleted'); ?></h3>
-                        <div class="report-meta">
+                    <div class="report-top">
+                        <div class="report-id-title">
+                            <span class="report-id">Report #<?php echo $report['id']; ?></span>
+                            <h3 class="report-title"><?php echo htmlspecialchars($report['content_title'] ?? 'Content Deleted'); ?></h3>
+                        </div>
+                        <div class="report-badges">
                             <span class="content-type-badge"><?php echo ucfirst($report['content_type']); ?></span>
                             <span class="violation-badge"><?php echo ucfirst(str_replace('_', ' ', $report['violation_type'])); ?></span>
                             <span class="status-badge-inline <?php echo $report['status']; ?>"><?php echo ucfirst($report['status']); ?></span>
+                            <?php if ($report['reported_user_id']): ?>
+                                <?php
+                                $offense_count = (int)$report['offense_count'];
+                                $offense_class = '';
+
+                                if ($offense_count === 1) {
+                                    $offense_class = 'green';
+                                } elseif ($offense_count === 2) {
+                                    $offense_class = 'yellow';
+                                } else {
+                                    $offense_class = 'red';
+                                }
+                                ?>
+                                <span class="offense-indicator">
+                                    <span class="offense-dot <?php echo $offense_class; ?>"></span>
+                                    <?php echo $offense_count . ($offense_count === 1 ? 'st' : ($offense_count === 2 ? 'nd' : ($offense_count === 3 ? 'rd' : 'th offence'))); ?>
+                                </span>
+                            <?php endif; ?>
                         </div>
-                        <div class="report-meta">
-                            <span>Reported by: <strong><?php echo htmlspecialchars($report['reporter_username'] ?? $report['reporter_email']); ?></strong></span>
-                            <span>Reported user: <strong><?php echo htmlspecialchars($report['reported_user_username'] ?? 'Unknown'); ?></strong></span>
-                            <span><?php echo date('M j, Y g:i a', strtotime($report['created_at'])); ?></span>
-                        </div>
+                    </div>
+                    <div class="report-meta-row">
+                        <span><strong>Reporter:</strong> <?php echo htmlspecialchars($report['reporter_username'] ?? $report['reporter_email']); ?></span>
+                        <span class="meta-separator">•</span>
+                        <span><strong>Reported User:</strong> <?php echo htmlspecialchars($report['reported_user_username'] ?? 'Unknown'); ?></span>
+                        <span class="meta-separator">•</span>
+                        <span><?php echo date('M j, Y g:i a', strtotime($report['created_at'])); ?></span>
                     </div>
                 </div>
 
@@ -201,29 +236,31 @@ include '../admin_header.php';
 
                 <?php if ($report['status'] === 'pending'): ?>
                     <div class="report-actions">
-                        <?php if ($report['content_type'] !== 'user' && $report['content_text']): ?>
-                            <a href="../../community/<?php echo $report['content_type'] === 'post' ? 'view_post.php?id=' . $report['content_id'] : 'view_post.php?id=' . $report['content_id']; ?>"
-                               class="btn-small btn-view" target="_blank">View Content</a>
-                        <?php elseif ($report['content_type'] === 'user'): ?>
-                            <a href="../../community/users/profile.php?username=<?php echo urlencode($report['reported_user_username']); ?>"
-                               class="btn-small btn-view" target="_blank">View Profile</a>
-                        <?php endif; ?>
+                        <div class="action-group">
+                            <?php if ($report['content_type'] !== 'user' && $report['content_text']): ?>
+                                <a href="../../community/<?php echo $report['content_type'] === 'post' ? 'view_post.php?id=' . $report['content_id'] : 'view_post.php?id=' . $report['content_id']; ?>"
+                                   class="btn-small btn-view" target="_blank">View</a>
+                            <?php elseif ($report['content_type'] === 'user'): ?>
+                                <a href="../../community/users/profile.php?username=<?php echo urlencode($report['reported_user_username']); ?>"
+                                   class="btn-small btn-view" target="_blank">View Profile</a>
+                            <?php endif; ?>
+                            <button class="btn-small btn-dismiss" onclick="handleReport(<?php echo $report['id']; ?>, 'dismiss')">Dismiss</button>
+                        </div>
 
                         <?php if ($report['reported_user_role'] !== 'admin'): ?>
-                            <?php if ($report['content_type'] === 'user'): ?>
-                                <!-- User report specific actions -->
-                                <button class="btn-small btn-warning" onclick="showResetUsernameModal(<?php echo $report['id']; ?>, <?php echo $report['reported_user_id']; ?>, '<?php echo htmlspecialchars($report['reported_user_username']); ?>')">Reset Username</button>
-                                <button class="btn-small btn-warning" onclick="showClearBioModal(<?php echo $report['id']; ?>, <?php echo $report['reported_user_id']; ?>, '<?php echo htmlspecialchars($report['reported_user_username']); ?>')">Clear Bio</button>
-                            <?php else: ?>
-                                <!-- Post/Comment specific actions -->
-                                <button class="btn-small btn-delete" onclick="handleReport(<?php echo $report['id']; ?>, 'delete', '<?php echo $report['content_type']; ?>', <?php echo $report['content_id']; ?>)">Delete Content</button>
-                            <?php endif; ?>
+                            <div class="action-group action-group-danger">
+                                <?php if ($report['content_type'] === 'user'): ?>
+                                    <button class="btn-small btn-warning" onclick="showResetUsernameModal(<?php echo $report['id']; ?>, <?php echo $report['reported_user_id']; ?>, '<?php echo htmlspecialchars($report['reported_user_username']); ?>')">Reset Username</button>
+                                    <button class="btn-small btn-warning" onclick="showClearBioModal(<?php echo $report['id']; ?>, <?php echo $report['reported_user_id']; ?>, '<?php echo htmlspecialchars($report['reported_user_username']); ?>')">Clear Bio</button>
+                                <?php else: ?>
+                                    <button class="btn-small btn-delete" onclick="handleReport(<?php echo $report['id']; ?>, 'delete', '<?php echo $report['content_type']; ?>', <?php echo $report['content_id']; ?>)">Delete</button>
+                                <?php endif; ?>
 
-                            <?php if ($report['reported_user_id']): ?>
-                                <button class="btn-small btn-ban" onclick="showBanModal(<?php echo $report['id']; ?>, <?php echo $report['reported_user_id']; ?>, '<?php echo htmlspecialchars($report['reported_user_username']); ?>')">Ban User</button>
-                            <?php endif; ?>
+                                <?php if ($report['reported_user_id']): ?>
+                                    <button class="btn-small btn-ban" onclick="showBanModal(<?php echo $report['id']; ?>, <?php echo $report['reported_user_id']; ?>, '<?php echo htmlspecialchars($report['reported_user_username']); ?>')">Ban User</button>
+                                <?php endif; ?>
+                            </div>
                         <?php endif; ?>
-                        <button class="btn-small btn-dismiss" onclick="handleReport(<?php echo $report['id']; ?>, 'dismiss')">Dismiss</button>
                     </div>
                 <?php endif; ?>
             </div>
