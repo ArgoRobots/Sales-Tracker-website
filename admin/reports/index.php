@@ -197,22 +197,18 @@ include '../admin_header.php';
                                 <?php
                                 $offense_count = (int)$report['offense_count'];
                                 $offense_class = '';
-                                $offense_text = '';
 
                                 if ($offense_count === 1) {
                                     $offense_class = 'green';
-                                    $offense_text = 'First';
                                 } elseif ($offense_count === 2) {
                                     $offense_class = 'yellow';
-                                    $offense_text = 'Second';
                                 } else {
                                     $offense_class = 'red';
-                                    $offense_text = 'Third+';
                                 }
                                 ?>
                                 <span class="offense-indicator">
                                     <span class="offense-dot <?php echo $offense_class; ?>"></span>
-                                    <?php echo $offense_text; ?>
+                                    <?php echo $offense_count . ($offense_count === 1 ? 'st' : ($offense_count === 2 ? 'nd' : ($offense_count === 3 ? 'rd' : 'th'))); ?>
                                 </span>
                             <?php endif; ?>
                         </div>

@@ -255,6 +255,9 @@
     text-decoration: none;
     text-align: center;
     display: inline-block;
+    padding: 6px 12px;
+    font-size: 13px;
+    line-height: 1.2;
 }
 
 .btn-view:hover {
