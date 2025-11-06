@@ -95,15 +95,21 @@ try {
             $ban_reason .= ': ' . $additional_details;
         }
 
-        if (!in_array($ban_duration, ['30_days', '1_year', 'permanent'])) {
+        if (!in_array($ban_duration, ['5_days', '10_days', '30_days', '100_days', '1_year', 'permanent'])) {
             echo json_encode(['success' => false, 'message' => 'Invalid ban duration']);
             exit;
         }
 
         // Calculate expiration date
         $expires_at = null;
-        if ($ban_duration === '30_days') {
+        if ($ban_duration === '5_days') {
+            $expires_at = date('Y-m-d H:i:s', strtotime('+5 days'));
+        } elseif ($ban_duration === '10_days') {
+            $expires_at = date('Y-m-d H:i:s', strtotime('+10 days'));
+        } elseif ($ban_duration === '30_days') {
             $expires_at = date('Y-m-d H:i:s', strtotime('+30 days'));
+        } elseif ($ban_duration === '100_days') {
+            $expires_at = date('Y-m-d H:i:s', strtotime('+100 days'));
         } elseif ($ban_duration === '1_year') {
             $expires_at = date('Y-m-d H:i:s', strtotime('+1 year'));
         }

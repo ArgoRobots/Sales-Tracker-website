@@ -607,7 +607,7 @@ function send_account_deletion_cancelled_email($email, $username)
  * @param string $email User's email address
  * @param string $username Username
  * @param string $ban_reason Reason for ban
- * @param string $ban_duration Duration of ban (30_days, 1_year, permanent)
+ * @param string $ban_duration Duration of ban (5_days, 10_days, 30_days, 100_days, 1_year, permanent)
  * @param string|null $expires_at Expiration date for temporary bans
  * @return bool Success status
  */
@@ -621,8 +621,17 @@ function send_ban_notification_email($email, $username, $ban_reason, $ban_durati
     $can_appeal = true;
 
     switch ($ban_duration) {
+        case '5_days':
+            $duration_text = '5 days';
+            break;
+        case '10_days':
+            $duration_text = '10 days';
+            break;
         case '30_days':
             $duration_text = '30 days';
+            break;
+        case '100_days':
+            $duration_text = '100 days';
             break;
         case '1_year':
             $duration_text = '1 year';
