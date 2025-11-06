@@ -46,7 +46,20 @@ function get_reports($status = 'pending', $content_type = 'all')
             WHEN r.content_type = "post" THEN p.content
             WHEN r.content_type = "comment" THEN c.content
             WHEN r.content_type = "user" THEN CONCAT("Username: ", reported_user.username, "\nBio: ", COALESCE(reported_user.bio, "(No bio)"))
-        END AS content_text
+        END AS content_text,
+        (
+            SELECT COUNT(*) + 1
+            FROM content_reports r2
+            LEFT JOIN community_posts p2 ON r2.content_type = "post" AND r2.content_id = p2.id
+            LEFT JOIN community_comments c2 ON r2.content_type = "comment" AND r2.content_id = c2.id
+            WHERE r2.status = "resolved"
+            AND r2.created_at < r.created_at
+            AND (
+                (r2.content_type = "post" AND p2.user_id = reported_user.id) OR
+                (r2.content_type = "comment" AND c2.user_id = reported_user.id) OR
+                (r2.content_type = "user" AND r2.content_id = reported_user.id)
+            )
+        ) AS offense_count
     FROM content_reports r
     LEFT JOIN community_users reporter ON r.reporter_user_id = reporter.id
     LEFT JOIN community_posts p ON r.content_type = "post" AND r.content_id = p.id
@@ -184,6 +197,30 @@ include '../admin_header.php';
                             <span>Reported user: <strong><?php echo htmlspecialchars($report['reported_user_username'] ?? 'Unknown'); ?></strong></span>
                             <span><?php echo date('M j, Y g:i a', strtotime($report['created_at'])); ?></span>
                         </div>
+                        <?php if ($report['reported_user_id']): ?>
+                            <div class="report-meta">
+                                <?php
+                                $offense_count = (int)$report['offense_count'];
+                                $offense_class = '';
+                                $offense_text = '';
+
+                                if ($offense_count === 1) {
+                                    $offense_class = 'green';
+                                    $offense_text = 'First offense';
+                                } elseif ($offense_count === 2) {
+                                    $offense_class = 'yellow';
+                                    $offense_text = 'Second offense';
+                                } else {
+                                    $offense_class = 'red';
+                                    $offense_text = 'Third offense or more';
+                                }
+                                ?>
+                                <span class="offense-indicator">
+                                    <span class="offense-dot <?php echo $offense_class; ?>"></span>
+                                    <strong><?php echo $offense_text; ?></strong>
+                                </span>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 </div>
 

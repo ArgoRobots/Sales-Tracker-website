@@ -353,6 +353,40 @@
     font-weight: 500;
 }
 
+/* Offense Indicator Styles */
+.offense-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 13px;
+    background: #f9fafb;
+}
+
+.offense-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.offense-dot.green {
+    background-color: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+
+.offense-dot.yellow {
+    background-color: #f59e0b;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+}
+
+.offense-dot.red {
+    background-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+}
+
 /* Responsive */
 @media (max-width: 900px) {
     .reports-table {
