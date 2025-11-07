@@ -212,8 +212,38 @@ CREATE TABLE IF NOT EXISTS version_history (
     download_count INT DEFAULT 0,
     is_current BOOLEAN DEFAULT 0,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    
+
     UNIQUE INDEX idx_version_number (version)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Create referral_links table for tracking ad/sponsor sources
+CREATE TABLE IF NOT EXISTS referral_links (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    source_code VARCHAR(50) NOT NULL UNIQUE,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    target_url VARCHAR(500) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    is_active TINYINT(1) DEFAULT 1,
+    INDEX idx_source_code (source_code),
+    INDEX idx_is_active (is_active)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Create referral_visits table to track visits from referral sources
+CREATE TABLE IF NOT EXISTS referral_visits (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    source_code VARCHAR(50) NOT NULL,
+    page_url VARCHAR(500),
+    ip_address VARCHAR(45),
+    user_agent VARCHAR(255),
+    country_code VARCHAR(2),
+    visited_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    converted TINYINT(1) DEFAULT 0,
+    license_key VARCHAR(255),
+    INDEX idx_source_code (source_code),
+    INDEX idx_visited_at (visited_at),
+    INDEX idx_converted (converted),
+    INDEX idx_country_code (country_code)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Add indexes for license_keys table
