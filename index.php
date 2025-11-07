@@ -1,12 +1,10 @@
 <?php
 session_start();
 require_once 'community/users/user_functions.php';
+require_once 'track_referral.php';
 require_once 'statistics.php';
 
 track_page_view($_SERVER['REQUEST_URI']);
-
-// Track referral sources
-require_once 'track_referral.php';
 
 // Check for remember me cookie and auto-login user if valid
 if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
