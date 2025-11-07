@@ -188,7 +188,7 @@ $older_versions = getOlderVersions();
                         <h3>No Older Versions Available</h3>
                         <p>Currently, only the latest version is available for download. Check back later for access to
                             previous releases.</p>
-                        <a href="../download" class="btn btn-blue btn-large" style="margin-top: 15px;">Download Latest Version</a>
+                        <a href="../download" class="btn btn-blue" style="margin-top: 15px;">Download Latest Version</a>
                     </div>
                 </div>
             <?php else: ?>

@@ -5,6 +5,7 @@ require_once 'mentions/mentions.php';
 require_once 'community_functions.php';
 require_once 'users/user_functions.php';
 require_once 'formatting/formatting_functions.php';
+require_once 'report/ban_check.php';
 
 // Check for remember me cookie and auto-login user if valid
 if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
@@ -16,6 +17,12 @@ $user_id = $is_logged_in ? $_SESSION['user_id'] : 0;
 $username = $is_logged_in ? ($_SESSION['username'] ?? 'Unknown') : '';
 $email = $is_logged_in ? ($_SESSION['email'] ?? '') : '';
 $role = $is_logged_in ? ($_SESSION['role'] ?? 'user') : '';
+
+// Check if user is banned
+$user_ban = null;
+if ($is_logged_in && $user_id > 0) {
+    $user_ban = is_user_banned($user_id);
+}
 
 $post_id = isset($_GET['id']) ? intval($_GET['id']) : 0; // Get post ID from URL parameter
 $post = get_post($post_id);
@@ -117,6 +124,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
     <link rel="stylesheet" href="view-post.css">
     <link rel="stylesheet" href="rate-limit.css">
     <link rel="stylesheet" href="formatting/formatted-text.css">
+    <link rel="stylesheet" href="report/report.css">
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../resources/styles/button.css">
     <link rel="stylesheet" href="../resources/styles/link.css">
@@ -335,13 +343,28 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                                 </span>
                             <?php endif; ?>
                         </div>
+
+                        <!-- Report button -->
+                        <?php if ($is_logged_in && $post['user_id'] != $user_id): ?>
+                            <button class="report-btn" data-content-type="post" data-content-id="<?php echo $post['id']; ?>" title="Report this post">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+                                    <line x1="4" y1="22" x2="4" y2="15"></line>
+                                </svg>
+                            </button>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
 
             <!-- Comments -->
             <div class="comments-section">
-                <h3><?php echo count($comments); ?> Comments</h3>
+                <h3>
+                    <?php 
+                        $count = count($comments);
+                        echo $count . ' comment' . ($count != 1 ? 's' : '');
+                    ?>
+                </h3>
 
                 <div class="comments-container">
                     <?php foreach ($comments as $comment): ?>
@@ -389,17 +412,29 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                                         </span>
                                     </div>
                                     <div class="comment-controls">
-                                        <?php if ($can_edit_comment || $can_delete_comment): ?>
-                                            <div class="comment-actions">
-                                                <?php if ($can_edit_comment): ?>
-                                                    <button class="edit-comment-btn" data-comment-id="<?php echo $comment['id']; ?>">Edit</button>
-                                                <?php endif; ?>
+                                        <div class="comment-actions-wrapper">
+                                            <?php if ($can_edit_comment || $can_delete_comment): ?>
+                                                <div class="comment-actions">
+                                                    <?php if ($can_edit_comment): ?>
+                                                        <button class="edit-comment-btn" data-comment-id="<?php echo $comment['id']; ?>">Edit</button>
+                                                    <?php endif; ?>
 
-                                                <?php if ($can_delete_comment): ?>
-                                                    <button class="delete-comment-btn" data-comment-id="<?php echo $comment['id']; ?>">Delete</button>
-                                                <?php endif; ?>
-                                            </div>
-                                        <?php endif; ?>
+                                                    <?php if ($can_delete_comment): ?>
+                                                        <button class="delete-comment-btn" data-comment-id="<?php echo $comment['id']; ?>">Delete</button>
+                                                    <?php endif; ?>
+                                                </div>
+                                            <?php endif; ?>
+
+                                            <!-- Report button -->
+                                            <?php if ($is_logged_in && $comment['user_id'] != $user_id): ?>
+                                                <button class="report-btn report-btn-comment" data-content-type="comment" data-content-id="<?php echo $comment['id']; ?>" title="Report this comment">
+                                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                        <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+                                                        <line x1="4" y1="22" x2="4" y2="15"></line>
+                                                    </svg>
+                                                </button>
+                                            <?php endif; ?>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="comment-content">
@@ -412,29 +447,37 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
 
                 <div class="comment-form">
                     <?php if ($is_logged_in): ?>
-                        <div class="comments-disabled-message" style="<?php echo ($post['status'] === 'completed' || $post['status'] === 'declined') ? '' : 'display: none;'; ?>">
-                            <p>
-                                <?php
-                                if ($post['status'] === 'completed') {
-                                    echo 'Comments are disabled for completed posts.';
-                                } elseif ($post['status'] === 'declined') {
-                                    echo 'Comments are disabled for declined posts.';
-                                }
-                                ?>
-                            </p>
-                        </div>
+                        <?php if ($user_ban): ?>
+                            <!-- User is banned - show ban message -->
+                            <div style="padding: 16px; background-color: #fee2e2; border: 1px solid #fecaca; border-radius: 6px; color: #991b1b; margin-top: 20px;">
+                                <h4 style="margin-top: 0; color: #991b1b;">Cannot Post Comments</h4>
+                                <p style="margin-bottom: 0;"><?php echo htmlspecialchars(get_ban_message($user_ban)); ?></p>
+                            </div>
+                        <?php else: ?>
+                            <div class="comments-disabled-message" style="<?php echo ($post['status'] === 'completed' || $post['status'] === 'declined') ? '' : 'display: none;'; ?>">
+                                <p>
+                                    <?php
+                                    if ($post['status'] === 'completed') {
+                                        echo 'Comments are disabled for completed posts.';
+                                    } elseif ($post['status'] === 'declined') {
+                                        echo 'Comments are disabled for declined posts.';
+                                    }
+                                    ?>
+                                </p>
+                            </div>
 
-                        <?php if ($post['status'] !== 'completed' && $post['status'] !== 'declined'): ?>
-                            <form id="add-comment-form" data-post-id="<?php echo $post['id']; ?>">
-                                <h4>Add a Comment</h4>
-                                <input type="hidden" name="post_id" value="<?php echo $post['id']; ?>">
-                                <div class="form-group">
-                                    <textarea id="comment_content" name="comment_content" class="mentionable" rows="4" required></textarea>
-                                </div>
-                                <div class="form-actions">
-                                    <button type="submit" class="btn btn-gray">Submit Comment</button>
-                                </div>
-                            </form>
+                            <?php if ($post['status'] !== 'completed' && $post['status'] !== 'declined'): ?>
+                                <form id="add-comment-form" data-post-id="<?php echo $post['id']; ?>">
+                                    <h4>Add a comment</h4>
+                                    <input type="hidden" name="post_id" value="<?php echo $post['id']; ?>">
+                                    <div class="form-group">
+                                        <textarea id="comment_content" name="comment_content" class="mentionable" rows="4" required></textarea>
+                                    </div>
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn btn-gray">Submit Comment</button>
+                                    </div>
+                                </form>
+                            <?php endif; ?>
                         <?php endif; ?>
                     <?php else: ?>
                         <div class="login-required">
@@ -454,6 +497,46 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
 
     <!-- This will be used by mentions.js -->
     <div class="mention-dropdown" id="mentionDropdown"></div>
+
+    <!-- Report Modal -->
+    <div id="reportModal" class="report-modal" style="display: none;">
+        <div class="report-modal-content">
+            <div class="report-modal-header">
+                <h3>Report Content</h3>
+                <button class="report-modal-close">&times;</button>
+            </div>
+            <form id="reportForm">
+                <input type="hidden" id="reportContentType" name="content_type">
+                <input type="hidden" id="reportContentId" name="content_id">
+
+                <div class="form-group">
+                    <label for="violationType">This content violates our policy because:</label>
+                    <select id="violationType" name="violation_type" required>
+                        <option value="">Select a reason...</option>
+                        <option value="spam">Spam or advertising</option>
+                        <option value="harassment">Harassment or bullying</option>
+                        <option value="hateful">Hateful or discriminatory content</option>
+                        <option value="inappropriate">Inappropriate or offensive content</option>
+                        <option value="misinformation">Misinformation or false information</option>
+                        <option value="off-topic">Off-topic or irrelevant</option>
+                        <option value="other">Other (please specify below)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="additionalInfo">Additional information (optional):</label>
+                    <textarea id="additionalInfo" name="additional_info" rows="4" placeholder="Please provide any additional details..."></textarea>
+                </div>
+
+                <div class="report-modal-actions">
+                    <button type="button" class="btn btn-outline report-modal-cancel">Cancel</button>
+                    <button type="submit" class="btn btn-red">Submit Report</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="report/report.js" defer></script>
 </body>
 
 </html>

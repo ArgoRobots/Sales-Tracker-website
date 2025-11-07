@@ -30,8 +30,11 @@ body {
 }
 
 .header img {
-    width: 100px;
-    height: auto;
+    width: 140px !important;
+    height: auto !important;
+    max-width: 100% !important;
+    display: block !important;
+    margin: 0 auto !important;
 }
 
 /* Content styles */
@@ -44,6 +47,7 @@ body {
     text-align: center;
 }
 
+/* Typography */
 h1 {
     color: var(--blueText);
     font-size: 24px;
@@ -51,6 +55,38 @@ h1 {
     text-align: center;
 }
 
+h2 {
+    color: var(--blueText);
+    font-size: 18px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+p {
+    margin: 0 0 15px 0;
+}
+
+/* Links */
+a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Lists */
+ul, ol {
+    margin: 15px 0;
+    padding-left: 25px;
+}
+
+li {
+    margin-bottom: 8px;
+}
+
+/* License key display */
 .license-key {
     background-color: var(--gray-50);
     border: 1px solid var(--gray-200);
@@ -60,6 +96,22 @@ h1 {
     letter-spacing: 1px;
     margin: 25px auto;
     max-width: 400px;
+    padding: 16px;
+    text-align: center;
+}
+
+/* Code display */
+.code-box,
+.verification-code,
+.reset-code {
+    background-color: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 16px;
+    letter-spacing: 2px;
+    margin: 20px auto;
+    max-width: 300px;
     padding: 16px;
     text-align: center;
 }
@@ -82,13 +134,11 @@ h1 {
     text-align: center;
 }
 
-/* Standard list style */
 .steps ol {
     margin-left: 20px;
     padding-left: 0;
 }
 
-/* Centered list style for resend emails */
 .steps-centered ol {
     margin: 0 auto;
     padding-left: 2em;
@@ -127,6 +177,11 @@ h1 {
     text-align: center;
 }
 
+.button:hover {
+    background-color: var(--blue-700);
+    text-decoration: none;
+}
+
 .button-resend {
     padding: 10px 24px;
 }
@@ -134,6 +189,11 @@ h1 {
 .button-container {
     text-align: center;
     margin: 30px 0;
+}
+
+/* Info section */
+.info-section {
+    margin: 20px 0;
 }
 
 /* Footer styles */
@@ -144,6 +204,10 @@ h1 {
     font-size: 12px;
     padding: 20px;
     text-align: center;
+}
+
+.footer p {
+    margin: 5px 0;
 }
 
 /* Mobile responsive */
@@ -157,5 +221,9 @@ h1 {
 
     .content {
         padding: 20px;
+    }
+    
+    .header img {
+        width: 120px;
     }
 }

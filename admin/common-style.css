@@ -513,6 +513,16 @@ tbody tr:hover {
   color: #4b5563;
 }
 
+.badge-banned {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.badge-active {
+  background-color: #f3f4f6;
+  color: #6b7280;
+}
+
 /* Action Buttons */
 .action-buttons {
   display: flex;
