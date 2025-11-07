@@ -194,7 +194,7 @@ if ($success) {
                         pattern="[0-9]" inputmode="numeric" required>
                 </div>
 
-                <p class="verification-hint">Check your soam folder if you don't see it</p>
+                <p class="verification-hint">Check your spam folder if you don't see it</p>
 
                 <div class="form-actions">
                     <button type="submit" class="btn btn-blue btn-block">Verify Email</button>
