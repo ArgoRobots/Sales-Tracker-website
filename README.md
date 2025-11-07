@@ -28,6 +28,7 @@ You can view the live website here: https://argorobots.com/
 - Free version download
 - License key purchase system
 - Comprehensive documentation
+- Community page for feature requests and bug reports
 - Support/contact system
 - About us and legal information
 
@@ -38,43 +39,35 @@ You can view the live website here: https://argorobots.com/
 - User account administration
 - Statistics tracking and analytics dashboard
 
-## Security Features
-
-- Password hashing and secure storage
-- Two-factor authentication for admin access
-- Session management and protection
-- Rate limiting for login attempts
-- Input sanitization and validation
-
 ## Installation
 
-### Step 1: Install PHP
+### Step 1: Install XAMPP
 
-1. Download the latest version of PHP from [https://windows.php.net/download](https://windows.php.net/download).
-2. Choose the "Non Thread Safe" `.zip` version for your system (x64 or x86).
-3. Extract the contents to a folder, for example: `C:\php`
-4. Add `C:\php` to your system's `PATH` environment variable:
+1. Download XAMPP from [https://www.apachefriends.org/](https://www.apachefriends.org/)
+2. Install XAMPP (default location: `C:\xampp`)
+3. Open XAMPP Control Panel and start Apache and MySQL
+4. Add PHP to your system PATH:
    - Open Start menu and search for "Environment Variables"
-   - Edit the `Path` variable and add `C:\php`
-5. Open Command Prompt and run `php -v` to make sure PHP is installed correctly.
+   - Edit the `Path` variable and add `C:\xampp\php`
+5. Open Command Prompt and run `php -v` to verify PHP is installed
 
 ### Step 2: Install Composer
 
 1. Download and install Composer from [https://getcomposer.org/](https://getcomposer.org/)
-2. During installation, make sure it detects your `php.exe` from `C:\php`
+2. During installation, make sure it detects your `php.exe` from `C:\xampp\php`
 3. Restart your computer to finish installing Composer
+4. Open Command Prompt and run `composer -V` to verify Composer is installed
 
 ### Step 3: Set Up the Project
 
-1. Create a folder for the project, e.g., `C:\ArgoSalesTracker`
-2. Copy or unzip the project files into that folder
-3. Open Command Prompt and navigate to that directory:
+1. Place the project files in XAMPP's web directory: `C:\xampp\htdocs\ArgoSalesTracker` (avoid spaces in the folder name)
+2. Open Command Prompt and navigate to that directory:
 
 ```bash
-cd C:\ArgoSalesTracker
+cd C:\xampp\htdocs\ArgoSalesTracker
 ```
 
-4. Run the following command to install PHP dependencies:
+3. Run the following command to install PHP dependencies:
 
 ```bash
 composer install
@@ -82,9 +75,13 @@ composer install
 
 This will download all required dependencies into the `vendor/` folder.
 
-> Note: The `vendor/` folder has been removed from the repository and is ignored via `.gitignore`. Always use `composer install` to set up dependencies.
+4. Set up the MySQL database:
+   - Open phpMyAdmin at `http://localhost/phpmyadmin`
+   - Create a new database for the project
+   - Import your database schema/SQL file
 
 ## Publishing a new version of Argo Sales Tracker
-
-1. Update the version in the files 'download.php' and 'update.xml' to the same version as the .exe file.
-2. Upload the new .exe file to resources/downloads
+1. Create a new folder in `resources/downloads/versions` named whatever the version number is
+1. Upload the new .exe and the language folder to this new directory
+2. Update the version number in `update.xml`
+3. Add the new version to whats-new/index.php
