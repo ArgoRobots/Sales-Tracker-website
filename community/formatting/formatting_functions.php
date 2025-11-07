@@ -308,9 +308,14 @@ function final_cleanup($text)
                 $consecutiveEmptyLines++;
             }
             // If we already have a blank line, skip this one
-        } else if (preg_match('/^<(blockquote|ul|ol|li|code|p|h[1-6]|hr|a)/i', $trimmedLine)) {
-            // Don't wrap in <p>
+        } else if (preg_match('/^<(blockquote|ul|ol|p|h[1-6]|hr)/i', $trimmedLine)) {
+            // Block-level elements - don't wrap in <p>
             $output[] = $line;
+            // Reset consecutive empty lines counter
+            $consecutiveEmptyLines = 0;
+        } else if (preg_match('/<(code|strong|em|a)/i', $trimmedLine)) {
+            // Line contains inline elements - add the line with a <br> for proper line breaks
+            $output[] = $line . '<br>';
             // Reset consecutive empty lines counter
             $consecutiveEmptyLines = 0;
         } else {

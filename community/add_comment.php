@@ -4,6 +4,7 @@ require_once '../db_connect.php';
 require_once 'community_functions.php';
 require_once 'users/user_functions.php';
 include_once 'rate_limit.php';
+require_once 'report/ban_check.php';
 
 header('Content-Type: application/json');
 
@@ -31,6 +32,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get user data from session
     $username = $_SESSION['username'] ?? 'Unknown';
     $email = $_SESSION['email'] ?? '';
+
+    // Check if user is banned
+    $ban = is_user_banned($user_id);
+    if ($ban) {
+        $response['success'] = false;
+        $response['message'] = get_ban_message($ban);
+        $response['banned'] = true;
+        echo json_encode($response);
+        exit;
+    }
 
     // Check rate limit for comments
     $rate_limit_message = check_rate_limit($user_id, 'comment');

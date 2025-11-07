@@ -4,6 +4,7 @@ require_once '../db_connect.php';
 require_once 'community_functions.php';
 require_once 'users/user_functions.php';
 require_once 'formatting/formatting_functions.php';
+require_once 'report/ban_check.php';
 
 // Check for remember me cookie and auto-login user if valid
 if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
@@ -13,6 +14,15 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     header('Location: users/login.php');
+    exit;
+}
+
+// Check if user is banned
+$user_id = $_SESSION['user_id'];
+$ban = is_user_banned($user_id);
+if ($ban) {
+    $_SESSION['error_message'] = get_ban_message($ban);
+    header('Location: index.php');
     exit;
 }
 
@@ -218,10 +228,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../resources/scripts/main.js"></script>
     <script src="formatting/text-formatting.js" defer></script>
+    <script src="preview.js" defer></script>
 
     <link rel="stylesheet" href="create-post.css">
     <link rel="stylesheet" href="edit-post.css">
     <link rel="stylesheet" href="formatting/formatted-text.css">
+    <link rel="stylesheet" href="view-post.css">
     <link rel="stylesheet" href="../resources/styles/button.css">
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../resources/header/style.css">
@@ -253,7 +265,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="post-form">
                 <h2>Edit Post</h2>
 
-                <form method="post" action="edit_post.php?id=<?php echo $post_id; ?>">
+                <!-- Preview Toggle -->
+                <div class="preview-toggle">
+                    <button type="button" id="edit-tab" class="active">Edit</button>
+                    <button type="button" id="preview-tab">Preview</button>
+                </div>
+
+                <!-- Edit Form -->
+                <div class="edit-form-container" id="edit-container">
+                    <form method="post" action="edit_post.php?id=<?php echo $post_id; ?>" id="edit-post-form">
                     <div class="form-group">
                         <label for="title">Title</label>
                         <input type="text" id="title" name="title" value="<?php echo htmlspecialchars($post['title']); ?>" required>
@@ -332,6 +352,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <button type="submit" class="btn btn-blue">Save Changes</button>
                     </div>
                 </form>
+                </div>
+
+                <!-- Preview Container -->
+                <div class="preview-container" id="preview-container">
+                    <div class="preview-post">
+                        <div id="preview-content">
+                            <div class="preview-empty-state">
+                                <div class="preview-empty-icon">👁️</div>
+                                <p>Fill out the form to see a preview of your post</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -340,30 +373,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div id="includeFooter"></div>
     </footer>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const postTypeSelect = document.getElementById('post_type');
-            const bugFields = document.getElementById('bug-specific-fields');
-            const contentLabel = document.getElementById('content_label');
-
-            // Function to show/hide fields based on post type
-            function toggleFields() {
-                const selectedType = postTypeSelect.value;
-
-                // Show fields based on selection
-                if (selectedType === 'bug') {
-                    bugFields.style.display = 'block';
-                    contentLabel.textContent = 'Additional Details or Context';
-                } else {
-                    bugFields.style.display = 'none';
-                    contentLabel.textContent = 'Content';
-                }
-            }
-
-            // Add change event listener
-            postTypeSelect.addEventListener('change', toggleFields);
-        });
-    </script>
+    <!-- Preview functionality is handled by preview.js -->
 
     <!-- This will be used by mentions.js -->
     <div class="mention-dropdown" id="mentionDropdown"></div>

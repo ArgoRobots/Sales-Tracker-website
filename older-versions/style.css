@@ -181,10 +181,6 @@
   font-weight: 700;
 }
 
-.btn-large {
-  width: 280px !important;
-}
-
 /* Responsive design */
 @media (max-width: 768px) {
   .hero {

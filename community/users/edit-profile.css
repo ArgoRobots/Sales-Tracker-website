@@ -40,8 +40,6 @@
 .avatar-section {
   display: flex;
   gap: 20px;
-  align-items: flex-start;
-  margin-bottom: 20px;
 }
 
 .current-avatar {
@@ -85,6 +83,7 @@
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.2s;
+  font-size: 14px;
 }
 
 .file-input-label:hover {
@@ -143,16 +142,6 @@
   gap: 15px;
   justify-content: flex-end;
   margin-top: 25px;
-}
-
-.btn-danger {
-  background-color: #dc2626;
-  border: 1px solid #dc2626;
-}
-
-.btn-danger:hover {
-  background-color: #b91c1c;
-  border-color: #b91c1c;
 }
 
 .verification-pending {

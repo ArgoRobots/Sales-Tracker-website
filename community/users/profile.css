@@ -508,6 +508,7 @@
 /* Reputation section */
 .reputation-help-link svg {
   color: var(--primary-blue);
+  margin-left: 5px;
 }
 
 .reputation-help-link svg:hover {
@@ -723,6 +724,31 @@
   to {
     left: 100%;
   }
+}
+
+/* Report button in profile header */
+.report-btn-user {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  margin-left: 10px;
+}
+
+.report-btn-user:hover {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.report-btn-user svg {
+  stroke-width: 2;
 }
 
 /* Responsive design */

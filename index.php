@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once 'community/users/user_functions.php';
+require_once 'track_referral.php';
 require_once 'statistics.php';
 
 track_page_view($_SERVER['REQUEST_URI']);
@@ -141,13 +142,13 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
 
                     <div class="hero-cta">
                         <div class="text-center">
-                            <a href="/download" class="btn btn-primary btn-large">
+                            <a href="/download" class="btn btn-get-now">
                                 <span class="btn-text">Get now for Free</span>
                                 <span class="btn-subtext">Setup in 3 minutes</span>
                             </a>
                             <p class="windows-only">Windows only</p>
                         </div>
-                        <a href="upgrade/index.php" class="btn btn-secondary">
+                        <a href="upgrade/index.php" class="btn btn-upgrade">
                             Upgrade for $20 CAD
                         </a>
                     </div>
@@ -513,7 +514,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                     <h3>Ready to Stop Wasting Time?</h3>
                     <p>Make the switch to automated sales tracking and see the difference.</p>
                     <div class="text-center">
-                        <a href="/download" class="btn btn-primary btn-large">Make the Switch for Free</a>
+                        <a href="/download" class="btn btn-get-now">Make the Switch for Free</a>
                         <p class="windows-only">Windows only</p>
                     </div>
                 </div>
@@ -679,7 +680,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                     </div>
 
                     <div class="plan-cta">
-                        <a href="upgrade/index.php" class="btn btn-primary btn-full">Upgrade Now</a>
+                        <a href="upgrade/index.php" class="btn btn-primary">Upgrade Now</a>
                         <p class="plan-note">30-day money back guarantee</p>
                     </div>
                 </div>
@@ -706,13 +707,13 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
 
                 <div class="cta-buttons">
                     <div class="text-center">
-                        <a href="/download" class="btn btn-primary btn-xl">
+                        <a href="/download" class="btn btn-get-now">
                             <span class="btn-text">Get now for Free</span>
                             <span class="btn-subtext">Setup in 3 minutes</span>
                         </a>
                         <p class="windows-only">Windows only</p>
                     </div>
-                    <a href="upgrade/index.php" class="btn btn-secondary">
+                    <a href="upgrade/index.php" class="btn btn-upgrade">
                         Upgrade for $20 CAD
                     </a>
                 </div>

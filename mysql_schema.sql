@@ -162,6 +162,7 @@ CREATE TABLE IF NOT EXISTS admin_notification_settings (
     user_id INT NOT NULL,
     notify_new_posts BOOLEAN DEFAULT 1,
     notify_new_comments BOOLEAN DEFAULT 1,
+    notify_new_reports BOOLEAN DEFAULT 1,
     notification_email VARCHAR(100) NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -212,8 +213,38 @@ CREATE TABLE IF NOT EXISTS version_history (
     download_count INT DEFAULT 0,
     is_current BOOLEAN DEFAULT 0,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    
+
     UNIQUE INDEX idx_version_number (version)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Create referral_links table for tracking ad/sponsor sources
+CREATE TABLE IF NOT EXISTS referral_links (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    source_code VARCHAR(50) NOT NULL UNIQUE,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    target_url VARCHAR(500) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    is_active TINYINT(1) DEFAULT 1,
+    INDEX idx_source_code (source_code),
+    INDEX idx_is_active (is_active)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Create referral_visits table to track visits from referral sources
+CREATE TABLE IF NOT EXISTS referral_visits (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    source_code VARCHAR(50) NOT NULL,
+    page_url VARCHAR(500),
+    ip_address VARCHAR(45),
+    user_agent VARCHAR(255),
+    country_code VARCHAR(2),
+    visited_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    converted TINYINT(1) DEFAULT 0,
+    license_key VARCHAR(255),
+    INDEX idx_source_code (source_code),
+    INDEX idx_visited_at (visited_at),
+    INDEX idx_converted (converted),
+    INDEX idx_country_code (country_code)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Add indexes for license_keys table
@@ -249,3 +280,44 @@ CREATE INDEX idx_rate_limits_user_action ON rate_limits(user_id, action_type);
 CREATE INDEX idx_remember_tokens_token ON remember_tokens(token);
 CREATE INDEX idx_remember_tokens_user_id ON remember_tokens(user_id);
 CREATE INDEX idx_notification_settings_user_id ON admin_notification_settings(user_id);
+
+-- Content reports table
+CREATE TABLE IF NOT EXISTS content_reports (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    reporter_user_id INT,
+    reporter_email VARCHAR(100) NOT NULL,
+    content_type ENUM('post', 'comment', 'user') NOT NULL,
+    content_id INT NOT NULL,
+    violation_type VARCHAR(50) NOT NULL,
+    additional_info TEXT,
+    status ENUM('pending', 'resolved', 'dismissed') DEFAULT 'pending',
+    resolved_by INT,
+    resolved_at DATETIME,
+    resolution_action VARCHAR(50),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (reporter_user_id) REFERENCES community_users(id) ON DELETE SET NULL,
+    FOREIGN KEY (resolved_by) REFERENCES community_users(id) ON DELETE SET NULL,
+    INDEX idx_content_type_id (content_type, content_id),
+    INDEX idx_status (status),
+    INDEX idx_created_at (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- User bans table
+CREATE TABLE IF NOT EXISTS user_bans (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    banned_by INT NOT NULL,
+    ban_reason TEXT NOT NULL,
+    ban_duration VARCHAR(20) NOT NULL,
+    banned_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    expires_at DATETIME,
+    is_active BOOLEAN DEFAULT 1,
+    unbanned_at DATETIME,
+    unbanned_by INT,
+    FOREIGN KEY (user_id) REFERENCES community_users(id) ON DELETE CASCADE,
+    FOREIGN KEY (banned_by) REFERENCES community_users(id) ON DELETE SET NULL,
+    FOREIGN KEY (unbanned_by) REFERENCES community_users(id) ON DELETE SET NULL,
+    INDEX idx_user_id (user_id),
+    INDEX idx_is_active (is_active),
+    INDEX idx_expires_at (expires_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
