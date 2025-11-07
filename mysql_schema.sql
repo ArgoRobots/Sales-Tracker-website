@@ -306,7 +306,7 @@ CREATE TABLE IF NOT EXISTS content_reports (
 CREATE TABLE IF NOT EXISTS user_bans (
     id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT NOT NULL,
-    banned_by INT NOT NULL,
+    banned_by INT,
     ban_reason TEXT NOT NULL,
     ban_duration VARCHAR(20) NOT NULL,
     banned_at DATETIME DEFAULT CURRENT_TIMESTAMP,
