@@ -1,31 +1,27 @@
-function adjustLinksAndImages(containerSelector) {
+// Detect the base path for the application
+// This handles both production (root) and local XAMPP (subfolder)
+function getBasePath() {
   var path = window.location.pathname;
-  path = path.startsWith("/") ? path.substr(1) : path;
-  var segments = path.split("/");
-  var linkDepth = segments.length - 2;
-  var linkPrefix = "";
 
-  // Calculate path prefixes
-  for (var i = 0; i < linkDepth; i++) {
-    linkPrefix += "../";
+  // Check if we're in a subfolder (common XAMPP setup)
+  // Look for common local folder names
+  var match = path.match(/^(\/[\w-]+\/)/);
+
+  // If the path doesn't start with common site paths, assume we're in a subfolder
+  var sitePaths = ['/upgrade/', '/community/', '/documentation/', '/about-us/',
+                   '/contact-us/', '/whats-new/', '/admin/', '/legal/', '/resources/',
+                   '/error-pages/', '/images/', '/older-versions/'];
+
+  var isRootPath = sitePaths.some(function(p) { return path.startsWith(p); }) || path === '/' || path === '/index.php';
+
+  if (!isRootPath && match) {
+    return match[1]; // Return the subfolder path (e.g., '/Sales-Tracker-website/')
   }
 
-  // Adjust relative links
-  $(containerSelector + " a").each(function () {
-    var href = $(this).attr("href");
-    if (!href || href.startsWith("#")) return;
-
-    if (
-      !href.startsWith("http://") &&
-      !href.startsWith("https://") &&
-      !href.startsWith("/") &&
-      !href.startsWith("#")
-    ) {
-      var newHref = linkPrefix + href;
-      $(this).attr("href", newHref);
-    }
-  });
+  return '/'; // Production or root-level local setup
 }
+
+var BASE_PATH = getBasePath();
 
 function setDefaultAvatar() {
   const accountAvatar = document.querySelector(".account-avatar");
@@ -39,14 +35,33 @@ function setDefaultAvatar() {
   }
 }
 
-// Apply adjustments to all pages
+// Fix all root-relative links to work with BASE_PATH
+function fixLinks(container) {
+  $(container + " a").each(function () {
+    var href = $(this).attr("href");
+    // Only fix links that start with / but not // (protocol-relative)
+    if (href && href.startsWith("/") && !href.startsWith("//") && BASE_PATH !== "/") {
+      $(this).attr("href", BASE_PATH + href.substring(1));
+    }
+  });
+
+  $(container + " img").each(function () {
+    var src = $(this).attr("src");
+    // Only fix images that start with / but not // (protocol-relative)
+    if (src && src.startsWith("/") && !src.startsWith("//") && BASE_PATH !== "/") {
+      $(this).attr("src", BASE_PATH + src.substring(1));
+    }
+  });
+}
+
+// Load header and footer with dynamic base path
 $(document).ready(function () {
-  $("#includeHeader").load("../../resources/header/index.html", function () {
-    adjustLinksAndImages("#includeHeader");
+  $("#includeHeader").load(BASE_PATH + "resources/header/index.html", function () {
+    fixLinks("#includeHeader");
 
     // Load the avatar after the header is loaded
     const accountAvatar = document.querySelector(".account-avatar");
-    fetch("/community/get_avatar_info.php")
+    fetch(BASE_PATH + "community/get_avatar_info.php")
       .then((response) => response.json())
       .then((data) => {
         if (accountAvatar) {
@@ -67,7 +82,7 @@ $(document).ready(function () {
       });
   });
 
-  $("#includeFooter").load("../../resources/footer/index.html", function () {
-    adjustLinksAndImages("#includeFooter");
+  $("#includeFooter").load(BASE_PATH + "resources/footer/index.html", function () {
+    fixLinks("#includeFooter");
   });
 });
