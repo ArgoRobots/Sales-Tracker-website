@@ -125,6 +125,32 @@ Audit log of all payment attempts.
 
 ---
 
+## Admin Scripts
+
+**Contact Evan Di Placido to obtain these scripts.**
+
+### create_admin.php
+Creates admin users
+
+- Place in `/admin` directory
+- Visit: `www.argorobots.com/admin/create_admin.php`
+
+### reset_admin_password.php
+Resets admin passwords
+
+- Place in `/admin` directory
+- Visit: `www.argorobots.com/reset_admin.php`
+
+### create_community_admin.php
+Creates admin users for the community system
+
+- Place in `/community/users` directory
+- Visit: `www.argorobots.com/community/users/create_community_admin.php`
+
+**Important:** Delete all admin creation scripts immediately after use for security.
+
+---
+
 ## Security Best Practices
 
 ### API Keys
