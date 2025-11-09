@@ -73,6 +73,11 @@
     background: #f9fafb;
 }
 
+.search-result-item.selected {
+    background: #eff6ff;
+    border-left: 3px solid var(--primary-blue);
+}
+
 .search-result-item:last-child {
     border-bottom: none;
 }

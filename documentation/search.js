@@ -5,7 +5,9 @@ class DocumentationSearch {
         this.searchResults = document.getElementById('searchResults');
         this.sections = [];
         this.searchIndex = [];
-        
+        this.selectedIndex = -1; // Track selected result for keyboard navigation
+        this.currentResults = []; // Store current search results
+
         this.init();
     }
     
@@ -50,14 +52,51 @@ class DocumentationSearch {
     setupEventListeners() {
         // Search on button click
         this.searchButton.addEventListener('click', () => this.performSearch());
-        
-        // Search on Enter key
-        this.searchInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                this.performSearch();
+
+        // Keyboard navigation for search input
+        this.searchInput.addEventListener('keydown', (e) => {
+            const resultItems = this.searchResults.querySelectorAll('.search-result-item');
+            const isResultsVisible = this.searchResults.style.display === 'block';
+
+            if (!isResultsVisible || resultItems.length === 0) {
+                // If no results showing, Enter should just perform search
+                if (e.key === 'Enter') {
+                    this.performSearch();
+                }
+                return;
+            }
+
+            switch (e.key) {
+                case 'ArrowDown':
+                    e.preventDefault();
+                    this.navigateResults(1);
+                    break;
+                case 'ArrowUp':
+                    e.preventDefault();
+                    this.navigateResults(-1);
+                    break;
+                case 'Tab':
+                    e.preventDefault();
+                    // Tab moves forward, Shift+Tab moves backward
+                    this.navigateResults(e.shiftKey ? -1 : 1);
+                    break;
+                case 'Enter':
+                    e.preventDefault();
+                    if (this.selectedIndex >= 0 && this.selectedIndex < this.currentResults.length) {
+                        // Navigate to selected result
+                        this.navigateToSection(this.currentResults[this.selectedIndex].id);
+                    } else if (this.currentResults.length > 0) {
+                        // No selection, navigate to first result
+                        this.navigateToSection(this.currentResults[0].id);
+                    }
+                    break;
+                case 'Escape':
+                    this.hideResults();
+                    this.searchInput.blur();
+                    break;
             }
         });
-        
+
         // Real-time search as user types (with debounce)
         let timeout;
         this.searchInput.addEventListener('input', (e) => {
@@ -70,7 +109,7 @@ class DocumentationSearch {
                 }
             }, 300);
         });
-        
+
         // Close results when clicking outside
         document.addEventListener('click', (e) => {
             if (!this.searchInput.contains(e.target) && !this.searchResults.contains(e.target)) {
@@ -122,6 +161,10 @@ class DocumentationSearch {
     }
     
     displayResults(results, query) {
+        // Store current results for keyboard navigation
+        this.currentResults = results;
+        this.selectedIndex = -1; // Reset selection
+
         if (results.length === 0) {
             this.searchResults.innerHTML = `
                 <div class="no-results">
@@ -132,11 +175,11 @@ class DocumentationSearch {
             this.searchResults.style.display = 'block';
             return;
         }
-        
+
         const resultsHtml = results.map(section => this.createResultItem(section, query)).join('');
         this.searchResults.innerHTML = resultsHtml;
         this.searchResults.style.display = 'block';
-        
+
         // Add click handlers to result items
         this.searchResults.querySelectorAll('.search-result-item').forEach((item, index) => {
             item.addEventListener('click', () => {
@@ -183,19 +226,56 @@ class DocumentationSearch {
         return preview;
     }
     
+    navigateResults(direction) {
+        const resultItems = this.searchResults.querySelectorAll('.search-result-item');
+        if (resultItems.length === 0) return;
+
+        // Update selected index
+        this.selectedIndex += direction;
+
+        // Wrap around at boundaries
+        if (this.selectedIndex < 0) {
+            this.selectedIndex = resultItems.length - 1;
+        } else if (this.selectedIndex >= resultItems.length) {
+            this.selectedIndex = 0;
+        }
+
+        this.updateSelection();
+    }
+
+    updateSelection() {
+        const resultItems = this.searchResults.querySelectorAll('.search-result-item');
+
+        // Remove previous selection
+        resultItems.forEach(item => item.classList.remove('selected'));
+
+        // Add selection to current item
+        if (this.selectedIndex >= 0 && this.selectedIndex < resultItems.length) {
+            const selectedItem = resultItems[this.selectedIndex];
+            selectedItem.classList.add('selected');
+
+            // Scroll selected item into view if needed
+            selectedItem.scrollIntoView({
+                block: 'nearest',
+                behavior: 'smooth'
+            });
+        }
+    }
+
     navigateToSection(sectionId) {
         // Use your existing navigation system
         const navItem = document.querySelector(`[data-scroll-to="${sectionId}"]`);
         if (navItem) {
             navItem.click();
         }
-        
+
         this.hideResults();
         this.searchInput.value = '';
     }
     
     hideResults() {
         this.searchResults.style.display = 'none';
+        this.selectedIndex = -1; // Reset selection when hiding
     }
     
     escapeHtml(text) {
