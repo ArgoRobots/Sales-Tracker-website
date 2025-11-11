@@ -135,8 +135,9 @@
                             </div>
                             <div class="feature-content">
                                 <h3>Enhanced AI Search<span class="type-tag enhancement">Enhancement</span></h3>
-                                <p>Improved AI search capabilities to better understand natural language queries to
-                                    provide better results.</p>
+                                <p>Improved AI search capabilities to better understand natural language queries.
+                                    It now understands what 'high' and 'low' means for numerical values by calculating
+                                    percentile-based thresholds. The AI does not have access to your financial information.</p>
                             </div>
                         </div>
 

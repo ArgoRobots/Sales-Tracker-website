@@ -680,7 +680,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                     </div>
 
                     <div class="plan-cta">
-                        <a href="upgrade/index.php" class="btn btn-primary">Upgrade Now</a>
+                        <a href="upgrade/index.php" class="btn btn-get-now">Upgrade Now</a>
                         <p class="plan-note">30-day money back guarantee</p>
                     </div>
                 </div>
