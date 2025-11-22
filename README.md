@@ -60,11 +60,13 @@ You can view the live website here: https://argorobots.com/
 
 ### Step 3: Set Up the Project
 
-1. Place the project files in XAMPP's web directory: `C:\xampp\htdocs\ArgoSalesTracker` (avoid spaces in the folder name)
+1. Place the project files directly in XAMPP's `htdocs` directory: `C:\xampp\htdocs\sales-tracker-website`
+   - The folder name will become part of your URL (e.g., folder `sales-tracker-website` → URL `localhost/sales-tracker-website`)
+   - Avoid spaces in the folder name
 2. Open Command Prompt and navigate to that directory:
 
 ```bash
-cd C:\xampp\htdocs\ArgoSalesTracker
+cd C:\xampp\htdocs\sales-tracker-website
 ```
 
 3. Run the following command to install PHP dependencies:
@@ -79,6 +81,12 @@ This will download all required dependencies into the `vendor/` folder.
    - Open phpMyAdmin at `http://localhost/phpmyadmin`
    - Create a new database for the project
    - Import your database schema/SQL file
+
+## Running Locally
+
+1. Open XAMPP Control Panel and start Apache and MySQL
+2. Navigate to `http://localhost/sales-tracker-website` in your browser (adjust the folder name if different)
+3. The website should now be running locally
 
 ## Publishing a new version of Argo Sales Tracker
 1. Create a new folder in `resources/downloads/versions` named whatever the version number is
