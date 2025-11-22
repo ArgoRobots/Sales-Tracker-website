@@ -77,10 +77,33 @@ composer install
 
 This will download all required dependencies into the `vendor/` folder.
 
-4. Set up the MySQL database:
-   - Open phpMyAdmin at `http://localhost/phpmyadmin`
-   - Create a new database for the project
-   - Import your database schema/SQL file
+### Step 4: Set Up the Database
+
+You need to create a MySQL database and import the schema.
+
+**What is phpMyAdmin?** phpMyAdmin is a web-based tool that comes with XAMPP/WAMP/MAMP that lets you manage MySQL databases through a visual interface.
+
+1. **Open phpMyAdmin**:
+   - Open your web browser
+   - Go to: `http://localhost/phpmyadmin`
+   - You should see the phpMyAdmin interface
+
+2. **Create the Database**:
+   - Click on **"New"** in the top Left
+   - In the "Create database" section, type: `sales_tracker`
+   - Click **"Create"**
+
+3. **Import the Schema**:
+   - Click on the **"sales_tracker"** database name in the left sidebar (it should now appear in the list)
+   - Click on the **"Import"** tab at the top
+   - Click **"Choose File"** button
+   - Navigate to your sales-tracker-website folder and select: `mysql_schema.sql`
+   - Scroll down and click **"Import"** button at the bottom
+   - You should see a success message and 7 tables created
+
+4. **Verify the Import**:
+   - Click on the **"Structure"** tab
+   - You should see all the tables
 
 ## Running Locally
 
