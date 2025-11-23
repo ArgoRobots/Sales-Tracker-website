@@ -33,10 +33,26 @@ $billing = $input['billing'] ?? 'monthly';
 $hasDiscount = $input['hasDiscount'] ?? false;
 $premiumLicenseKey = $input['premiumLicenseKey'] ?? '';
 $paymentMethod = $input['payment_method'] ?? 'unknown';
+$userId = intval($input['user_id'] ?? 0);
 
-if (empty($email) || $amount <= 0) {
+if (empty($email) || $amount <= 0 || $userId <= 0) {
     http_response_code(400);
-    echo json_encode(['success' => false, 'error' => 'Missing required fields']);
+    echo json_encode(['success' => false, 'error' => 'Missing required fields or invalid user']);
+    exit();
+}
+
+// Verify user exists
+try {
+    $stmt = $pdo->prepare("SELECT id FROM community_users WHERE id = ?");
+    $stmt->execute([$userId]);
+    if (!$stmt->fetch()) {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'error' => 'Invalid user']);
+        exit();
+    }
+} catch (PDOException $e) {
+    http_response_code(500);
+    echo json_encode(['success' => false, 'error' => 'Database error']);
     exit();
 }
 
@@ -76,11 +92,11 @@ try {
     // Insert subscription record
     $stmt = $pdo->prepare("
         INSERT INTO ai_subscriptions (
-            subscription_id, email, billing_cycle, amount, currency,
+            subscription_id, user_id, email, billing_cycle, amount, currency,
             start_date, end_date, status, payment_method, transaction_id,
             premium_license_key, discount_applied, created_at
         ) VALUES (
-            ?, ?, ?, ?, ?,
+            ?, ?, ?, ?, ?, ?,
             ?, ?, 'active', ?, ?,
             ?, ?, NOW()
         )
@@ -88,6 +104,7 @@ try {
 
     $stmt->execute([
         $subscriptionId,
+        $userId,
         $email,
         $billing,
         $amount,

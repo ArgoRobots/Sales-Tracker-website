@@ -113,6 +113,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     " " +
                     details.payer.name.surname,
                   payment_method: "paypal",
+                  user_id: subscription.userId,
                 }),
               })
                 .then((response) => response.json())
@@ -229,6 +230,7 @@ document.addEventListener("DOMContentLoaded", function () {
               hasDiscount: subscription.hasDiscount,
               premiumLicenseKey: subscription.licenseKey,
               payment_method: "stripe",
+              user_id: subscription.userId,
             }),
           });
 
@@ -366,6 +368,7 @@ document.addEventListener("DOMContentLoaded", function () {
                   hasDiscount: subscription.hasDiscount,
                   premiumLicenseKey: subscription.licenseKey,
                   payment_method: "square",
+                  user_id: subscription.userId,
                 }),
               });
 

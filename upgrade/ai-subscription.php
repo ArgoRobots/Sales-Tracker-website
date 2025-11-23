@@ -1,3 +1,13 @@
+<?php
+session_start();
+require_once '../community/users/user_functions.php';
+
+// Require login to access AI subscription page
+require_login('../upgrade/ai-subscription.php', true);
+
+$user_id = $_SESSION['user_id'];
+$user = get_user($user_id);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -319,7 +329,8 @@
                     method: method,
                     type: 'ai-subscription',
                     billing: currentBilling,
-                    discount: hasDiscount ? '1' : '0'
+                    discount: hasDiscount ? '1' : '0',
+                    user_id: '<?php echo $user_id; ?>'
                 });
 
                 if (verifiedLicenseKey) {

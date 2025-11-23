@@ -326,6 +326,7 @@ CREATE TABLE IF NOT EXISTS user_bans (
 CREATE TABLE IF NOT EXISTS ai_subscriptions (
     id INT PRIMARY KEY AUTO_INCREMENT,
     subscription_id VARCHAR(50) NOT NULL UNIQUE,
+    user_id INT NOT NULL,
     email VARCHAR(100) NOT NULL,
     billing_cycle ENUM('monthly', 'yearly') NOT NULL DEFAULT 'monthly',
     amount DECIMAL(10,2) NOT NULL,
@@ -341,10 +342,12 @@ CREATE TABLE IF NOT EXISTS ai_subscriptions (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     INDEX idx_subscription_id (subscription_id),
+    INDEX idx_user_id (user_id),
     INDEX idx_email (email),
     INDEX idx_status (status),
     INDEX idx_end_date (end_date),
-    INDEX idx_premium_license (premium_license_key)
+    INDEX idx_premium_license (premium_license_key),
+    FOREIGN KEY (user_id) REFERENCES community_users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- AI Subscription Payments table (for tracking recurring payments)

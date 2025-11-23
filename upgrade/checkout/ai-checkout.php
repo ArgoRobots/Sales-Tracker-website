@@ -11,8 +11,15 @@
     <title>AI Subscription Checkout - Argo Sales Tracker</title>
 
     <?php
-    // Load environment variables
+    session_start();
     require_once '../../db_connect.php';
+    require_once '../../community/users/user_functions.php';
+
+    // Require login to checkout
+    require_login('../../upgrade/ai-subscription.php', true);
+
+    $user_id = $_SESSION['user_id'];
+    $user_email = $_SESSION['email'] ?? '';
 
     // Get environment-based keys
     $is_production = $_ENV['APP_ENV'] === 'production';
@@ -93,7 +100,9 @@
             finalPrice: <?php echo $finalPrice; ?>,
             hasDiscount: <?php echo $hasDiscount ? 'true' : 'false'; ?>,
             discountAmount: <?php echo $discount; ?>,
-            licenseKey: '<?php echo htmlspecialchars($licenseKey); ?>'
+            licenseKey: '<?php echo htmlspecialchars($licenseKey); ?>',
+            userId: <?php echo $user_id; ?>,
+            userEmail: '<?php echo htmlspecialchars($user_email); ?>'
         };
     </script>
 
