@@ -1,14 +1,16 @@
-/* AI Subscription Page Styles */
+.title-container {
+  text-align: center;
+}
 
 .subscription-page-container {
     max-width: 800px;
     margin: 0 auto;
-    padding: 40px 20px;
+    padding: 60px 20px;
     min-height: 80vh;
 }
 
-.page-header {
-    margin-bottom: 32px;
+.button-container {
+    margin: 30px 0;
 }
 
 .page-header .back-link {
@@ -24,12 +26,6 @@
 
 .page-header .back-link:hover {
     color: #374151;
-}
-
-.page-header h1 {
-    font-size: 28px;
-    color: #1f2937;
-    margin: 0;
 }
 
 /* Alerts */
@@ -57,6 +53,7 @@
     border-radius: 16px;
     padding: 24px;
     margin-bottom: 24px;
+    border: 1px solid #e5e7eb;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
@@ -385,30 +382,6 @@
 }
 
 /* Buttons */
-.btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.btn-blue {
-    background: #3b82f6;
-    color: white;
-}
-
-.btn-blue:hover {
-    background: #2563eb;
-}
-
 .btn-purple {
     background: linear-gradient(135deg, #8b5cf6, #7c3aed);
     color: white;

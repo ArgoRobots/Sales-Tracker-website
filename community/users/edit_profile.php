@@ -439,23 +439,6 @@ function handle_email_verification()
     }
 }
 
-// Function to get user's AI subscription
-function get_user_ai_subscription($user_id) {
-    global $pdo;
-    try {
-        $stmt = $pdo->prepare("
-            SELECT * FROM ai_subscriptions
-            WHERE user_id = ?
-            ORDER BY created_at DESC
-            LIMIT 1
-        ");
-        $stmt->execute([$user_id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
-        return null;
-    }
-}
-
 // Function to handle password changes
 function handle_password_change()
 {
