@@ -174,7 +174,7 @@
 .payment-option {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 18px;
     padding: 20px;
     background: #f8fafc;
     border: 2px solid #e5e7eb;
@@ -191,26 +191,8 @@
 }
 
 .payment-option img {
-    width: 60px;
-    height: auto;
-    object-fit: contain;
-}
-
-.payment-option .stripe-logo {
-    height: 24px;
-    width: auto;
-}
-
-.payment-option .square-logo {
     height: 20px;
     width: auto;
-}
-
-.payment-name {
-    font-weight: 600;
-    font-size: 16px;
-    color: #1f2937;
-    display: block;
 }
 
 .payment-desc {

@@ -127,7 +127,7 @@ $user = get_user($user_id);
                 <p>If you've purchased the $20 Premium version, enter your license key to receive a $20 discount on
                     your first year.</p>
                 <div class="license-input-group">
-                    <input type="text" id="license-key" placeholder="Enter your license key (e.g., XXXXX-XXXXX-XXXXX-XXXXX)">
+                    <input type="text" id="license-key" placeholder="Enter your license key">
                     <button type="button" id="verify-license" class="btn-verify">Verify License</button>
                 </div>
                 <div id="license-status" class="license-status"></div>
