@@ -606,7 +606,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                 <p class="section-subtitle">Choose the plan that fits your needs. One-time purchase or AI-powered subscription.</p>
             </div>
 
-            <div class="pricing-cards pricing-cards-three grid">
+            <div class="pricing-cards grid">
                 <!-- Free Plan -->
                 <div class="pricing-card free-plan card">
                     <div class="plan-header">
