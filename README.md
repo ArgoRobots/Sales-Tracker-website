@@ -43,7 +43,7 @@ You can view the live website here: https://argorobots.com/
 
 ### Step 1: Install XAMPP
 
-1. Download XAMPP from [https://www.apachefriends.org/](https://www.apachefriends.org/)
+1. Download XAMPP from [https://www.apachefriends.org/download.html](https://www.apachefriends.org/download.html). Download version 8.2.12 or higher
 2. Install XAMPP (default location: `C:\xampp`)
 3. Open XAMPP Control Panel and start Apache and MySQL
 4. Add PHP to your system PATH:
