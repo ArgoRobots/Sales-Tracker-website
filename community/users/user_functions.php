@@ -565,8 +565,6 @@ namespace {
             return true;
         } catch (Exception $e) {
             error_log('Exception in is_user_logged_in: ' . $e->getMessage());
-            if (isset($db)) {
-            }
             return false;
         }
     }
