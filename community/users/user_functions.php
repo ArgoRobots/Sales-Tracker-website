@@ -584,8 +584,17 @@ namespace {
             // Store the intended destination for after login
             $_SESSION['redirect_after_login'] = $redirect;
 
-            // Redirect to login page using absolute path
-            header('Location: /community/users/login.php');
+            // Get the web path to login.php based on where this file is located
+            // __DIR__ gives us the filesystem path to community/users/
+            // We need to convert this to a web-accessible URL
+            $doc_root = realpath($_SERVER['DOCUMENT_ROOT']);
+            $login_dir = __DIR__;
+
+            // Get relative path from document root to login.php
+            $relative_path = str_replace($doc_root, '', $login_dir);
+            $relative_path = str_replace('\\', '/', $relative_path); // Windows compatibility
+
+            header('Location: ' . $relative_path . '/login.php');
             exit;
         }
     }
