@@ -7,6 +7,17 @@ require_login('/upgrade/ai/');
 
 $user_id = $_SESSION['user_id'];
 $user = get_user($user_id);
+
+// Check if user already has an active subscription
+$existing_subscription = get_user_ai_subscription($user_id);
+if ($existing_subscription && in_array($existing_subscription['status'], ['active', 'cancelled'])) {
+    // User already has a subscription (active or cancelled but not expired)
+    if ($existing_subscription['status'] === 'active' ||
+        ($existing_subscription['status'] === 'cancelled' && strtotime($existing_subscription['end_date']) > time())) {
+        header('Location: ../../community/users/ai-subscription.php');
+        exit;
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
