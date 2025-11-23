@@ -102,7 +102,7 @@
                     <div class="payment-options">
                         <button class="payment-option" onclick="window.location.href='checkout/index.php?method=paypal'">
                             <img src="../images/PayPal-logo.svg" alt="PayPal">
-                            <span class="payment-desc">Pay with your PayPal account</span>
+                            <span class="payment-desc">PayPal balance or linked card</span>
                         </button>
 
                         <button class="payment-option" onclick="window.location.href='checkout/index.php?method=stripe'">
@@ -112,7 +112,7 @@
 
                         <button class="payment-option" onclick="window.location.href='checkout/index.php?method=square'">
                             <img src="../images/Square-logo.svg" alt="Square">
-                            <span class="payment-desc">Pay with Square</span>
+                            <span class="payment-desc">Visa, Mastercard, Amex via Square</span>
                         </button>
                     </div>
 
