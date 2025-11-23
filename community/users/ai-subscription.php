@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once '../../db_connect.php';
+require_once '../../email_sender.php';
 require_once '../community_functions.php';
 require_once 'user_functions.php';
 
@@ -23,24 +24,90 @@ if (isset($_SESSION['subscription_error'])) {
     unset($_SESSION['subscription_error']);
 }
 
-// Handle subscription cancellation
+// Handle subscription actions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
 
     if ($action === 'cancel_subscription') {
         try {
+            // Get subscription details before cancelling
             $stmt = $pdo->prepare("
-                UPDATE ai_subscriptions
-                SET status = 'cancelled', cancelled_at = NOW()
+                SELECT subscription_id, email, end_date
+                FROM ai_subscriptions
                 WHERE user_id = ? AND status = 'active'
             ");
             $stmt->execute([$user_id]);
+            $subscription = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // Cancel the subscription
+            $stmt = $pdo->prepare("
+                UPDATE ai_subscriptions
+                SET status = 'cancelled', auto_renew = 0, cancelled_at = NOW(), updated_at = NOW()
+                WHERE user_id = ? AND status = 'active'
+            ");
+            $stmt->execute([$user_id]);
+
+            // Send cancellation email
+            if ($subscription) {
+                try {
+                    send_ai_subscription_cancelled_email(
+                        $subscription['email'],
+                        $subscription['subscription_id'],
+                        $subscription['end_date']
+                    );
+                } catch (Exception $e) {
+                    error_log("Failed to send cancellation email: " . $e->getMessage());
+                }
+            }
 
             $_SESSION['subscription_success'] = 'Your AI subscription has been cancelled. You will retain access until the end of your billing period.';
             header('Location: ai-subscription.php');
             exit;
         } catch (PDOException $e) {
             $_SESSION['subscription_error'] = 'Failed to cancel subscription. Please contact support.';
+            header('Location: ai-subscription.php');
+            exit;
+        }
+    }
+
+    if ($action === 'toggle_auto_renew') {
+        try {
+            $stmt = $pdo->prepare("
+                UPDATE ai_subscriptions
+                SET auto_renew = NOT auto_renew, updated_at = NOW()
+                WHERE user_id = ? AND status = 'active'
+            ");
+            $stmt->execute([$user_id]);
+
+            $_SESSION['subscription_success'] = 'Auto-renewal setting updated successfully.';
+            header('Location: ai-subscription.php');
+            exit;
+        } catch (PDOException $e) {
+            $_SESSION['subscription_error'] = 'Failed to update auto-renewal setting.';
+            header('Location: ai-subscription.php');
+            exit;
+        }
+    }
+
+    if ($action === 'reactivate_subscription') {
+        try {
+            $stmt = $pdo->prepare("
+                UPDATE ai_subscriptions
+                SET status = 'active', auto_renew = 1, cancelled_at = NULL, updated_at = NOW()
+                WHERE user_id = ? AND status IN ('cancelled', 'payment_failed')
+                AND end_date > NOW()
+            ");
+            $stmt->execute([$user_id]);
+
+            if ($stmt->rowCount() > 0) {
+                $_SESSION['subscription_success'] = 'Your subscription has been reactivated!';
+            } else {
+                $_SESSION['subscription_error'] = 'Could not reactivate subscription. It may have expired.';
+            }
+            header('Location: ai-subscription.php');
+            exit;
+        } catch (PDOException $e) {
+            $_SESSION['subscription_error'] = 'Failed to reactivate subscription.';
             header('Location: ai-subscription.php');
             exit;
         }
@@ -164,10 +231,32 @@ if ($ai_subscription) {
                                 <span class="detail-label">Payment Method</span>
                                 <span class="detail-value"><?php echo ucfirst($ai_subscription['payment_method']); ?></span>
                             </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Auto-Renewal</span>
+                                <span class="detail-value <?php echo ($ai_subscription['auto_renew'] ?? 1) ? 'enabled' : 'disabled'; ?>">
+                                    <?php echo ($ai_subscription['auto_renew'] ?? 1) ? 'Enabled' : 'Disabled'; ?>
+                                </span>
+                            </div>
                         </div>
                     </div>
 
                     <?php if ($ai_subscription['status'] === 'active'): ?>
+                        <div class="subscription-settings">
+                            <h4>Subscription Settings</h4>
+                            <div class="setting-row">
+                                <div class="setting-info">
+                                    <span class="setting-label">Auto-Renewal</span>
+                                    <span class="setting-description">Automatically renew your subscription when it expires</span>
+                                </div>
+                                <form method="post" class="toggle-form">
+                                    <input type="hidden" name="action" value="toggle_auto_renew">
+                                    <button type="submit" class="toggle-btn <?php echo ($ai_subscription['auto_renew'] ?? 1) ? 'active' : ''; ?>">
+                                        <span class="toggle-slider"></span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
                         <div class="subscription-actions">
                             <form method="post" onsubmit="return confirm('Are you sure you want to cancel your AI subscription? You will retain access until <?php echo date('F j, Y', strtotime($ai_subscription['end_date'])); ?>.');">
                                 <input type="hidden" name="action" value="cancel_subscription">
@@ -187,7 +276,33 @@ if ($ai_subscription) {
                             </div>
                         </div>
                         <div class="subscription-actions">
-                            <a href="../../upgrade/ai/" class="btn btn-blue">Resubscribe</a>
+                            <?php if (strtotime($ai_subscription['end_date']) > time()): ?>
+                                <form method="post" style="display: inline;">
+                                    <input type="hidden" name="action" value="reactivate_subscription">
+                                    <button type="submit" class="btn btn-purple">Reactivate Subscription</button>
+                                </form>
+                            <?php else: ?>
+                                <a href="../../upgrade/ai/" class="btn btn-purple">Resubscribe</a>
+                            <?php endif; ?>
+                        </div>
+                    <?php elseif ($ai_subscription['status'] === 'payment_failed'): ?>
+                        <div class="subscription-notice payment-failed">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                <line x1="12" y1="9" x2="12" y2="13"></line>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                            <div>
+                                <p><strong>Payment Failed</strong></p>
+                                <p class="notice-detail">We were unable to process your renewal payment. Please update your payment method to continue your subscription.</p>
+                            </div>
+                        </div>
+                        <div class="subscription-actions">
+                            <a href="../../upgrade/ai/" class="btn btn-purple">Update Payment Method</a>
+                            <form method="post" style="display: inline; margin-left: 10px;">
+                                <input type="hidden" name="action" value="reactivate_subscription">
+                                <button type="submit" class="btn btn-outline">Retry with Existing Method</button>
+                            </form>
                         </div>
                     <?php elseif ($ai_subscription['status'] === 'expired'): ?>
                         <div class="subscription-notice expired">
@@ -272,6 +387,7 @@ if ($ai_subscription) {
                         <thead>
                             <tr>
                                 <th>Date</th>
+                                <th>Type</th>
                                 <th>Amount</th>
                                 <th>Payment Method</th>
                                 <th>Status</th>
@@ -281,6 +397,11 @@ if ($ai_subscription) {
                             <?php foreach ($payment_history as $payment): ?>
                             <tr>
                                 <td><?php echo date('M j, Y', strtotime($payment['created_at'])); ?></td>
+                                <td>
+                                    <span class="payment-type <?php echo $payment['payment_type'] ?? 'initial'; ?>">
+                                        <?php echo ucfirst($payment['payment_type'] ?? 'Initial'); ?>
+                                    </span>
+                                </td>
                                 <td>$<?php echo number_format($payment['amount'], 2); ?> <?php echo $payment['currency']; ?></td>
                                 <td><?php echo ucfirst($payment['payment_method']); ?></td>
                                 <td>

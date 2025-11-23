@@ -1,13 +1,14 @@
 <?php
 /**
  * AI Subscription Payment Processor
- * Handles subscription creation for AI features
+ * Handles subscription creation for AI features with recurring billing support
  */
 
 header('Content-Type: application/json');
 
 require_once '../../../db_connect.php';
 require_once '../../../email_sender.php';
+require_once '../../../vendor/autoload.php';
 
 // Only accept POST requests
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -34,6 +35,9 @@ $hasDiscount = $input['hasDiscount'] ?? false;
 $premiumLicenseKey = $input['premiumLicenseKey'] ?? '';
 $paymentMethod = $input['payment_method'] ?? 'unknown';
 $userId = intval($input['user_id'] ?? 0);
+
+// Get environment configuration
+$isProduction = ($_ENV['APP_ENV'] ?? 'development') === 'production';
 
 if (empty($email) || $amount <= 0 || $userId <= 0) {
     http_response_code(400);
@@ -75,30 +79,193 @@ try {
         $endDate = date('Y-m-d H:i:s', strtotime('+1 month'));
     }
 
-    // Determine transaction ID based on payment method
+    // Process payment and get transaction details based on payment method
     $transactionId = '';
+    $paymentToken = null; // Token for recurring billing
+
     switch ($paymentMethod) {
         case 'paypal':
             $transactionId = $input['orderID'] ?? '';
+            // PayPal one-time payments don't provide reusable tokens
+            // Would need PayPal Subscriptions API for true recurring
+            $paymentToken = null;
             break;
+
         case 'stripe':
-            $transactionId = $input['payment_method_id'] ?? '';
+            $paymentMethodId = $input['payment_method_id'] ?? '';
+            $transactionId = $paymentMethodId;
+
+            // Initialize Stripe
+            $stripeSecretKey = $isProduction
+                ? $_ENV['STRIPE_LIVE_SECRET_KEY']
+                : $_ENV['STRIPE_SANDBOX_SECRET_KEY'];
+            \Stripe\Stripe::setApiKey($stripeSecretKey);
+
+            try {
+                // Create or get customer
+                $customers = \Stripe\Customer::all(['email' => $email, 'limit' => 1]);
+                if (count($customers->data) > 0) {
+                    $customer = $customers->data[0];
+                } else {
+                    $customer = \Stripe\Customer::create([
+                        'email' => $email,
+                        'metadata' => ['user_id' => $userId]
+                    ]);
+                }
+
+                // Attach payment method to customer for recurring billing
+                $paymentMethodObj = \Stripe\PaymentMethod::retrieve($paymentMethodId);
+                $paymentMethodObj->attach(['customer' => $customer->id]);
+
+                // Set as default payment method
+                \Stripe\Customer::update($customer->id, [
+                    'invoice_settings' => ['default_payment_method' => $paymentMethodId]
+                ]);
+
+                // Create payment intent for the initial charge
+                $paymentIntent = \Stripe\PaymentIntent::create([
+                    'amount' => intval($amount * 100),
+                    'currency' => 'cad',
+                    'customer' => $customer->id,
+                    'payment_method' => $paymentMethodId,
+                    'off_session' => true,
+                    'confirm' => true,
+                    'description' => "AI Subscription - Initial Payment ($billing)",
+                    'receipt_email' => $email,
+                    'metadata' => [
+                        'subscription_id' => $subscriptionId,
+                        'user_id' => $userId,
+                        'billing_cycle' => $billing
+                    ]
+                ]);
+
+                if ($paymentIntent->status !== 'succeeded') {
+                    throw new Exception('Payment not completed');
+                }
+
+                $transactionId = $paymentIntent->id;
+                $paymentToken = $paymentMethodId; // Store for recurring billing
+
+            } catch (\Stripe\Exception\CardException $e) {
+                $pdo->rollBack();
+                echo json_encode(['success' => false, 'error' => 'Card declined: ' . $e->getMessage()]);
+                exit();
+            } catch (Exception $e) {
+                $pdo->rollBack();
+                error_log("Stripe error: " . $e->getMessage());
+                echo json_encode(['success' => false, 'error' => 'Payment processing failed']);
+                exit();
+            }
             break;
+
         case 'square':
-            $transactionId = $input['source_id'] ?? '';
+            $sourceId = $input['source_id'] ?? '';
+
+            // Initialize Square
+            $squareAccessToken = $isProduction
+                ? $_ENV['SQUARE_LIVE_ACCESS_TOKEN']
+                : $_ENV['SQUARE_SANDBOX_ACCESS_TOKEN'];
+            $squareEnvironment = $isProduction ? 'production' : 'sandbox';
+            $squareLocationId = $isProduction
+                ? $_ENV['SQUARE_LIVE_LOCATION_ID']
+                : $_ENV['SQUARE_SANDBOX_LOCATION_ID'];
+
+            try {
+                $client = new \Square\SquareClient([
+                    'accessToken' => $squareAccessToken,
+                    'environment' => $squareEnvironment
+                ]);
+
+                // Create customer for recurring billing
+                $customerApi = $client->getCustomersApi();
+                $searchRequest = new \Square\Models\SearchCustomersRequest();
+                $query = new \Square\Models\CustomerQuery();
+                $filter = new \Square\Models\CustomerFilter();
+                $emailFilter = new \Square\Models\CustomerTextFilter();
+                $emailFilter->setExact($email);
+                $filter->setEmailAddress($emailFilter);
+                $query->setFilter($filter);
+                $searchRequest->setQuery($query);
+
+                $searchResponse = $customerApi->searchCustomers($searchRequest);
+                $customerId = null;
+
+                if ($searchResponse->isSuccess() && count($searchResponse->getResult()->getCustomers() ?? []) > 0) {
+                    $customerId = $searchResponse->getResult()->getCustomers()[0]->getId();
+                } else {
+                    // Create new customer
+                    $customerRequest = new \Square\Models\CreateCustomerRequest();
+                    $customerRequest->setEmailAddress($email);
+                    $customerRequest->setReferenceId("user_$userId");
+                    $createResponse = $customerApi->createCustomer($customerRequest);
+
+                    if ($createResponse->isSuccess()) {
+                        $customerId = $createResponse->getResult()->getCustomer()->getId();
+                    }
+                }
+
+                // Create card on file for recurring billing
+                $cardsApi = $client->getCardsApi();
+                $cardRequest = new \Square\Models\CreateCardRequest(
+                    uniqid('card_', true),
+                    $sourceId,
+                    new \Square\Models\Card()
+                );
+                $cardRequest->getCard()->setCustomerId($customerId);
+
+                $cardResponse = $cardsApi->createCard($cardRequest);
+                $cardId = null;
+
+                if ($cardResponse->isSuccess()) {
+                    $cardId = $cardResponse->getResult()->getCard()->getId();
+                }
+
+                // Process initial payment
+                $paymentsApi = $client->getPaymentsApi();
+                $amountMoney = new \Square\Models\Money();
+                $amountMoney->setAmount(intval($amount * 100));
+                $amountMoney->setCurrency('CAD');
+
+                $paymentRequest = new \Square\Models\CreatePaymentRequest(
+                    $cardId ?? $sourceId,
+                    uniqid('payment_', true)
+                );
+                $paymentRequest->setAmountMoney($amountMoney);
+                $paymentRequest->setLocationId($squareLocationId);
+                $paymentRequest->setCustomerId($customerId);
+                $paymentRequest->setNote("AI Subscription - Initial Payment ($billing)");
+                $paymentRequest->setAutocomplete(true);
+
+                $paymentResponse = $paymentsApi->createPayment($paymentRequest);
+
+                if ($paymentResponse->isSuccess()) {
+                    $payment = $paymentResponse->getResult()->getPayment();
+                    $transactionId = $payment->getId();
+                    $paymentToken = $cardId; // Store card ID for recurring billing
+                } else {
+                    $errors = $paymentResponse->getErrors();
+                    throw new Exception($errors[0]->getDetail() ?? 'Payment failed');
+                }
+
+            } catch (Exception $e) {
+                $pdo->rollBack();
+                error_log("Square error: " . $e->getMessage());
+                echo json_encode(['success' => false, 'error' => 'Payment processing failed']);
+                exit();
+            }
             break;
     }
 
-    // Insert subscription record
+    // Insert subscription record with payment token for recurring billing
     $stmt = $pdo->prepare("
         INSERT INTO ai_subscriptions (
             subscription_id, user_id, email, billing_cycle, amount, currency,
             start_date, end_date, status, payment_method, transaction_id,
-            premium_license_key, discount_applied, created_at
+            premium_license_key, discount_applied, payment_token, auto_renew, created_at
         ) VALUES (
             ?, ?, ?, ?, ?, ?,
             ?, ?, 'active', ?, ?,
-            ?, ?, NOW()
+            ?, ?, ?, 1, NOW()
         )
     ");
 
@@ -114,15 +281,16 @@ try {
         $paymentMethod,
         $transactionId,
         $premiumLicenseKey ?: null,
-        $hasDiscount ? 1 : 0
+        $hasDiscount ? 1 : 0,
+        $paymentToken
     ]);
 
     // Log the payment transaction
     $stmt = $pdo->prepare("
         INSERT INTO ai_subscription_payments (
             subscription_id, amount, currency, payment_method,
-            transaction_id, status, created_at
-        ) VALUES (?, ?, ?, ?, ?, 'completed', NOW())
+            transaction_id, status, payment_type, created_at
+        ) VALUES (?, ?, ?, ?, ?, 'completed', 'initial', NOW())
     ");
 
     $stmt->execute([
@@ -135,9 +303,9 @@ try {
 
     $pdo->commit();
 
-    // Send confirmation email
+    // Send receipt email
     try {
-        sendAISubscriptionEmail($email, $subscriptionId, $billing, $amount, $endDate);
+        send_ai_subscription_receipt($email, $subscriptionId, $billing, $amount, $endDate, $transactionId, $paymentMethod);
     } catch (Exception $e) {
         // Log email error but don't fail the transaction
         error_log("Failed to send AI subscription email: " . $e->getMessage());
@@ -157,78 +325,4 @@ try {
         'success' => false,
         'error' => 'Failed to create subscription. Please contact support.'
     ]);
-}
-
-/**
- * Send AI subscription confirmation email
- */
-function sendAISubscriptionEmail($email, $subscriptionId, $billing, $amount, $endDate) {
-    $subject = "Your Argo AI Subscription is Active!";
-
-    $billingText = $billing === 'yearly' ? 'yearly' : 'monthly';
-    $renewalDate = date('F j, Y', strtotime($endDate));
-
-    $body = "
-    <html>
-    <head>
-        <style>
-            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-            .header { background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; padding: 30px; text-align: center; border-radius: 12px 12px 0 0; }
-            .content { background: #f8fafc; padding: 30px; border-radius: 0 0 12px 12px; }
-            .subscription-box { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border: 1px solid #e5e7eb; }
-            .feature-list { list-style: none; padding: 0; }
-            .feature-list li { padding: 8px 0; padding-left: 24px; position: relative; }
-            .feature-list li:before { content: '✓'; position: absolute; left: 0; color: #8b5cf6; font-weight: bold; }
-            .footer { text-align: center; margin-top: 20px; color: #6b7280; font-size: 14px; }
-        </style>
-    </head>
-    <body>
-        <div class='container'>
-            <div class='header'>
-                <h1>Welcome to Argo AI!</h1>
-            </div>
-            <div class='content'>
-                <p>Hi there,</p>
-                <p>Thank you for subscribing to Argo AI features! Your subscription is now active.</p>
-
-                <div class='subscription-box'>
-                    <h3>Subscription Details</h3>
-                    <p><strong>Subscription ID:</strong> {$subscriptionId}</p>
-                    <p><strong>Plan:</strong> AI Features ({$billingText})</p>
-                    <p><strong>Amount:</strong> \${$amount} CAD/{$billingText}</p>
-                    <p><strong>Next Renewal:</strong> {$renewalDate}</p>
-                </div>
-
-                <h3>What's Included:</h3>
-                <ul class='feature-list'>
-                    <li>AI-powered receipt scanning</li>
-                    <li>Predictive sales analysis</li>
-                    <li>AI business insights</li>
-                    <li>Natural language AI search</li>
-                </ul>
-
-                <p>To activate AI features in the app, go to <strong>Settings > AI Features</strong> and enter your subscription ID.</p>
-
-                <p>If you have any questions, feel free to <a href='https://argorobots.com/contact-us/'>contact our support team</a>.</p>
-
-                <div class='footer'>
-                    <p>Thank you for choosing Argo Sales Tracker!</p>
-                    <p><a href='https://argorobots.com'>argorobots.com</a></p>
-                </div>
-            </div>
-        </div>
-    </body>
-    </html>
-    ";
-
-    // Use existing email function if available, otherwise use mail()
-    if (function_exists('sendEmail')) {
-        sendEmail($email, $subject, $body);
-    } else {
-        $headers = "MIME-Version: 1.0\r\n";
-        $headers .= "Content-type: text/html; charset=UTF-8\r\n";
-        $headers .= "From: Argo Sales Tracker <noreply@argorobots.com>\r\n";
-        mail($email, $subject, $body, $headers);
-    }
 }
