@@ -722,7 +722,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                     </div>
 
                     <div class="plan-cta">
-                        <a href="upgrade/ai-subscription.php" class="btn btn-ai-subscribe">Subscribe Now</a>
+                        <a href="upgrade/ai/" class="btn btn-ai-subscribe">Subscribe Now</a>
                         <p class="plan-note">Cancel anytime</p>
                     </div>
                 </div>

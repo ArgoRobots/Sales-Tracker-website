@@ -7,18 +7,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="AI Subscription Confirmed - Argo Sales Tracker">
     <meta name="author" content="Argo">
-    <link rel="shortcut icon" type="image/x-icon" href="../../images/argo-logo/A-logo.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="../../../images/argo-logo/A-logo.ico">
     <title>AI Subscription Confirmed - Argo Sales Tracker</title>
 
-    <script src="../../resources/scripts/jquery-3.6.0.js"></script>
-    <script src="../../resources/scripts/main.js"></script>
+    <script src="../../../resources/scripts/jquery-3.6.0.js"></script>
+    <script src="../../../resources/scripts/main.js"></script>
 
-    <link rel="stylesheet" href="../../resources/styles/custom-colors.css">
-    <link rel="stylesheet" href="../../resources/styles/link.css">
-    <link rel="stylesheet" href="../../resources/header/style.css">
-    <link rel="stylesheet" href="../../resources/header/dark.css">
-    <link rel="stylesheet" href="../../resources/footer/style.css">
-    <link rel="stylesheet" href="ai-thank-you.css">
+    <link rel="stylesheet" href="../../../resources/styles/custom-colors.css">
+    <link rel="stylesheet" href="../../../resources/styles/link.css">
+    <link rel="stylesheet" href="../../../resources/header/style.css">
+    <link rel="stylesheet" href="../../../resources/header/dark.css">
+    <link rel="stylesheet" href="../../../resources/footer/style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -101,8 +101,8 @@
         </div>
 
         <div class="cta-buttons">
-            <a href="../../download" class="btn-primary">Download Argo Sales Tracker</a>
-            <a href="../../documentation/index.php" class="btn-secondary">View Documentation</a>
+            <a href="../../../download" class="btn-primary">Download Argo Sales Tracker</a>
+            <a href="../../../documentation/index.php" class="btn-secondary">View Documentation</a>
         </div>
     </div>
 

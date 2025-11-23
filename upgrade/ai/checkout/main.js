@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
           onApprove: function (data, actions) {
             return actions.order.capture().then(function (details) {
               // Process the successful payment on our server
-              return fetch("process-ai-subscription.php", {
+              return fetch("process-subscription.php", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 .then((result) => {
                   if (result.success) {
                     window.location.href =
-                      "ai-thank-you.php?subscription_id=" +
+                      "../thank-you/?subscription_id=" +
                       result.subscription_id +
                       "&email=" +
                       encodeURIComponent(details.payer.email_address);
@@ -215,7 +215,7 @@ document.addEventListener("DOMContentLoaded", function () {
           }
 
           // Send to server
-          const response = await fetch("process-ai-subscription.php", {
+          const response = await fetch("process-subscription.php", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -238,7 +238,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
           if (result.success) {
             window.location.href =
-              "ai-thank-you.php?subscription_id=" +
+              "../thank-you/?subscription_id=" +
               result.subscription_id +
               "&email=" +
               encodeURIComponent(email);
@@ -256,7 +256,7 @@ document.addEventListener("DOMContentLoaded", function () {
               )} CAD/${subscription.billing === "yearly" ? "year" : "month"}`;
             } else {
               window.location.href =
-                "ai-thank-you.php?subscription_id=" +
+                "../thank-you/?subscription_id=" +
                 result.subscription_id +
                 "&email=" +
                 encodeURIComponent(email);
@@ -354,7 +354,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (result.status === "OK") {
               const email = document.getElementById("square-email").value;
 
-              const response = await fetch("process-ai-subscription.php", {
+              const response = await fetch("process-subscription.php", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
@@ -376,7 +376,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
               if (data.success) {
                 window.location.href =
-                  "ai-thank-you.php?subscription_id=" +
+                  "../thank-you/?subscription_id=" +
                   data.subscription_id +
                   "&email=" +
                   encodeURIComponent(email);

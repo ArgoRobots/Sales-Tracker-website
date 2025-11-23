@@ -1,9 +1,9 @@
 <?php
 session_start();
-require_once '../community/users/user_functions.php';
+require_once '../../community/users/user_functions.php';
 
 // Require login to access AI subscription page
-require_login('/upgrade/ai-subscription.php');
+require_login('/upgrade/ai/');
 
 $user_id = $_SESSION['user_id'];
 $user = get_user($user_id);
@@ -31,18 +31,18 @@ $user = get_user($user_id);
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Argo Sales Tracker">
 
-    <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="../../images/argo-logo/A-logo.ico">
     <title>AI Subscription - Argo Sales Tracker</title>
 
-    <script src="../resources/scripts/jquery-3.6.0.js"></script>
-    <script src="../resources/scripts/main.js"></script>
+    <script src="../../resources/scripts/jquery-3.6.0.js"></script>
+    <script src="../../resources/scripts/main.js"></script>
 
+    <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="ai-subscription.css">
-    <link rel="stylesheet" href="../resources/styles/custom-colors.css">
-    <link rel="stylesheet" href="../resources/styles/link.css">
-    <link rel="stylesheet" href="../resources/header/style.css">
-    <link rel="stylesheet" href="../resources/footer/style.css">
+    <link rel="stylesheet" href="../../resources/styles/custom-colors.css">
+    <link rel="stylesheet" href="../../resources/styles/link.css">
+    <link rel="stylesheet" href="../../resources/header/style.css">
+    <link rel="stylesheet" href="../../resources/footer/style.css">
 </head>
 
 <body>
@@ -158,15 +158,15 @@ $user = get_user($user_id);
                 <h3>Select Payment Method</h3>
                 <div class="payment-grid">
                     <button class="payment-btn" id="pay-paypal">
-                        <img src="../images/PayPal-logo.svg" alt="PayPal">
+                        <img src="../../images/PayPal-logo.svg" alt="PayPal">
                         <span>Pay with PayPal</span>
                     </button>
                     <button class="payment-btn" id="pay-stripe">
-                        <img class="Stripe" src="../images/Stripe-logo.svg" alt="Stripe">
+                        <img class="Stripe" src="../../images/Stripe-logo.svg" alt="Stripe">
                         <span>Pay with Stripe</span>
                     </button>
                     <button class="payment-btn" id="pay-square">
-                        <img class="Square" src="../images/Square-logo.svg" alt="Square">
+                        <img class="Square" src="../../images/Square-logo.svg" alt="Square">
                         <span>Pay with Square</span>
                     </button>
                 </div>
@@ -264,7 +264,7 @@ $user = get_user($user_id);
                 statusEl.innerHTML = '<span class="loading">Verifying...</span>';
 
                 try {
-                    const response = await fetch('../check_license.php', {
+                    const response = await fetch('../../check_license.php', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -337,7 +337,7 @@ $user = get_user($user_id);
                     params.append('license', verifiedLicenseKey);
                 }
 
-                return 'checkout/ai-checkout.php?' + params.toString();
+                return 'checkout/?' + params.toString();
             }
 
             document.getElementById('pay-paypal').addEventListener('click', function() {

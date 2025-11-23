@@ -6,8 +6,8 @@
 
 header('Content-Type: application/json');
 
-require_once '../../db_connect.php';
-require_once '../../email_sender.php';
+require_once '../../../db_connect.php';
+require_once '../../../email_sender.php';
 
 // Only accept POST requests
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

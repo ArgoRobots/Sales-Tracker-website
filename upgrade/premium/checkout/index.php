@@ -8,12 +8,12 @@
     <meta name="description" content="Checkout - Argo Sales Tracker">
     <meta name="keywords" content="sales tracker, business software, analytics">
     <meta name="author" content="Argo">
-    <link rel="shortcut icon" type="image/x-icon" href="../../images/argo-logo/A-logo.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="../../../images/argo-logo/A-logo.ico">
     <title>Checkout - Argo Sales Tracker</title>
 
     <?php
     // Load environment variables
-    require_once '../../db_connect.php';
+    require_once '../../../db_connect.php';
 
     // Get environment-based keys
     $is_production = $_ENV['APP_ENV'] === 'production';
@@ -54,17 +54,17 @@
     </script>
 
     <script src="main.js"></script>
-    <script src="../../resources/scripts/jquery-3.6.0.js"></script>
-    <script src="../../resources/scripts/main.js"></script>
-    <script src="../../resources/scripts/ScrollToCenter.js"></script>
+    <script src="../../../resources/scripts/jquery-3.6.0.js"></script>
+    <script src="../../../resources/scripts/main.js"></script>
+    <script src="../../../resources/scripts/ScrollToCenter.js"></script>
     <!-- All payment SDKs (PayPal, Stripe, and Square) are loaded conditionally in main.js to ensure better performance -->
 
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="../../resources/styles/custom-colors.css">
-    <link rel="stylesheet" href="../../resources/styles/link.css">
-    <link rel="stylesheet" href="../../resources/header/style.css">
-    <link rel="stylesheet" href="../../resources/header/dark.css">
-    <link rel="stylesheet" href="../../resources/footer/style.css">
+    <link rel="stylesheet" href="../../../resources/styles/custom-colors.css">
+    <link rel="stylesheet" href="../../../resources/styles/link.css">
+    <link rel="stylesheet" href="../../../resources/header/style.css">
+    <link rel="stylesheet" href="../../../resources/header/dark.css">
+    <link rel="stylesheet" href="../../../resources/footer/style.css">
 </head>
 
 <body>

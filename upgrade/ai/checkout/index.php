@@ -7,16 +7,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="AI Subscription Checkout - Argo Sales Tracker">
     <meta name="author" content="Argo">
-    <link rel="shortcut icon" type="image/x-icon" href="../../images/argo-logo/A-logo.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="../../../images/argo-logo/A-logo.ico">
     <title>AI Subscription Checkout - Argo Sales Tracker</title>
 
     <?php
     session_start();
-    require_once '../../db_connect.php';
-    require_once '../../community/users/user_functions.php';
+    require_once '../../../db_connect.php';
+    require_once '../../../community/users/user_functions.php';
 
     // Require login to checkout
-    require_login('/upgrade/ai-subscription.php');
+    require_login('/upgrade/ai/');
 
     $user_id = $_SESSION['user_id'];
     $user_email = $_SESSION['email'] ?? '';
@@ -106,17 +106,16 @@
         };
     </script>
 
-    <script src="ai-checkout.js"></script>
-    <script src="../../resources/scripts/jquery-3.6.0.js"></script>
-    <script src="../../resources/scripts/main.js"></script>
+    <script src="main.js"></script>
+    <script src="../../../resources/scripts/jquery-3.6.0.js"></script>
+    <script src="../../../resources/scripts/main.js"></script>
 
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="ai-checkout.css">
-    <link rel="stylesheet" href="../../resources/styles/custom-colors.css">
-    <link rel="stylesheet" href="../../resources/styles/link.css">
-    <link rel="stylesheet" href="../../resources/header/style.css">
-    <link rel="stylesheet" href="../../resources/header/dark.css">
-    <link rel="stylesheet" href="../../resources/footer/style.css">
+    <link rel="stylesheet" href="../../../resources/styles/custom-colors.css">
+    <link rel="stylesheet" href="../../../resources/styles/link.css">
+    <link rel="stylesheet" href="../../../resources/header/style.css">
+    <link rel="stylesheet" href="../../../resources/header/dark.css">
+    <link rel="stylesheet" href="../../../resources/footer/style.css">
 </head>
 
 <body>

@@ -773,12 +773,12 @@ function handle_password_change()
                     <?php elseif ($ai_subscription['status'] === 'cancelled'): ?>
                         <div class="subscription-notice cancelled">
                             <p>Your subscription has been cancelled. AI features will remain active until <strong><?php echo date('F j, Y', strtotime($ai_subscription['end_date'])); ?></strong>.</p>
-                            <a href="../../upgrade/ai-subscription.php" class="btn btn-blue">Resubscribe</a>
+                            <a href="../../upgrade/ai/" class="btn btn-blue">Resubscribe</a>
                         </div>
                     <?php elseif ($ai_subscription['status'] === 'expired'): ?>
                         <div class="subscription-notice expired">
                             <p>Your subscription has expired.</p>
-                            <a href="../../upgrade/ai-subscription.php" class="btn btn-blue">Renew Subscription</a>
+                            <a href="../../upgrade/ai/" class="btn btn-blue">Renew Subscription</a>
                         </div>
                     <?php endif; ?>
                 </div>
@@ -786,7 +786,7 @@ function handle_password_change()
                 <div class="no-subscription">
                     <p>You don't have an active AI subscription.</p>
                     <p class="info-text">Get access to AI-powered features like receipt scanning, predictive analysis, and natural language search.</p>
-                    <a href="../../upgrade/ai-subscription.php" class="btn btn-blue">Subscribe to AI Features</a>
+                    <a href="../../upgrade/ai/" class="btn btn-blue">Subscribe to AI Features</a>
                 </div>
             <?php endif; ?>
         </div>

@@ -3,9 +3,9 @@
 header('Content-Type: application/json');
 
 // Load database connection and license functions
-require_once '../../db_connect.php';
-require_once '../../license_functions.php';
-require_once '../../email_sender.php';
+require_once '../../../db_connect.php';
+require_once '../../../license_functions.php';
+require_once '../../../email_sender.php';
 
 // Get raw POST data
 $json_data = file_get_contents('php://input');

@@ -21,18 +21,18 @@
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Argo Sales Tracker">
 
-    <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="../../images/argo-logo/A-logo.ico">
     <title>Get Premium - Argo Sales Tracker | $20 CAD Lifetime Access</title>
 
-    <script src="../resources/scripts/jquery-3.6.0.js"></script>
-    <script src="../resources/scripts/main.js"></script>
+    <script src="../../resources/scripts/jquery-3.6.0.js"></script>
+    <script src="../../resources/scripts/main.js"></script>
 
+    <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="premium.css">
-    <link rel="stylesheet" href="../resources/styles/custom-colors.css">
-    <link rel="stylesheet" href="../resources/styles/link.css">
-    <link rel="stylesheet" href="../resources/header/style.css">
-    <link rel="stylesheet" href="../resources/footer/style.css">
+    <link rel="stylesheet" href="../../resources/styles/custom-colors.css">
+    <link rel="stylesheet" href="../../resources/styles/link.css">
+    <link rel="stylesheet" href="../../resources/header/style.css">
+    <link rel="stylesheet" href="../../resources/footer/style.css">
 </head>
 
 <body>
@@ -42,7 +42,7 @@
 
     <section class="premium-hero">
         <div class="container">
-            <a href="index.php" class="back-link">
+            <a href="../index.php" class="back-link">
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M19 12H5M12 19l-7-7 7-7"/>
                 </svg>
@@ -101,17 +101,17 @@
 
                     <div class="payment-options">
                         <button class="payment-option" onclick="window.location.href='checkout/index.php?method=paypal'">
-                            <img src="../images/PayPal-logo.svg" alt="PayPal">
+                            <img src="../../images/PayPal-logo.svg" alt="PayPal">
                             <span class="payment-desc">PayPal balance or linked card</span>
                         </button>
 
                         <button class="payment-option" onclick="window.location.href='checkout/index.php?method=stripe'">
-                            <img src="../images/Stripe-logo.svg" alt="Stripe">
+                            <img src="../../images/Stripe-logo.svg" alt="Stripe">
                             <span class="payment-desc">Visa, Mastercard, Amex via Stripe</span>
                         </button>
 
                         <button class="payment-option" onclick="window.location.href='checkout/index.php?method=square'">
-                            <img src="../images/Square-logo.svg" alt="Square">
+                            <img src="../../images/Square-logo.svg" alt="Square">
                             <span class="payment-desc">Visa, Mastercard, Amex via Square</span>
                         </button>
                     </div>

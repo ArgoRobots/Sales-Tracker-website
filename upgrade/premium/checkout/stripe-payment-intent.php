@@ -1,7 +1,7 @@
 <?php
-require_once '../../vendor/autoload.php';
-require_once '../../db_connect.php';
-require_once '../../license_functions.php';
+require_once '../../../vendor/autoload.php';
+require_once '../../../db_connect.php';
+require_once '../../../license_functions.php';
 
 // Set headers for JSON response
 header('Content-Type: application/json');
