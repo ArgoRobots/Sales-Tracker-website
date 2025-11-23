@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     check_remember_me();
 }
 
-require_login('', true);
+require_login();
 
 $is_logged_in = isset($_SESSION['user_id']);
 $requested_username = isset($_GET['username']) ? trim($_GET['username']) : '';

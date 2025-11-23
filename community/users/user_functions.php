@@ -572,22 +572,20 @@ namespace {
 
     /**
      * Require user to be logged in, redirect to login if not
-     * 
-     * @param string $redirect_url URL to redirect to after login
-     * @param bool $force_redirect If true, will always redirect non-logged users, otherwise allows read-only access
+     *
+     * @param string $redirect_url URL to redirect to after login (optional, defaults to current page)
      */
-    function require_login($redirect_url = '', $force_redirect = false)
+    function require_login($redirect_url = '')
     {
-        // For pages that require login for viewing (force_redirect=true), redirect to login
-        if ($force_redirect && !is_user_logged_in()) {
+        if (!is_user_logged_in()) {
             $current_url = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
             $redirect = !empty($redirect_url) ? $redirect_url : $current_url;
 
             // Store the intended destination for after login
             $_SESSION['redirect_after_login'] = $redirect;
 
-            // Redirect to login page
-            header('Location: login.php');
+            // Redirect to login page using absolute path
+            header('Location: /community/users/login.php');
             exit;
         }
     }

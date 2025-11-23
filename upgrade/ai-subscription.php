@@ -3,7 +3,7 @@ session_start();
 require_once '../community/users/user_functions.php';
 
 // Require login to access AI subscription page
-require_login('../upgrade/ai-subscription.php', true);
+require_login('/upgrade/ai-subscription.php');
 
 $user_id = $_SESSION['user_id'];
 $user = get_user($user_id);
