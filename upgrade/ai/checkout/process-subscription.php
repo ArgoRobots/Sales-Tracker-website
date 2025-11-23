@@ -272,13 +272,11 @@ try {
         INSERT INTO ai_subscriptions (
             subscription_id, user_id, email, billing_cycle, amount, currency,
             start_date, end_date, status, payment_method, transaction_id,
-            premium_license_key, discount_applied, payment_token, auto_renew,
-            paypal_subscription_id, created_at
+            premium_license_key, discount_applied, payment_token, auto_renew, created_at
         ) VALUES (
             ?, ?, ?, ?, ?, ?,
             ?, ?, 'active', ?, ?,
-            ?, ?, ?, 1,
-            ?, NOW()
+            ?, ?, ?, 1, NOW()
         )
     ");
 
@@ -295,9 +293,19 @@ try {
         $transactionId,
         $premiumLicenseKey ?: null,
         $hasDiscount ? 1 : 0,
-        $paymentToken,
-        $paypalSubscriptionId
+        $paymentToken
     ]);
+
+    // Update with PayPal subscription ID if applicable (column may not exist in older schema)
+    if ($paypalSubscriptionId) {
+        try {
+            $stmt = $pdo->prepare("UPDATE ai_subscriptions SET paypal_subscription_id = ? WHERE subscription_id = ?");
+            $stmt->execute([$paypalSubscriptionId, $subscriptionId]);
+        } catch (PDOException $e) {
+            // Column may not exist yet - log but don't fail
+            error_log("Could not set paypal_subscription_id (column may not exist): " . $e->getMessage());
+        }
+    }
 
     // Log the payment transaction
     $stmt = $pdo->prepare("
