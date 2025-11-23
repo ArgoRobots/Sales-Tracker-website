@@ -124,9 +124,16 @@ foreach ($subscriptions as $subscription) {
                 $paymentResult = processSquareRenewal($paymentToken, $amount, $subscriptionId, $email, $squareAccessToken, $squareEnvironment);
                 break;
             case 'paypal':
-                // PayPal requires different handling - typically webhooks for recurring
-                // For now, mark for manual processing or use PayPal subscriptions API
-                logMessage("PayPal renewals require PayPal Subscriptions API - skipping for manual handling", 'WARNING');
+                // Check if this is a PayPal Subscription (managed by PayPal)
+                if (!empty($subscription['paypal_subscription_id'])) {
+                    // PayPal Subscriptions are automatically renewed by PayPal
+                    // Renewals are handled via PayPal webhooks
+                    logMessage("PayPal subscription {$subscription['paypal_subscription_id']} - managed by PayPal webhooks", 'INFO');
+                    $skippedCount++;
+                    continue 2;
+                }
+                // One-time PayPal payment - no recurring billing available
+                logMessage("PayPal one-time payment - no recurring billing token available", 'WARNING');
                 $skippedCount++;
                 continue 2;
             default:

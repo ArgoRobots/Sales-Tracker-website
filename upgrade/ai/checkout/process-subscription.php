@@ -83,12 +83,23 @@ try {
     $transactionId = '';
     $paymentToken = null; // Token for recurring billing
 
+    // Check if this is a PayPal subscription
+    $paypalSubscriptionId = null;
+
     switch ($paymentMethod) {
         case 'paypal':
-            $transactionId = $input['orderID'] ?? '';
-            // PayPal one-time payments don't provide reusable tokens
-            // Would need PayPal Subscriptions API for true recurring
-            $paymentToken = null;
+            $isPayPalSubscription = $input['is_paypal_subscription'] ?? false;
+
+            if ($isPayPalSubscription) {
+                // PayPal Subscriptions API - recurring billing handled by PayPal
+                $paypalSubscriptionId = $input['paypal_subscription_id'] ?? $input['subscriptionID'] ?? '';
+                $transactionId = $paypalSubscriptionId;
+                $paymentToken = $paypalSubscriptionId; // Store subscription ID as token
+            } else {
+                // One-time PayPal payment (fallback)
+                $transactionId = $input['orderID'] ?? '';
+                $paymentToken = null;
+            }
             break;
 
         case 'stripe':
@@ -261,11 +272,13 @@ try {
         INSERT INTO ai_subscriptions (
             subscription_id, user_id, email, billing_cycle, amount, currency,
             start_date, end_date, status, payment_method, transaction_id,
-            premium_license_key, discount_applied, payment_token, auto_renew, created_at
+            premium_license_key, discount_applied, payment_token, auto_renew,
+            paypal_subscription_id, created_at
         ) VALUES (
             ?, ?, ?, ?, ?, ?,
             ?, ?, 'active', ?, ?,
-            ?, ?, ?, 1, NOW()
+            ?, ?, ?, 1,
+            ?, NOW()
         )
     ");
 
@@ -282,7 +295,8 @@ try {
         $transactionId,
         $premiumLicenseKey ?: null,
         $hasDiscount ? 1 : 0,
-        $paymentToken
+        $paymentToken,
+        $paypalSubscriptionId
     ]);
 
     // Log the payment transaction

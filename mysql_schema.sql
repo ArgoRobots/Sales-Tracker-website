@@ -299,9 +299,12 @@ CREATE TABLE IF NOT EXISTS ai_subscriptions (
     currency VARCHAR(3) NOT NULL DEFAULT 'CAD',
     start_date DATETIME NOT NULL,
     end_date DATETIME NOT NULL,
-    status ENUM('active', 'cancelled', 'expired', 'past_due') NOT NULL DEFAULT 'active',
+    status ENUM('active', 'cancelled', 'expired', 'past_due', 'payment_failed') NOT NULL DEFAULT 'active',
     payment_method VARCHAR(50),
     transaction_id VARCHAR(100),
+    payment_token VARCHAR(255) COMMENT 'Stored payment method token for recurring billing',
+    auto_renew TINYINT(1) DEFAULT 1 COMMENT 'Whether to auto-renew the subscription',
+    paypal_subscription_id VARCHAR(100) COMMENT 'PayPal subscription ID for recurring billing',
     premium_license_key VARCHAR(255),
     discount_applied TINYINT(1) DEFAULT 0,
     cancelled_at DATETIME DEFAULT NULL,
@@ -313,6 +316,7 @@ CREATE TABLE IF NOT EXISTS ai_subscriptions (
     INDEX idx_status (status),
     INDEX idx_end_date (end_date),
     INDEX idx_premium_license (premium_license_key),
+    INDEX idx_renewal (status, end_date, auto_renew),
     FOREIGN KEY (user_id) REFERENCES community_users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -325,10 +329,13 @@ CREATE TABLE IF NOT EXISTS ai_subscription_payments (
     payment_method VARCHAR(50) NOT NULL,
     transaction_id VARCHAR(100),
     status ENUM('pending', 'completed', 'failed', 'refunded') NOT NULL DEFAULT 'pending',
+    payment_type ENUM('initial', 'renewal', 'manual') DEFAULT 'initial' COMMENT 'Type of payment',
+    error_message TEXT NULL COMMENT 'Error message if payment failed',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     INDEX idx_subscription_id (subscription_id),
     INDEX idx_status (status),
-    INDEX idx_created_at (created_at)
+    INDEX idx_created_at (created_at),
+    INDEX idx_payment_type (payment_type)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Add indexes for license_keys table

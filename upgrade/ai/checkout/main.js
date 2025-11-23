@@ -37,6 +37,15 @@ document.addEventListener("DOMContentLoaded", function () {
       document.querySelector(".checkout-form").appendChild(paypalContainer);
     }
 
+    // Get the appropriate PayPal plan ID based on billing cycle
+    const paypalConfig = window.PAYMENT_CONFIG.paypal;
+    const planId = subscription.billing === "yearly"
+      ? paypalConfig.yearlyPlanId
+      : paypalConfig.monthlyPlanId;
+
+    // Determine if we should use subscription mode (requires plan IDs)
+    const useSubscriptionMode = planId && planId.length > 0;
+
     // Check if PayPal is defined
     if (typeof paypal === "undefined") {
       // Show loading message
@@ -47,9 +56,13 @@ document.addEventListener("DOMContentLoaded", function () {
       </div>
     `;
 
-      // Load PayPal SDK dynamically
+      // Load PayPal SDK dynamically with appropriate intent
       const paypalScript = document.createElement("script");
-      paypalScript.src = `https://www.paypal.com/sdk/js?client-id=${window.PAYMENT_CONFIG.paypal.clientId}&currency=CAD`;
+      if (useSubscriptionMode) {
+        paypalScript.src = `https://www.paypal.com/sdk/js?client-id=${paypalConfig.clientId}&currency=CAD&vault=true&intent=subscription`;
+      } else {
+        paypalScript.src = `https://www.paypal.com/sdk/js?client-id=${paypalConfig.clientId}&currency=CAD`;
+      }
       paypalScript.onload = initializePayPal;
       paypalScript.onerror = () => {
         paypalContainer.innerHTML = `
@@ -67,86 +80,144 @@ document.addEventListener("DOMContentLoaded", function () {
       // Clear loading message
       paypalContainer.innerHTML = "";
 
-      // For now, use standard order for AI subscription
-      // In production, you would set up PayPal subscriptions
-      paypal
-        .Buttons({
-          style: {
-            shape: "rect",
-            color: "blue",
-            layout: "vertical",
-            label: "pay",
-          },
-          createOrder: function (data, actions) {
-            return actions.order.create({
-              purchase_units: [
-                {
-                  description: `Argo AI Subscription (${subscription.billing})`,
-                  amount: {
-                    value: subscription.finalPrice.toFixed(2),
-                    currency_code: "CAD",
-                  },
-                },
-              ],
-            });
-          },
-          onApprove: function (data, actions) {
-            return actions.order.capture().then(function (details) {
-              // Process the successful payment on our server
-              return fetch("process-subscription.php", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  orderID: data.orderID,
-                  payerID: data.payerID,
-                  amount: subscription.finalPrice.toFixed(2),
-                  currency: "CAD",
-                  billing: subscription.billing,
-                  hasDiscount: subscription.hasDiscount,
-                  premiumLicenseKey: subscription.licenseKey,
-                  status: "completed",
-                  payer_email: details.payer.email_address,
-                  payer_name:
-                    details.payer.name.given_name +
-                    " " +
-                    details.payer.name.surname,
-                  payment_method: "paypal",
-                  user_id: subscription.userId,
-                }),
-              })
-                .then((response) => response.json())
-                .then((result) => {
-                  if (result.success) {
-                    window.location.href =
-                      "../thank-you/?subscription_id=" +
-                      result.subscription_id +
-                      "&email=" +
-                      encodeURIComponent(details.payer.email_address);
-                  } else {
-                    alert(
-                      "Payment was successful but there was an error setting up your subscription. Please contact support."
-                    );
-                  }
-                })
-                .catch((error) => {
-                  console.error("Error:", error);
-                  alert("An error occurred. Please contact support.");
-                });
-            });
-          },
-          onError: function (err) {
-            console.error("PayPal error:", err);
-            paypalContainer.innerHTML = `
+      // Configure buttons based on mode
+      const buttonConfig = {
+        style: {
+          shape: "rect",
+          color: "blue",
+          layout: "vertical",
+          label: useSubscriptionMode ? "subscribe" : "pay",
+        },
+        onError: function (err) {
+          console.error("PayPal error:", err);
+          paypalContainer.innerHTML = `
             <div style="text-align: center; padding: 40px 0; color: #b91c1c;">
               <p>Payment failed. Please try again or choose a different payment method.</p>
               <button onclick="location.reload()" style="margin-top: 15px; padding: 10px 20px; cursor: pointer;">Retry</button>
             </div>
           `;
-          },
-        })
-        .render("#paypal-button-container");
+        },
+      };
+
+      if (useSubscriptionMode) {
+        // Use PayPal Subscriptions API for true recurring billing
+        buttonConfig.createSubscription = function (data, actions) {
+          return actions.subscription.create({
+            plan_id: planId,
+            custom_id: `user_${subscription.userId}`,
+            application_context: {
+              shipping_preference: "NO_SHIPPING",
+            },
+          });
+        };
+
+        buttonConfig.onApprove = function (data, actions) {
+          // Process the successful subscription on our server
+          return fetch("process-subscription.php", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              subscriptionID: data.subscriptionID,
+              orderID: data.orderID,
+              paypal_subscription_id: data.subscriptionID,
+              amount: subscription.finalPrice.toFixed(2),
+              currency: "CAD",
+              billing: subscription.billing,
+              hasDiscount: subscription.hasDiscount,
+              premiumLicenseKey: subscription.licenseKey,
+              status: "completed",
+              email: subscription.userEmail,
+              payment_method: "paypal",
+              user_id: subscription.userId,
+              is_paypal_subscription: true,
+            }),
+          })
+            .then((response) => response.json())
+            .then((result) => {
+              if (result.success) {
+                window.location.href =
+                  "../thank-you/?subscription_id=" +
+                  result.subscription_id +
+                  "&email=" +
+                  encodeURIComponent(subscription.userEmail);
+              } else {
+                alert(
+                  result.error || "Payment was successful but there was an error setting up your subscription. Please contact support."
+                );
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              alert("An error occurred. Please contact support.");
+            });
+        };
+      } else {
+        // Use one-time payment (fallback when no plan IDs configured)
+        buttonConfig.createOrder = function (data, actions) {
+          return actions.order.create({
+            purchase_units: [
+              {
+                description: `Argo AI Subscription (${subscription.billing})`,
+                amount: {
+                  value: subscription.finalPrice.toFixed(2),
+                  currency_code: "CAD",
+                },
+              },
+            ],
+          });
+        };
+
+        buttonConfig.onApprove = function (data, actions) {
+          return actions.order.capture().then(function (details) {
+            // Process the successful payment on our server
+            return fetch("process-subscription.php", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                orderID: data.orderID,
+                payerID: data.payerID,
+                amount: subscription.finalPrice.toFixed(2),
+                currency: "CAD",
+                billing: subscription.billing,
+                hasDiscount: subscription.hasDiscount,
+                premiumLicenseKey: subscription.licenseKey,
+                status: "completed",
+                payer_email: details.payer.email_address,
+                payer_name:
+                  details.payer.name.given_name +
+                  " " +
+                  details.payer.name.surname,
+                payment_method: "paypal",
+                user_id: subscription.userId,
+              }),
+            })
+              .then((response) => response.json())
+              .then((result) => {
+                if (result.success) {
+                  window.location.href =
+                    "../thank-you/?subscription_id=" +
+                    result.subscription_id +
+                    "&email=" +
+                    encodeURIComponent(details.payer.email_address);
+                } else {
+                  alert(
+                    "Payment was successful but there was an error setting up your subscription. Please contact support."
+                  );
+                }
+              })
+              .catch((error) => {
+                console.error("Error:", error);
+                alert("An error occurred. Please contact support.");
+              });
+          });
+        };
+      }
+
+      paypal.Buttons(buttonConfig).render("#paypal-button-container");
     }
   }
 

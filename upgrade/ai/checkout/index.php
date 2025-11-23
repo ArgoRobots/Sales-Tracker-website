@@ -32,6 +32,15 @@
         ? $_ENV['PAYPAL_LIVE_CLIENT_ID']
         : $_ENV['PAYPAL_SANDBOX_CLIENT_ID'];
 
+    // PayPal subscription plan IDs (create these in PayPal dashboard)
+    $paypal_monthly_plan_id = $is_production
+        ? ($_ENV['PAYPAL_LIVE_MONTHLY_PLAN_ID'] ?? '')
+        : ($_ENV['PAYPAL_SANDBOX_MONTHLY_PLAN_ID'] ?? '');
+
+    $paypal_yearly_plan_id = $is_production
+        ? ($_ENV['PAYPAL_LIVE_YEARLY_PLAN_ID'] ?? '')
+        : ($_ENV['PAYPAL_SANDBOX_YEARLY_PLAN_ID'] ?? '');
+
     $square_app_id = $is_production
         ? $_ENV['SQUARE_LIVE_APP_ID']
         : $_ENV['SQUARE_SANDBOX_APP_ID'];
@@ -86,7 +95,9 @@
                 publishableKey: '<?php echo $stripe_publishable_key; ?>'
             },
             paypal: {
-                clientId: '<?php echo $paypal_client_id; ?>'
+                clientId: '<?php echo $paypal_client_id; ?>',
+                monthlyPlanId: '<?php echo $paypal_monthly_plan_id; ?>',
+                yearlyPlanId: '<?php echo $paypal_yearly_plan_id; ?>'
             },
             square: {
                 appId: '<?php echo $square_app_id; ?>',
