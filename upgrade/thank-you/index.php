@@ -140,7 +140,7 @@
         </div>
 
         <div class="cta-buttons">
-            <a href="../../download/index.php" class="btn-primary">Download Argo Sales Tracker</a>
+            <a href="../../download" class="btn-primary">Download Argo Sales Tracker</a>
             <a href="../../documentation/index.php" class="btn-secondary">View Documentation</a>
         </div>
     </div>
