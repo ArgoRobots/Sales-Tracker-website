@@ -327,13 +327,11 @@ $user = get_user($user_id);
             function getCheckoutUrl(method) {
                 const params = new URLSearchParams({
                     method: method,
-                    type: 'ai-subscription',
-                    billing: currentBilling,
-                    discount: hasDiscount ? '1' : '0',
-                    user_id: '<?php echo $user_id; ?>'
+                    billing: currentBilling
                 });
 
-                if (verifiedLicenseKey) {
+                if (hasDiscount && verifiedLicenseKey) {
+                    params.append('discount', '1');
                     params.append('license', verifiedLicenseKey);
                 }
 
