@@ -1,6 +1,7 @@
 <?php
 
 namespace {
+    require_once __DIR__ . '/../../db_connect.php';
     require_once __DIR__ . '/../../email_sender.php';
 
     /**
