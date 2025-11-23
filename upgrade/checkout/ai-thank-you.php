@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="../../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../../resources/styles/link.css">
     <link rel="stylesheet" href="../../resources/header/style.css">
+    <link rel="stylesheet" href="../../resources/header/dark.css">
     <link rel="stylesheet" href="../../resources/footer/style.css">
 
     <style>
@@ -318,7 +319,7 @@
         </div>
 
         <div class="cta-buttons">
-            <a href="../../download/index.php" class="btn-primary">Download Argo</a>
+            <a href="../../download/index.php" class="btn-primary">Download Argo Sales Tracker</a>
             <a href="../../documentation/index.php" class="btn-secondary">View Documentation</a>
         </div>
     </div>
