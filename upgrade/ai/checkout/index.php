@@ -111,6 +111,7 @@
     <script src="../../../resources/scripts/main.js"></script>
 
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../premium/checkout/style.css">
     <link rel="stylesheet" href="../../../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../../../resources/styles/link.css">
     <link rel="stylesheet" href="../../../resources/header/style.css">
