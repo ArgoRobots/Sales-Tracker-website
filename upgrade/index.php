@@ -9,14 +9,14 @@
 
     <!-- SEO Meta Tags -->
     <meta name="description"
-        content="Upgrade to Argo Sales Tracker full version for just $20 CAD. Get unlimited products, AI search, Windows Hello, and priority support. Lifetime access with no monthly fees or subscriptions.">
+        content="Upgrade to Argo Sales Tracker full version for just $20 CAD. Get unlimited products, Windows Hello, and priority support. Lifetime access with no monthly fees. AI features available with subscription.">
     <meta name="keywords"
-        content="upgrade argo sales tracker, buy full version, lifetime access software, unlimited products, business software pricing, sales tracker premium, one time payment, no subscription">
+        content="upgrade argo sales tracker, buy full version, lifetime access software, unlimited products, business software pricing, sales tracker premium, one time payment, AI subscription">
 
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Upgrade to Premium - Argo Sales Tracker | $20 CAD Lifetime Access">
     <meta property="og:description"
-        content="Upgrade to Argo Sales Tracker full version for just $20 CAD. Get unlimited products, AI search, Windows Hello, and priority support. Lifetime access with no monthly fees or subscriptions.">
+        content="Upgrade to Argo Sales Tracker full version for just $20 CAD. Get unlimited products, Windows Hello, and priority support. Lifetime access with no monthly fees. AI features available with subscription.">
     <meta property="og:url" content="https://argorobots.com/upgrade/">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Argo Sales Tracker">
@@ -26,7 +26,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Upgrade to Premium - Argo Sales Tracker | $20 CAD Lifetime Access">
     <meta name="twitter:description"
-        content="Upgrade to Argo Sales Tracker full version for just $20 CAD. Get unlimited products, AI search, Windows Hello, and priority support. Lifetime access with no monthly fees or subscriptions.">
+        content="Upgrade to Argo Sales Tracker full version for just $20 CAD. Get unlimited products, Windows Hello, and priority support. Lifetime access with no monthly fees. AI features available with subscription.">
 
     <!-- Additional SEO Meta Tags -->
     <meta name="geo.region" content="CA-AB">
@@ -91,7 +91,7 @@
                                 <svg viewBox="0 0 24 24">
                                     <path d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                AI search
+                                Lifetime updates
                             </li>
                             <li>
                                 <svg viewBox="0 0 24 24">
@@ -143,13 +143,14 @@
                     <div class="icon-container">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="10" cy="10" r="6"></circle>
-                            <line x1="21" y1="21" x2="15" y2="15"></line>
+                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
                         </svg>
                     </div>
-                    <h3>AI search</h3>
-                    <p>Ask questions in plain English to find exactly what you need. Just type an exclamation mark (!)
-                        followed by your query like "!show me high-value sales from last month"</p>
+                    <h3>Lifetime Updates</h3>
+                    <p>Get all future updates at no extra cost. Your one-time payment covers every new feature,
+                        improvement, and security update we release for the lifetime of the product.</p>
                 </div>
 
                 <div class="feature-card">
@@ -162,6 +163,60 @@
                     </div>
                     <h3>Priority Support</h3>
                     <p>Get fast, personalized support from our dedicated customer support team.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Subscription Section -->
+    <section class="ai-subscription-promo">
+        <div class="container">
+            <div class="ai-promo-content">
+                <div class="ai-promo-text">
+                    <div class="ai-badge">AI-Powered</div>
+                    <h2>Unlock AI Features</h2>
+                    <p>Take your business to the next level with our AI subscription. Get intelligent receipt scanning,
+                        predictive sales analysis, and natural language search.</p>
+                    <ul class="ai-features-list">
+                        <li>
+                            <svg viewBox="0 0 24 24">
+                                <path d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            AI-powered receipt scanning
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24">
+                                <path d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Predictive sales analysis
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24">
+                                <path d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            AI business insights
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24">
+                                <path d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Natural language AI search
+                        </li>
+                    </ul>
+                </div>
+                <div class="ai-promo-pricing">
+                    <div class="ai-price-card">
+                        <h3>AI Subscription</h3>
+                        <div class="ai-price">
+                            <span class="price-amount">$5</span>
+                            <span class="price-period">CAD/month</span>
+                        </div>
+                        <p class="price-yearly">or $50 CAD/year (save $10)</p>
+                        <div class="premium-discount">
+                            <span>Premium users get $20 off!</span>
+                        </div>
+                        <a href="ai-subscription.php" class="btn-ai-subscribe">Subscribe to AI</a>
+                    </div>
                 </div>
             </div>
         </div>

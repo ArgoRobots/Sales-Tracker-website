@@ -1,0 +1,386 @@
+/* AI Subscription Page Styles */
+
+/* Hero Section */
+.ai-hero {
+    background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 50%, #a78bfa 100%);
+    color: white;
+    padding: 100px 0 80px;
+    text-align: center;
+}
+
+.ai-badge-large {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 24px;
+}
+
+.ai-hero h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.ai-hero p {
+    font-size: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+    .ai-hero {
+        padding: 80px 0 60px;
+    }
+
+    .ai-hero h1 {
+        font-size: 32px;
+    }
+
+    .ai-hero p {
+        font-size: 16px;
+    }
+}
+
+/* Features Showcase */
+.ai-features-showcase {
+    padding: 80px 0;
+    background: #f8fafc;
+}
+
+.ai-features-showcase h2 {
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 48px;
+    color: #1f2937;
+}
+
+.ai-features-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+}
+
+@media (max-width: 992px) {
+    .ai-features-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .ai-features-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.ai-feature-card {
+    background: white;
+    padding: 32px 24px;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ai-feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(139, 92, 246, 0.15);
+}
+
+.ai-feature-icon {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, #f3e8ff, #ede9fe);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+}
+
+.ai-feature-icon svg {
+    width: 32px;
+    height: 32px;
+    stroke: #8b5cf6;
+}
+
+.ai-feature-card h3 {
+    font-size: 18px;
+    color: #1f2937;
+    margin-bottom: 12px;
+}
+
+.ai-feature-card p {
+    color: #6b7280;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* Pricing Section */
+.ai-pricing-section {
+    padding: 80px 0;
+}
+
+.ai-pricing-section h2 {
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 12px;
+    color: #1f2937;
+}
+
+.pricing-subtitle {
+    text-align: center;
+    color: #6b7280;
+    margin-bottom: 40px;
+}
+
+/* License Check Box */
+.license-check-box {
+    max-width: 600px;
+    margin: 0 auto 40px;
+    background: #fef3c7;
+    border: 2px solid #f59e0b;
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+}
+
+.license-check-box h3 {
+    color: #92400e;
+    margin-bottom: 8px;
+    font-size: 20px;
+}
+
+.license-check-box > p {
+    color: #78350f;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.license-input-group {
+    display: flex;
+    gap: 12px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+@media (max-width: 576px) {
+    .license-input-group {
+        flex-direction: column;
+    }
+}
+
+.license-input-group input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 2px solid #fbbf24;
+    border-radius: 8px;
+    font-size: 14px;
+    background: white;
+}
+
+.license-input-group input:focus {
+    outline: none;
+    border-color: #f59e0b;
+}
+
+.btn-verify {
+    background: #f59e0b;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    white-space: nowrap;
+}
+
+.btn-verify:hover {
+    background: #d97706;
+}
+
+.license-status {
+    margin-top: 12px;
+    font-size: 14px;
+}
+
+.license-status .success {
+    color: #059669;
+    font-weight: 600;
+}
+
+.license-status .error {
+    color: #dc2626;
+}
+
+.license-status .loading {
+    color: #6b7280;
+}
+
+/* Billing Toggle */
+.billing-toggle {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 32px;
+    background: #f3f4f6;
+    border-radius: 12px;
+    padding: 4px;
+    max-width: 350px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.billing-option {
+    flex: 1;
+    padding: 14px 24px;
+    border: none;
+    background: transparent;
+    font-weight: 600;
+    font-size: 15px;
+    color: #6b7280;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.billing-option.active {
+    background: white;
+    color: #8b5cf6;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.billing-option:hover:not(.active) {
+    color: #374151;
+}
+
+/* Price Display */
+.pricing-display {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.price-box {
+    display: inline-block;
+    background: white;
+    padding: 32px 48px;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(139, 92, 246, 0.15);
+    border: 2px solid #8b5cf6;
+}
+
+.original-price {
+    margin-bottom: 8px;
+}
+
+.original-price .strikethrough {
+    color: #9ca3af;
+    text-decoration: line-through;
+    font-size: 24px;
+}
+
+.current-price {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 4px;
+}
+
+.current-price .currency {
+    font-size: 28px;
+    color: #6b7280;
+}
+
+.current-price .amount {
+    font-size: 64px;
+    font-weight: 800;
+    color: #8b5cf6;
+    line-height: 1;
+}
+
+.current-price .period {
+    font-size: 18px;
+    color: #6b7280;
+}
+
+.discount-badge {
+    margin-top: 16px;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* Payment Methods */
+.payment-methods {
+    max-width: 900px;
+    margin: 0 auto 40px;
+}
+
+.payment-methods h3 {
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 24px;
+    color: #374151;
+}
+
+/* Subscription Info */
+.subscription-info {
+    max-width: 600px;
+    margin: 0 auto;
+    background: #f8fafc;
+    padding: 24px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.subscription-info p {
+    margin-bottom: 12px;
+    color: #374151;
+}
+
+.subscription-info ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+}
+
+.subscription-info li {
+    color: #6b7280;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.subscription-info li::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    background: #8b5cf6;
+    border-radius: 50%;
+}
+
+/* AI FAQ Section */
+.ai-faq {
+    padding: 80px 0;
+    background: #f8fafc;
+}
+
+.ai-faq h2 {
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 48px;
+    color: #1f2937;
+}

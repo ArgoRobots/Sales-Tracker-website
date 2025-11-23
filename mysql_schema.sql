@@ -321,3 +321,43 @@ CREATE TABLE IF NOT EXISTS user_bans (
     INDEX idx_is_active (is_active),
     INDEX idx_expires_at (expires_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- AI Subscriptions table
+CREATE TABLE IF NOT EXISTS ai_subscriptions (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    subscription_id VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL,
+    billing_cycle ENUM('monthly', 'yearly') NOT NULL DEFAULT 'monthly',
+    amount DECIMAL(10,2) NOT NULL,
+    currency VARCHAR(3) NOT NULL DEFAULT 'CAD',
+    start_date DATETIME NOT NULL,
+    end_date DATETIME NOT NULL,
+    status ENUM('active', 'cancelled', 'expired', 'past_due') NOT NULL DEFAULT 'active',
+    payment_method VARCHAR(50),
+    transaction_id VARCHAR(100),
+    premium_license_key VARCHAR(255),
+    discount_applied TINYINT(1) DEFAULT 0,
+    cancelled_at DATETIME DEFAULT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_subscription_id (subscription_id),
+    INDEX idx_email (email),
+    INDEX idx_status (status),
+    INDEX idx_end_date (end_date),
+    INDEX idx_premium_license (premium_license_key)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- AI Subscription Payments table (for tracking recurring payments)
+CREATE TABLE IF NOT EXISTS ai_subscription_payments (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    subscription_id VARCHAR(50) NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    currency VARCHAR(3) NOT NULL DEFAULT 'CAD',
+    payment_method VARCHAR(50) NOT NULL,
+    transaction_id VARCHAR(100),
+    status ENUM('pending', 'completed', 'failed', 'refunded') NOT NULL DEFAULT 'pending',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_subscription_id (subscription_id),
+    INDEX idx_status (status),
+    INDEX idx_created_at (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
