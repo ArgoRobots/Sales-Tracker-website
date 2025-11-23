@@ -40,6 +40,15 @@
   background: var(--blueHover);
 }
 
+.btn-purple {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  color: white;
+}
+
+.btn-purple:hover {
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
+}
+
 .btn-red {
   background: var(--red);
   color: #fff;

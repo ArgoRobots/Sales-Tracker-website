@@ -47,9 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         case 'remove_avatar':
             handle_avatar_removal();
             break;
-        case 'cancel_subscription':
-            handle_subscription_cancel();
-            break;
     }
 }
 
@@ -459,28 +456,6 @@ function get_user_ai_subscription($user_id) {
     }
 }
 
-// Function to handle subscription cancellation
-function handle_subscription_cancel() {
-    global $user_id, $pdo;
-
-    try {
-        $stmt = $pdo->prepare("
-            UPDATE ai_subscriptions
-            SET status = 'cancelled', cancelled_at = NOW()
-            WHERE user_id = ? AND status = 'active'
-        ");
-        $stmt->execute([$user_id]);
-
-        $_SESSION['profile_success'] = 'Your AI subscription has been cancelled. You will retain access until the end of your billing period.';
-        header('Location: edit_profile.php');
-        exit;
-    } catch (PDOException $e) {
-        $_SESSION['profile_error'] = 'Failed to cancel subscription. Please contact support.';
-        header('Location: edit_profile.php');
-        exit;
-    }
-}
-
 // Function to handle password changes
 function handle_password_change()
 {
@@ -732,63 +707,6 @@ function handle_password_change()
                     <button type="submit" class="btn btn-blue">Change Password</button>
                 </div>
             </form>
-        </div>
-
-        <!-- AI Subscription Section -->
-        <?php $ai_subscription = get_user_ai_subscription($user_id); ?>
-        <div class="edit-section">
-            <h2>AI Subscription</h2>
-            <?php if ($ai_subscription): ?>
-                <div class="subscription-info-box">
-                    <div class="subscription-status <?php echo $ai_subscription['status']; ?>">
-                        <span class="status-badge"><?php echo ucfirst($ai_subscription['status']); ?></span>
-                    </div>
-
-                    <div class="subscription-details-grid">
-                        <div class="detail-item">
-                            <span class="detail-label">Subscription ID</span>
-                            <span class="detail-value"><?php echo htmlspecialchars($ai_subscription['subscription_id']); ?></span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">Plan</span>
-                            <span class="detail-value"><?php echo ucfirst($ai_subscription['billing_cycle']); ?></span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">Price</span>
-                            <span class="detail-value">$<?php echo number_format($ai_subscription['amount'], 2); ?> <?php echo $ai_subscription['currency']; ?>/<?php echo $ai_subscription['billing_cycle'] === 'yearly' ? 'year' : 'month'; ?></span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label"><?php echo $ai_subscription['status'] === 'active' ? 'Next Billing Date' : 'Access Until'; ?></span>
-                            <span class="detail-value"><?php echo date('F j, Y', strtotime($ai_subscription['end_date'])); ?></span>
-                        </div>
-                    </div>
-
-                    <?php if ($ai_subscription['status'] === 'active'): ?>
-                        <div class="subscription-actions">
-                            <form method="post" onsubmit="return confirm('Are you sure you want to cancel your AI subscription? You will retain access until <?php echo date('F j, Y', strtotime($ai_subscription['end_date'])); ?>.');">
-                                <input type="hidden" name="action" value="cancel_subscription">
-                                <button type="submit" class="btn btn-red">Cancel Subscription</button>
-                            </form>
-                        </div>
-                    <?php elseif ($ai_subscription['status'] === 'cancelled'): ?>
-                        <div class="subscription-notice cancelled">
-                            <p>Your subscription has been cancelled. AI features will remain active until <strong><?php echo date('F j, Y', strtotime($ai_subscription['end_date'])); ?></strong>.</p>
-                            <a href="../../upgrade/ai/" class="btn btn-blue">Resubscribe</a>
-                        </div>
-                    <?php elseif ($ai_subscription['status'] === 'expired'): ?>
-                        <div class="subscription-notice expired">
-                            <p>Your subscription has expired.</p>
-                            <a href="../../upgrade/ai/" class="btn btn-blue">Renew Subscription</a>
-                        </div>
-                    <?php endif; ?>
-                </div>
-            <?php else: ?>
-                <div class="no-subscription">
-                    <p>You don't have an active AI subscription.</p>
-                    <p class="info-text">Get access to AI-powered features like receipt scanning, predictive analysis, and natural language search.</p>
-                    <a href="../../upgrade/ai/" class="btn btn-blue">Subscribe to AI Features</a>
-                </div>
-            <?php endif; ?>
         </div>
 
         <div class="delete-account-section">
