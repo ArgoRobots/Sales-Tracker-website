@@ -649,4 +649,35 @@ namespace {
     {
         return sprintf('%06d', mt_rand(100000, 999999));
     }
+
+    /**
+     * Get user's AI subscription information
+     *
+     * @param int $user_id User ID
+     * @return array|null Subscription data or null if no subscription
+     */
+    function get_user_ai_subscription($user_id)
+    {
+        global $pdo;
+
+        if (!$pdo) {
+            return null;
+        }
+
+        try {
+            $stmt = $pdo->prepare("
+                SELECT * FROM ai_subscriptions
+                WHERE user_id = ?
+                ORDER BY created_at DESC
+                LIMIT 1
+            ");
+            $stmt->execute([$user_id]);
+            $subscription = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            return $subscription ?: null;
+        } catch (PDOException $e) {
+            error_log('Error fetching AI subscription: ' . $e->getMessage());
+            return null;
+        }
+    }
 }
