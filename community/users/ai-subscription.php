@@ -81,12 +81,13 @@ if ($ai_subscription) {
     <script src="../../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../../resources/scripts/main.js"></script>
 
+    <link rel="stylesheet" href="ai-subscription.css">
+    <link rel="stylesheet" href="../../resources/styles/button.css">
     <link rel="stylesheet" href="../../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../../resources/styles/link.css">
     <link rel="stylesheet" href="../../resources/header/style.css">
     <link rel="stylesheet" href="../../resources/header/dark.css">
     <link rel="stylesheet" href="../../resources/footer/style.css">
-    <link rel="stylesheet" href="ai-subscription.css">
 </head>
 
 <body>
@@ -96,13 +97,19 @@ if ($ai_subscription) {
 
     <div class="subscription-page-container">
         <div class="page-header">
-            <a href="profile.php" class="back-link">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M19 12H5M12 19l-7-7 7-7"/>
-                </svg>
-                Back to Profile
-            </a>
-            <h1>AI Subscription</h1>
+            <div class="title-container">
+                <h1>AI Subscription</h1>
+            </div>
+
+            <div class="button-container">
+                <a href="profile.php" class="btn btn-outline">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="25" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    Back to Profile
+                </a>
+            </div>
         </div>
 
         <?php if ($success_message): ?>
