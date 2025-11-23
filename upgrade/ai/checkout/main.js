@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Load PayPal SDK dynamically
       const paypalScript = document.createElement("script");
-      paypalScript.src = `https://www.paypal.com/sdk/js?client-id=${window.PAYMENT_CONFIG.paypal.clientId}&currency=CAD&vault=true&intent=subscription`;
+      paypalScript.src = `https://www.paypal.com/sdk/js?client-id=${window.PAYMENT_CONFIG.paypal.clientId}&currency=CAD`;
       paypalScript.onload = initializePayPal;
       paypalScript.onerror = () => {
         paypalContainer.innerHTML = `
@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
             shape: "rect",
             color: "blue",
             layout: "vertical",
-            label: "subscribe",
+            label: "pay",
           },
           createOrder: function (data, actions) {
             return actions.order.create({
