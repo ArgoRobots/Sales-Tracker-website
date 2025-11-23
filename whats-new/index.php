@@ -100,7 +100,7 @@
                             <div class="feature-content">
                                 <h3>Cross platform<span class="type-tag feature">New Feature</span></h3>
                                 <p>We migrated our codebase to a new platform, meaning you can now use Argo Sales
-                                    Tracker on Windows, MacOS, and Linux. We also overhauled the user interface to be
+                                    Tracker on Windows, macOS, and Linux. We also overhauled the user interface to be
                                     more modern and intuitve.</p>
                             </div>
                         </div>

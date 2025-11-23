@@ -443,36 +443,6 @@
     text-align: center;
 }
 
-/* Buttons */
-.btn-purple {
-    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-    color: white;
-}
-
-.btn-purple:hover {
-    background: linear-gradient(135deg, #7c3aed, #6d28d9);
-}
-
-.btn-outline {
-    background: white;
-    color: #374151;
-    border: 1px solid #d1d5db;
-}
-
-.btn-outline:hover {
-    background: #f9fafb;
-}
-
-.btn-outline-red {
-    background: white;
-    color: #dc2626;
-    border: 1px solid #dc2626;
-}
-
-.btn-outline-red:hover {
-    background: #fef2f2;
-}
-
 /* Responsive */
 @media (max-width: 576px) {
     .subscription-page-container {
