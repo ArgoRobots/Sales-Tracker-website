@@ -23,8 +23,8 @@
 }
 
 .admin-badge {
-  background-color: #3b82f6;
-  color: white;
+  background-color: var(--primary-blue);
+  color: var(--white);
   font-size: 12px;
   font-weight: 500;
   padding: 4px 8px;
@@ -49,7 +49,7 @@
 }
 
 .profile-card {
-  background-color: #fff;
+  background-color: var(--white);
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   padding: 30px;
@@ -65,7 +65,7 @@
   border-radius: 50%;
   overflow: hidden;
   margin-bottom: 20px;
-  border: 3px solid #e5e7eb;
+  border: 3px solid var(--gray-border);
   position: relative;
 }
 
@@ -78,8 +78,8 @@
 .profile-avatar-placeholder {
   width: 100%;
   height: 100%;
-  background-color: #3b82f6;
-  color: white;
+  background-color: var(--primary-blue);
+  color: var(--white);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -104,7 +104,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: var(--white);
   opacity: 0;
   transition: opacity 0.3s ease;
   border-radius: 50%;
@@ -130,12 +130,12 @@
 
 .profile-info h2 {
   margin-bottom: 10px;
-  color: #1f2937;
+  color: var(--gray-text-darker);
   font-size: 22px;
 }
 
 .profile-meta {
-  color: #6b7280;
+  color: var(--gray-text);
   margin-bottom: 15px;
 }
 
@@ -166,7 +166,7 @@
   content: "";
   flex: 1;
   height: 1px;
-  background: #e5e7eb;
+  background: var(--gray-border);
 }
 
 .profile-bio-title::before {
@@ -181,14 +181,14 @@
 .profile-bio {
   margin-bottom: 20px;
   padding: 14px 0 20px 0;
-  border-bottom: 1px solid #e5e7eb;
-  color: #4b5563;
+  border-bottom: 1px solid var(--gray-border);
+  color: var(--gray-text-light);
   line-height: 1.6;
   font-size: 15px;
 }
 
 .profile-bio.empty {
-  color: #9ca3af;
+  color: var(--gray-placeholder);
   font-style: italic;
   text-align: center;
 }
@@ -222,7 +222,7 @@
 
 .stat-label {
   font-size: 14px;
-  color: #6b7280;
+  color: var(--gray-text);
 }
 
 .profile-actions {
@@ -239,7 +239,7 @@
 
 /* Impact section */
 .impact-section {
-  background-color: #fff;
+  background-color: var(--white);
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   padding: 20px;
@@ -247,10 +247,10 @@
 }
 
 .impact-section h3 {
-  color: #1f2937;
+  color: var(--gray-text-darker);
   font-size: 18px;
   margin-bottom: 15px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--gray-border);
   padding-bottom: 10px;
 }
 
@@ -272,9 +272,9 @@
   justify-content: center;
   width: 40px;
   height: 40px;
-  background-color: #dbeafe;
+  background-color: var(--blue-100);
   border-radius: 8px;
-  color: #3b82f6;
+  color: var(--primary-blue);
 }
 
 .impact-data {
@@ -290,7 +290,7 @@
 
 .impact-label {
   font-size: 14px;
-  color: #6b7280;
+  color: var(--gray-text);
 }
 
 /* Profile content */
@@ -322,7 +322,7 @@
   align-items: center;
   margin-bottom: 20px;
   padding-bottom: 15px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--gray-border);
   flex-wrap: wrap;
   gap: 15px;
   flex-shrink: 0;
@@ -330,7 +330,7 @@
 
 .section-header h3 {
   margin: 0;
-  color: #1f2937;
+  color: var(--gray-text-darker);
   font-size: 18px;
   display: flex;
   align-items: center;
@@ -341,7 +341,7 @@
   align-items: center;
   gap: 10px;
   font-size: 14px;
-  color: #4b5563;
+  color: var(--gray-text-light);
 }
 
 /* Sort buttons styling */
@@ -353,24 +353,24 @@
 .sort-option {
   padding: 4px 8px;
   border-radius: 4px;
-  color: #4b5563;
-  border: 1px solid #e5e7eb;
+  color: var(--gray-text-light);
+  border: 1px solid var(--gray-border);
   transition: all 0.2s ease;
   text-decoration: none;
-  background-color: #fff;
+  background-color: var(--white);
 }
 
 .sort-option:hover {
-  background-color: #f3f4f6;
-  border-color: #d1d5db;
+  background-color: var(--gray-bg-light);
+  border-color: var(--gray-input-border);
   text-decoration: none;
 }
 
 .sort-option.active {
-  background-color: #dbeafe;
+  background-color: var(--blue-100);
   color: var(--primary-blue);
   font-weight: 500;
-  border-color: #93c5fd;
+  border-color: var(--blue-300);
 }
 
 /* User Posts List */
@@ -393,26 +393,26 @@
 
 .user-posts-list::-webkit-scrollbar-track,
 .user-comments-list::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var(--gray-100);
   border-radius: 4px;
 }
 
 .user-posts-list::-webkit-scrollbar-thumb,
 .user-comments-list::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
+  background: var(--gray-400);
   border-radius: 4px;
 }
 
 .user-posts-list::-webkit-scrollbar-thumb:hover,
 .user-comments-list::-webkit-scrollbar-thumb:hover {
-  background: #a0a0a0;
+  background: var(--gray-500);
 }
 
 .user-post-item,
 .user-comment-item {
   display: flex;
   padding: 15px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--gray-border);
   border-radius: 6px;
   transition: all 0.2s ease;
   gap: 15px;
@@ -420,7 +420,7 @@
 
 .user-post-item:hover,
 .user-comment-item:hover {
-  border-color: #d1d5db;
+  border-color: var(--gray-input-border);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
@@ -433,7 +433,7 @@
   min-width: 60px;
   color: var(--blueText);
   padding: 8px;
-  background-color: #f3f4f6;
+  background-color: var(--gray-bg-light);
   border-radius: 4px;
   align-self: flex-start;
 }
@@ -445,7 +445,7 @@
 
 .score-label {
   font-size: 12px;
-  color: #6b7280;
+  color: var(--gray-text);
 }
 
 .post-details,
@@ -479,7 +479,7 @@
 .post-views,
 .post-date,
 .comment-date {
-  color: #6b7280;
+  color: var(--gray-text);
   display: flex;
   align-items: center;
   gap: 5px;
@@ -487,12 +487,12 @@
 
 .comment-content {
   font-size: 14px;
-  color: #4b5563;
+  color: var(--gray-text-light);
   line-height: 1.5;
 }
 
 .comment-on {
-  color: #6b7280;
+  color: var(--gray-text);
   font-size: 12px;
 }
 
@@ -524,7 +524,7 @@
 .reputation-item {
   display: flex;
   padding: 15px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--gray-border);
   border-radius: 6px;
   gap: 10px;
 }
@@ -541,12 +541,12 @@
 }
 
 .reputation-value.positive {
-  background-color: #dcfce7;
-  color: #16a34a;
+  background-color: var(--green-100);
+  color: var(--green-600);
 }
 
 .reputation-value.negative {
-  background-color: #fee2e2;
+  background-color: var(--red-100);
   color: var(--redHover);
 }
 
@@ -559,7 +559,7 @@
 
 .reputation-description {
   font-size: 14px;
-  color: #4b5563;
+  color: var(--gray-text-light);
 }
 
 .reputation-description a {
@@ -574,16 +574,16 @@
 
 .reputation-date {
   font-size: 12px;
-  color: #6b7280;
+  color: var(--gray-text);
 }
 
 /* Empty state styling */
 .empty-state {
   text-align: center;
   padding: 30px;
-  color: #6b7280;
+  color: var(--gray-text);
   border-radius: 8px;
-  border: 1px dashed #e5e7eb;
+  border: 1px dashed var(--gray-border);
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -607,10 +607,10 @@
 
 .reputation-chart-container {
   height: 300px;
-  background-color: #fff;
+  background-color: var(--white);
   border-radius: 8px;
   padding: 15px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--gray-border);
 }
 
 .reputation-chart-section h3,
@@ -618,8 +618,8 @@
   margin-top: 0;
   margin-bottom: 15px;
   padding-bottom: 10px;
-  border-bottom: 1px solid #e5e7eb;
-  color: #1f2937;
+  border-bottom: 1px solid var(--gray-border);
+  color: var(--gray-text-darker);
   font-size: 18px;
 }
 
@@ -659,9 +659,9 @@
 
 /* Verification alert on profile page */
 .verification-alert-profile {
-  background-color: #eff6ff;
-  border: 1px solid #bfdbfe;
-  color: #1e40af;
+  background-color: var(--blue-50);
+  border: 1px solid var(--blue-200);
+  color: var(--blue-800);
   padding: 12px;
   border-radius: 6px;
   margin-top: 10px;
@@ -676,9 +676,9 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  color: #16a34a;
-  background-color: #dcfce7;
-  border: 1px solid #86efac;
+  color: var(--green-600);
+  background-color: var(--green-100);
+  border: 1px solid var(--green-300);
   border-radius: 6px;
   padding: 10px;
   font-weight: 500;
@@ -686,7 +686,7 @@
 }
 
 .license-verified svg {
-  color: #16a34a;
+  color: var(--green-600);
 }
 
 .profile-actions svg {
@@ -730,7 +730,7 @@
 .report-btn-user {
   background: none;
   border: none;
-  color: #9ca3af;
+  color: var(--gray-placeholder);
   cursor: pointer;
   padding: 6px 10px;
   border-radius: 4px;
@@ -743,8 +743,8 @@
 }
 
 .report-btn-user:hover {
-  background-color: #fee2e2;
-  color: #dc2626;
+  background-color: var(--red-100);
+  color: var(--redHover);
 }
 
 .report-btn-user svg {

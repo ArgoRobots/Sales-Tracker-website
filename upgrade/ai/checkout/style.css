@@ -35,8 +35,8 @@
 }
 
 .subscription-notice {
-    background: #f0f9ff;
-    border: 1px solid #0ea5e9;
+    background: var(--sky-50);
+    border: 1px solid var(--sky-500);
     border-radius: 8px;
     padding: 16px;
     margin-bottom: 24px;
@@ -46,7 +46,7 @@
 .subscription-notice p {
     margin: 0 0 8px;
     font-size: 14px;
-    color: #0369a1;
+    color: var(--sky-700);
 }
 
 .subscription-notice p:last-child {

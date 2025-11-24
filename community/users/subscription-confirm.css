@@ -8,10 +8,10 @@
 }
 
 .confirm-card {
-    background: white;
+    background: var(--white);
     border-radius: 16px;
     padding: 40px;
-    border: 1px solid #e5e7eb;
+    border: 1px solid var(--gray-border);
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
@@ -25,21 +25,21 @@
 }
 
 .cancel-icon svg {
-    stroke: #dc2626;
+    stroke: var(--red-600);
 }
 
 .reactivate-icon svg {
-    stroke: #8b5cf6;
+    stroke: var(--purple-500);
 }
 
 .confirm-card h1 {
     font-size: 24px;
-    color: #1f2937;
+    color: var(--gray-text-darker);
     margin: 0 0 16px 0;
 }
 
 .confirm-description {
-    color: #6b7280;
+    color: var(--gray-text);
     margin-bottom: 24px;
     line-height: 1.6;
 }
@@ -73,52 +73,52 @@
 }
 
 .warning-box {
-    background: #fef3c7;
-    border: 1px solid #fcd34d;
+    background: var(--amber-100);
+    border: 1px solid var(--amber-300);
 }
 
 .warning-box h3 {
-    color: #92400e;
+    color: var(--amber-800);
 }
 
 .warning-box li {
-    color: #78350f;
+    color: var(--amber-900);
 }
 
 .success-box {
-    background: #dcfce7;
-    border: 1px solid #86efac;
+    background: var(--green-100);
+    border: 1px solid var(--green-300);
 }
 
 .success-box h3 {
-    color: #166534;
+    color: var(--green-800);
 }
 
 .success-box li {
-    color: #14532d;
+    color: var(--green-900);
 }
 
 .features-box {
-    background: #f3f4f6;
-    border: 1px solid #e5e7eb;
+    background: var(--gray-bg-light);
+    border: 1px solid var(--gray-border);
 }
 
 .features-box h3 {
-    color: #374151;
+    color: var(--gray-text-dark);
 }
 
 .features-box li {
-    color: #4b5563;
+    color: var(--gray-text-light);
 }
 
 /* Payment Method Box */
 .payment-method-box {
-    background: #f8fafc;
-    border: 1px solid #e5e7eb;
+    background: var(--gray-50);
+    border: 1px solid var(--gray-border);
 }
 
 .payment-method-box h3 {
-    color: #374151;
+    color: var(--gray-text-dark);
     margin-bottom: 16px;
 }
 
@@ -127,7 +127,7 @@
     align-items: center;
     gap: 12px;
     padding: 12px;
-    background: white;
+    background: var(--white);
     border-radius: 8px;
     margin-bottom: 12px;
 }
@@ -138,7 +138,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #f3f4f6;
+    background: var(--gray-bg-light);
     border-radius: 8px;
     padding: 8px;
 }
@@ -156,39 +156,39 @@
 .payment-method-name {
     display: block;
     font-weight: 600;
-    color: #1f2937;
+    color: var(--gray-text-darker);
     font-size: 15px;
 }
 
 .payment-method-note {
     display: block;
     font-size: 13px;
-    color: #6b7280;
+    color: var(--gray-text);
     margin-top: 2px;
 }
 
 .change-payment-link {
     display: inline-block;
     font-size: 14px;
-    color: #8b5cf6;
+    color: var(--purple-500);
     text-decoration: none;
 }
 
 .change-payment-link:hover {
     text-decoration: underline;
-    color: #7c3aed;
+    color: var(--purple-600);
 }
 
 /* Payment Provider Selection */
 .change-payment-section {
     margin-top: 16px;
     padding-top: 16px;
-    border-top: 1px solid #e5e7eb;
+    border-top: 1px solid var(--gray-border);
 }
 
 .change-payment-label {
     font-size: 13px;
-    color: #6b7280;
+    color: var(--gray-text);
     margin: 0 0 12px 0;
 }
 
@@ -204,8 +204,8 @@
     align-items: center;
     justify-content: center;
     padding: 12px 16px;
-    background: white;
-    border: 1px solid #d1d5db;
+    background: var(--white);
+    border: 1px solid var(--gray-input-border);
     border-radius: 8px;
     text-decoration: none;
     transition: all 0.2s ease;
@@ -218,13 +218,13 @@
 }
 
 .payment-provider-btn:hover {
-    border-color: #8b5cf6;
-    background: #faf5ff;
+    border-color: var(--purple-500);
+    background: var(--purple-50);
 }
 
 .payment-provider-btn.current {
-    border-color: #8b5cf6;
-    background: #f3e8ff;
+    border-color: var(--purple-500);
+    background: var(--purple-100);
     position: relative;
 }
 
@@ -240,37 +240,37 @@
     flex-direction: column;
     align-items: center;
     padding: 12px 16px;
-    background: white;
-    border: 1px solid #d1d5db;
+    background: var(--white);
+    border: 1px solid var(--gray-input-border);
     border-radius: 8px;
     text-decoration: none;
     transition: all 0.2s ease;
 }
 
 .billing-cycle-btn:hover {
-    border-color: #8b5cf6;
-    background: #faf5ff;
+    border-color: var(--purple-500);
+    background: var(--purple-50);
 }
 
 .billing-cycle-btn.current {
-    border-color: #8b5cf6;
-    background: #f3e8ff;
+    border-color: var(--purple-500);
+    background: var(--purple-100);
 }
 
 .billing-cycle-name {
     font-weight: 600;
-    color: #1f2937;
+    color: var(--gray-text-darker);
     font-size: 14px;
 }
 
 .billing-cycle-price {
     font-size: 12px;
-    color: #6b7280;
+    color: var(--gray-text);
     margin-top: 2px;
 }
 
 .billing-cycle-btn.current .billing-cycle-name {
-    color: #7c3aed;
+    color: var(--purple-600);
 }
 
 /* Alert Boxes */
@@ -329,13 +329,13 @@
 }
 
 .btn-purple {
-    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-    color: white;
+    background: linear-gradient(135deg, var(--purple-500), var(--purple-600));
+    color: var(--white);
     border: none;
 }
 
 .btn-purple:hover {
-    background: linear-gradient(135deg, #7c3aed, #6d28d9);
+    background: linear-gradient(135deg, var(--purple-600), var(--purple-700));
 }
 
 /* Responsive */
