@@ -21,22 +21,30 @@ if (!$ai_subscription || $ai_subscription['status'] !== 'active') {
 
 $error_message = '';
 
+// Check credit status for warning messages
+$originalCredit = floatval($ai_subscription['original_credit'] ?? 0);
+$creditBalance = floatval($ai_subscription['credit_balance'] ?? 0);
+$hasUnusedCredit = ($originalCredit > 0 && $creditBalance > 0);
+$hasUsedCredit = ($originalCredit > 0 && $creditBalance < $originalCredit);
+$creditUsed = $originalCredit - $creditBalance;
+
 // Handle cancellation confirmation
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_cancel'])) {
     try {
         // Get subscription details before cancelling
         $stmt = $pdo->prepare("
-            SELECT subscription_id, email, end_date
+            SELECT subscription_id, email, end_date, credit_balance, original_credit
             FROM ai_subscriptions
             WHERE user_id = ? AND status = 'active'
         ");
         $stmt->execute([$user_id]);
         $subscription = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // Cancel the subscription
+        // Cancel the subscription and invalidate any remaining credit
+        // Credit is forfeited upon cancellation
         $stmt = $pdo->prepare("
             UPDATE ai_subscriptions
-            SET status = 'cancelled', auto_renew = 0, cancelled_at = NOW(), updated_at = NOW()
+            SET status = 'cancelled', auto_renew = 0, credit_balance = 0, cancelled_at = NOW(), updated_at = NOW()
             WHERE user_id = ? AND status = 'active'
         ");
         $stmt->execute([$user_id]);
@@ -54,7 +62,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_cancel'])) {
             }
         }
 
-        $_SESSION['subscription_success'] = 'Your AI subscription has been cancelled. You will retain access until the end of your billing period.';
+        $successMsg = 'Your AI subscription has been cancelled. You will retain access until the end of your billing period.';
+
+        // Add credit forfeiture notice if applicable
+        $forfeitedCredit = floatval($subscription['credit_balance'] ?? 0);
+        if ($forfeitedCredit > 0) {
+            $successMsg .= ' Your remaining $' . number_format($forfeitedCredit, 2) . ' credit has been forfeited.';
+        }
+
+        // Add discount eligibility notice if credit was used
+        $subOriginalCredit = floatval($subscription['original_credit'] ?? 0);
+        if ($subOriginalCredit > 0 && $forfeitedCredit < $subOriginalCredit) {
+            $successMsg .= ' Note: The premium user discount cannot be applied again if you resubscribe.';
+        }
+
+        $_SESSION['subscription_success'] = $successMsg;
         header('Location: ai-subscription.php');
         exit;
     } catch (PDOException $e) {
@@ -121,8 +143,25 @@ $end_date = date('F j, Y', strtotime($ai_subscription['end_date']));
                     <li>After this date, AI features will be disabled</li>
                     <li>Your subscription will not auto-renew</li>
                     <li>You can resubscribe anytime to restore access</li>
+                    <?php if ($hasUnusedCredit): ?>
+                    <li class="credit-warning"><strong>Your remaining $<?php echo number_format($creditBalance, 2); ?> credit will be forfeited</strong></li>
+                    <?php endif; ?>
                 </ul>
             </div>
+
+            <?php if ($hasUsedCredit): ?>
+            <div class="info-box discount-warning-box" style="background: #fef3c7; border-color: #f59e0b;">
+                <h3 style="color: #b45309;">Important: Discount No Longer Available</h3>
+                <p>You have used $<?php echo number_format($creditUsed, 2); ?> of your $<?php echo number_format($originalCredit, 2); ?> premium user discount credit.</p>
+                <p><strong>If you cancel and later resubscribe, the premium user discount will not be available again.</strong></p>
+            </div>
+            <?php elseif ($hasUnusedCredit): ?>
+            <div class="info-box discount-warning-box" style="background: #fef3c7; border-color: #f59e0b;">
+                <h3 style="color: #b45309;">Credit Will Be Lost</h3>
+                <p>You have $<?php echo number_format($creditBalance, 2); ?> in unused premium user discount credit.</p>
+                <p><strong>This credit will be forfeited if you cancel.</strong> If you resubscribe later, the discount will not be available again.</p>
+            </div>
+            <?php endif; ?>
 
             <div class="info-box features-box">
                 <h3>Features you'll lose access to:</h3>

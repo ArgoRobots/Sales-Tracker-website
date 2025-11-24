@@ -136,12 +136,39 @@ if ($ai_subscription) {
                                 <span class="detail-value discount">$20 Premium Discount Applied</span>
                             </div>
                             <?php endif; ?>
+                            <?php
+                            $creditBalance = floatval($ai_subscription['credit_balance'] ?? 0);
+                            $originalCredit = floatval($ai_subscription['original_credit'] ?? 0);
+                            if ($creditBalance > 0):
+                                $monthsRemaining = floor($creditBalance / 5); // $5/month
+                            ?>
+                            <div class="detail-item">
+                                <span class="detail-label">Credit Balance</span>
+                                <span class="detail-value credit-balance">$<?php echo number_format($creditBalance, 2); ?> CAD</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Months Covered</span>
+                                <span class="detail-value"><?php echo $monthsRemaining; ?> month<?php echo $monthsRemaining !== 1 ? 's' : ''; ?> remaining</span>
+                            </div>
+                            <?php endif; ?>
                             <div class="detail-item">
                                 <span class="detail-label">Payment Method</span>
                                 <span class="detail-value"><?php echo ucfirst($ai_subscription['payment_method']); ?></span>
                             </div>
                         </div>
                     </div>
+
+                    <?php if ($creditBalance > 0 && $ai_subscription['status'] === 'active'): ?>
+                        <div class="subscription-notice credit-notice" style="background: #ecfdf5; border-color: #10b981;">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#10b981" stroke-width="2">
+                                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            </svg>
+                            <div>
+                                <p style="color: #047857;"><strong>Credit Balance Active</strong></p>
+                                <p class="notice-detail" style="color: #065f46;">You have $<?php echo number_format($creditBalance, 2); ?> in credit covering your next <?php echo $monthsRemaining; ?> month<?php echo $monthsRemaining !== 1 ? 's' : ''; ?>. You won't be charged until your credit is depleted.</p>
+                            </div>
+                        </div>
+                    <?php endif; ?>
 
                     <?php if ($ai_subscription['status'] === 'active'): ?>
                         <div class="subscription-actions">
@@ -277,10 +304,23 @@ if ($ai_subscription) {
                                 <td><?php echo date('M j, Y', strtotime($payment['created_at'])); ?></td>
                                 <td>
                                     <span class="payment-type <?php echo $payment['payment_type'] ?? 'initial'; ?>">
-                                        <?php echo ucfirst($payment['payment_type'] ?? 'Initial'); ?>
+                                        <?php
+                                        $paymentTypeDisplay = $payment['payment_type'] ?? 'Initial';
+                                        if ($paymentTypeDisplay === 'credit') {
+                                            echo 'Credit Applied';
+                                        } else {
+                                            echo ucfirst($paymentTypeDisplay);
+                                        }
+                                        ?>
                                     </span>
                                 </td>
-                                <td>$<?php echo number_format($payment['amount'], 2); ?> <?php echo $payment['currency']; ?></td>
+                                <td>
+                                    <?php if (floatval($payment['amount']) == 0 && ($payment['payment_type'] ?? '') === 'credit'): ?>
+                                        <span class="credit-payment">$0.00 (Credit)</span>
+                                    <?php else: ?>
+                                        $<?php echo number_format($payment['amount'], 2); ?> <?php echo $payment['currency']; ?>
+                                    <?php endif; ?>
+                                </td>
                                 <td><?php echo ucfirst($payment['payment_method']); ?></td>
                                 <td>
                                     <span class="payment-status <?php echo $payment['status']; ?>">

@@ -96,20 +96,78 @@ foreach ($subscriptions as $subscription) {
     $billing = $subscription['billing_cycle'];
     $paymentMethod = $subscription['payment_method'];
     $paymentToken = $subscription['payment_token'];
+    $creditBalance = floatval($subscription['credit_balance'] ?? 0);
 
-    logMessage("Processing renewal for subscription: $subscriptionId (User: $userId, Method: $paymentMethod)");
-
-    // Skip if no payment token stored
-    if (empty($paymentToken)) {
-        logMessage("No payment token stored for $subscriptionId - skipping", 'WARNING');
-        $skippedCount++;
-        continue;
-    }
+    logMessage("Processing renewal for subscription: $subscriptionId (User: $userId, Method: $paymentMethod, Credit: $$creditBalance)");
 
     // Calculate renewal amount
     $baseMonthly = 5.00;
     $baseYearly = 50.00;
     $amount = ($billing === 'yearly') ? $baseYearly : $baseMonthly;
+
+    // Check if renewal can be covered by credit
+    $useCredit = false;
+    $creditUsed = 0;
+    $amountToCharge = $amount;
+
+    if ($creditBalance > 0) {
+        if ($creditBalance >= $amount) {
+            // Full renewal covered by credit - no charge needed
+            $useCredit = true;
+            $creditUsed = $amount;
+            $amountToCharge = 0;
+            logMessage("Renewal for $subscriptionId covered by credit balance ($$creditBalance)");
+        } else {
+            // Partial credit - charge the difference
+            $creditUsed = $creditBalance;
+            $amountToCharge = $amount - $creditBalance;
+            logMessage("Partial credit ($$creditBalance) applied for $subscriptionId, charging $$amountToCharge");
+        }
+    }
+
+    // Skip payment processing if fully covered by credit
+    if ($amountToCharge <= 0 && $useCredit) {
+        try {
+            // Update subscription dates
+            $newEndDate = calculateNewEndDate($subscription['end_date'], $billing);
+            $newCreditBalance = $creditBalance - $creditUsed;
+
+            $stmt = $pdo->prepare("
+                UPDATE ai_subscriptions
+                SET end_date = ?,
+                    credit_balance = ?,
+                    updated_at = NOW()
+                WHERE subscription_id = ?
+            ");
+            $stmt->execute([$newEndDate, $newCreditBalance, $subscriptionId]);
+
+            // Log the credit-based payment (no actual charge)
+            $stmt = $pdo->prepare("
+                INSERT INTO ai_subscription_payments (
+                    subscription_id, amount, currency, payment_method,
+                    transaction_id, status, payment_type, created_at
+                ) VALUES (?, 0, 'CAD', ?, ?, 'completed', 'credit', NOW())
+            ");
+            $creditTransactionId = 'CREDIT_RENEWAL_' . strtoupper(bin2hex(random_bytes(8)));
+            $stmt->execute([$subscriptionId, $paymentMethod, $creditTransactionId]);
+
+            // DO NOT send receipt email for $0 credit-based renewals
+            logMessage("Successfully renewed $subscriptionId using credit - new end date: $newEndDate, remaining credit: $$newCreditBalance");
+            $successCount++;
+            continue;
+        } catch (Exception $e) {
+            logMessage("Failed to process credit-based renewal for $subscriptionId: " . $e->getMessage(), 'ERROR');
+            $failedCount++;
+            continue;
+        }
+    }
+
+    // Skip if no payment token stored and we need to charge
+    if (empty($paymentToken) && $amountToCharge > 0) {
+        logMessage("No payment token stored for $subscriptionId - skipping", 'WARNING');
+        $skippedCount++;
+        continue;
+    }
 
     // Process payment based on method
     $paymentResult = null;
@@ -118,10 +176,10 @@ foreach ($subscriptions as $subscription) {
     try {
         switch ($paymentMethod) {
             case 'stripe':
-                $paymentResult = processStripeRenewal($paymentToken, $amount, $subscriptionId, $email);
+                $paymentResult = processStripeRenewal($paymentToken, $amountToCharge, $subscriptionId, $email);
                 break;
             case 'square':
-                $paymentResult = processSquareRenewal($paymentToken, $amount, $subscriptionId, $email, $squareAccessToken, $squareEnvironment);
+                $paymentResult = processSquareRenewal($paymentToken, $amountToCharge, $subscriptionId, $email, $squareAccessToken, $squareEnvironment);
                 break;
             case 'paypal':
                 // Check if this is a PayPal Subscription (managed by PayPal)
@@ -145,38 +203,43 @@ foreach ($subscriptions as $subscription) {
         if ($paymentResult['success']) {
             $transactionId = $paymentResult['transaction_id'];
 
-            // Update subscription dates
+            // Update subscription dates and credit balance
             $newEndDate = calculateNewEndDate($subscription['end_date'], $billing);
+            $newCreditBalance = $creditBalance - $creditUsed; // Deduct any used credit
 
             $stmt = $pdo->prepare("
                 UPDATE ai_subscriptions
                 SET end_date = ?,
+                    credit_balance = ?,
                     updated_at = NOW()
                 WHERE subscription_id = ?
             ");
-            $stmt->execute([$newEndDate, $subscriptionId]);
+            $stmt->execute([$newEndDate, $newCreditBalance, $subscriptionId]);
 
-            // Log payment
+            // Log payment (log the actual amount charged, not the full renewal amount)
             $stmt = $pdo->prepare("
                 INSERT INTO ai_subscription_payments (
                     subscription_id, amount, currency, payment_method,
                     transaction_id, status, payment_type, created_at
                 ) VALUES (?, ?, 'CAD', ?, ?, 'completed', 'renewal', NOW())
             ");
-            $stmt->execute([$subscriptionId, $amount, $paymentMethod, $transactionId]);
+            $stmt->execute([$subscriptionId, $amountToCharge, $paymentMethod, $transactionId]);
 
-            // Send receipt email
-            sendRenewalReceiptEmail(
-                $email,
-                $subscriptionId,
-                $billing,
-                $amount,
-                $newEndDate,
-                $transactionId,
-                $paymentMethod
-            );
+            // Send receipt email (only for actual charges, not credit-covered renewals)
+            if ($amountToCharge > 0) {
+                sendRenewalReceiptEmail(
+                    $email,
+                    $subscriptionId,
+                    $billing,
+                    $amountToCharge,
+                    $newEndDate,
+                    $transactionId,
+                    $paymentMethod
+                );
+            }
 
-            logMessage("Successfully renewed $subscriptionId - new end date: $newEndDate");
+            $creditMessage = $creditUsed > 0 ? " ($$creditUsed credit applied)" : "";
+            logMessage("Successfully renewed $subscriptionId - new end date: $newEndDate, charged: $$amountToCharge$creditMessage");
             $successCount++;
 
         } else {

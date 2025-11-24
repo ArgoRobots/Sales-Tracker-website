@@ -130,7 +130,9 @@
             licenseKey: '<?php echo htmlspecialchars($licenseKey); ?>',
             userId: <?php echo $user_id; ?>,
             userEmail: '<?php echo htmlspecialchars($user_email); ?>',
-            isUpdatingPaymentMethod: <?php echo $is_changing_method ? 'true' : 'false'; ?>
+            isUpdatingPaymentMethod: <?php echo $is_changing_method ? 'true' : 'false'; ?>,
+            isMonthlyWithCredit: <?php echo ($hasDiscount && $billing === 'monthly') ? 'true' : 'false'; ?>,
+            creditAmount: <?php echo ($hasDiscount && $billing === 'monthly') ? $discount : 0; ?>
         };
     </script>
 
@@ -175,14 +177,19 @@
                     <span>$<?php echo number_format($finalPrice, 2); ?> CAD/<?php echo $billingPeriod; ?></span>
                 </div>
                 <?php if ($hasDiscount && $billing === 'monthly'): ?>
-                <div class="credit-notice">
-                    <p>Your $20 credit will be applied to your account and used for future billing.</p>
+                <div class="credit-notice" style="background: #ecfdf5; border: 1px solid #10b981; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                    <p style="color: #047857; margin: 0 0 8px 0;"><strong>$20 Credit Applied!</strong></p>
+                    <p style="color: #065f46; margin: 0; font-size: 14px;">Your first 4 months are covered by this credit. You won't be charged today - your card will be saved for when the credit is depleted.</p>
                 </div>
                 <?php endif; ?>
             </div>
 
             <div class="subscription-notice">
+                <?php if ($hasDiscount && $billing === 'monthly'): ?>
+                <p>This is a recurring subscription. Your $20 credit covers your first 4 months. You will be charged $<?php echo number_format($monthlyPrice, 2); ?> CAD/month starting month 5.</p>
+                <?php else: ?>
                 <p>This is a recurring subscription. You will be charged $<?php echo number_format($billing === 'yearly' ? $yearlyPrice : $monthlyPrice, 2); ?> CAD/<?php echo $billingPeriod; ?> after the <?php echo $hasDiscount && $billing === 'yearly' ? 'discounted ' : ''; ?>first <?php echo $billingPeriod; ?>.</p>
+                <?php endif; ?>
                 <p>Cancel anytime from your account settings.</p>
             </div>
 
@@ -207,7 +214,11 @@
                     </div>
 
                     <button type="submit" id="stripe-submit-btn" class="checkout-btn ai-checkout-btn">
+                        <?php if ($hasDiscount && $billing === 'monthly'): ?>
+                        Subscribe - $0.00 Today (Credit Applied)
+                        <?php else: ?>
                         Subscribe - $<?php echo number_format($finalPrice, 2); ?> CAD/<?php echo $billingPeriod; ?>
+                        <?php endif; ?>
                     </button>
                 </form>
             </div>

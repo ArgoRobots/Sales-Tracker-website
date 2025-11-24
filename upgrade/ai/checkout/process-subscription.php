@@ -36,13 +36,46 @@ $premiumLicenseKey = $input['premiumLicenseKey'] ?? '';
 $paymentMethod = $input['payment_method'] ?? 'unknown';
 $userId = intval($input['user_id'] ?? 0);
 
+// Credit configuration for monthly subscriptions with discount
+$discountAmount = 20.00;
+$monthlyPrice = 5.00;
+$isMonthlyWithCredit = ($billing === 'monthly' && $hasDiscount);
+$creditBalance = 0;
+$originalCredit = 0;
+
 // Get environment configuration
 $isProduction = ($_ENV['APP_ENV'] ?? 'development') === 'production';
 
-if (empty($email) || $amount <= 0 || $userId <= 0) {
+// For monthly with credit, amount can be 0 (first months covered by credit)
+if (empty($email) || $userId <= 0 || ($amount <= 0 && !$isMonthlyWithCredit)) {
     http_response_code(400);
     echo json_encode(['success' => false, 'error' => 'Missing required fields or invalid user']);
     exit();
+}
+
+// Verify license key for discount if claimed
+if ($hasDiscount && !empty($premiumLicenseKey)) {
+    try {
+        $stmt = $pdo->prepare("SELECT id, activated FROM license_keys WHERE license_key = ? AND activated = 1");
+        $stmt->execute([$premiumLicenseKey]);
+        if (!$stmt->fetch()) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'error' => 'Invalid or inactive license key for discount']);
+            exit();
+        }
+    } catch (PDOException $e) {
+        // License verification failed - proceed without discount
+        $hasDiscount = false;
+        $isMonthlyWithCredit = false;
+    }
+}
+
+// Set credit balance for monthly subscriptions with verified discount
+if ($isMonthlyWithCredit) {
+    $creditBalance = $discountAmount;
+    $originalCredit = $discountAmount;
+    // Set amount to 0 for initial payment - will use credit
+    $amount = 0;
 }
 
 // Verify user exists
@@ -103,6 +136,9 @@ try {
     // Check if this is a PayPal subscription
     $paypalSubscriptionId = null;
 
+    // Skip payment processing for monthly subscriptions with credit (no charge needed)
+    $skipPaymentProcessing = $isMonthlyWithCredit;
+
     switch ($paymentMethod) {
         case 'paypal':
             $isPayPalSubscription = $input['is_paypal_subscription'] ?? false;
@@ -150,29 +186,35 @@ try {
                     'invoice_settings' => ['default_payment_method' => $paymentMethodId]
                 ]);
 
-                // Create payment intent for the initial charge
-                $paymentIntent = \Stripe\PaymentIntent::create([
-                    'amount' => intval($amount * 100),
-                    'currency' => 'cad',
-                    'customer' => $customer->id,
-                    'payment_method' => $paymentMethodId,
-                    'off_session' => true,
-                    'confirm' => true,
-                    'description' => "AI Subscription - Initial Payment ($billing)",
-                    'receipt_email' => $email,
-                    'metadata' => [
-                        'subscription_id' => $subscriptionId,
-                        'user_id' => $userId,
-                        'billing_cycle' => $billing
-                    ]
-                ]);
+                // For monthly with credit, just store the payment method without charging
+                if ($skipPaymentProcessing) {
+                    $transactionId = 'CREDIT_' . strtoupper(bin2hex(random_bytes(8)));
+                    $paymentToken = $paymentMethodId; // Store for future renewals when credit depleted
+                } else {
+                    // Create payment intent for the initial charge
+                    $paymentIntent = \Stripe\PaymentIntent::create([
+                        'amount' => intval($amount * 100),
+                        'currency' => 'cad',
+                        'customer' => $customer->id,
+                        'payment_method' => $paymentMethodId,
+                        'off_session' => true,
+                        'confirm' => true,
+                        'description' => "AI Subscription - Initial Payment ($billing)",
+                        'receipt_email' => $email,
+                        'metadata' => [
+                            'subscription_id' => $subscriptionId,
+                            'user_id' => $userId,
+                            'billing_cycle' => $billing
+                        ]
+                    ]);
 
-                if ($paymentIntent->status !== 'succeeded') {
-                    throw new Exception('Payment not completed');
+                    if ($paymentIntent->status !== 'succeeded') {
+                        throw new Exception('Payment not completed');
+                    }
+
+                    $transactionId = $paymentIntent->id;
+                    $paymentToken = $paymentMethodId; // Store for recurring billing
                 }
-
-                $transactionId = $paymentIntent->id;
-                $paymentToken = $paymentMethodId; // Store for recurring billing
 
             } catch (\Stripe\Exception\CardException $e) {
                 $pdo->rollBack();
@@ -248,31 +290,37 @@ try {
                     $cardId = $cardResponse->getResult()->getCard()->getId();
                 }
 
-                // Process initial payment
-                $paymentsApi = $client->getPaymentsApi();
-                $amountMoney = new \Square\Models\Money();
-                $amountMoney->setAmount(intval($amount * 100));
-                $amountMoney->setCurrency('CAD');
-
-                $paymentRequest = new \Square\Models\CreatePaymentRequest(
-                    $cardId ?? $sourceId,
-                    uniqid('payment_', true)
-                );
-                $paymentRequest->setAmountMoney($amountMoney);
-                $paymentRequest->setLocationId($squareLocationId);
-                $paymentRequest->setCustomerId($customerId);
-                $paymentRequest->setNote("AI Subscription - Initial Payment ($billing)");
-                $paymentRequest->setAutocomplete(true);
-
-                $paymentResponse = $paymentsApi->createPayment($paymentRequest);
-
-                if ($paymentResponse->isSuccess()) {
-                    $payment = $paymentResponse->getResult()->getPayment();
-                    $transactionId = $payment->getId();
-                    $paymentToken = $cardId; // Store card ID for recurring billing
+                // For monthly with credit, just store the card without charging
+                if ($skipPaymentProcessing) {
+                    $transactionId = 'CREDIT_' . strtoupper(bin2hex(random_bytes(8)));
+                    $paymentToken = $cardId; // Store card ID for future renewals when credit depleted
                 } else {
-                    $errors = $paymentResponse->getErrors();
-                    throw new Exception($errors[0]->getDetail() ?? 'Payment failed');
+                    // Process initial payment
+                    $paymentsApi = $client->getPaymentsApi();
+                    $amountMoney = new \Square\Models\Money();
+                    $amountMoney->setAmount(intval($amount * 100));
+                    $amountMoney->setCurrency('CAD');
+
+                    $paymentRequest = new \Square\Models\CreatePaymentRequest(
+                        $cardId ?? $sourceId,
+                        uniqid('payment_', true)
+                    );
+                    $paymentRequest->setAmountMoney($amountMoney);
+                    $paymentRequest->setLocationId($squareLocationId);
+                    $paymentRequest->setCustomerId($customerId);
+                    $paymentRequest->setNote("AI Subscription - Initial Payment ($billing)");
+                    $paymentRequest->setAutocomplete(true);
+
+                    $paymentResponse = $paymentsApi->createPayment($paymentRequest);
+
+                    if ($paymentResponse->isSuccess()) {
+                        $payment = $paymentResponse->getResult()->getPayment();
+                        $transactionId = $payment->getId();
+                        $paymentToken = $cardId; // Store card ID for recurring billing
+                    } else {
+                        $errors = $paymentResponse->getErrors();
+                        throw new Exception($errors[0]->getDetail() ?? 'Payment failed');
+                    }
                 }
 
             } catch (Exception $e) {
@@ -331,20 +379,25 @@ try {
             INSERT INTO ai_subscriptions (
                 subscription_id, user_id, email, billing_cycle, amount, currency,
                 start_date, end_date, status, payment_method, transaction_id,
-                premium_license_key, discount_applied, payment_token, auto_renew, created_at
+                premium_license_key, discount_applied, credit_balance, original_credit,
+                payment_token, auto_renew, created_at
             ) VALUES (
                 ?, ?, ?, ?, ?, ?,
                 ?, ?, 'active', ?, ?,
-                ?, ?, ?, 1, NOW()
+                ?, ?, ?, ?,
+                ?, 1, NOW()
             )
         ");
+
+        // For monthly with credit, store actual monthly price as amount (for display)
+        $storedAmount = $isMonthlyWithCredit ? $monthlyPrice : $amount;
 
         $stmt->execute([
             $subscriptionId,
             $userId,
             $email,
             $billing,
-            $amount,
+            $storedAmount,
             $currency,
             $startDate,
             $endDate,
@@ -352,6 +405,8 @@ try {
             $transactionId,
             $premiumLicenseKey ?: null,
             $hasDiscount ? 1 : 0,
+            $creditBalance,
+            $originalCredit,
             $paymentToken
         ]);
 
@@ -367,35 +422,47 @@ try {
         }
 
         // Log the payment transaction
+        // For monthly with credit, log $0 payment with 'credit' payment type
+        $paymentLogAmount = $isMonthlyWithCredit ? 0 : $amount;
+        $paymentType = $isMonthlyWithCredit ? 'credit' : 'initial';
+
         $stmt = $pdo->prepare("
             INSERT INTO ai_subscription_payments (
                 subscription_id, amount, currency, payment_method,
                 transaction_id, status, payment_type, created_at
-            ) VALUES (?, ?, ?, ?, ?, 'completed', 'initial', NOW())
+            ) VALUES (?, ?, ?, ?, ?, 'completed', ?, NOW())
         ");
 
         $stmt->execute([
             $subscriptionId,
-            $amount,
+            $paymentLogAmount,
             $currency,
             $paymentMethod,
-            $transactionId
+            $transactionId,
+            $paymentType
         ]);
 
         $pdo->commit();
 
-        // Send receipt email
-        try {
-            send_ai_subscription_receipt($email, $subscriptionId, $billing, $amount, $endDate, $transactionId, $paymentMethod);
-        } catch (Exception $e) {
-            // Log email error but don't fail the transaction
-            error_log("Failed to send AI subscription email: " . $e->getMessage());
+        // Send receipt email (skip for monthly with credit - no charge was made)
+        if (!$isMonthlyWithCredit) {
+            try {
+                send_ai_subscription_receipt($email, $subscriptionId, $billing, $amount, $endDate, $transactionId, $paymentMethod);
+            } catch (Exception $e) {
+                // Log email error but don't fail the transaction
+                error_log("Failed to send AI subscription email: " . $e->getMessage());
+            }
         }
+
+        $responseMessage = $isMonthlyWithCredit
+            ? 'Subscription created with $' . number_format($creditBalance, 2) . ' credit applied. Your first ' . floor($creditBalance / $monthlyPrice) . ' months are covered!'
+            : 'Subscription created successfully';
 
         echo json_encode([
             'success' => true,
             'subscription_id' => $subscriptionId,
-            'message' => 'Subscription created successfully'
+            'message' => $responseMessage,
+            'credit_applied' => $isMonthlyWithCredit ? $creditBalance : 0
         ]);
     }
 
