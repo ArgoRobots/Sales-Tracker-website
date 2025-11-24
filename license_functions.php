@@ -45,11 +45,12 @@ if (!function_exists('generate_license_key')) {
 
     /**
      * Store a new license key in the database
-     * 
+     *
      * @param string $email The email associated with the license
+     * @param int|null $user_id Optional user ID to link the license to an account
      * @return string The generated license key
      */
-    function create_license_key($email)
+    function create_license_key($email, $user_id = null)
     {
         $db = get_db_connection();
 
@@ -59,8 +60,13 @@ if (!function_exists('generate_license_key')) {
         } while (license_key_exists($key));
 
         // Store the key in the database
-        $stmt = $db->prepare('INSERT INTO license_keys (license_key, email) VALUES (?, ?)');
-        $stmt->bind_param('ss', $key, $email);
+        if ($user_id !== null) {
+            $stmt = $db->prepare('INSERT INTO license_keys (license_key, email, user_id) VALUES (?, ?, ?)');
+            $stmt->bind_param('ssi', $key, $email, $user_id);
+        } else {
+            $stmt = $db->prepare('INSERT INTO license_keys (license_key, email) VALUES (?, ?)');
+            $stmt->bind_param('ss', $key, $email);
+        }
         $stmt->execute();
         $stmt->close();
 

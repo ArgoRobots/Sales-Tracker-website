@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS license_keys (
     id INT PRIMARY KEY AUTO_INCREMENT,
     license_key VARCHAR(255) NOT NULL UNIQUE,
     email VARCHAR(100) NOT NULL,
+    user_id INT DEFAULT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     activated TINYINT(1) DEFAULT 0,
     activation_date DATETIME DEFAULT NULL,
@@ -10,7 +11,8 @@ CREATE TABLE IF NOT EXISTS license_keys (
     transaction_id VARCHAR(100),
     order_id VARCHAR(100),
     payment_method VARCHAR(50),
-    payment_intent VARCHAR(100)
+    payment_intent VARCHAR(100),
+    INDEX idx_license_keys_user_id (user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Admin users table
