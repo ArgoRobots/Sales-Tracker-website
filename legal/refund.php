@@ -67,7 +67,7 @@
             <p>You can contact our support team:</p>
             <ul>
                 <li>By email: <a class="link" href="mailto:contact@argorobots.com">contact@argorobots.com</a></li>
-                <li>Through the contact form on our website</li>
+                <li>Through the <a class="link" href="../contact-us/index.php">Contact Us Page</a> on our website</li>
             </ul>
 
             <h2>Refund Processing</h2>
@@ -87,12 +87,11 @@
             <h2>Argo AI Subscription Refunds</h2>
             <p>For Argo AI subscriptions:</p>
             <ul>
-                <li>You may request a refund within 7 days of your initial subscription or renewal.</li>
+                <li>You may request a refund within 30 days of your initial subscription or renewal.</li>
                 <li>Refunds are prorated based on unused time in your billing period.</li>
-                <li>Cancelling your subscription does not automatically trigger a refund—you must request one separately.</li>
+                <li>Cancelling your subscription does not automatically trigger a refund - you must request one separately.</li>
                 <li>After cancellation, you retain access until the end of your current billing period.</li>
             </ul>
-            <p>To request a subscription refund, contact us with your account email and reason for the request.</p>
 
             <h2>Technical Issues</h2>
             <p>If you are experiencing technical issues with Argo Sales Tracker, we encourage you to:</p>
@@ -100,7 +99,7 @@
                 <li>Review our <a class="link" href="../documentation/index.php">Documentation</a> for troubleshooting
                     guides and frequently asked questions</li>
                 <li>Contact our technical support team through our <a class="link"
-                        href="../contact-us/index.php">Contact Page</a> or by email</li>
+                        href="../contact-us/index.php">Contact Us Page</a> or by email</li>
             </ol>
             <p>Many issues can be resolved with proper guidance, and we are committed to helping you get the most out of
                 our software.</p>

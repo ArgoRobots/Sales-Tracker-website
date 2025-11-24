@@ -69,7 +69,7 @@
                 <li>Transaction IDs for payment processing</li>
                 <li>Subscription start and end dates</li>
             </ul>
-            <p>We do not store complete credit card numbers. Payment processing is handled securely by our payment providers.</p>
+            <p>We do not store credit card numbers. Payment processing is handled securely by our payment providers.</p>
 
             <h3>Technical Information</h3>
             <p>We automatically collect certain information when you visit our Website:</p>

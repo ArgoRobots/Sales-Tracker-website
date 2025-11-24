@@ -88,7 +88,7 @@
             <h2>Argo AI Subscription</h2>
             <p>Argo AI is an optional subscription service that provides AI-powered features. By subscribing, you agree to the following:</p>
             <ul>
-                <li><strong>Billing</strong>: Subscriptions are billed monthly ($5 CAD) or yearly ($50 CAD). Premium license holders receive a 20% discount.</li>
+                <li><strong>Billing</strong>: Subscriptions are billed monthly ($5 CAD) or yearly ($50 CAD). Premium license holders receive a $20 discount.</li>
                 <li><strong>Auto-Renewal</strong>: Subscriptions automatically renew unless cancelled before the billing date.</li>
                 <li><strong>Cancellation</strong>: You may cancel at any time. Access continues until the end of your billing period.</li>
                 <li><strong>Payment Methods</strong>: We accept payments via Stripe, PayPal, and Square.</li>
