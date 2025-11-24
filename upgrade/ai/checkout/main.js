@@ -132,6 +132,7 @@ document.addEventListener("DOMContentLoaded", function () {
               payment_method: "paypal",
               user_id: subscription.userId,
               is_paypal_subscription: true,
+              update_payment_method: subscription.isUpdatingPaymentMethod || false,
             }),
           })
             .then((response) => response.json())
@@ -193,6 +194,7 @@ document.addEventListener("DOMContentLoaded", function () {
                   details.payer.name.surname,
                 payment_method: "paypal",
                 user_id: subscription.userId,
+                update_payment_method: subscription.isUpdatingPaymentMethod || false,
               }),
             })
               .then((response) => response.json())
@@ -302,6 +304,7 @@ document.addEventListener("DOMContentLoaded", function () {
               premiumLicenseKey: subscription.licenseKey,
               payment_method: "stripe",
               user_id: subscription.userId,
+              update_payment_method: subscription.isUpdatingPaymentMethod || false,
             }),
           });
 
@@ -440,6 +443,7 @@ document.addEventListener("DOMContentLoaded", function () {
                   premiumLicenseKey: subscription.licenseKey,
                   payment_method: "square",
                   user_id: subscription.userId,
+                  update_payment_method: subscription.isUpdatingPaymentMethod || false,
                 }),
               });
 

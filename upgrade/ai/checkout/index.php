@@ -23,10 +23,15 @@
 
     // Check if user already has an active subscription
     $existing_subscription = get_user_ai_subscription($user_id);
-    if ($existing_subscription && in_array($existing_subscription['status'], ['active', 'cancelled'])) {
-        // User already has a subscription (active or cancelled but not expired)
-        if ($existing_subscription['status'] === 'active' ||
-            ($existing_subscription['status'] === 'cancelled' && strtotime($existing_subscription['end_date']) > time())) {
+    $is_changing_method = isset($_GET['change_method']) && $_GET['change_method'] === '1';
+
+    if ($existing_subscription && in_array($existing_subscription['status'], ['active', 'cancelled', 'payment_failed'])) {
+        // User already has a subscription
+        $has_valid_subscription = $existing_subscription['status'] === 'active' ||
+            (in_array($existing_subscription['status'], ['cancelled', 'payment_failed']) && strtotime($existing_subscription['end_date']) > time());
+
+        if ($has_valid_subscription && !$is_changing_method) {
+            // Redirect to subscription page unless they're changing payment method
             header('Location: ../../../community/users/ai-subscription.php');
             exit;
         }
@@ -124,7 +129,8 @@
             discountAmount: <?php echo $discount; ?>,
             licenseKey: '<?php echo htmlspecialchars($licenseKey); ?>',
             userId: <?php echo $user_id; ?>,
-            userEmail: '<?php echo htmlspecialchars($user_email); ?>'
+            userEmail: '<?php echo htmlspecialchars($user_email); ?>',
+            isUpdatingPaymentMethod: <?php echo $is_changing_method ? 'true' : 'false'; ?>
         };
     </script>
 

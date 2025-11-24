@@ -60,6 +60,23 @@ try {
     exit();
 }
 
+// Check if user is updating payment method for existing subscription
+$isUpdatingPaymentMethod = $input['update_payment_method'] ?? false;
+$existingSubscription = null;
+
+try {
+    $stmt = $pdo->prepare("
+        SELECT * FROM ai_subscriptions
+        WHERE user_id = ? AND status IN ('active', 'cancelled', 'payment_failed')
+        AND end_date > NOW()
+        ORDER BY created_at DESC LIMIT 1
+    ");
+    $stmt->execute([$userId]);
+    $existingSubscription = $stmt->fetch(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    // Continue with new subscription if check fails
+}
+
 // Generate subscription ID
 function generateSubscriptionId() {
     return 'AI-' . strtoupper(bin2hex(random_bytes(8)));
@@ -267,77 +284,120 @@ try {
             break;
     }
 
-    // Insert subscription record with payment token for recurring billing
-    $stmt = $pdo->prepare("
-        INSERT INTO ai_subscriptions (
-            subscription_id, user_id, email, billing_cycle, amount, currency,
-            start_date, end_date, status, payment_method, transaction_id,
-            premium_license_key, discount_applied, payment_token, auto_renew, created_at
-        ) VALUES (
-            ?, ?, ?, ?, ?, ?,
-            ?, ?, 'active', ?, ?,
-            ?, ?, ?, 1, NOW()
-        )
-    ");
+    // Check if updating existing subscription's payment method
+    if ($existingSubscription && $isUpdatingPaymentMethod) {
+        // Update existing subscription with new payment method
+        $subscriptionId = $existingSubscription['subscription_id'];
 
-    $stmt->execute([
-        $subscriptionId,
-        $userId,
-        $email,
-        $billing,
-        $amount,
-        $currency,
-        $startDate,
-        $endDate,
-        $paymentMethod,
-        $transactionId,
-        $premiumLicenseKey ?: null,
-        $hasDiscount ? 1 : 0,
-        $paymentToken
-    ]);
+        $stmt = $pdo->prepare("
+            UPDATE ai_subscriptions
+            SET payment_method = ?,
+                payment_token = ?,
+                transaction_id = ?,
+                status = 'active',
+                auto_renew = 1,
+                cancelled_at = NULL,
+                updated_at = NOW()
+            WHERE subscription_id = ?
+        ");
+        $stmt->execute([
+            $paymentMethod,
+            $paymentToken,
+            $transactionId,
+            $subscriptionId
+        ]);
 
-    // Update with PayPal subscription ID if applicable (column may not exist in older schema)
-    if ($paypalSubscriptionId) {
-        try {
-            $stmt = $pdo->prepare("UPDATE ai_subscriptions SET paypal_subscription_id = ? WHERE subscription_id = ?");
-            $stmt->execute([$paypalSubscriptionId, $subscriptionId]);
-        } catch (PDOException $e) {
-            // Column may not exist yet - log but don't fail
-            error_log("Could not set paypal_subscription_id (column may not exist): " . $e->getMessage());
+        // Update with PayPal subscription ID if applicable
+        if ($paypalSubscriptionId) {
+            try {
+                $stmt = $pdo->prepare("UPDATE ai_subscriptions SET paypal_subscription_id = ? WHERE subscription_id = ?");
+                $stmt->execute([$paypalSubscriptionId, $subscriptionId]);
+            } catch (PDOException $e) {
+                error_log("Could not set paypal_subscription_id: " . $e->getMessage());
+            }
         }
+
+        $pdo->commit();
+
+        echo json_encode([
+            'success' => true,
+            'subscription_id' => $subscriptionId,
+            'message' => 'Payment method updated successfully'
+        ]);
+
+    } else {
+        // Create new subscription
+        $stmt = $pdo->prepare("
+            INSERT INTO ai_subscriptions (
+                subscription_id, user_id, email, billing_cycle, amount, currency,
+                start_date, end_date, status, payment_method, transaction_id,
+                premium_license_key, discount_applied, payment_token, auto_renew, created_at
+            ) VALUES (
+                ?, ?, ?, ?, ?, ?,
+                ?, ?, 'active', ?, ?,
+                ?, ?, ?, 1, NOW()
+            )
+        ");
+
+        $stmt->execute([
+            $subscriptionId,
+            $userId,
+            $email,
+            $billing,
+            $amount,
+            $currency,
+            $startDate,
+            $endDate,
+            $paymentMethod,
+            $transactionId,
+            $premiumLicenseKey ?: null,
+            $hasDiscount ? 1 : 0,
+            $paymentToken
+        ]);
+
+        // Update with PayPal subscription ID if applicable (column may not exist in older schema)
+        if ($paypalSubscriptionId) {
+            try {
+                $stmt = $pdo->prepare("UPDATE ai_subscriptions SET paypal_subscription_id = ? WHERE subscription_id = ?");
+                $stmt->execute([$paypalSubscriptionId, $subscriptionId]);
+            } catch (PDOException $e) {
+                // Column may not exist yet - log but don't fail
+                error_log("Could not set paypal_subscription_id (column may not exist): " . $e->getMessage());
+            }
+        }
+
+        // Log the payment transaction
+        $stmt = $pdo->prepare("
+            INSERT INTO ai_subscription_payments (
+                subscription_id, amount, currency, payment_method,
+                transaction_id, status, payment_type, created_at
+            ) VALUES (?, ?, ?, ?, ?, 'completed', 'initial', NOW())
+        ");
+
+        $stmt->execute([
+            $subscriptionId,
+            $amount,
+            $currency,
+            $paymentMethod,
+            $transactionId
+        ]);
+
+        $pdo->commit();
+
+        // Send receipt email
+        try {
+            send_ai_subscription_receipt($email, $subscriptionId, $billing, $amount, $endDate, $transactionId, $paymentMethod);
+        } catch (Exception $e) {
+            // Log email error but don't fail the transaction
+            error_log("Failed to send AI subscription email: " . $e->getMessage());
+        }
+
+        echo json_encode([
+            'success' => true,
+            'subscription_id' => $subscriptionId,
+            'message' => 'Subscription created successfully'
+        ]);
     }
-
-    // Log the payment transaction
-    $stmt = $pdo->prepare("
-        INSERT INTO ai_subscription_payments (
-            subscription_id, amount, currency, payment_method,
-            transaction_id, status, payment_type, created_at
-        ) VALUES (?, ?, ?, ?, ?, 'completed', 'initial', NOW())
-    ");
-
-    $stmt->execute([
-        $subscriptionId,
-        $amount,
-        $currency,
-        $paymentMethod,
-        $transactionId
-    ]);
-
-    $pdo->commit();
-
-    // Send receipt email
-    try {
-        send_ai_subscription_receipt($email, $subscriptionId, $billing, $amount, $endDate, $transactionId, $paymentMethod);
-    } catch (Exception $e) {
-        // Log email error but don't fail the transaction
-        error_log("Failed to send AI subscription email: " . $e->getMessage());
-    }
-
-    echo json_encode([
-        'success' => true,
-        'subscription_id' => $subscriptionId,
-        'message' => 'Subscription created successfully'
-    ]);
 
 } catch (PDOException $e) {
     $pdo->rollBack();
