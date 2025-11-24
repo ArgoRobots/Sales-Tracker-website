@@ -11,7 +11,7 @@
     <meta name="description"
         content="Complete Argo Books documentation and user guide. Learn installation, features, tutorials for sales tracking, product management, analytics, Excel import/export, and security settings.">
     <meta name="keywords"
-        content="argo sales tracker documentation, sales tracker tutorial, business software guide, how to use sales tracker, installation guide, user manual, sales tracking help, product management tutorial">
+        content="argo books documentation, sales tracker tutorial, business software guide, how to use sales tracker, installation guide, user manual, sales tracking help, product management tutorial">
 
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Documentation & User Guide - Argo Books">

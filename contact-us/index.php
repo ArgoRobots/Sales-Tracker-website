@@ -22,7 +22,7 @@ if (isset($_SESSION['contact_error'])) {
   <meta name="description"
     content="Contact Argo Books support team in Calgary, Canada. Get help with sales tracking software, report bugs, request features, or ask questions. Fast response times within 1-8 business hours.">
   <meta name="keywords"
-    content="contact argo sales tracker, customer support calgary, business software help, sales tracker support, contact form, technical support, calgary software company contact, customer service">
+    content="contact argo books, customer support calgary, business software help, sales tracker support, contact form, technical support, calgary software company contact, customer service">
 
   <!-- Open Graph Meta Tags -->
   <meta property="og:title" content="Contact Us - Argo Books Support">

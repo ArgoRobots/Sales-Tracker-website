@@ -29,8 +29,8 @@
             <h1>Refund Policy</h1>
 
             <h2>Introduction</h2>
-            <p>This Refund Policy outlines the terms and conditions for refunds related to the purchase of Argo Sales
-                Tracker license keys. We strive to provide high-quality software that meets your needs, but we
+            <p>This Refund Policy outlines the terms and conditions for refunds related to the purchase of Argo Books
+                license keys. We strive to provide high-quality software that meets your needs, but we
                 understand that sometimes a purchase may not work out as expected.</p>
 
             <h2>Eligibility for Refunds</h2>

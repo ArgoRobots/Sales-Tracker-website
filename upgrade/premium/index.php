@@ -11,7 +11,7 @@
     <meta name="description"
         content="Get Argo Books Premium for $20 CAD. Lifetime access to unlimited products, Windows Hello security, and priority support. Choose your payment method.">
     <meta name="keywords"
-        content="argo sales tracker premium, lifetime access, unlimited products, one time payment, business software">
+        content="argo books premium, lifetime access, unlimited products, one time payment, business software">
 
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Get Premium - Argo Books | $20 CAD">

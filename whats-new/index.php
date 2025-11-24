@@ -11,7 +11,7 @@
     <meta name="description"
         content="Latest updates and new features in Argo Books. Download the latest Windows release.">
     <meta name="keywords"
-        content="argo sales tracker updates, new features, version history, changelog, release notes, software updates, latest version, product improvements, Windows software updates">
+        content="argo books updates, new features, version history, changelog, release notes, software updates, latest version, product improvements, Windows software updates">
 
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="What's New - Argo Books | Latest Features & Updates">
@@ -97,8 +97,8 @@
                             </div>
                             <div class="feature-content">
                                 <h3>Cross platform<span class="type-tag feature">New Feature</span></h3>
-                                <p>We migrated our codebase to a new platform, meaning you can now use Argo Sales
-                                    Tracker on Windows, macOS, and Linux. We also overhauled the user interface to be
+                                <p>We migrated our codebase to a new platform, meaning you can now use Argo Books
+                                    on Windows, macOS, and Linux. We also overhauled the user interface to be
                                     more modern and intuitve.</p>
                             </div>
                         </div>

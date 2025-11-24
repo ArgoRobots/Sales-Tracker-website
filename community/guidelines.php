@@ -121,7 +121,7 @@
         </div>
 
         <!-- Reporting -->
-        <!-- <div class="guidelines-section">
+        <div class="guidelines-section">
             <h3>Reporting Issues</h3>
             <ul class="guidelines-list">
                 <li>Use the report button on posts or comments that violate guidelines.</li>
@@ -131,11 +131,11 @@
                 <li>Don't publicly call out violations - use the proper reporting channels.</li>
                 <li>False or malicious reports may result in penalties for the reporter.</li>
             </ul>
-        </div> -->
+        </div>
 
         <div class="important-note">
-            <strong>Remember:</strong> These guidelines help maintain a productive environment for all Argo Sales
-            Tracker users. When in doubt, ask yourself: "Does this contribute positively to helping others use the
+            <strong>Remember:</strong> These guidelines help maintain a productive environment for all Argo Books
+            users. When in doubt, ask yourself: "Does this contribute positively to helping others use the
             software effectively?" Thank you for being part of our community!
         </div>
 

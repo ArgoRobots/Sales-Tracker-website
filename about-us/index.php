@@ -11,7 +11,7 @@
     <meta name="description"
         content="Learn about Argo, the Calgary-based startup creating affordable sales tracking software for small businesses. Our mission: Better tools, no subscriptions, built by entrepreneurs who understand your challenges.">
     <meta name="keywords"
-        content="about argo sales tracker, calgary startup, small business software company, affordable business tools, sales tracking developers, canadian software company, calgary business, alberta tech company">
+        content="about argo books, calgary startup, small business software company, affordable business tools, sales tracking developers, canadian software company, calgary business, alberta tech company">
 
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="About Us - Argo Books | Calgary Business Software Company">

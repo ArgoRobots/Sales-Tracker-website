@@ -11,7 +11,7 @@
     <meta name="description"
         content="Upgrade Argo Books. Get Premium for $20 CAD lifetime access or subscribe to AI features for $5/month. Unlimited products, Windows Hello, AI-powered insights, and more.">
     <meta name="keywords"
-        content="upgrade argo sales tracker, buy full version, lifetime access software, unlimited products, business software pricing, sales tracker premium, AI subscription">
+        content="upgrade argo books, buy full version, lifetime access software, unlimited products, business software pricing, sales tracker premium, AI subscription">
 
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Upgrade - Argo Books">

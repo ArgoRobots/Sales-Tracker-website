@@ -32,8 +32,8 @@
             <p>This Privacy Policy describes how Argo Books ("we", "us", or "our") collects, uses, and discloses
                 your information when you use our website and community forums (collectively, our "Website").</p>
             <p>We respect your privacy and are committed to protecting your personal data. This Privacy Policy will
-                inform you about how we look after your personal data when you visit our Website or use our Argo Sales
-                Tracker application and tell you about your privacy rights and how the law protects you.</p>
+                inform you about how we look after your personal data when you visit our Website or use our Argo Books
+                application and tell you about your privacy rights and how the law protects you.</p>
 
             <h2>Website Information</h2>
             <p>To help us improve the Argo Books website and provide you with our services, we collect the following types of information:</p>
