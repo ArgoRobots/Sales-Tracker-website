@@ -136,13 +136,27 @@ $billing_cycle = $ai_subscription['billing_cycle'] ?? 'monthly';
                         <?php endif; ?>
                     </div>
                     <div class="payment-method-details">
-                        <span class="payment-method-name"><?php echo $payment_method; ?></span>
+                        <span class="payment-method-name"><?php echo $payment_method; ?> (<?php echo ucfirst($billing_cycle); ?>)</span>
                         <span class="payment-method-note">This payment method will be charged on <?php echo $end_date; ?></span>
                     </div>
                 </div>
 
                 <div class="change-payment-section">
-                    <p class="change-payment-label">Use a different payment method:</p>
+                    <p class="change-payment-label">Change billing cycle:</p>
+                    <div class="billing-cycle-options">
+                        <a href="../../upgrade/ai/checkout/?method=<?php echo strtolower($ai_subscription['payment_method']); ?>&billing=monthly&change_method=1" class="billing-cycle-btn <?php echo $billing_cycle === 'monthly' ? 'current' : ''; ?>">
+                            <span class="billing-cycle-name">Monthly</span>
+                            <span class="billing-cycle-price">$5/month</span>
+                        </a>
+                        <a href="../../upgrade/ai/checkout/?method=<?php echo strtolower($ai_subscription['payment_method']); ?>&billing=yearly&change_method=1" class="billing-cycle-btn <?php echo $billing_cycle === 'yearly' ? 'current' : ''; ?>">
+                            <span class="billing-cycle-name">Yearly</span>
+                            <span class="billing-cycle-price">$50/year</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="change-payment-section">
+                    <p class="change-payment-label">Change payment provider:</p>
                     <div class="payment-provider-options">
                         <a href="../../upgrade/ai/checkout/?method=stripe&billing=<?php echo $billing_cycle; ?>&change_method=1" class="payment-provider-btn <?php echo strtolower($ai_subscription['payment_method']) === 'stripe' ? 'current' : ''; ?>">
                             <img src="../../images/Stripe-logo.svg" alt="Stripe">
