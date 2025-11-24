@@ -32,14 +32,15 @@
             <p>This Privacy Policy describes how Argo Sales Tracker ("we", "us", or "our") collects, uses, and discloses
                 your information when you use our website and community forums (collectively, our "Website").</p>
             <p>We respect your privacy and are committed to protecting your personal data. This Privacy Policy will
-                inform you about how we look after your personal data when you visit our Website and tell you about your
-                privacy rights and how the law protects you.</p>
-            <p>For information about data collection in our desktop application, please see the <a class="link"
-                    href="#desktop-data">Argo Sales Tracker Desktop Application Data</a> section below.</p>
+                inform you about how we look after your personal data when you visit our Website or use our Argo Sales
+                Tracker application and tell you about your privacy rights and how the law protects you.</p>
 
-            <h2>Website Information We Collect</h2>
+            <h2>Website Information</h2>
+            <p>To help us improve the Argo Sales Tracker website, we collect ...</p>
 
-            <h3>Account Information</h3>
+            <h3>Data We Collect on the website</h3>
+
+            <h4>Account Information</h4>
             <p>When you register for an account on our Website, we collect:</p>
             <ul>
                 <li>Username</li>
@@ -47,21 +48,21 @@
                 <li>Password (stored in encrypted form)</li>
             </ul>
 
-            <h3>User-Generated Content</h3>
-            <p>We store content that you create, upload, or receive when using our Website, including:</p>
+            <h4>User-Generated Content</h4>
+            <p>We store content that you create or upload when using our Website, including:</p>
             <ul>
-                <li>Posts and comments in community forums</li>
-                <li>Bug reports and feature requests</li>
+                <li>Posts and comments in the community forum</li>
+                <li>Up-votes and down-votes in the community forum</li>
             </ul>
 
-            <h3>License Information</h3>
+            <h4>License Information</h4>
             <p>When you purchase a license key through our Website, we store:</p>
             <ul>
                 <li>Your email address associated with the license</li>
                 <li>Purchase date and license details</li>
             </ul>
 
-            <h3>Subscription Information</h3>
+            <h4>Subscription Information</h4>
             <p>When you subscribe to Argo AI, we store:</p>
             <ul>
                 <li>Subscription status and billing cycle</li>
@@ -71,7 +72,7 @@
             </ul>
             <p>We do not store credit card numbers. Payment processing is handled securely by our payment providers.</p>
 
-            <h3>Technical Information</h3>
+            <h4>Technical Information</h4>
             <p>We automatically collect certain information when you visit our Website:</p>
             <ul>
                 <li>IP address (temporarily stored for security purposes)</li>
@@ -81,7 +82,7 @@
                 <li>Length of visit and page views</li>
             </ul>
 
-            <h2>How We Use Your Website Information</h2>
+            <h3>How We Use Your Website Information</h3>
             <p>We use the information we collect from our Website for the following purposes:</p>
 
             <p><strong>Provide and maintain our Website</strong>: Including registering you for an account, providing
@@ -93,54 +94,49 @@
             <p><strong>Security</strong>: We use information to verify accounts, prevent fraud, and monitor for
                 suspicious or illegal activity.</p>
 
-            <h2>Website Data Retention</h2>
+            <h3>Website Data Retention</h3>
             <p>We retain your personal information only for as long as necessary to fulfill the purposes for which we
                 collected it, including for the purposes of satisfying any legal, accounting, or reporting requirements.
             </p>
-            <p>Website user accounts that remain inactive for over 10 years may be removed from our system. Before
+            <p>Website user accounts that remain inactive for over 15 years may be removed from our system. Before
                 removing any inactive account, we will send an email notification to the registered email address at
                 least 30 days prior to deletion. This notice will include instructions on how to keep your account
                 active. If we do not receive a response or account activity within the 30-day notice period, the account
                 and associated data will be permanently deleted from our system.</p>
 
-            <h2>Website Data Security</h2>
+            <h3>Website Data Security</h3>
             <p>We have implemented appropriate security measures to prevent your personal data from being accidentally
                 lost, used, or accessed in an unauthorized way, altered, or disclosed. We limit access to your personal
                 data to employees.</p>
 
-            <h2>Your Rights Regarding Website Data</h2>
+            <h3>Your Rights Regarding Website Data</h3>
             <p>Depending on your location, you may have certain rights regarding your personal information, including:
             </p>
 
-            <p><strong>Access</strong>: You can request copies of your personal information.</p>
-            <p><strong>Correction</strong>: You can ask us to rectify inaccurate personal information.</p>
-            <p><strong>Erasure</strong>: You can ask us to delete your personal information in certain circumstances.
-            </p>
-            <p><strong>Restriction</strong>: You can ask us to restrict the processing of your personal information.</p>
-            <p><strong>Data portability</strong>: You may have the right to obtain and reuse your personal information
-                across different services.</p>
+            <ul>
+                <li><strong>Access</strong>: You can request copies of your personal information.</li>
+                <li><strong>Correction</strong>: You can ask us to rectify inaccurate personal information.</li>
+                <li><strong>Erasure</strong>: You can ask us to delete your personal information in certain circumstances.
+                </li>
+                <li><strong>Restriction</strong>: You can ask us to restrict the processing of your personal information.</li>
+                <li><strong>Data portability</strong>: You may have the right to obtain and reuse your personal information
+                    across different services.</li>
+            </ul>
 
-            <h2>Website Cookie Policy</h2>
+            <h3>Website Cookie Policy</h3>
             <p>Our Website uses cookies and similar tracking technologies to track activity on our Website and hold
                 certain information. Cookies are files with a small amount of data which may include an anonymous unique
                 identifier.</p>
             <p>You can instruct your browser to refuse all cookies or to indicate when a cookie is being sent. However,
                 if you do not accept cookies, you may not be able to use some portions of our Website.</p>
 
-            <h2>Children's Privacy</h2>
-            <p>Our Website does not address anyone under the age of 18 ("Children"). We do not knowingly collect
-                personally identifiable information from anyone under the age of 18. If you are a parent or guardian and
-                you are aware that your Child has provided us with personal data, please contact us. If we become aware
-                that we have collected personal data from children without verification of parental consent, we take
-                steps to remove that information from our servers.</p>
-
-            <h2 id="desktop-data">Argo Sales Tracker Desktop Application Data</h2>
+            <h2>Argo Sales Tracker Desktop Application Data</h2>
             <p>To help us improve the Argo Sales Tracker <strong>desktop software</strong>, we collect anonymous usage
                 statistics and geographic information. This data is completely anonymous, stored locally on your device,
                 and cannot be used to identify you personally. This feature is <strong>enabled by default</strong>, but
                 you can opt out at any time.</p>
 
-            <h3>What Anonymous Data We Collect in the Desktop Software</h3>
+            <h3>Anonymous Data We Collect in the Desktop Software</h3>
             <p>The desktop application collects the following anonymous usage statistics:</p>
             <ul>
                 <li><strong>Export data</strong>: Type of export (Excel, Google Sheets, backup, etc.), duration of
@@ -186,7 +182,7 @@
                 your device until you choose to share it with us.</p>
 
             <h2>Google API Services</h2>
-            <p>When you use the export to Google Sheets feature in our desktop application, we request access to your Google account to:</p>
+            <p>When you use the 'Export to Google Sheets' feature in our desktop application, we request access to your Google account to:</p>
             <ul>
                 <li>Create spreadsheets in your Google Drive</li>
                 <li>Write chart data to those spreadsheets</li>
@@ -194,6 +190,14 @@
             <p>We use this data only to perform the export you requested. We do not store, share, or use your Google data for any other purpose. All data remains in your Google Drive under your control.</p>
             <p>Our use of information received from Google APIs adheres to the <a class="link" href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank">Google API Services User Data Policy</a>, including the Limited Use requirements.</p>
             <p>The first time you use the Google Sheets export feature, you will be prompted to sign in to your Google account and grant permission to the application. You can revoke this access at any time through your <a class="link" href="https://myaccount.google.com/permissions" target="_blank">Google Account permissions page</a>.</p>
+          
+            <h2>Children's Privacy</h2>
+            <p>Our Website does not address anyone under the age of 18 ("Children"). We do not knowingly collect
+                personally identifiable information from anyone under the age of 18. If you are a parent or guardian and
+                you are aware that your Child has provided us with personal data, please contact us. If we become aware
+                that we have collected personal data from children without verification of parental consent, we take
+                steps to remove that information from our servers.</p>
+
             <h2>Changes to This Privacy Policy</h2>
             <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new
                 Privacy Policy on this page and updating the "Last updated" date.</p>

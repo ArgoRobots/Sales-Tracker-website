@@ -33,9 +33,7 @@
                 Tracker license keys. We strive to provide high-quality software that meets your needs, but we
                 understand that sometimes a purchase may not work out as expected.</p>
 
-            <h2>License Key Purchases</h2>
-
-            <h3>Eligibility for Refunds</h3>
+            <h2>Eligibility for Refunds</h2>
             <p>We offer a <strong>30-day money-back guarantee</strong> for purchases of Argo Sales Tracker license keys,
                 subject to the following conditions:</p>
             <ol>
@@ -44,16 +42,24 @@
                 <li>The license key must not have been used extensively (as determined by our system logs).</li>
             </ol>
 
-            <h3>Ineligible for Refunds</h3>
+            <h2>Ineligible for Refunds</h2>
             <p>Refunds will not be provided in the following situations:</p>
             <ol>
-                <li>More than 30 days have passed since the original purchase date.</li>
+                <li>More than 30 days have passed since the original purchase or renewal date.</li>
                 <li>The license key has been used extensively.</li>
                 <li>The license key was purchased as part of a special promotion or discount specifically marked as
                     non-refundable.</li>
                 <li>The license key was obtained through fraudulent means.</li>
-                <li>The license key was revoked due to violation of our Terms of Service.</li>
+                <li>The license key was revoked due to violation of our <a class="link" href="terms.php">Terms of Service</a>.</li>
             </ol>
+
+            <h2>Argo AI Subscription Refunds</h2>
+            <p>For Argo AI subscriptions:</p>
+            <ul>
+                <li>Refunds are prorated based on unused time in your billing period.</li>
+                <li>Cancelling your subscription does not automatically trigger a refund - you must request one separately.</li>
+                <li>After cancellation, you retain access until the end of your current billing period.</li>
+            </ul>
 
             <h2>How to Request a Refund</h2>
             <p>To request a refund, please contact our support team with the following information:</p>
@@ -83,15 +89,6 @@
             <p>If you change your mind about your purchase or ordered the wrong type of license by mistake, please
                 contact us as soon as possible. We will try to accommodate your request if it falls within our refund
                 eligibility period.</p>
-
-            <h2>Argo AI Subscription Refunds</h2>
-            <p>For Argo AI subscriptions:</p>
-            <ul>
-                <li>You may request a refund within 30 days of your initial subscription or renewal.</li>
-                <li>Refunds are prorated based on unused time in your billing period.</li>
-                <li>Cancelling your subscription does not automatically trigger a refund - you must request one separately.</li>
-                <li>After cancellation, you retain access until the end of your current billing period.</li>
-            </ul>
 
             <h2>Technical Issues</h2>
             <p>If you are experiencing technical issues with Argo Sales Tracker, we encourage you to:</p>
