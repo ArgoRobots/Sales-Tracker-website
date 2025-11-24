@@ -188,7 +188,7 @@
                 <?php if ($hasDiscount && $billing === 'monthly'): ?>
                 <p>This is a recurring subscription. Your $20 credit covers your first 4 months. You will be charged $<?php echo number_format($monthlyPrice, 2); ?> CAD/month starting month 5.</p>
                 <?php else: ?>
-                <p>This is a recurring subscription. You will be charged $<?php echo number_format($billing === 'yearly' ? $yearlyPrice : $monthlyPrice, 2); ?> CAD/<?php echo $billingPeriod; ?> after the <?php echo $hasDiscount && $billing === 'yearly' ? 'discounted ' : ''; ?>first <?php echo $billingPeriod; ?>.</p>
+                <p>This is a recurring subscription.</p>
                 <?php endif; ?>
                 <p>Cancel anytime from your account settings.</p>
             </div>
