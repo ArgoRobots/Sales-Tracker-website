@@ -201,16 +201,6 @@
     font-size: 16px;
 }
 
-.btn-danger {
-    background: #dc2626;
-    color: white;
-    border: none;
-}
-
-.btn-danger:hover {
-    background: #b91c1c;
-}
-
 .btn-purple {
     background: linear-gradient(135deg, #8b5cf6, #7c3aed);
     color: white;
@@ -219,16 +209,6 @@
 
 .btn-purple:hover {
     background: linear-gradient(135deg, #7c3aed, #6d28d9);
-}
-
-.btn-outline {
-    background: white;
-    color: #374151;
-    border: 1px solid #d1d5db;
-}
-
-.btn-outline:hover {
-    background: #f9fafb;
 }
 
 /* Responsive */

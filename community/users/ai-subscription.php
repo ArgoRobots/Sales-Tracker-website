@@ -145,7 +145,7 @@ if ($ai_subscription) {
 
                     <?php if ($ai_subscription['status'] === 'active'): ?>
                         <div class="subscription-actions">
-                            <a href="cancel-subscription.php" class="btn btn-outline-red">Cancel Subscription</a>
+                            <a href="cancel-subscription.php" class="btn btn-outline-red btn-cancel">Cancel Subscription</a>
                         </div>
                     <?php elseif ($ai_subscription['status'] === 'cancelled'): ?>
                         <div class="subscription-notice cancelled">

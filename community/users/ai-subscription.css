@@ -443,7 +443,8 @@
     text-align: center;
 }
 
-.btn-reactivate {
+.btn-reactivate,
+.btn-cancel {
     width: 210px !important;
     margin: auto;
 }

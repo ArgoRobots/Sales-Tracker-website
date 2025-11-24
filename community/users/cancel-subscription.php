@@ -137,7 +137,7 @@ $end_date = date('F j, Y', strtotime($ai_subscription['end_date']));
             <div class="confirm-actions">
                 <form method="post">
                     <input type="hidden" name="confirm_cancel" value="1">
-                    <button type="submit" class="btn btn-danger">Yes, Cancel My Subscription</button>
+                    <button type="submit" class="btn btn-red">Yes, Cancel My Subscription</button>
                 </form>
                 <a href="ai-subscription.php" class="btn btn-outline">No, Keep My Subscription</a>
             </div>
