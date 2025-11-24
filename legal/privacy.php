@@ -36,7 +36,7 @@
                 Tracker application and tell you about your privacy rights and how the law protects you.</p>
 
             <h2>Website Information</h2>
-            <p>To help us improve the Argo Sales Tracker website, we collect ...</p>
+            <p>To help us improve the Argo Sales Tracker website and provide you with our services, we collect the following types of information:</p>
 
             <h3>Data We Collect on the website</h3>
 
