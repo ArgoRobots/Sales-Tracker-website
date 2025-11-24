@@ -61,6 +61,16 @@
                 <li>Purchase date and license details</li>
             </ul>
 
+            <h3>Subscription Information</h3>
+            <p>When you subscribe to Argo AI, we store:</p>
+            <ul>
+                <li>Subscription status and billing cycle</li>
+                <li>Payment method type (Stripe, PayPal, or Square)</li>
+                <li>Transaction IDs for payment processing</li>
+                <li>Subscription start and end dates</li>
+            </ul>
+            <p>We do not store complete credit card numbers. Payment processing is handled securely by our payment providers.</p>
+
             <h3>Technical Information</h3>
             <p>We automatically collect certain information when you visit our Website:</p>
             <ul>
@@ -196,7 +206,7 @@
                 <li>By email: <a class="link" href="mailto:contact@argorobots.com">contact@argorobots.com</a></li>
             </ul>
 
-            <p class="last-updated">Last updated: October 28, 2025</p>
+            <p class="last-updated">Last updated: November 24, 2025</p>
         </div>
     </div>
 

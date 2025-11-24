@@ -84,6 +84,16 @@
                 contact us as soon as possible. We will try to accommodate your request if it falls within our refund
                 eligibility period.</p>
 
+            <h2>Argo AI Subscription Refunds</h2>
+            <p>For Argo AI subscriptions:</p>
+            <ul>
+                <li>You may request a refund within 7 days of your initial subscription or renewal.</li>
+                <li>Refunds are prorated based on unused time in your billing period.</li>
+                <li>Cancelling your subscription does not automatically trigger a refund—you must request one separately.</li>
+                <li>After cancellation, you retain access until the end of your current billing period.</li>
+            </ul>
+            <p>To request a subscription refund, contact us with your account email and reason for the request.</p>
+
             <h2>Technical Issues</h2>
             <p>If you are experiencing technical issues with Argo Sales Tracker, we encourage you to:</p>
             <ol>
@@ -108,7 +118,7 @@
                 <li>By email: <a class="link" href="mailto:contact@argorobots.com">contact@argorobots.com</a></li>
             </ul>
 
-            <p class="last-updated">Last updated: August 8, 2025</p>
+            <p class="last-updated">Last updated: November 24, 2025</p>
         </div>
     </div>
 
