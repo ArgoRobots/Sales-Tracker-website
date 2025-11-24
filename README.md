@@ -105,6 +105,11 @@ You need to create a MySQL database and import the schema.
    - Click on the **"Structure"** tab
    - You should see all the tables
 
+
+### Step 5: Set Up Local Email Sending
+
+When running the Argo Books website locally on XAMPP, PHP's `mail()` function won't work without a mail server. You can set up a fake SMTP server that catches all emails locally and displays them in a web interface using MailHog. You can find the instructions to set this up [In this document](https://github.com/ArgoRobots/Argo-Books-website/blob/main/read-me/Local%20email%20setup.md).
+
 ## Running Locally
 
 1. Open XAMPP Control Panel and start Apache and MySQL
