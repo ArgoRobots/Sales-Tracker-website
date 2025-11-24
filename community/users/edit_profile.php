@@ -159,7 +159,6 @@ function handle_avatar_change()
     $allowed_types = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
     $file_info = finfo_open(FILEINFO_MIME_TYPE);
     $mime_type = finfo_file($file_info, $file['tmp_name']);
-    finfo_close($file_info);
 
     if (!in_array($mime_type, $allowed_types)) {
         $_SESSION['profile_error'] = 'Invalid file type. Please upload a JPEG, PNG, GIF, or WebP image.';
