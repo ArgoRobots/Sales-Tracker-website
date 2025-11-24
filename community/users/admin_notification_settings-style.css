@@ -8,7 +8,7 @@
 .admin-settings-container {
   max-width: 700px;
   position: relative;
-  background: white;
+  background: var(--white);
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   padding: 30px;
@@ -36,7 +36,7 @@
   font-size: 18px;
   margin-bottom: 15px;
   padding-bottom: 10px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--gray-border);
   color: var(--blueText);
 }
 
@@ -58,8 +58,8 @@
 }
 
 .success-message {
-  background-color: #d1fae5;
-  color: #065f46;
+  background-color: var(--emerald-100);
+  color: var(--emerald-800);
   padding: 15px;
   border-radius: 6px;
   margin-bottom: 20px;
@@ -67,8 +67,8 @@
 }
 
 .error-message {
-  background-color: #fee2e2;
-  color: #b91c1c;
+  background-color: var(--red-100);
+  color: var(--red-700);
   padding: 15px;
   border-radius: 6px;
   margin-bottom: 20px;
@@ -88,7 +88,7 @@
 .email-field input {
   width: 100%;
   padding: 10px;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--gray-input-border);
   border-radius: 6px;
   font-size: 16px;
 }
@@ -101,6 +101,6 @@
 
 .email-field .hint {
   font-size: 14px;
-  color: #6b7280;
+  color: var(--gray-500);
   margin-top: 6px;
 }

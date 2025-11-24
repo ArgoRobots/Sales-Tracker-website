@@ -5,11 +5,11 @@
 }
 
 .form-section {
-  background: #f9fafb;
+  background: var(--gray-50);
   border-radius: 8px;
   padding: 20px;
   margin-bottom: 20px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--gray-border);
 }
 
 .form-section-title {
@@ -33,13 +33,13 @@
   display: block;
   margin-bottom: 8px;
   font-weight: 500;
-  color: #374151;
+  color: var(--gray-700);
 }
 
 .form-group .field-hint {
   display: block;
   font-size: 13px;
-  color: #6b7280;
+  color: var(--gray-500);
   margin-top: 4px;
 }
 

@@ -20,7 +20,7 @@ header .header-inner .menu-container .menu .community:after {
 
 .post-status-label {
   font-weight: 500;
-  color: #4b5563;
+  color: var(--gray-text-light);
 }
 
 .post-status-large {
@@ -54,10 +54,10 @@ header .header-inner .menu-container .menu .community:after {
 }
 
 .community-header {
-  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+  background: linear-gradient(135deg, var(--blue-900) 0%, var(--primary-blue) 100%);
   text-align: center;
   padding: 60px 0;
-  color: white;
+  color: var(--white);
 }
 
 .community-header h1 {
@@ -81,7 +81,7 @@ header .header-inner .menu-container .menu .community:after {
 .post-card {
   margin-bottom: 0;
   border-radius: 8px 8px 0 0;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--gray-border);
   display: flex;
 }
 
@@ -91,7 +91,7 @@ header .header-inner .menu-container .menu .community:after {
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-right: 1px solid #e5e7eb;
+  border-right: 1px solid var(--gray-border);
   min-width: 50px;
   order: -1;
 }
@@ -100,7 +100,7 @@ header .header-inner .menu-container .menu .community:after {
   background: none;
   border: none;
   cursor: pointer;
-  color: #94a3b8;
+  color: var(--gray-400);
   padding: 5px;
   transition: all 0.2s ease;
   min-width: 44px;
@@ -111,7 +111,7 @@ header .header-inner .menu-container .menu .community:after {
 }
 
 .vote-btn:hover {
-  color: #1e40af;
+  color: var(--blue-800);
 }
 
 .vote-count {
@@ -160,27 +160,27 @@ header .header-inner .menu-container .menu .community:after {
 }
 
 .post-type.bug {
-  background-color: #fee2e2;
-  color: #b91c1c;
+  background-color: var(--red-100);
+  color: var(--red-800);
 }
 
 .post-type.feature {
-  background-color: #e0f2fe;
-  color: #0369a1;
+  background-color: var(--sky-100);
+  color: var(--sky-700);
 }
 
 .post-status.open {
   background-color: var(--green-50);
-  color: #16a34a;
+  color: var(--green-600);
 }
 
 .post-status.in_progress {
   background-color: var(--yellow-50);
-  color: #d97706;
+  color: var(--amber-600);
 }
 
 .post-status.completed {
-  background-color: #dbeafe;
+  background-color: var(--blue-100);
   color: var(--primary-blue);
 }
 
@@ -199,14 +199,14 @@ header .header-inner .menu-container .menu .community:after {
   display: flex;
   margin-top: auto;
   padding-top: 10px;
-  border-top: 1px solid #f3f4f6;
+  border-top: 1px solid var(--gray-bg-light);
   flex-wrap: wrap;
   gap: 10px;
 }
 
 .post-info {
   font-size: 14px;
-  color: #64748b;
+  color: var(--gray-500);
 }
 
 .post-author,
@@ -225,7 +225,7 @@ header .header-inner .menu-container .menu .community:after {
 
 .post-views svg {
   vertical-align: middle;
-  color: #94a3b8;
+  color: var(--gray-400);
 }
 
 .post-last-edited {
@@ -241,7 +241,7 @@ header .header-inner .menu-container .menu .community:after {
 
 .status-update {
   padding: 5px 8px;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--gray-input-border);
   border-radius: 4px;
   background-color: var(--white);
   font-size: 14px;
@@ -249,7 +249,7 @@ header .header-inner .menu-container .menu .community:after {
 }
 
 .delete-post-btn {
-  background-color: #fee2e2;
+  background-color: var(--red-100);
   color: var(--redHover);
   border: none;
   padding: 5px 10px;
@@ -271,9 +271,9 @@ header .header-inner .menu-container .menu .community:after {
 .comments-section h3 {
   font-size: 18px;
   margin-bottom: 15px;
-  color: #1f2937;
+  color: var(--gray-text-darker);
   padding-bottom: 10px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--gray-border);
 }
 
 .comments-container {
@@ -301,7 +301,7 @@ header .header-inner .menu-container .menu .community:after {
 
 .comment-date {
   margin-left: 10px;
-  color: #6b7280;
+  color: var(--gray-text);
   white-space: nowrap;
 }
 
@@ -322,7 +322,7 @@ header .header-inner .menu-container .menu .community:after {
 }
 
 .delete-comment-btn {
-  background-color: #fee2e2;
+  background-color: var(--red-100);
   color: var(--redHover);
 }
 
@@ -334,16 +334,16 @@ header .header-inner .menu-container .menu .community:after {
 
 .comment-form h4 {
   margin-bottom: 10px;
-  color: #1f2937;
+  color: var(--gray-text-darker);
   font-size: 16px;
 }
 
 .comments-disabled-message {
-  background-color: #f3f4f6;
-  border: 1px solid #e5e7eb;
+  background-color: var(--gray-bg-light);
+  border: 1px solid var(--gray-border);
   border-radius: 6px;
   padding: 15px;
-  color: #6b7280;
+  color: var(--gray-text);
   text-align: center;
   font-style: italic;
 }
@@ -351,7 +351,7 @@ header .header-inner .menu-container .menu .community:after {
 .form-group label {
   display: block;
   margin-bottom: 5px;
-  color: #4b5563;
+  color: var(--gray-text-light);
   font-size: 14px;
   font-weight: 500;
 }
@@ -360,7 +360,7 @@ header .header-inner .menu-container .menu .community:after {
 .form-group textarea {
   width: 100%;
   padding: 8px 12px;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--gray-input-border);
   border-radius: 4px;
   font-family: inherit;
   font-size: 14px;
@@ -409,7 +409,7 @@ header .header-inner .menu-container .menu .community:after {
   background: none;
   border: none;
   cursor: pointer;
-  color: #94a3b8;
+  color: var(--gray-400);
   padding: 3px;
   transition: all 0.2s ease;
   min-width: 38px;
@@ -419,7 +419,7 @@ header .header-inner .menu-container .menu .community:after {
 }
 
 .comment-vote-btn:hover {
-  color: #1e40af;
+  color: var(--blue-800);
 }
 
 .comment-vote-btn.voted.upvote {
@@ -442,7 +442,7 @@ header .header-inner .menu-container .menu .community:after {
   flex: 1;
   padding: 8px;
   background-color: var(--white);
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--gray-border);
   border-radius: 6px;
   min-width: 0;
 }
@@ -462,7 +462,7 @@ header .header-inner .menu-container .menu .community:after {
 
 /* Buttons styling */
 .edit-post-btn {
-  background-color: #dbeafe;
+  background-color: var(--blue-100);
   color: var(--primary-blue);
   border: none;
   padding: 5px 10px;
@@ -475,12 +475,12 @@ header .header-inner .menu-container .menu .community:after {
 }
 
 .edit-post-btn:hover {
-  background-color: #bfdbfe;
+  background-color: var(--blue-200);
   text-decoration: none;
 }
 
 .edit-comment-btn {
-  background-color: #dbeafe;
+  background-color: var(--blue-100);
   color: var(--primary-blue);
   border: none;
   padding: 3px 8px;
@@ -490,21 +490,21 @@ header .header-inner .menu-container .menu .community:after {
 }
 
 .edit-comment-btn:hover {
-  background-color: #bfdbfe;
+  background-color: var(--blue-200);
 }
 
 /* Comment content */
 .comment-content {
   line-height: 1.5;
-  color: #4b5563;
+  color: var(--gray-text-light);
   word-break: break-word;
   margin: 5px 0 0 10px;
 }
 
 /* Login required message */
 .login-required {
-  background-color: #f3f4f6;
-  border: 1px solid #e5e7eb;
+  background-color: var(--gray-bg-light);
+  border: 1px solid var(--gray-border);
   border-radius: 6px;
   padding: 15px;
   text-align: center;
@@ -522,7 +522,7 @@ header .header-inner .menu-container .menu .community:after {
 .inline-edit-form textarea {
   width: 100%;
   padding: 10px;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--gray-input-border);
   border-radius: 6px;
   font-family: inherit;
   font-size: 14px;
@@ -534,7 +534,7 @@ header .header-inner .menu-container .menu .community:after {
 
 .inline-edit-form textarea:focus {
   outline: none;
-  border-color: #60a5fa;
+  border-color: var(--secondary-blue);
   box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
 }
 
@@ -714,7 +714,7 @@ header .header-inner .menu-container .menu .community:after {
 
 /* Bug report container styling */
 .bug-report-container {
-  background-color: #f9fafb;
+  background-color: var(--whiteBackground);
   border-radius: 8px;
   padding: 20px;
   margin-bottom: 20px;
@@ -746,7 +746,7 @@ header .header-inner .menu-container .menu .community:after {
 
 .bug-info-item {
   background-color: var(--white);
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--gray-border);
   border-radius: 6px;
   padding: 12px 15px;
 }
@@ -754,19 +754,19 @@ header .header-inner .menu-container .menu .community:after {
 .bug-info-label {
   font-weight: 600;
   font-size: 14px;
-  color: #4b5563;
+  color: var(--gray-text-light);
   margin-bottom: 5px;
 }
 
 .bug-info-value {
   font-size: 15px;
-  color: #111827;
+  color: var(--gray-900);
 }
 
 /* Bug detailed sections */
 .bug-info-section {
   background-color: var(--white);
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--gray-border);
   border-radius: 6px;
   padding: 15px;
   margin-bottom: 15px;
@@ -779,15 +779,15 @@ header .header-inner .menu-container .menu .community:after {
 .bug-info-section-title {
   font-weight: 600;
   font-size: 15px;
-  color: #4b5563;
+  color: var(--gray-text-light);
   margin-bottom: 10px;
   padding-bottom: 8px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--gray-border);
 }
 
 .bug-info-section-content {
   font-size: 15px;
-  color: #111827;
+  color: var(--gray-900);
   line-height: 1.6;
 }
 
@@ -807,13 +807,13 @@ header .header-inner .menu-container .menu .community:after {
 
 /* Styling for actual result to highlight issues */
 .bug-results-container .bug-info-section:nth-child(2) {
-  border-left: 3px solid #ef4444;
+  border-left: 3px solid var(--red);
 }
 
 @media (max-width: 768px) {
   .bug-results-container .bug-info-section:nth-child(2) {
-    border-left: 1px solid #e5e7eb;
-    border-top: 3px solid #ef4444;
+    border-left: 1px solid var(--gray-border);
+    border-top: 3px solid var(--red);
   }
 }
 

@@ -36,7 +36,7 @@ header .header-inner .menu-container .menu .community:after {
 }
 
 .guidelines-section {
-  background-color: #fff;
+  background-color: var(--white);
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   padding: 30px;
@@ -48,7 +48,7 @@ header .header-inner .menu-container .menu .community:after {
   font-size: 20px;
   margin-bottom: 20px;
   padding-bottom: 10px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--gray-border);
 }
 
 .guidelines-list {
@@ -62,13 +62,13 @@ header .header-inner .menu-container .menu .community:after {
 }
 
 .important-note {
-  background-color: #fef3c7;
-  border: 1px solid #f59e0b;
+  background-color: var(--amber-100);
+  border: 1px solid var(--amber-500);
   border-radius: 6px;
   padding: 15px;
   margin: 20px 0;
 }
 
 .important-note strong {
-  color: #92400e;
+  color: var(--amber-800);
 }
