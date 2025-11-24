@@ -70,6 +70,21 @@
     $hasDiscount = isset($_GET['discount']) && $_GET['discount'] === '1';
     $licenseKey = isset($_GET['license']) ? $_GET['license'] : '';
 
+    // Auto-detect license key if not provided but user has an activated license
+    if (!$hasDiscount && empty($licenseKey) && !empty($user_email)) {
+        try {
+            $stmt = $pdo->prepare("SELECT license_key FROM license_keys WHERE email = ? AND activated = 1 LIMIT 1");
+            $stmt->execute([$user_email]);
+            $userLicense = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($userLicense) {
+                $licenseKey = $userLicense['license_key'];
+                $hasDiscount = true;
+            }
+        } catch (PDOException $e) {
+            // Silently fail - user just won't get auto-discount
+        }
+    }
+
     // Calculate prices
     $monthlyPrice = 5.00;
     $yearlyPrice = 50.00;
