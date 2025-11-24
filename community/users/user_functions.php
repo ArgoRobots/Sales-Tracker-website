@@ -533,7 +533,6 @@ namespace {
     {
         // First check session variables
         if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
-            error_log('Session user_id is not set or empty');
             return false;
         }
 
