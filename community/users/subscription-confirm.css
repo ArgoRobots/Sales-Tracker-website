@@ -228,20 +228,6 @@
     position: relative;
 }
 
-.payment-provider-btn.current::after {
-    content: "current";
-    position: absolute;
-    bottom: -8px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 9px;
-    color: white;
-    background: #8b5cf6;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-weight: 500;
-}
-
 /* Billing Cycle Selection */
 .billing-cycle-options {
     display: flex;
