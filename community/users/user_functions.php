@@ -99,10 +99,10 @@ namespace {
 
     /**
      * Authenticate user
-     * 
+     *
      * @param string $login Username or email
      * @param string $password Plain text password
-     * @return array|bool User data on success or false on failure
+     * @return array|bool User data on success, array with 'email_not_verified' key if email not verified, or false on failure
      */
     function login_user($login, $password)
     {
@@ -125,6 +125,16 @@ namespace {
 
         // Verify password
         if (password_verify($password, $user['password_hash'])) {
+            // Check if email is verified before allowing login
+            if (!$user['email_verified']) {
+                return [
+                    'email_not_verified' => true,
+                    'user_id' => $user['id'],
+                    'email' => $user['email'],
+                    'username' => $user['username']
+                ];
+            }
+
             // Check if user had scheduled deletion
             $deletion_was_scheduled = !is_null($user['deletion_scheduled_at']);
 
@@ -168,6 +178,13 @@ namespace {
             $user = validate_remember_token($token);
 
             if ($user) {
+                // Do not auto-login if email is not verified
+                if (!$user['email_verified']) {
+                    // Clear the remember me cookie since user is not verified
+                    setcookie('remember_me', '', time() - 3600, '/');
+                    return;
+                }
+
                 $db = get_db_connection();
 
                 // Check if user had scheduled deletion
