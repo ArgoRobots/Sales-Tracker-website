@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 // Set headers for JSON response
 header('Content-Type: application/json');
 
@@ -6,6 +8,9 @@ header('Content-Type: application/json');
 require_once '../../../db_connect.php';
 require_once '../../../license_functions.php';
 require_once '../../../email_sender.php';
+
+// Get user_id if logged in
+$user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 
 // Get raw POST data
 $json_data = file_get_contents('php://input');
@@ -78,7 +83,7 @@ try {
             } else {
                 $stmt->close();
                 // Create a new license key if we didn't pre-generate one
-                $license_key = create_license_key($data['email']);
+                $license_key = create_license_key($data['email'], $user_id);
             }
 
             if ($license_key) {

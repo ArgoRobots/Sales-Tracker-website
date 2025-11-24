@@ -1,10 +1,15 @@
 <?php
+session_start();
+
 require_once '../../../vendor/autoload.php';
 require_once '../../../db_connect.php';
 require_once '../../../license_functions.php';
 
 // Set headers for JSON response
 header('Content-Type: application/json');
+
+// Get user_id if logged in
+$user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 
 try {
     // Get raw POST data
@@ -54,7 +59,7 @@ try {
             $license_key = $row['license_key'];
         } else {
             // Create a new license key
-            $license_key = create_license_key($customer_email);
+            $license_key = create_license_key($customer_email, $user_id);
         }
         $stmt->close();
     }

@@ -28,7 +28,7 @@
 }
 
 .reputation-section {
-  background-color: #fff;
+  background-color: var(--white);
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   padding: 30px 30px 10px 30px;
@@ -44,7 +44,7 @@
   font-size: 24px;
   margin-bottom: 20px;
   padding-bottom: 15px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--gray-border);
 }
 
 .reputation-section p {
@@ -61,13 +61,13 @@
 .rep-table td {
   padding: 12px 15px;
   text-align: left;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--gray-border);
 }
 
 .rep-table th {
-  background-color: #f9fafb;
+  background-color: var(--gray-50);
   font-weight: 600;
-  color: #1f2937;
+  color: var(--gray-800);
 }
 
 .rep-positive,
@@ -77,7 +77,7 @@
 }
 
 .rep-positive {
-  color: #16a34a;
+  color: var(--green-600);
 }
 
 .rep-negative {
@@ -85,14 +85,14 @@
 }
 
 .rep-example {
-  background-color: #f3f4f6;
+  background-color: var(--gray-100);
   padding: 20px 20px 10px 20px;
   border-radius: 6px;
   margin: 20px 0;
 }
 
 .rep-example h3 {
-  color: #1f2937;
+  color: var(--gray-800);
   font-size: 18px;
   margin-bottom: 15px;
 }
@@ -106,19 +106,19 @@
 .rep-example p::before {
   content: "•";
   margin-right: 8px;
-  color: #3b82f6;
+  color: var(--primary-blue);
 }
 
 .rep-tip {
-  background-color: #dbeafe;
-  border-left: 4px solid #3b82f6;
+  background-color: var(--blue-100);
+  border-left: 4px solid var(--primary-blue);
   padding: 15px;
   border-radius: 0 6px 6px 0;
   margin: 20px 0;
 }
 
 .rep-tip h4 {
-  color: #1e40af;
+  color: var(--blue-800);
   margin-bottom: 10px;
   font-size: 16px;
 }
@@ -144,7 +144,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background-color: #3b82f6;
+  background-color: var(--primary-blue);
 }
 
 .btn svg {

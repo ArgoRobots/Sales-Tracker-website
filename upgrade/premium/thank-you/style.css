@@ -14,7 +14,7 @@ header .header-inner .menu-container .menu .upgrade-now:after {
 .success-icon {
     width: 100px;
     height: 100px;
-    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    background: linear-gradient(135deg, var(--primary-blue), var(--blueHover));
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -25,26 +25,26 @@ header .header-inner .menu-container .menu .upgrade-now:after {
 .success-icon svg {
     width: 50px;
     height: 50px;
-    stroke: white;
+    stroke: var(--white);
     stroke-width: 3;
     fill: none;
 }
 
 h1 {
-    color: #1f2937;
+    color: var(--gray-text-darker);
     margin-bottom: 16px;
     font-size: 32px;
 }
 
 .subtitle {
-    color: #6b7280;
+    color: var(--gray-text);
     font-size: 18px;
     margin-bottom: 40px;
 }
 
 .purchase-details {
-    background: white;
-    border: 2px solid #3b82f6;
+    background: var(--white);
+    border: 2px solid var(--primary-blue);
     border-radius: 16px;
     padding: 30px;
     margin-bottom: 30px;
@@ -52,7 +52,7 @@ h1 {
 }
 
 .purchase-details h2 {
-    color: #3b82f6;
+    color: var(--primary-blue);
     font-size: 20px;
     margin-bottom: 20px;
     text-align: center;
@@ -62,7 +62,7 @@ h1 {
     display: flex;
     justify-content: space-between;
     padding: 12px 0;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid var(--gray-border);
 }
 
 .detail-row:last-child {
@@ -70,17 +70,17 @@ h1 {
 }
 
 .detail-label {
-    color: #6b7280;
+    color: var(--gray-text);
 }
 
 .detail-value {
-    color: #1f2937;
+    color: var(--gray-text-darker);
     font-weight: 600;
 }
 
 .license-box {
-    background: #eff6ff;
-    border: 1px solid #bfdbfe;
+    background: var(--blue-50);
+    border: 1px solid var(--blue-200);
     border-radius: 8px;
     padding: 16px;
     margin: 20px 0;
@@ -89,7 +89,7 @@ h1 {
 
 .license-box label {
     display: block;
-    color: #6b7280;
+    color: var(--gray-text);
     font-size: 14px;
     margin-bottom: 8px;
 }
@@ -97,14 +97,14 @@ h1 {
 .license-key {
     font-family: monospace;
     font-size: 20px;
-    color: #1d4ed8;
+    color: var(--blueHover);
     font-weight: 700;
     letter-spacing: 1px;
 }
 
 .copy-btn {
-    background: #3b82f6;
-    color: white;
+    background: var(--primary-blue);
+    color: var(--white);
     border: none;
     padding: 8px 16px;
     border-radius: 6px;
@@ -115,15 +115,15 @@ h1 {
 }
 
 .copy-btn:hover {
-    background: #1d4ed8;
+    background: var(--blueHover);
 }
 
 .copy-btn.copied {
-    background: #059669;
+    background: var(--emerald-600);
 }
 
 .activation-steps {
-    background: #f8fafc;
+    background: var(--gray-50);
     border-radius: 12px;
     padding: 24px;
     text-align: left;
@@ -131,7 +131,7 @@ h1 {
 }
 
 .activation-steps h3 {
-    color: #1f2937;
+    color: var(--gray-text-darker);
     margin-bottom: 16px;
 }
 
@@ -141,7 +141,7 @@ h1 {
 }
 
 .activation-steps li {
-    color: #4b5563;
+    color: var(--gray-text-light);
     margin-bottom: 12px;
     line-height: 1.6;
 }
@@ -163,7 +163,7 @@ h1 {
     display: flex;
     align-items: center;
     gap: 12px;
-    background: white;
+    background: var(--white);
     padding: 16px;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -172,14 +172,14 @@ h1 {
 .feature-item svg {
     width: 24px;
     height: 24px;
-    stroke: #3b82f6;
+    stroke: var(--primary-blue);
     stroke-width: 2;
     fill: none;
     flex-shrink: 0;
 }
 
 .feature-item span {
-    color: #374151;
+    color: var(--gray-text-dark);
     font-size: 14px;
 }
 
@@ -191,8 +191,8 @@ h1 {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-    color: white;
+    background: linear-gradient(135deg, var(--primary-blue), var(--blueHover));
+    color: var(--white);
     padding: 14px 28px;
     border-radius: 8px;
     text-decoration: none;
@@ -206,16 +206,16 @@ h1 {
 }
 
 .btn-secondary {
-    background: white;
-    color: #3b82f6;
+    background: var(--white);
+    color: var(--primary-blue);
     padding: 14px 28px;
     border-radius: 8px;
     text-decoration: none;
     font-weight: 600;
-    border: 2px solid #3b82f6;
+    border: 2px solid var(--primary-blue);
     transition: background 0.3s ease;
 }
 
 .btn-secondary:hover {
-    background: #eff6ff;
+    background: var(--blue-50);
 }

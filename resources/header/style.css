@@ -42,7 +42,7 @@ body.menu-open::after {
 header {
   height: 50px;
   position: absolute;
-  background: #fff;
+  background: var(--white);
   width: 100%;
   transition: all 0.3s ease-in-out;
   background: transparent;
@@ -52,7 +52,7 @@ header {
 /* For sticky header */
 header.sticky {
   position: fixed;
-  background: white;
+  background: var(--white);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   z-index: 100;
   opacity: 1;
@@ -70,12 +70,12 @@ header.sticky {
 
 /* Change text color to black only when sticky */
 header.sticky .menu-icon .nav-icon {
-  background: #000 !important;
+  background: var(--gray-900) !important;
 }
 
 header.sticky .menu-icon .nav-icon:before,
 header.sticky .menu-icon .nav-icon:after {
-  background: #000 !important;
+  background: var(--gray-900) !important;
 }
 
 header.sticky .menu-btn:checked~.menu-icon .nav-icon {
@@ -87,11 +87,11 @@ header.sticky .header-inner .logo {
 }
 
 header.sticky .header-inner .menu-container ul li a {
-  color: #000 !important;
+  color: var(--gray-900) !important;
 }
 
 header.sticky .header-inner .menu-container ul li a:after {
-  background: #000 !important;
+  background: var(--gray-900) !important;
 }
 
 header .menu-icon {
@@ -107,7 +107,7 @@ header .menu-icon {
 }
 
 header .menu-icon .nav-icon {
-  background: #fff;
+  background: var(--white);
   display: block;
   height: 1px;
   position: relative;
@@ -117,7 +117,7 @@ header .menu-icon .nav-icon {
 
 header .menu-icon .nav-icon:before,
 header .menu-icon .nav-icon:after {
-  background: #fff;
+  background: var(--white);
   content: "";
   display: block;
   height: 100%;
@@ -157,7 +157,7 @@ header .menu-btn:checked~.menu-icon .nav-icon:after {
 }
 
 header .hamburger-nav-menu {
-  background: #fff;
+  background: var(--white);
   overflow: hidden;
   position: absolute;
   top: 50px;
@@ -182,7 +182,7 @@ header .hamburger-nav-menu ul {
 }
 
 header .hamburger-nav-menu ul li {
-  border-top: 1px solid rgb(225, 225, 225);
+  border-top: 1px solid var(--gray-200);
   transform: translateY(-20px);
   opacity: 0;
   transition: all 0.3s ease-in-out;
@@ -194,12 +194,12 @@ header .hamburger-nav-menu.active ul li {
 }
 
 header .hamburger-nav-menu ul li:last-of-type {
-  border-bottom: 1px solid #000;
+  border-bottom: 1px solid var(--gray-900);
 }
 
 header .hamburger-nav-menu ul li a {
   text-decoration: none;
-  color: #000;
+  color: var(--gray-900);
   padding: 20px 0 20px 30px;
   display: block;
   margin-left: 30px;
@@ -249,7 +249,7 @@ header .header-inner .menu-container ul li a {
   line-height: 50px;
   text-decoration: none;
   position: relative;
-  color: #fff;
+  color: var(--white);
   font-size: 0.85rem;
   padding-inline: 7px;
 }
@@ -263,7 +263,7 @@ header .header-inner .menu-container ul li a:after {
   transform: translateX(-50%) scaleX(0);
   width: 80%;
   height: 2px;
-  background: #fff;
+  background: var(--white);
   transition: transform 0.2s;
 }
 
@@ -318,11 +318,11 @@ header .header-inner .menu-container ul li a:hover::after {
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  background-color: #3b82f6;
+  background-color: var(--primary-blue);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: var(--white);
   font-weight: bold;
   text-decoration: none;
   overflow: hidden;
@@ -359,7 +359,7 @@ header .header-inner .menu-container ul li a:hover::after {
   overflow: hidden;
   margin-right: 5px;
   vertical-align: middle;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--gray-border);
   margin-left: 5px;
 }
 
@@ -372,8 +372,8 @@ header .header-inner .menu-container ul li a:hover::after {
 .author-avatar-placeholder {
   width: 100%;
   height: 100%;
-  background-color: #3b82f6;
-  color: white;
+  background-color: var(--primary-blue);
+  color: var(--white);
   display: flex;
   align-items: center;
   justify-content: center;

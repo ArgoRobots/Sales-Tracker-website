@@ -13,18 +13,18 @@
 }
 
 .btn-white {
-  background: white;
+  background: var(--white);
   color: var(--blueText);
 }
 
 .btn-white:hover {
-  background: #f0f9ff;
+  background: var(--sky-50);
 }
 
 .btn-outline {
   background: transparent;
-  border: 2px solid black;
-  color: black;
+  border: 2px solid var(--gray-900);
+  color: var(--gray-900);
 }
 
 .btn-outline:hover {
@@ -33,7 +33,7 @@
 
 .btn-blue {
   background: var(--primary-blue);
-  color: white;
+  color: var(--white);
 }
 
 .btn-blue:hover {
@@ -42,7 +42,7 @@
 
 .btn-red {
   background: var(--red);
-  color: #fff;
+  color: var(--white);
 }
 
 .btn-red:hover {
@@ -50,34 +50,34 @@
 }
 
 .btn-red:disabled {
-  background-color: #f87171;
+  background-color: var(--red-300);
   cursor: not-allowed;
   opacity: 0.7;
 }
 
 .btn-purple {
-    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-    color: white;
+    background: linear-gradient(135deg, var(--purple-500), var(--purple-600));
+    color: var(--white);
 }
 
 .btn-purple:hover {
-    background: linear-gradient(135deg, #7c3aed, #6d28d9);
+    background: linear-gradient(135deg, var(--purple-600), var(--purple-700));
 }
 
 .btn-outline-red {
-    background: white;
-    color: #dc2626;
-    border: 1px solid #dc2626;
+    background: var(--white);
+    color: var(--red-600);
+    border: 1px solid var(--red-600);
 }
 
 .btn-outline-red:hover {
-    background: #fef2f2;
+    background: var(--red-50);
 }
 
 .btn-black {
   background: transparent;
-  border: 2px solid black;
-  color: black;
+  border: 2px solid var(--gray-900);
+  color: var(--gray-900);
   padding: 6px 0;
 }
 
@@ -90,9 +90,9 @@
   align-items: center;
   margin: 20px 0;
   padding: 8px 16px;
-  color: #000;
+  color: var(--gray-900);
   background-color: var(--whiteBackground);
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--gray-border);
   border-radius: 6px;
   font-size: 14px;
   font-weight: 500;
@@ -101,9 +101,9 @@
 }
 
 .back-button:hover {
-  background-color: #f3f4f6;
+  background-color: var(--gray-bg-light);
   color: var(--blueText);
-  border-color: #d1d5db;
+  border-color: var(--gray-input-border);
 }
 
 .back-button svg {
@@ -111,15 +111,15 @@
 }
 
 .btn-gray {
-  background-color: #f3f4f6;
-  border: 1px solid #d1d5db;
-  color: #414141;
-  border: #6b7280 1px solid !important;
+  background-color: var(--gray-bg-light);
+  border: 1px solid var(--gray-input-border);
+  color: var(--gray-700);
+  border: var(--gray-text) 1px solid !important;
 }
 
 .btn-gray:hover {
-  background-color: #e5e7eb;
-  color: #1f2937;
+  background-color: var(--gray-200);
+  color: var(--gray-text-darker);
 }
 
 .btn-small {

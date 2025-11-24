@@ -19,8 +19,8 @@ header .header-inner .menu-container .menu .whats-new:after {
 .hero {
   padding: 90px 0;
   text-align: center;
-  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-  color: white;
+  background: linear-gradient(135deg, var(--blue-900) 0%, var(--primary-blue) 100%);
+  color: var(--white);
 }
 
 .hero h1 {
@@ -68,7 +68,7 @@ header .header-inner .menu-container .menu .whats-new:after {
 }
 
 .version-card {
-  background: white;
+  background: var(--white);
   border-radius: 16px;
   padding: 24px;
   line-height: 1.5;
@@ -99,7 +99,7 @@ header .header-inner .menu-container .menu .whats-new:after {
 }
 
 .version-tag {
-  background: #dbeafe;
+  background: var(--blue-100);
   color: var(--blueText);
   padding: 4px 12px;
   border-radius: 9999px;
@@ -107,11 +107,11 @@ header .header-inner .menu-container .menu .whats-new:after {
 }
 
 .date-tag {
-  color: #55585f;
+  color: var(--gray-600);
 }
 
 .dropdown-arrow {
-  color: #6b7280;
+  color: var(--gray-500);
   transition: transform 0.3s ease;
   flex-shrink: 0;
 }
@@ -144,12 +144,12 @@ header .header-inner .menu-container .menu .whats-new:after {
 
 .feature-content h3 {
   margin: 0 0 8px 0;
-  color: #1f2937;
+  color: var(--gray-800);
   font-size: 18px;
 }
 
 .feature-content p {
-  color: #2c2d2e;
+  color: var(--gray-700);
 }
 
 .type-tag {
@@ -162,28 +162,28 @@ header .header-inner .menu-container .menu .whats-new:after {
 }
 
 .enhancement {
-  background: #dcfce7;
+  background: var(--green-100);
   color: var(--green-800);
 }
 
 .feature {
-  background: #dbeafe;
+  background: var(--blue-100);
   color: var(--blueText);
 }
 
 .fix {
-  background: #fee2e2;
+  background: var(--red-100);
   color: var(--red-800);
 }
 
 .documentation-link {
   margin-top: 24px;
   padding-top: 24px;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--gray-border);
 }
 
 .documentation-link p {
   margin: 0;
-  color: #6b7280;
+  color: var(--gray-500);
   font-size: 14px;
 }

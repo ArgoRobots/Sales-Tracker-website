@@ -16,7 +16,7 @@ h1 {
 }
 
 .checkout-form {
-  background: white;
+  background: var(--white);
   padding: 30px;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -47,14 +47,14 @@ h1 {
 .form-control {
   width: 100%;
   padding: 12px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--gray-input-border);
   border-radius: 6px;
   font-size: 16px;
 }
 
 .checkout-btn {
   background: var(--primary-blue);
-  color: white;
+  color: var(--white);
   border: none;
   padding: 14px 20px;
   margin-top: 20px;
@@ -72,7 +72,7 @@ h1 {
 }
 
 .order-summary {
-  background: #f8fafc;
+  background: var(--gray-50);
   padding: 20px;
   border-radius: 8px;
   margin-bottom: 30px;
@@ -87,7 +87,7 @@ h1 {
   display: flex;
   justify-content: space-between;
   padding: 10px 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--gray-200);
 }
 
 .order-total {
@@ -111,7 +111,7 @@ h1 {
 #stripe-submit-btn,
 #square-submit-btn {
   background-color: var(--primary-blue);
-  color: white;
+  color: var(--white);
   font-weight: 600;
 }
 
@@ -143,7 +143,7 @@ h1 {
 }
 
 .processing-overlay p {
-  color: #4b5563;
+  color: var(--gray-text-light);
   margin-bottom: 30px;
   font-size: 18px;
 }
@@ -152,7 +152,7 @@ h1 {
   display: inline-block;
   width: 50px;
   height: 50px;
-  border: 5px solid #e5e7eb;
+  border: 5px solid var(--gray-border);
   border-top-color: var(--primary-blue);
   border-radius: 50%;
   animation: spin 1s linear infinite;
@@ -169,12 +169,12 @@ h1 {
 #card-container {
   min-height: 90px;
   background: var(--whiteBackground);
-  border: 1px solid #ddd;
+  border: 1px solid var(--gray-input-border);
   border-radius: 6px;
 }
 
 .payment-error {
-  color: #b91c1c;
+  color: var(--red-800);
   font-size: 14px;
   margin-top: 8px;
 }

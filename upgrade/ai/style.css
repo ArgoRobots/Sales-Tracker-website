@@ -1,7 +1,7 @@
 /* Hero Section */
 .ai-hero {
-    background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 50%, #a78bfa 100%);
-    color: white;
+    background: linear-gradient(135deg, var(--purple-600) 0%, var(--purple-500) 50%, var(--purple-400) 100%);
+    color: var(--white);
     padding: 100px 0 80px;
     text-align: center;
 }
@@ -47,14 +47,14 @@
 /* Features Showcase */
 .ai-features-showcase {
     padding: 80px 0;
-    background: #f8fafc;
+    background: var(--gray-50);
 }
 
 .ai-features-showcase h2 {
     text-align: center;
     font-size: 36px;
     margin-bottom: 48px;
-    color: #1f2937;
+    color: var(--gray-text-darker);
 }
 
 .ai-features-grid {
@@ -76,7 +76,7 @@
 }
 
 .ai-feature-card {
-    background: white;
+    background: var(--white);
     padding: 32px 24px;
     border-radius: 16px;
     text-align: center;
@@ -92,7 +92,7 @@
 .ai-feature-icon {
     width: 64px;
     height: 64px;
-    background: linear-gradient(135deg, #f3e8ff, #ede9fe);
+    background: linear-gradient(135deg, var(--purple-100), var(--purple-100));
     border-radius: 16px;
     display: flex;
     align-items: center;
@@ -103,17 +103,17 @@
 .ai-feature-icon svg {
     width: 32px;
     height: 32px;
-    stroke: #8b5cf6;
+    stroke: var(--purple-500);
 }
 
 .ai-feature-card h3 {
     font-size: 18px;
-    color: #1f2937;
+    color: var(--gray-text-darker);
     margin-bottom: 12px;
 }
 
 .ai-feature-card p {
-    color: #6b7280;
+    color: var(--gray-text);
     font-size: 14px;
     line-height: 1.6;
 }
@@ -127,12 +127,12 @@
     text-align: center;
     font-size: 36px;
     margin-bottom: 12px;
-    color: #1f2937;
+    color: var(--gray-text-darker);
 }
 
 .pricing-subtitle {
     text-align: center;
-    color: #6b7280;
+    color: var(--gray-text);
     margin-bottom: 40px;
 }
 
@@ -140,21 +140,21 @@
 .license-check-box {
     max-width: 600px;
     margin: 0 auto 40px;
-    background: #fef3c7;
-    border: 2px solid #f59e0b;
+    background: var(--amber-100);
+    border: 2px solid var(--amber-500);
     border-radius: 16px;
     padding: 24px;
     text-align: center;
 }
 
 .license-check-box h3 {
-    color: #92400e;
+    color: var(--amber-800);
     margin-bottom: 8px;
     font-size: 20px;
 }
 
 .license-check-box > p {
-    color: #78350f;
+    color: var(--amber-900);
     margin-bottom: 20px;
     font-size: 14px;
 }
@@ -175,20 +175,20 @@
 .license-input-group input {
     flex: 1;
     padding: 12px 16px;
-    border: 2px solid #fbbf24;
+    border: 2px solid var(--amber-400);
     border-radius: 8px;
     font-size: 14px;
-    background: white;
+    background: var(--white);
 }
 
 .license-input-group input:focus {
     outline: none;
-    border-color: #f59e0b;
+    border-color: var(--amber-500);
 }
 
 .btn-verify {
-    background: #f59e0b;
-    color: white;
+    background: var(--amber-500);
+    color: var(--white);
     border: none;
     padding: 12px 24px;
     border-radius: 8px;
@@ -199,7 +199,7 @@
 }
 
 .btn-verify:hover {
-    background: #d97706;
+    background: var(--amber-600);
 }
 
 .license-status {
@@ -208,16 +208,16 @@
 }
 
 .license-status .success {
-    color: #059669;
+    color: var(--emerald-600);
     font-weight: 600;
 }
 
 .license-status .error {
-    color: #dc2626;
+    color: var(--red-600);
 }
 
 .license-status .loading {
-    color: #6b7280;
+    color: var(--gray-text);
 }
 
 /* Billing Toggle */
@@ -226,7 +226,7 @@
     justify-content: center;
     gap: 0;
     margin-bottom: 32px;
-    background: #f3f4f6;
+    background: var(--gray-bg-light);
     border-radius: 12px;
     padding: 4px;
     max-width: 350px;
@@ -241,20 +241,20 @@
     background: transparent;
     font-weight: 600;
     font-size: 15px;
-    color: #6b7280;
+    color: var(--gray-text);
     cursor: pointer;
     border-radius: 10px;
     transition: all 0.3s ease;
 }
 
 .billing-option.active {
-    background: white;
-    color: #8b5cf6;
+    background: var(--white);
+    color: var(--purple-500);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .billing-option:hover:not(.active) {
-    color: #374151;
+    color: var(--gray-text-dark);
 }
 
 /* Price Display */
@@ -265,11 +265,11 @@
 
 .price-box {
     display: inline-block;
-    background: white;
+    background: var(--white);
     padding: 32px 48px;
     border-radius: 20px;
     box-shadow: 0 10px 40px rgba(139, 92, 246, 0.15);
-    border: 2px solid #8b5cf6;
+    border: 2px solid var(--purple-500);
 }
 
 .original-price {
@@ -277,7 +277,7 @@
 }
 
 .original-price .strikethrough {
-    color: #9ca3af;
+    color: var(--gray-placeholder);
     text-decoration: line-through;
     font-size: 24px;
 }
@@ -291,25 +291,25 @@
 
 .current-price .currency {
     font-size: 28px;
-    color: #6b7280;
+    color: var(--gray-text);
 }
 
 .current-price .amount {
     font-size: 64px;
     font-weight: 800;
-    color: #8b5cf6;
+    color: var(--purple-500);
     line-height: 1;
 }
 
 .current-price .period {
     font-size: 18px;
-    color: #6b7280;
+    color: var(--gray-text);
 }
 
 .discount-badge {
     margin-top: 16px;
-    background: linear-gradient(135deg, #10b981, #059669);
-    color: white;
+    background: linear-gradient(135deg, var(--emerald-500), var(--emerald-600));
+    color: var(--white);
     padding: 8px 16px;
     border-radius: 20px;
     font-size: 14px;
@@ -326,14 +326,14 @@
     text-align: center;
     font-size: 20px;
     margin-bottom: 24px;
-    color: #374151;
+    color: var(--gray-text-dark);
 }
 
 /* Subscription Info */
 .subscription-info {
     max-width: 700px;
     margin: 0 auto;
-    background: #f8fafc;
+    background: var(--gray-50);
     padding: 24px;
     border-radius: 12px;
     text-align: center;
@@ -341,7 +341,7 @@
 
 .subscription-info p {
     margin-bottom: 12px;
-    color: #374151;
+    color: var(--gray-text-dark);
 }
 
 .subscription-info ul {
@@ -355,7 +355,7 @@
 }
 
 .subscription-info li {
-    color: #6b7280;
+    color: var(--gray-text);
     font-size: 14px;
     display: flex;
     align-items: center;
@@ -366,19 +366,19 @@
     content: "";
     width: 6px;
     height: 6px;
-    background: #8b5cf6;
+    background: var(--purple-500);
     border-radius: 50%;
 }
 
 /* AI FAQ Section */
 .ai-faq {
     padding: 80px 0;
-    background: #f8fafc;
+    background: var(--gray-50);
 }
 
 .ai-faq h2 {
     text-align: center;
     font-size: 36px;
     margin-bottom: 48px;
-    color: #1f2937;
+    color: var(--gray-text-darker);
 }

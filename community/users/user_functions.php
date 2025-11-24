@@ -523,11 +523,9 @@ namespace {
                     $old_file_path = dirname(__DIR__) . '/' . $old_avatar;
                     if (file_exists($old_file_path)) {
                         unlink($old_file_path);
-                        error_log("Deleted old avatar: " . $old_file_path);
                     }
                 }
 
-                error_log("Avatar successfully uploaded: " . $avatar_path);
                 return $avatar_path;
             } catch (Exception $e) {
                 // Rollback on exception

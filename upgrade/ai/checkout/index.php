@@ -67,14 +67,25 @@
 
     // Get URL parameters
     $billing = isset($_GET['billing']) ? $_GET['billing'] : 'monthly';
-    $hasDiscount = isset($_GET['discount']) && $_GET['discount'] === '1';
-    $licenseKey = isset($_GET['license']) ? $_GET['license'] : '';
 
-    // Auto-detect license key if not provided but user has an activated license
-    if (!$hasDiscount && empty($licenseKey) && !empty($user_email)) {
+    // Auto-detect license from database (never passed via URL for security)
+    $hasDiscount = false;
+    $licenseKey = '';
+
+    if ($pdo !== null && !empty($user_id)) {
+        // Get user email for fallback lookup
+        $lookup_email = $user_email;
+        if (empty($lookup_email)) {
+            $user_data = get_user($user_id);
+            if ($user_data && !empty($user_data['email'])) {
+                $lookup_email = $user_data['email'];
+            }
+        }
+
         try {
-            $stmt = $pdo->prepare("SELECT license_key FROM license_keys WHERE email = ? AND activated = 1 LIMIT 1");
-            $stmt->execute([$user_email]);
+            // Check by user_id first, then by email (case-insensitive)
+            $stmt = $pdo->prepare("SELECT license_key FROM license_keys WHERE (user_id = ? OR LOWER(email) = LOWER(?)) AND activated = 1 LIMIT 1");
+            $stmt->execute([$user_id, $lookup_email]);
             $userLicense = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($userLicense) {
                 $licenseKey = $userLicense['license_key'];
@@ -82,6 +93,7 @@
             }
         } catch (PDOException $e) {
             // Silently fail - user just won't get auto-discount
+            error_log("Auto-detect license error: " . $e->getMessage());
         }
     }
 
@@ -145,7 +157,9 @@
             licenseKey: '<?php echo htmlspecialchars($licenseKey); ?>',
             userId: <?php echo $user_id; ?>,
             userEmail: '<?php echo htmlspecialchars($user_email); ?>',
-            isUpdatingPaymentMethod: <?php echo $is_changing_method ? 'true' : 'false'; ?>
+            isUpdatingPaymentMethod: <?php echo $is_changing_method ? 'true' : 'false'; ?>,
+            isMonthlyWithCredit: <?php echo ($hasDiscount && $billing === 'monthly') ? 'true' : 'false'; ?>,
+            creditAmount: <?php echo ($hasDiscount && $billing === 'monthly') ? $discount : 0; ?>
         };
     </script>
 
@@ -191,13 +205,20 @@
                 </div>
                 <?php if ($hasDiscount && $billing === 'monthly'): ?>
                 <div class="credit-notice">
-                    <p>Your $20 credit will be applied to your account and used for future billing.</p>
+                    <p><strong>$20 Credit Applied!</strong></p>
+                    <p>Your first 4 months are covered by this credit. You won't be charged today - your card will be saved for when the credit is depleted.</p>
                 </div>
                 <?php endif; ?>
             </div>
 
             <div class="subscription-notice">
-                <p>This is a recurring subscription. You will be charged $<?php echo number_format($billing === 'yearly' ? $yearlyPrice : $monthlyPrice, 2); ?> CAD/<?php echo $billingPeriod; ?> after the <?php echo $hasDiscount && $billing === 'yearly' ? 'discounted ' : ''; ?>first <?php echo $billingPeriod; ?>.</p>
+                <?php if ($hasDiscount && $billing === 'monthly'): ?>
+                <p>This is a recurring subscription. Your $20 credit covers your first 4 months. You will be charged $<?php echo number_format($monthlyPrice, 2); ?> CAD/month starting month 5.</p>
+                <?php elseif ($hasDiscount && $billing === 'yearly'): ?>
+                <p>You will be charged $<?php echo number_format($finalPrice, 2); ?> CAD today (discounted), then $<?php echo number_format($yearlyPrice, 2); ?> CAD/year on each renewal.</p>
+                <?php else: ?>
+                <p>You will be charged $<?php echo number_format($finalPrice, 2); ?> CAD today, then $<?php echo number_format($finalPrice, 2); ?> CAD/<?php echo $billingPeriod; ?> on each renewal.</p>
+                <?php endif; ?>
                 <p>Cancel anytime from your account settings.</p>
             </div>
 
@@ -222,7 +243,11 @@
                     </div>
 
                     <button type="submit" id="stripe-submit-btn" class="checkout-btn ai-checkout-btn">
+                        <?php if ($hasDiscount && $billing === 'monthly'): ?>
+                        Subscribe - $0.00 Today (Credit Applied)
+                        <?php else: ?>
                         Subscribe - $<?php echo number_format($finalPrice, 2); ?> CAD/<?php echo $billingPeriod; ?>
+                        <?php endif; ?>
                     </button>
                 </form>
             </div>

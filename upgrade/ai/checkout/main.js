@@ -293,9 +293,9 @@ document.addEventListener("DOMContentLoaded", function () {
             const overlay = document.querySelector(".processing-overlay");
             if (overlay) overlay.remove();
             submitButton.disabled = false;
-            submitButton.textContent = `Subscribe - $${subscription.finalPrice.toFixed(
-              2
-            )} CAD/${subscription.billing === "yearly" ? "year" : "month"}`;
+            submitButton.textContent = subscription.isMonthlyWithCredit
+              ? "Subscribe - $0.00 Today (Credit Applied)"
+              : `Subscribe - $${subscription.finalPrice.toFixed(2)} CAD/${subscription.billing === "yearly" ? "year" : "month"}`;
             return;
           }
 
@@ -339,9 +339,9 @@ document.addEventListener("DOMContentLoaded", function () {
               const overlay = document.querySelector(".processing-overlay");
               if (overlay) overlay.remove();
               submitButton.disabled = false;
-              submitButton.textContent = `Subscribe - $${subscription.finalPrice.toFixed(
-                2
-              )} CAD/${subscription.billing === "yearly" ? "year" : "month"}`;
+              submitButton.textContent = subscription.isMonthlyWithCredit
+                ? "Subscribe - $0.00 Today (Credit Applied)"
+                : `Subscribe - $${subscription.finalPrice.toFixed(2)} CAD/${subscription.billing === "yearly" ? "year" : "month"}`;
             } else {
               window.location.href =
                 "../thank-you/?subscription_id=" +
@@ -355,9 +355,9 @@ document.addEventListener("DOMContentLoaded", function () {
             const overlay = document.querySelector(".processing-overlay");
             if (overlay) overlay.remove();
             submitButton.disabled = false;
-            submitButton.textContent = `Subscribe - $${subscription.finalPrice.toFixed(
-              2
-            )} CAD/${subscription.billing === "yearly" ? "year" : "month"}`;
+            submitButton.textContent = subscription.isMonthlyWithCredit
+              ? "Subscribe - $0.00 Today (Credit Applied)"
+              : `Subscribe - $${subscription.finalPrice.toFixed(2)} CAD/${subscription.billing === "yearly" ? "year" : "month"}`;
           }
         } catch (err) {
           console.error("Error:", err);
@@ -366,9 +366,9 @@ document.addEventListener("DOMContentLoaded", function () {
           const overlay = document.querySelector(".processing-overlay");
           if (overlay) overlay.remove();
           submitButton.disabled = false;
-          submitButton.textContent = `Subscribe - $${subscription.finalPrice.toFixed(
-            2
-          )} CAD/${subscription.billing === "yearly" ? "year" : "month"}`;
+          submitButton.textContent = subscription.isMonthlyWithCredit
+            ? "Subscribe - $0.00 Today (Credit Applied)"
+            : `Subscribe - $${subscription.finalPrice.toFixed(2)} CAD/${subscription.billing === "yearly" ? "year" : "month"}`;
         }
       });
     }
@@ -409,6 +409,10 @@ document.addEventListener("DOMContentLoaded", function () {
         const card = await payments.card();
 
         // Create form HTML
+        const buttonText = subscription.isMonthlyWithCredit
+          ? "Subscribe - $0.00 Today (Credit Applied)"
+          : `Subscribe - $${subscription.finalPrice.toFixed(2)} CAD/${subscription.billing === "yearly" ? "year" : "month"}`;
+
         squareContainer.innerHTML = `
           <form id="square-payment-form">
             <div class="form-group">
@@ -421,9 +425,7 @@ document.addEventListener("DOMContentLoaded", function () {
             </div>
             <div id="payment-error" class="payment-error"></div>
             <button type="submit" id="square-submit-btn" class="checkout-btn ai-checkout-btn">
-              Subscribe - $${subscription.finalPrice.toFixed(2)} CAD/${
-          subscription.billing === "yearly" ? "year" : "month"
-        }
+              ${buttonText}
             </button>
           </form>
         `;
@@ -489,20 +491,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 const overlay = document.querySelector(".processing-overlay");
                 if (overlay) overlay.remove();
                 submitButton.disabled = false;
-                submitButton.textContent = `Subscribe - $${subscription.finalPrice.toFixed(
-                  2
-                )} CAD/${
-                  subscription.billing === "yearly" ? "year" : "month"
-                }`;
+                submitButton.textContent = buttonText;
               }
             } else {
               errorDiv.textContent = "Card validation failed. Please try again.";
               const overlay = document.querySelector(".processing-overlay");
               if (overlay) overlay.remove();
               submitButton.disabled = false;
-              submitButton.textContent = `Subscribe - $${subscription.finalPrice.toFixed(
-                2
-              )} CAD/${subscription.billing === "yearly" ? "year" : "month"}`;
+              submitButton.textContent = buttonText;
             }
           } catch (err) {
             console.error("Error:", err);
@@ -510,9 +506,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const overlay = document.querySelector(".processing-overlay");
             if (overlay) overlay.remove();
             submitButton.disabled = false;
-            submitButton.textContent = `Subscribe - $${subscription.finalPrice.toFixed(
-              2
-            )} CAD/${subscription.billing === "yearly" ? "year" : "month"}`;
+            submitButton.textContent = buttonText;
           }
         });
       } catch (err) {

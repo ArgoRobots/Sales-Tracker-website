@@ -1,17 +1,17 @@
 /* Stat Cards */
 .stat-card {
-  background: white;
+  background: var(--white);
   border-radius: 8px;
   padding: 1.25rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--gray-border);
   text-align: center;
 }
 
 .stat-card h3 {
   font-size: 0.875rem;
   font-weight: 500;
-  color: #6b7280;
+  color: var(--gray-500);
   margin: 0 0 0.5rem 0;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -20,22 +20,22 @@
 .stat-value {
   font-size: 2rem;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--gray-800);
   line-height: 1;
 }
 
 /* Card Styles */
 .card {
-  background: white;
+  background: var(--white);
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--gray-border);
   overflow: hidden;
 }
 
 .card-header {
   padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--gray-border);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -46,7 +46,7 @@
   margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--gray-800);
 }
 
 /* Search Form */
@@ -64,7 +64,7 @@
 
 .search-input {
   padding: 0.5rem 0.75rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--gray-input-border);
   border-radius: 6px;
   font-size: 0.875rem;
   min-width: 300px;
@@ -72,7 +72,7 @@
 
 .search-input:focus {
   outline: none;
-  border-color: #3b82f6;
+  border-color: var(--primary-blue);
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
@@ -81,8 +81,8 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
-  background: #3b82f6;
-  color: white;
+  background: var(--primary-blue);
+  color: var(--white);
   border: none;
   border-radius: 6px;
   font-size: 0.875rem;
@@ -92,7 +92,7 @@
 }
 
 .search-button:hover {
-  background: #2563eb;
+  background: var(--blueHover);
 }
 
 .search-button svg {
@@ -102,8 +102,8 @@
 
 .clear-button {
   padding: 0.5rem 1rem;
-  background: #f3f4f6;
-  color: #6b7280;
+  background: var(--gray-100);
+  color: var(--gray-500);
   text-decoration: none;
   border-radius: 6px;
   font-size: 0.875rem;
@@ -112,15 +112,15 @@
 }
 
 .clear-button:hover {
-  background: #e5e7eb;
-  color: #374151;
+  background: var(--gray-border);
+  color: var(--gray-700);
 }
 
 /* Filter Section */
 .filter-section {
   padding: 1rem 1.5rem;
-  background: #f9fafb;
-  border-bottom: 1px solid #e5e7eb;
+  background: var(--gray-50);
+  border-bottom: 1px solid var(--gray-border);
 }
 
 .filter-form {
@@ -140,7 +140,7 @@
 .filter-group label {
   font-size: 0.75rem;
   font-weight: 500;
-  color: #6b7280;
+  color: var(--gray-500);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -148,17 +148,17 @@
 .filter-group select,
 .filter-group input[type="date"] {
   padding: 0.5rem 0.75rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--gray-input-border);
   border-radius: 6px;
   font-size: 0.875rem;
-  background: white;
+  background: var(--white);
   min-width: 150px;
 }
 
 .filter-group select:focus,
 .filter-group input[type="date"]:focus {
   outline: none;
-  border-color: #3b82f6;
+  border-color: var(--primary-blue);
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
@@ -170,8 +170,8 @@
 
 .apply-button {
   padding: 0.5rem 1rem;
-  background: #3b82f6;
-  color: white;
+  background: var(--primary-blue);
+  color: var(--white);
   border: none;
   border-radius: 6px;
   font-size: 0.875rem;
@@ -181,14 +181,14 @@
 }
 
 .apply-button:hover {
-  background: #2563eb;
+  background: var(--blueHover);
 }
 
 /* Bulk Actions Bar */
 .bulk-actions-bar {
   padding: 1rem 1.5rem;
-  background: #f9fafb;
-  border-bottom: 1px solid #e5e7eb;
+  background: var(--gray-50);
+  border-bottom: 1px solid var(--gray-border);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -198,13 +198,13 @@
 
 .selection-info {
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--gray-500);
   font-weight: 500;
 }
 
 .selection-info #selected-count {
   font-weight: 700;
-  color: #3b82f6;
+  color: var(--primary-blue);
 }
 
 .bulk-actions {
@@ -237,28 +237,28 @@
 }
 
 .btn-unban {
-  background-color: #10b981;
-  color: white;
+  background-color: var(--emerald-500);
+  color: var(--white);
 }
 
 .btn-unban:not(:disabled):hover {
-  background-color: #059669;
+  background-color: var(--emerald-600);
 }
 
 .btn-delete {
-  background: #ef4444;
-  color: white;
+  background: var(--red-500);
+  color: var(--white);
 }
 
 .btn-delete:not(:disabled):hover {
-  background: #dc2626;
+  background: var(--red-600);
 }
 
 /* No Results */
 .no-results {
   padding: 3rem 2rem;
   text-align: center;
-  color: #6b7280;
+  color: var(--gray-500);
 }
 
 .no-results svg {

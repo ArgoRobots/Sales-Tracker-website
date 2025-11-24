@@ -17,7 +17,7 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    color: #6b7280;
+    color: var(--gray-text);
     text-decoration: none;
     font-size: 14px;
     margin-bottom: 16px;
@@ -25,7 +25,7 @@
 }
 
 .page-header .back-link:hover {
-    color: #374151;
+    color: var(--gray-text-dark);
 }
 
 /* Alerts */
@@ -36,38 +36,38 @@
 }
 
 .alert-success {
-    background: #dcfce7;
-    color: #166534;
-    border: 1px solid #86efac;
+    background: var(--green-100);
+    color: var(--green-800);
+    border: 1px solid var(--green-300);
 }
 
 .alert-error {
-    background: #fee2e2;
-    color: #991b1b;
-    border: 1px solid #fca5a5;
+    background: var(--red-100);
+    color: var(--red-800);
+    border: 1px solid var(--red-300);
 }
 
 /* Sections */
 .subscription-section {
-    background: white;
+    background: var(--white);
     border-radius: 16px;
     padding: 24px;
     margin-bottom: 24px;
-    border: 1px solid #e5e7eb;
+    border: 1px solid var(--gray-border);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .subscription-section h2 {
     font-size: 18px;
-    color: #1f2937;
+    color: var(--gray-text-darker);
     margin: 0 0 20px 0;
     padding-bottom: 12px;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid var(--gray-border);
 }
 
 /* Subscription Card */
 .subscription-card {
-    background: #f8fafc;
+    background: var(--gray-50);
     border-radius: 12px;
     padding: 24px;
 }
@@ -83,13 +83,13 @@
     display: block;
     font-size: 20px;
     font-weight: 600;
-    color: #1f2937;
+    color: var(--gray-text-darker);
 }
 
 .subscription-plan .billing-cycle {
     display: block;
     font-size: 14px;
-    color: #6b7280;
+    color: var(--gray-text);
     margin-top: 4px;
 }
 
@@ -102,23 +102,23 @@
 }
 
 .subscription-status.active .status-badge {
-    background: #dcfce7;
-    color: #166534;
+    background: var(--green-100);
+    color: var(--green-800);
 }
 
 .subscription-status.cancelled .status-badge {
-    background: #fef3c7;
-    color: #92400e;
+    background: var(--amber-100);
+    color: var(--amber-800);
 }
 
 .subscription-status.expired .status-badge {
-    background: #fee2e2;
-    color: #991b1b;
+    background: var(--red-100);
+    color: var(--red-800);
 }
 
 .subscription-status.payment_failed .status-badge {
-    background: #fee2e2;
-    color: #991b1b;
+    background: var(--red-100);
+    color: var(--red-800);
 }
 
 /* Detail Grid */
@@ -129,7 +129,7 @@
 }
 
 .detail-item {
-    background: white;
+    background: var(--white);
     padding: 16px;
     border-radius: 8px;
 }
@@ -137,7 +137,7 @@
 .detail-label {
     display: block;
     font-size: 12px;
-    color: #6b7280;
+    color: var(--gray-text);
     text-transform: uppercase;
     letter-spacing: 0.5px;
     margin-bottom: 4px;
@@ -146,7 +146,7 @@
 .detail-value {
     display: block;
     font-size: 16px;
-    color: #1f2937;
+    color: var(--gray-text-darker);
     font-weight: 500;
 }
 
@@ -156,22 +156,22 @@
 }
 
 .detail-value.discount {
-    color: #059669;
+    color: var(--emerald-600);
 }
 
 .detail-value.enabled {
-    color: #059669;
+    color: var(--emerald-600);
 }
 
 .detail-value.disabled {
-    color: #dc2626;
+    color: var(--red-600);
 }
 
 /* Subscription Actions */
 .subscription-actions {
     margin-top: 24px;
     padding-top: 20px;
-    border-top: 1px solid #e5e7eb;
+    border-top: 1px solid var(--gray-border);
 }
 
 /* Notice Styles */
@@ -195,47 +195,47 @@
 
 .subscription-notice .notice-detail {
     font-weight: 400;
-    color: #6b7280;
+    color: var(--gray-text);
     margin-top: 4px;
 }
 
 .subscription-notice.cancelled {
-    background: #fef3c7;
-    border: 1px solid #fcd34d;
+    background: var(--amber-100);
+    border: 1px solid var(--amber-300);
 }
 
 .subscription-notice.cancelled svg {
-    stroke: #92400e;
+    stroke: var(--amber-800);
 }
 
 .subscription-notice.expired {
-    background: #fee2e2;
-    border: 1px solid #fca5a5;
+    background: var(--red-100);
+    border: 1px solid var(--red-300);
 }
 
 .subscription-notice.expired svg {
-    stroke: #991b1b;
+    stroke: var(--red-800);
 }
 
 .subscription-notice.payment-failed {
-    background: #fee2e2;
-    border: 1px solid #fca5a5;
+    background: var(--red-100);
+    border: 1px solid var(--red-300);
 }
 
 .subscription-notice.payment-failed svg {
-    stroke: #dc2626;
+    stroke: var(--red-600);
 }
 
 /* Features Section */
 .features-section {
     margin-top: 24px;
     padding-top: 24px;
-    border-top: 1px solid #e5e7eb;
+    border-top: 1px solid var(--gray-border);
 }
 
 .features-section h3 {
     font-size: 14px;
-    color: #6b7280;
+    color: var(--gray-text);
     text-transform: uppercase;
     letter-spacing: 0.5px;
     margin: 0 0 16px 0;
@@ -252,27 +252,27 @@
     align-items: center;
     gap: 10px;
     padding: 12px;
-    background: white;
+    background: var(--white);
     border-radius: 8px;
 }
 
 .feature-item svg {
     width: 20px;
     height: 20px;
-    stroke: #8b5cf6;
+    stroke: var(--purple-500);
     flex-shrink: 0;
 }
 
 .feature-item span {
     font-size: 14px;
-    color: #374151;
+    color: var(--gray-text-dark);
 }
 
 /* No Subscription Card */
 .no-subscription-card {
     text-align: center;
     padding: 40px 20px;
-    background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
+    background: linear-gradient(135deg, var(--purple-50) 0%, var(--purple-100) 100%);
     border-radius: 12px;
 }
 
@@ -281,17 +281,17 @@
 }
 
 .no-subscription-icon svg {
-    stroke: #8b5cf6;
+    stroke: var(--purple-500);
 }
 
 .no-subscription-card h3 {
     font-size: 20px;
-    color: #1f2937;
+    color: var(--gray-text-darker);
     margin: 0 0 8px 0;
 }
 
 .no-subscription-card p {
-    color: #6b7280;
+    color: var(--gray-text);
     margin: 0 0 20px 0;
     max-width: 400px;
     margin-left: auto;
@@ -310,16 +310,16 @@
 .pricing-preview .price {
     font-size: 24px;
     font-weight: 700;
-    color: #8b5cf6;
+    color: var(--purple-500);
 }
 
 .pricing-preview .period {
     font-size: 14px;
-    color: #6b7280;
+    color: var(--gray-text);
 }
 
 .pricing-preview .divider {
-    color: #9ca3af;
+    color: var(--gray-placeholder);
     margin: 0 4px;
 }
 
@@ -337,21 +337,21 @@
 .payment-history-table td {
     padding: 12px 16px;
     text-align: left;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid var(--gray-border);
 }
 
 .payment-history-table th {
     font-size: 12px;
     font-weight: 600;
-    color: #6b7280;
+    color: var(--gray-text);
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    background: #f9fafb;
+    background: var(--whiteBackground);
 }
 
 .payment-history-table td {
     font-size: 14px;
-    color: #374151;
+    color: var(--gray-text-dark);
 }
 
 .payment-status {
@@ -363,23 +363,23 @@
 }
 
 .payment-status.completed {
-    background: #dcfce7;
-    color: #166534;
+    background: var(--green-100);
+    color: var(--green-800);
 }
 
 .payment-status.pending {
-    background: #fef3c7;
-    color: #92400e;
+    background: var(--amber-100);
+    color: var(--amber-800);
 }
 
 .payment-status.failed {
-    background: #fee2e2;
-    color: #991b1b;
+    background: var(--red-100);
+    color: var(--red-800);
 }
 
 .payment-status.refunded {
-    background: #e0e7ff;
-    color: #3730a3;
+    background: var(--indigo-100);
+    color: var(--indigo-800);
 }
 
 /* Payment Types */
@@ -392,24 +392,58 @@
 }
 
 .payment-type.initial {
-    background: #dbeafe;
-    color: #1e40af;
+    background: var(--blue-100);
+    color: var(--blue-800);
 }
 
 .payment-type.renewal {
-    background: #f3e8ff;
-    color: #7c3aed;
+    background: var(--purple-100);
+    color: var(--purple-600);
 }
 
 .payment-type.manual {
-    background: #fef3c7;
-    color: #92400e;
+    background: var(--amber-100);
+    color: var(--amber-800);
+}
+
+.payment-type.credit {
+    background: var(--emerald-50);
+    color: var(--emerald-800);
+}
+
+/* Credit Balance Display */
+.detail-value.credit-balance {
+    color: var(--emerald-600);
+    font-weight: 600;
+}
+
+.credit-payment {
+    color: var(--emerald-700);
+    font-style: italic;
+}
+
+/* Credit Notice */
+.subscription-notice.credit-notice {
+    background: var(--emerald-50);
+    border: 1px solid var(--emerald-500);
+}
+
+.subscription-notice.credit-notice svg {
+    stroke: var(--emerald-500);
+}
+
+.subscription-notice.credit-notice p {
+    color: var(--emerald-700);
+}
+
+.subscription-notice.credit-notice .notice-detail {
+    color: var(--emerald-800);
 }
 
 .no-payment-history {
     text-align: center;
     padding: 32px;
-    color: #6b7280;
+    color: var(--gray-text);
 }
 
 /* Help Section */
@@ -426,7 +460,7 @@
 }
 
 .help-section p {
-    color: #6b7280;
+    color: var(--gray-text);
     margin: 0 0 16px 0;
 }
 

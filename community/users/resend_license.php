@@ -26,9 +26,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Connect to database
     $db = get_db_connection();
 
-    // Get existing license key for this user's email
-    $stmt = $db->prepare('SELECT license_key FROM license_keys WHERE email = ?');
-    $stmt->bind_param('s', $email);
+    // Get existing license key for this user (by user_id or email)
+    $stmt = $db->prepare('SELECT license_key, email FROM license_keys WHERE user_id = ? OR LOWER(email) = LOWER(?) LIMIT 1');
+    $stmt->bind_param('is', $user_id, $email);
     $stmt->execute();
     $result = $stmt->get_result();
 
@@ -36,9 +36,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // User has an existing license key
         $row = $result->fetch_assoc();
         $license_key = $row['license_key'];
+        $license_email = $row['email'];
 
-        // Send the existing license key via email
-        $email_sent = resend_license_email($email, $license_key);
+        // Send the existing license key via email (use license email, fallback to session email)
+        $send_to = !empty($license_email) ? $license_email : $email;
+        $email_sent = resend_license_email($send_to, $license_key);
 
         if ($email_sent) {
             $success_message = 'Your license key has been sent to your email address.';

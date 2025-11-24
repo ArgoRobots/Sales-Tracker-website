@@ -12,12 +12,12 @@
   opacity: 1;
   padding: 15px;
   height: auto;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--gray-border);
 }
 
 .password-policies > div {
   margin: 8px 0;
-  color: #9ca3af;
+  color: var(--gray-placeholder);
   font-size: 14px;
   display: flex;
   align-items: center;
@@ -26,23 +26,23 @@
 
 .password-policies > div::before {
   content: "✕";
-  color: #ef4444;
+  color: var(--red);
   margin-right: 8px;
   font-weight: bold;
 }
 
 .password-policies > div.active {
-  color: #10b981;
+  color: var(--emerald-500);
 }
 
 .password-policies > div.active::before {
   content: "✓";
-  color: #10b981;
+  color: var(--emerald-500);
 }
 
 .form-group small {
   display: block;
-  color: #4b5563;
+  color: var(--gray-text-light);
   margin-top: 4px;
   font-size: 0.85em;
 }
@@ -57,15 +57,15 @@ input {
 }
 
 .form-group.invalid input {
-  border-color: #ff3860;
+  border-color: var(--red);
 }
 
 .form-group.valid input {
-  border-color: #48c774;
+  border-color: var(--success-green);
 }
 
 .validation-feedback {
-  color: #ff3860;
+  color: var(--red);
   font-size: 0.8em;
   margin-top: 5px;
   display: none;

@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS license_keys (
     id INT PRIMARY KEY AUTO_INCREMENT,
     license_key VARCHAR(255) NOT NULL UNIQUE,
     email VARCHAR(100) NOT NULL,
+    user_id INT DEFAULT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     activated TINYINT(1) DEFAULT 0,
     activation_date DATETIME DEFAULT NULL,
@@ -10,7 +11,8 @@ CREATE TABLE IF NOT EXISTS license_keys (
     transaction_id VARCHAR(100),
     order_id VARCHAR(100),
     payment_method VARCHAR(50),
-    payment_intent VARCHAR(100)
+    payment_intent VARCHAR(100),
+    INDEX idx_license_keys_user_id (user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Admin users table
@@ -307,6 +309,8 @@ CREATE TABLE IF NOT EXISTS ai_subscriptions (
     paypal_subscription_id VARCHAR(100) COMMENT 'PayPal subscription ID for recurring billing',
     premium_license_key VARCHAR(255),
     discount_applied TINYINT(1) DEFAULT 0,
+    credit_balance DECIMAL(10,2) DEFAULT 0 COMMENT 'Remaining credit balance from premium discount',
+    original_credit DECIMAL(10,2) DEFAULT 0 COMMENT 'Original credit amount (to track if credit was used)',
     cancelled_at DATETIME DEFAULT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -329,7 +333,7 @@ CREATE TABLE IF NOT EXISTS ai_subscription_payments (
     payment_method VARCHAR(50) NOT NULL,
     transaction_id VARCHAR(100),
     status ENUM('pending', 'completed', 'failed', 'refunded') NOT NULL DEFAULT 'pending',
-    payment_type ENUM('initial', 'renewal', 'manual') DEFAULT 'initial' COMMENT 'Type of payment',
+    payment_type ENUM('initial', 'renewal', 'manual', 'credit') DEFAULT 'initial' COMMENT 'Type of payment (credit = covered by credit balance)',
     error_message TEXT NULL COMMENT 'Error message if payment failed',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     INDEX idx_subscription_id (subscription_id),
