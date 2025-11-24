@@ -126,23 +126,13 @@ $billing_cycle = $ai_subscription['billing_cycle'] ?? 'monthly';
                 <div class="current-payment-method">
                     <div class="payment-method-icon">
                         <?php if (strtolower($ai_subscription['payment_method']) === 'stripe'): ?>
-                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
-                                <line x1="1" y1="10" x2="23" y2="10"></line>
-                            </svg>
+                            <img src="../../images/Stripe-logo.svg" alt="Stripe">
                         <?php elseif (strtolower($ai_subscription['payment_method']) === 'paypal'): ?>
-                            <svg viewBox="0 0 24 24" width="24" height="24" fill="#003087">
-                                <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944 3.72a.771.771 0 0 1 .76-.654h6.396c3.027 0 5.178 1.97 4.737 4.997-.502 3.432-3.286 5.218-6.293 5.218H8.204l-1.128 8.057z"/>
-                            </svg>
+                            <img src="../../images/PayPal-logo.svg" alt="PayPal">
                         <?php elseif (strtolower($ai_subscription['payment_method']) === 'square'): ?>
-                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                            </svg>
+                            <img src="../../images/Square-logo.svg" alt="Square">
                         <?php else: ?>
-                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
-                                <line x1="1" y1="10" x2="23" y2="10"></line>
-                            </svg>
+                            <img src="../../images/Stripe-logo.svg" alt="Payment">
                         <?php endif; ?>
                     </div>
                     <div class="payment-method-details">
@@ -155,23 +145,13 @@ $billing_cycle = $ai_subscription['billing_cycle'] ?? 'monthly';
                     <p class="change-payment-label">Use a different payment method:</p>
                     <div class="payment-provider-options">
                         <a href="../../upgrade/ai/checkout/?method=stripe&billing=<?php echo $billing_cycle; ?>&change_method=1" class="payment-provider-btn <?php echo strtolower($ai_subscription['payment_method']) === 'stripe' ? 'current' : ''; ?>">
-                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
-                                <line x1="1" y1="10" x2="23" y2="10"></line>
-                            </svg>
-                            <span>Stripe</span>
+                            <img src="../../images/Stripe-logo.svg" alt="Stripe">
                         </a>
                         <a href="../../upgrade/ai/checkout/?method=paypal&billing=<?php echo $billing_cycle; ?>&change_method=1" class="payment-provider-btn <?php echo strtolower($ai_subscription['payment_method']) === 'paypal' ? 'current' : ''; ?>">
-                            <svg viewBox="0 0 24 24" width="20" height="20" fill="#003087">
-                                <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944 3.72a.771.771 0 0 1 .76-.654h6.396c3.027 0 5.178 1.97 4.737 4.997-.502 3.432-3.286 5.218-6.293 5.218H8.204l-1.128 8.057z"/>
-                            </svg>
-                            <span>PayPal</span>
+                            <img src="../../images/PayPal-logo.svg" alt="PayPal">
                         </a>
                         <a href="../../upgrade/ai/checkout/?method=square&billing=<?php echo $billing_cycle; ?>&change_method=1" class="payment-provider-btn <?php echo strtolower($ai_subscription['payment_method']) === 'square' ? 'current' : ''; ?>">
-                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                            </svg>
-                            <span>Square</span>
+                            <img src="../../images/Square-logo.svg" alt="Square">
                         </a>
                     </div>
                 </div>
