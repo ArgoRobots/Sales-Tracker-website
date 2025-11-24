@@ -30,20 +30,20 @@ if ($existing_subscription && in_array($existing_subscription['status'], ['activ
 
     <!-- SEO Meta Tags -->
     <meta name="description"
-        content="Subscribe to Argo Sales Tracker AI features. Get AI-powered receipt scanning, predictive sales analysis, and natural language search. $5/month or $50/year. Premium users save $20!">
+        content="Subscribe to Argo Books AI features. Get AI-powered receipt scanning, predictive sales analysis, and natural language search. $5/month or $50/year. Premium users save $20!">
     <meta name="keywords"
         content="argo ai features, ai receipt scanning, predictive sales analysis, ai business insights, sales tracker subscription">
 
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="AI Subscription - Argo Sales Tracker">
+    <meta property="og:title" content="AI Subscription - Argo Books">
     <meta property="og:description"
-        content="Subscribe to Argo Sales Tracker AI features. Get AI-powered receipt scanning, predictive sales analysis, and natural language search. $5/month or $50/year.">
+        content="Subscribe to Argo Books AI features. Get AI-powered receipt scanning, predictive sales analysis, and natural language search. $5/month or $50/year.">
     <meta property="og:url" content="https://argorobots.com/upgrade/ai-subscription.php">
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Argo Sales Tracker">
+    <meta property="og:site_name" content="Argo Books">
 
     <link rel="shortcut icon" type="image/x-icon" href="../../images/argo-logo/A-logo.ico">
-    <title>AI Subscription - Argo Sales Tracker</title>
+    <title>AI Subscription - Argo Books</title>
 
     <script src="../../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../../resources/scripts/main.js"></script>
@@ -230,7 +230,7 @@ if ($existing_subscription && in_array($existing_subscription['status'], ['activ
                     <summary>
                         <h3>What happens to my data if I cancel?</h3>
                     </summary>
-                    <p>Your data remains safe in Argo Sales Tracker. You'll just lose access to AI-specific features
+                    <p>Your data remains safe in Argo Books. You'll just lose access to AI-specific features
                         until you resubscribe.</p>
                 </details>
             </div>

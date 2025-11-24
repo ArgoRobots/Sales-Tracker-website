@@ -31,7 +31,7 @@ if (!$is_enabled && isset($_GET['setup'])) {
         $new_secret = $_SESSION['temp_2fa_secret'];
     }
 
-    $qr_code_data = get_qr_code_url($username, $new_secret, 'Argo Sales Tracker Admin');
+    $qr_code_data = get_qr_code_url($username, $new_secret, 'Argo Books Admin');
 }
 
 // Handle disabling of 2FA
@@ -111,7 +111,7 @@ include '../admin_header.php';
                     <h3>Manual Entry</h3>
                     <p>If you can't scan the QR code, enter this key manually in your authenticator app:</p>
                     <div class="secret-key"><?php echo htmlspecialchars($new_secret); ?></div>
-                    <p><small>In Google Authenticator: tap + button → Enter a setup key → Enter the key above and set "Argo Sales Tracker Admin" as the account name</small></p>
+                    <p><small>In Google Authenticator: tap + button → Enter a setup key → Enter the key above and set "Argo Books Admin" as the account name</small></p>
                 </div>
             </div>
 

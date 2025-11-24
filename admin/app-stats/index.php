@@ -9,7 +9,7 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 }
 
 // Set page variables for header
-$page_title = "Argo Sales Tracker Statistics";
+$page_title = "Argo Books Statistics";
 $page_description = "View and analyze anonymous user data with geo-location insights from the Sales Tracker application";
 
 $dataDir = '../data-logs/';

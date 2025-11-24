@@ -20,24 +20,24 @@ if (isset($_SESSION['contact_error'])) {
 
   <!-- SEO Meta Tags -->
   <meta name="description"
-    content="Contact Argo Sales Tracker support team in Calgary, Canada. Get help with sales tracking software, report bugs, request features, or ask questions. Fast response times within 1-8 business hours.">
+    content="Contact Argo Books support team in Calgary, Canada. Get help with sales tracking software, report bugs, request features, or ask questions. Fast response times within 1-8 business hours.">
   <meta name="keywords"
     content="contact argo sales tracker, customer support calgary, business software help, sales tracker support, contact form, technical support, calgary software company contact, customer service">
 
   <!-- Open Graph Meta Tags -->
-  <meta property="og:title" content="Contact Us - Argo Sales Tracker Support">
+  <meta property="og:title" content="Contact Us - Argo Books Support">
   <meta property="og:description"
-    content="Contact Argo Sales Tracker support team in Calgary, Canada. Get help with sales tracking software, report bugs, request features, or ask questions. Fast response times within 1-8 business hours.">
+    content="Contact Argo Books support team in Calgary, Canada. Get help with sales tracking software, report bugs, request features, or ask questions. Fast response times within 1-8 business hours.">
   <meta property="og:url" content="https://argorobots.com/contact-us/">
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="Argo Sales Tracker">
+  <meta property="og:site_name" content="Argo Books">
   <meta property="og:locale" content="en_CA">
 
   <!-- Twitter Meta Tags -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Contact Us - Argo Sales Tracker Support">
+  <meta name="twitter:title" content="Contact Us - Argo Books Support">
   <meta name="twitter:description"
-    content="Contact Argo Sales Tracker support team in Calgary, Canada. Get help with sales tracking software, report bugs, request features, or ask questions. Fast response times within 1-8 business hours.">
+    content="Contact Argo Books support team in Calgary, Canada. Get help with sales tracking software, report bugs, request features, or ask questions. Fast response times within 1-8 business hours.">
 
   <!-- Additional SEO Meta Tags -->
   <meta name="geo.region" content="CA-AB">
@@ -49,7 +49,7 @@ if (isset($_SESSION['contact_error'])) {
   <link rel="canonical" href="https://argorobots.com/contact-us/">
 
   <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
-  <title>Contact Us - Argo Sales Tracker Support | Calgary Software Company</title>
+  <title>Contact Us - Argo Books Support | Calgary Software Company</title>
 
   <script src="../resources/scripts/jquery-3.6.0.js"></script>
   <script src="../resources/scripts/main.js"></script>

@@ -129,7 +129,7 @@ function verify_2fa_code($secret, $code)
  * @param string $issuer Issuer name
  * @return string QR code URL
  */
-function get_qr_code_url($username, $secret, $issuer = 'Argo Sales Tracker Admin')
+function get_qr_code_url($username, $secret, $issuer = 'Argo Books Admin')
 {
     $params = [
         'secret' => $secret,

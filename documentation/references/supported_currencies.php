@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Argo Sales Tracker supports 28 international currencies with real-time exchange rates. View the complete list of supported currencies with their symbols and regions.">
+    <meta name="description" content="Argo Books supports 28 international currencies with real-time exchange rates. View the complete list of supported currencies with their symbols and regions.">
     <link rel="shortcut icon" type="image/x-icon" href="../../images/argo-logo/A-logo.ico">
     <title>Supported Currencies - Argo Community</title>
 
@@ -75,7 +75,7 @@
 
         <div class="reference-header">
             <h1>Supported Currencies</h1>
-            <p>Argo Sales Tracker supports 28 international currencies with real-time exchange rates for accurate conversions between any supported currencies.</p>
+            <p>Argo Books supports 28 international currencies with real-time exchange rates for accurate conversions between any supported currencies.</p>
             <input type="text" class="search-box" id="currencySearch" placeholder="Search currencies...">
         </div>
 

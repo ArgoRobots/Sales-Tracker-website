@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $response['message'] = 'Please enter a valid email address.';
     } else {
         // Send the email
-        $subject = "Argo Sales Tracker Contact: {$firstName} {$lastName}";
+        $subject = "Argo Books Contact: {$firstName} {$lastName}";
 
         // Build HTML email content
         $email_html = get_contact_email_template($firstName, $lastName, $email, $message);
@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $headers = [
             'MIME-Version: 1.0',
             'Content-Type: text/html; charset=UTF-8',
-            'From: Argo Sales Tracker Website <noreply@argorobots.com>',
+            'From: Argo Books Website <noreply@argorobots.com>',
             'Reply-To: ' . $email,
             'X-Mailer: PHP/' . phpversion()
         ];
@@ -189,7 +189,7 @@ function get_contact_email_template($firstName, $lastName, $email, $message)
         </div>
         
         <div class="footer">
-            <p>This message was sent from the Argo Sales Tracker contact form.</p>
+            <p>This message was sent from the Argo Books contact form.</p>
             <p>To reply, simply respond to this email which will go to: {$email}</p>
         </div>
     </div>

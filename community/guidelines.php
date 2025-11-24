@@ -40,7 +40,7 @@
             <ul class="guidelines-list">
                 <li>Be respectful and constructive in all interactions.</li>
                 <li>Search before posting to avoid duplicate questions or requests.</li>
-                <li>Keep discussions relevant to the Argo Sales Tracker project.</li>
+                <li>Keep discussions relevant to the Argo Books project.</li>
                 <li>Use clear titles and provide context and details in your posts.</li>
                 <li>No spam, advertising or self-promotion.</li>
                 <li>Use votes to highlight helpful posts and comments.</li>
@@ -78,7 +78,7 @@
                 <li>Impersonation of other users, companies, or Argo team members.</li>
                 <li>Copyright infringement or unauthorized sharing of proprietary content.</li>
                 <li>Excessive profanity or inappropriate language.</li>
-                <li>Off-topic discussions unrelated to Argo Sales Tracker.</li>
+                <li>Off-topic discussions unrelated to Argo Books.</li>
             </ul>
         </div>
 

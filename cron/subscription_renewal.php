@@ -432,7 +432,7 @@ function sendRenewalReceiptEmail($email, $subscriptionId, $billing, $amount, $ne
 
             <div class="footer" style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb; color: #6b7280; font-size: 14px;">
                 <p>Subscription ID: {$subscriptionId}</p>
-                <p>Thank you for using Argo Sales Tracker!</p>
+                <p>Thank you for using Argo Books!</p>
                 <p><a href="https://argorobots.com">argorobots.com</a></p>
             </div>
         </div>
@@ -444,7 +444,7 @@ HTML;
     $headers = [
         'MIME-Version: 1.0',
         'Content-Type: text/html; charset=UTF-8',
-        'From: Argo Sales Tracker <noreply@argorobots.com>',
+        'From: Argo Books <noreply@argorobots.com>',
         'Reply-To: support@argorobots.com',
         'X-Mailer: PHP/' . phpversion()
     ];
@@ -500,7 +500,7 @@ function sendPaymentFailedEmail($email, $subscriptionId, $errorMessage) {
             <p>If you need assistance, please <a href="https://argorobots.com/contact-us/">contact our support team</a>.</p>
 
             <div class="footer" style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb; color: #6b7280; font-size: 14px;">
-                <p>Argo Sales Tracker &copy; 2025. All rights reserved.</p>
+                <p>Argo Books &copy; 2025. All rights reserved.</p>
                 <p><a href="https://argorobots.com">argorobots.com</a></p>
             </div>
         </div>
@@ -512,7 +512,7 @@ HTML;
     $headers = [
         'MIME-Version: 1.0',
         'Content-Type: text/html; charset=UTF-8',
-        'From: Argo Sales Tracker <noreply@argorobots.com>',
+        'From: Argo Books <noreply@argorobots.com>',
         'Reply-To: support@argorobots.com',
         'X-Mailer: PHP/' . phpversion()
     ];

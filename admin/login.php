@@ -97,7 +97,7 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
-    <title>Admin Login - Argo Sales Tracker</title>
+    <title>Admin Login - Argo Books</title>
 
     <link rel="stylesheet" href="common-style.css">
     <link rel="stylesheet" href="../resources/styles/button.css">

@@ -10,7 +10,7 @@
 function send_license_email($to_email, $license_key)
 {
     $css = file_get_contents(__DIR__ . '/email.css');
-    $subject = 'Your Argo Sales Tracker License Key';
+    $subject = 'Your Argo Books License Key';
 
     $email_html = <<<HTML
         <!DOCTYPE html>
@@ -18,7 +18,7 @@ function send_license_email($to_email, $license_key)
         <head>
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-            <title>Your Argo Sales Tracker License</title>
+            <title>Your Argo Books License</title>
             <style>
                  {$css}  /* Needs to be embedded for PHP mail() */
             </style>
@@ -31,14 +31,14 @@ function send_license_email($to_email, $license_key)
                 
                 <div class="content">
                     <h1>Thank You for Your Purchase!</h1>
-                    <p>Here is your Argo Sales Tracker license key:</p>
+                    <p>Here is your Argo Books license key:</p>
                     
                     <div class="license-key">{$license_key}</div>
                     
                     <div class="steps">
                         <h2>How to Activate Your License</h2>
                         <ol>
-                            <li>Open Argo Sales Tracker on your computer</li>
+                            <li>Open Argo Books on your computer</li>
                             <li>Click the blue upgrade button on the top right</li>
                             <li>Enter your license key</li>
                             <li>Enjoy unlimited access to all premium features!</li>
@@ -50,11 +50,11 @@ function send_license_email($to_email, $license_key)
                     </div>
                     
                     <p>If you have any questions or need assistance, please don't hesitate to <a href="https://argorobots.com/contact-us/index.php">contact our support team</a>.</p>
-                    <p>Thank you for choosing Argo Sales Tracker!</p>
+                    <p>Thank you for choosing Argo Books!</p>
                 </div>
                 
                 <div class="footer">
-                    <p>Argo Sales Tracker &copy; 2025. All rights reserved.</p>
+                    <p>Argo Books &copy; 2025. All rights reserved.</p>
                     <p>This email was sent to {$to_email}</p>
                 </div>
             </div>
@@ -65,7 +65,7 @@ function send_license_email($to_email, $license_key)
     $headers = [
         'MIME-Version: 1.0',
         'Content-Type: text/html; charset=UTF-8',
-        'From: Argo Sales Tracker <noreply@argorobots.com>',
+        'From: Argo Books <noreply@argorobots.com>',
         'Reply-To: support@argorobots.com',
         'X-Mailer: PHP/' . phpversion()
     ];
@@ -84,7 +84,7 @@ function send_license_email($to_email, $license_key)
 function resend_license_email($to_email, $license_key)
 {
     $css = file_get_contents(__DIR__ . '/email.css');
-    $subject = 'Your Requested Argo Sales Tracker License Key';
+    $subject = 'Your Requested Argo Books License Key';
 
     $email_html = <<<HTML
         <!DOCTYPE html>
@@ -92,7 +92,7 @@ function resend_license_email($to_email, $license_key)
         <head>
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-            <title>Your Argo Sales Tracker License</title>
+            <title>Your Argo Books License</title>
             <style>
                 {$css}  /* Needs to be embedded for PHP mail() */
             </style>
@@ -105,14 +105,14 @@ function resend_license_email($to_email, $license_key)
                 
                 <div class="content content-centered">
                     <h1>Your License Key</h1>
-                    <p>As requested, here is your Argo Sales Tracker license key:</p>
+                    <p>As requested, here is your Argo Books license key:</p>
                     
                     <div class="license-key">{$license_key}</div>
                     
                     <div class="steps steps-centered">
                         <h2>How to Activate Your License</h2>
                         <ol>
-                            <li>Open Argo Sales Tracker on your computer</li>
+                            <li>Open Argo Books on your computer</li>
                             <li>Click the blue upgrade button on the top right</li>
                             <li>Enter your license key</li>
                             <li>Enjoy unlimited access to all premium features!</li>
@@ -124,11 +124,11 @@ function resend_license_email($to_email, $license_key)
                     </div>
                     
                     <p>If you have any questions or need assistance, please don't hesitate to <a href="https://argorobots.com/contact-us/index.php">contact our support team</a>.</p>
-                    <p>Thank you for using Argo Sales Tracker!</p>
+                    <p>Thank you for using Argo Books!</p>
                 </div>
                 
                 <div class="footer">
-                    <p>Argo Sales Tracker &copy; 2025. All rights reserved.</p>
+                    <p>Argo Books &copy; 2025. All rights reserved.</p>
                     <p>This email was sent to {$to_email}</p>
                 </div>
             </div>
@@ -139,7 +139,7 @@ function resend_license_email($to_email, $license_key)
     $headers = [
         'MIME-Version: 1.0',
         'Content-Type: text/html; charset=UTF-8',
-        'From: Argo Sales Tracker <noreply@argorobots.com>',
+        'From: Argo Books <noreply@argorobots.com>',
         'Reply-To: support@argorobots.com',
         'X-Mailer: PHP/' . phpversion()
     ];
@@ -159,7 +159,7 @@ function resend_license_email($to_email, $license_key)
 function send_verification_email($email, $code, $username)
 {
     $css = file_get_contents(__DIR__ . '/email.css');
-    $subject = 'Verify Your Account - Argo Sales Tracker';
+    $subject = 'Verify Your Account - Argo Books';
 
     $email_html = <<<HTML
         <!DOCTYPE html>
@@ -191,7 +191,7 @@ function send_verification_email($email, $code, $username)
                     <p>Regards,<br>The Argo Team</p>
                 </div>
                 <div class="footer">
-                    <p>Argo Sales Tracker &copy; 2025. All rights reserved.</p>
+                    <p>Argo Books &copy; 2025. All rights reserved.</p>
                     <p>This email was sent to {$email}</p>
                 </div>
             </div>
@@ -202,7 +202,7 @@ function send_verification_email($email, $code, $username)
     $headers = [
         'MIME-Version: 1.0',
         'Content-Type: text/html; charset=UTF-8',
-        'From: Argo Sales Tracker <noreply@argorobots.com>',
+        'From: Argo Books <noreply@argorobots.com>',
         'Reply-To: support@argorobots.com',
         'X-Mailer: PHP/' . phpversion()
     ];
@@ -289,7 +289,7 @@ function send_notification_email($type, $data)
                     <p>This is an automated notification from the Argo Community system.</p>
                     <p>You received this message because you're an administrator of the Argo Community. 
                     You can adjust your notification settings <a href="$site_url/community/users/admin_notification_settings.php">here</a>.</p>
-                    <p>Argo Sales Tracker &copy; 2025. All rights reserved.</p>
+                    <p>Argo Books &copy; 2025. All rights reserved.</p>
                 </div>
             </div>
         </body>
@@ -331,7 +331,7 @@ HTML;
                     <p>This is an automated notification from the Argo Community system.</p>
                     <p>You received this message because you're an administrator of the Argo Community. 
                     You can adjust your notification settings <a href="$site_url/community/users/admin_notification_settings.php">here</a>.</p>
-                    <p>Argo Sales Tracker &copy; 2025. All rights reserved.</p>
+                    <p>Argo Books &copy; 2025. All rights reserved.</p>
                 </div>
             </div>
         </body>
@@ -425,7 +425,7 @@ function send_password_reset_email($email, $token, $username)
                 </div>
                 
                 <div class="footer">
-                    <p>Argo Sales Tracker &copy; 2025. All rights reserved.</p>
+                    <p>Argo Books &copy; 2025. All rights reserved.</p>
                     <p>This email was sent to {$email}</p>
                 </div>
             </div>
@@ -504,7 +504,7 @@ function send_account_deletion_scheduled_email($email, $username, $scheduled_dat
                 
                 <div class="footer">
                     <p>This is an automated message from the Argo Community system.</p>
-                    <p>Argo Sales Tracker &copy; 2025. All rights reserved.</p>
+                    <p>Argo Books &copy; 2025. All rights reserved.</p>
                     <p>This email was sent to {$email}</p>
                 </div>
             </div>
@@ -581,7 +581,7 @@ function send_account_deletion_cancelled_email($email, $username)
 
                 <div class="footer">
                     <p>This is an automated message from the Argo Community system.</p>
-                    <p>Argo Sales Tracker &copy; 2025. All rights reserved.</p>
+                    <p>Argo Books &copy; 2025. All rights reserved.</p>
                     <p>This email was sent to {$email}</p>
                 </div>
             </div>
@@ -614,7 +614,7 @@ function send_account_deletion_cancelled_email($email, $username)
 function send_ban_notification_email($email, $username, $ban_reason, $ban_duration, $expires_at = null)
 {
     $css = file_get_contents(__DIR__ . '/email.css');
-    $subject = 'Community Ban Notification - Argo Sales Tracker';
+    $subject = 'Community Ban Notification - Argo Books';
 
     // Format duration text
     $duration_text = '';
@@ -683,7 +683,7 @@ function send_ban_notification_email($email, $username, $ban_reason, $ban_durati
                     
                     <p>During this ban period:</p>
                     <ul>
-                        <li>You can still use the Argo Sales Tracker application</li>
+                        <li>You can still use the Argo Books application</li>
                         <li>You can still view posts and comments on the community page</li>
                         <li>You cannot create new posts or comments</li>
                         <li>Repeated violations may result in a permanent ban</li>
@@ -698,7 +698,7 @@ function send_ban_notification_email($email, $username, $ban_reason, $ban_durati
 
                 <div class="footer">
                     <p>This is an automated message from the Argo Community moderation system.</p>
-                    <p>Argo Sales Tracker &copy; 2025. All rights reserved.</p>
+                    <p>Argo Books &copy; 2025. All rights reserved.</p>
                     <p>This email was sent to {$email}</p>
                 </div>
             </div>
@@ -771,7 +771,7 @@ function send_unban_notification_email($email, $username)
 
                 <div class="footer">
                     <p>This is an automated message from the Argo Community moderation system.</p>
-                    <p>Argo Sales Tracker &copy; 2025. All rights reserved.</p>
+                    <p>Argo Books &copy; 2025. All rights reserved.</p>
                     <p>This email was sent to {$email}</p>
                 </div>
             </div>
@@ -861,7 +861,7 @@ function send_username_reset_email($email, $old_username, $new_username, $violat
 
                 <div class="footer">
                     <p>This is an automated message from the Argo Community moderation system.</p>
-                    <p>Argo Sales Tracker &copy; 2025. All rights reserved.</p>
+                    <p>Argo Books &copy; 2025. All rights reserved.</p>
                     <p>This email was sent to {$email}</p>
                 </div>
             </div>
@@ -948,7 +948,7 @@ function send_bio_cleared_email($email, $username, $violation_type, $additional_
 
                 <div class="footer">
                     <p>This is an automated message from the Argo Community moderation system.</p>
-                    <p>Argo Sales Tracker &copy; 2025. All rights reserved.</p>
+                    <p>Argo Books &copy; 2025. All rights reserved.</p>
                     <p>This email was sent to {$email}</p>
                 </div>
             </div>
@@ -1032,7 +1032,7 @@ function send_new_report_notification($email, $report_id, $content_type, $violat
 
                 <div class="footer">
                     <p>This is an automated notification from the Argo Community moderation system.</p>
-                    <p>Argo Sales Tracker &copy; 2025. All rights reserved.</p>
+                    <p>Argo Books &copy; 2025. All rights reserved.</p>
                     <p>This email was sent to {$email}</p>
                 </div>
             </div>
@@ -1138,7 +1138,7 @@ function send_ai_subscription_receipt($email, $subscriptionId, $billing, $amount
 
             <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb; color: #6b7280; font-size: 14px;">
                 <p>Subscription ID: {$subscriptionId}</p>
-                <p>Thank you for using Argo Sales Tracker!</p>
+                <p>Thank you for using Argo Books!</p>
                 <p><a href="https://argorobots.com">argorobots.com</a></p>
             </div>
         </div>
@@ -1150,7 +1150,7 @@ HTML;
     $headers = [
         'MIME-Version: 1.0',
         'Content-Type: text/html; charset=UTF-8',
-        'From: Argo Sales Tracker <noreply@argorobots.com>',
+        'From: Argo Books <noreply@argorobots.com>',
         'Reply-To: support@argorobots.com',
         'X-Mailer: PHP/' . phpversion()
     ];
@@ -1222,7 +1222,7 @@ HTML;
     $headers = [
         'MIME-Version: 1.0',
         'Content-Type: text/html; charset=UTF-8',
-        'From: Argo Sales Tracker <noreply@argorobots.com>',
+        'From: Argo Books <noreply@argorobots.com>',
         'Reply-To: support@argorobots.com',
         'X-Mailer: PHP/' . phpversion()
     ];

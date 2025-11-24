@@ -144,7 +144,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
     </header>
 
     <div class="community-header">
-        <h1>Argo Sales Tracker Community</h1>
+        <h1>Argo Books Community</h1>
         <p>Report bugs and suggest features to help us improve</p>
     </div>
 

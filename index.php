@@ -23,22 +23,22 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
 
     <!-- SEO Meta Tags -->
     <meta name="description"
-        content="Transform your small business with Argo Sales Tracker. Save several hours weekly, reduce errors and boost profits. Free Windows software with 22+ interactive charts. No monthly fees.">
+        content="Transform your small business with Argo Books. Save several hours weekly, reduce errors and boost profits. Free Windows software with 22+ interactive charts. No monthly fees.">
     <meta name="keywords"
         content="sales tracker, business software, profit tracking, inventory management, small business automation, Windows software, Calgary business software, time saving, error reduction">
 
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Argo Sales Tracker - Save several Hours Weekly & Boost Profits">
+    <meta property="og:title" content="Argo Books - Save several Hours Weekly & Boost Profits">
     <meta property="og:description"
         content="Transform your business with automated sales tracking, eliminate errors, and grow profits. Free forever with lifetime upgrades available.">
     <meta property="og:url" content="https://argorobots.com/">
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Argo Sales Tracker">
+    <meta property="og:site_name" content="Argo Books">
     <meta property="og:locale" content="en_CA">
 
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Argo Sales Tracker - Save several Hours Weekly">
+    <meta name="twitter:title" content="Argo Books - Save several Hours Weekly">
     <meta name="twitter:description"
         content="Transform your business with automated sales tracking and boost profits. Free forever.">
 
@@ -65,7 +65,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
         {
             "@context": "https://schema.org",
             "@type": "SoftwareApplication",
-            "name": "Argo Sales Tracker",
+            "name": "Argo Books",
             "description": "Free Windows sales tracking software that saves several hours weekly for small businesses with 22+ automated charts and profit insights",
             "url": "https://argorobots.com/",
             "applicationCategory": "BusinessApplication",
@@ -95,7 +95,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     </script>
 
     <link rel="shortcut icon" type="image/x-icon" href="images/argo-logo/A-logo.ico">
-    <title>Argo Sales Tracker - Save Several Hours Weekly | Free Business Automation Software</title>
+    <title>Argo Books - Save Several Hours Weekly | Free Business Automation Software</title>
 
     <script src="resources/scripts/jquery-3.6.0.js"></script>
     <script src="resources/scripts/main.js"></script>
@@ -132,7 +132,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                     </div>
 
                     <h1 class="hero-title">
-                        Transform your business with Argo Sales Tracker
+                        Transform your business with Argo Books
                     </h1>
 
                     <p class="hero-subtitle">
@@ -166,7 +166,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
 
                 <div class="hero-visual">
                     <div class="dashboard-container">
-                        <img src="images/main.webp" alt="Argo Sales Tracker Dashboard" class="dashboard-main">
+                        <img src="images/main.webp" alt="Argo Books Dashboard" class="dashboard-main">
 
                         <!-- Floating Metrics -->
                         <div class="floating-metric metric-1">
@@ -480,7 +480,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                 <div class="comparison-header">
                     <div class="header-item"></div>
                     <div class="header-item">Basic Spreadsheets</div>
-                    <div class="header-item featured">Argo Sales Tracker</div>
+                    <div class="header-item featured">Argo Books</div>
                 </div>
 
                 <div class="comparison-row">

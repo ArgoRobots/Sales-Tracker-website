@@ -1,8 +1,8 @@
-# Argo Sales Tracker Website
+# Argo Books Website
 
 ## Introduction
 
-This is the website for [Argo Sales Tracker](https://github.com/ArgoRobots/Sales-Tracker), a WinForms application designed to track the sales and purchases of products. This website serves as a platform for users to download the software, purchase license keys, access documentation, and has an administrative system for managing licenses, user accounts, and analytics.
+This is the website for [Argo Books](https://github.com/ArgoRobots/Sales-Tracker), a WinForms application designed to track the sales and purchases of products. This website serves as a platform for users to download the software, purchase license keys, access documentation, and has an administrative system for managing licenses, user accounts, and analytics.
 
 You can view the live website here: https://argorobots.com/
 
@@ -111,7 +111,7 @@ You need to create a MySQL database and import the schema.
 2. Navigate to `http://localhost/sales-tracker-website` in your browser (adjust the folder name if different)
 3. The website should now be running locally
 
-## Publishing a new version of Argo Sales Tracker
+## Publishing a new version of Argo Books
 1. Create a new folder in `resources/downloads/versions` named whatever the version number is
 1. Upload the new .exe and the language folder to this new directory
 2. Update the version number in `update.xml`

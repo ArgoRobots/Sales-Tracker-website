@@ -14,17 +14,17 @@
         content="about argo sales tracker, calgary startup, small business software company, affordable business tools, sales tracking developers, canadian software company, calgary business, alberta tech company">
 
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="About Us - Argo Sales Tracker | Calgary Business Software Company">
+    <meta property="og:title" content="About Us - Argo Books | Calgary Business Software Company">
     <meta property="og:description"
         content="Learn about Argo, the Calgary-based startup creating affordable sales tracking software for small businesses. Our mission: Better tools, no subscriptions, built by entrepreneurs who understand your challenges.">
     <meta property="og:url" content="https://argorobots.com/about-us/">
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Argo Sales Tracker">
+    <meta property="og:site_name" content="Argo Books">
     <meta property="og:locale" content="en_CA">
 
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="About Us - Argo Sales Tracker | Calgary Business Software Company">
+    <meta name="twitter:title" content="About Us - Argo Books | Calgary Business Software Company">
     <meta name="twitter:description"
         content="Learn about Argo, the Calgary-based startup creating affordable sales tracking software for small businesses. Our mission: Better tools, no subscriptions, built by entrepreneurs who understand your challenges.">
 
@@ -38,7 +38,7 @@
     <link rel="canonical" href="https://argorobots.com/about-us/">
 
     <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
-    <title>About Us - Argo Sales Tracker | Calgary Business Software Company</title>
+    <title>About Us - Argo Books | Calgary Business Software Company</title>
 
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../resources/scripts/main.js"></script>
@@ -69,7 +69,7 @@
                     <h2>Our Mission</h2>
                     <p>We believe in giving you the tools you need to manage your business affordably. Most sales
                         tracking software require expensive monthly subscriptions and are difficult to use. We
-                        created Argo Sales Tracker to be different.</p>
+                        created Argo Books to be different.</p>
                     <div class="mission-points">
                         <div class="mission-point">
                             <svg class="check-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -98,7 +98,7 @@
                     </div>
                 </div>
                 <div class="mission-image">
-                    <img src="../images/main.webp" alt="Argo Sales Tracker Interface">
+                    <img src="../images/main.webp" alt="Argo Books Interface">
                 </div>
             </div>
         </div>
@@ -107,7 +107,7 @@
     <section class="product-overview">
         <div class="container">
             <h2>What We Build</h2>
-            <p>Argo Sales Tracker is a free, easy-to-use, yet powerful Windows app built for small
+            <p>Argo Books is a free, easy-to-use, yet powerful Windows app built for small
                 businesses, startups, and solo entrepreneurs who need an affordable solution to track sales, purchases,
                 and receipts. It includes interactive charts and analytics, supports Excel (.xlsx) import/export, and
                 provides full offline functionality with optional AI-powered search and password protection. The core
@@ -191,7 +191,7 @@
     <section class="contact-section">
         <div class="container">
             <h2>Let's Build Together</h2>
-            <p>Have questions or suggestions? We'd love to hear from you and make Argo Sales Tracker even better.</p>
+            <p>Have questions or suggestions? We'd love to hear from you and make Argo Books even better.</p>
             <a href="../contact-us/index.php" class="btn btn-blue">Contact Us</a>
         </div>
     </section>

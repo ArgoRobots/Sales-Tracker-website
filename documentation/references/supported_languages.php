@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Argo Sales Tracker supports 54 international languages. Browse the complete list of supported languages and their regions, and learn how to change your language settings.">
+    <meta name="description" content="Argo Books supports 54 international languages. Browse the complete list of supported languages and their regions, and learn how to change your language settings.">
     <link rel="shortcut icon" type="image/x-icon" href="../../images/argo-logo/A-logo.ico">
     <title>Supported Languages - Argo Community</title>
 
@@ -32,7 +32,7 @@
 
         <div class="reference-header">
             <h1>Supported Languages</h1>
-            <p>Argo Sales Tracker supports 54 languages to help users worldwide work in their preferred language. Change your language anytime in Settings > General.</p>
+            <p>Argo Books supports 54 languages to help users worldwide work in their preferred language. Change your language anytime in Settings > General.</p>
             <input type="text" class="search-box" id="languageSearch" placeholder="Search languages...">
         </div>
 

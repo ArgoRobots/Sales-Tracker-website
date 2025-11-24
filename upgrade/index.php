@@ -9,30 +9,30 @@
 
     <!-- SEO Meta Tags -->
     <meta name="description"
-        content="Upgrade Argo Sales Tracker. Get Premium for $20 CAD lifetime access or subscribe to AI features for $5/month. Unlimited products, Windows Hello, AI-powered insights, and more.">
+        content="Upgrade Argo Books. Get Premium for $20 CAD lifetime access or subscribe to AI features for $5/month. Unlimited products, Windows Hello, AI-powered insights, and more.">
     <meta name="keywords"
         content="upgrade argo sales tracker, buy full version, lifetime access software, unlimited products, business software pricing, sales tracker premium, AI subscription">
 
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Upgrade - Argo Sales Tracker">
+    <meta property="og:title" content="Upgrade - Argo Books">
     <meta property="og:description"
-        content="Upgrade Argo Sales Tracker. Get Premium for $20 CAD lifetime access or subscribe to AI features for $5/month.">
+        content="Upgrade Argo Books. Get Premium for $20 CAD lifetime access or subscribe to AI features for $5/month.">
     <meta property="og:url" content="https://argorobots.com/upgrade/">
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Argo Sales Tracker">
+    <meta property="og:site_name" content="Argo Books">
     <meta property="og:locale" content="en_CA">
 
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Upgrade - Argo Sales Tracker">
+    <meta name="twitter:title" content="Upgrade - Argo Books">
     <meta name="twitter:description"
-        content="Upgrade Argo Sales Tracker. Get Premium for $20 CAD lifetime access or subscribe to AI features for $5/month.">
+        content="Upgrade Argo Books. Get Premium for $20 CAD lifetime access or subscribe to AI features for $5/month.">
 
     <!-- Canonical URL -->
     <link rel="canonical" href="https://argorobots.com/upgrade/">
 
     <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
-    <title>Upgrade - Argo Sales Tracker</title>
+    <title>Upgrade - Argo Books</title>
 
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../resources/scripts/main.js"></script>
@@ -152,7 +152,7 @@
             <div class="faq-grid">
                 <details class="faq-card">
                     <summary>
-                        <h3>Do I have to pay to use Argo Sales Tracker?</h3>
+                        <h3>Do I have to pay to use Argo Books?</h3>
                     </summary>
                     <p>No, you don't have to pay. We offer a free version that you can use indefinitely. The free
                         version includes all essential features needed to manage your basic business operations, with a
@@ -188,7 +188,7 @@
                     <summary>
                         <h3>Can I transfer my license to a different computer?</h3>
                     </summary>
-                    <p>Yes, you can reactivate Argo Sales Tracker on your new computer, but this will deactivate it on
+                    <p>Yes, you can reactivate Argo Books on your new computer, but this will deactivate it on
                         your previous device. Each license can only be active on one computer at a time.</p>
                 </details>
                 <details class="faq-card">

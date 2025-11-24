@@ -98,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div class="license-info">
                     <h3>License Key Information</h3>
-                    <p>Your license key provides you with unlimited access to all premium features of Argo Sales Tracker.</p>
+                    <p>Your license key provides you with unlimited access to all premium features of Argo Books.</p>
                     <p>If you're unable to find your license key, use this form to have it resent to your email address.</p>
                 </div>
 

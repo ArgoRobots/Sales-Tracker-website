@@ -65,12 +65,12 @@ try {
         'currency' => strtolower($data['currency']),
         'payment_method_types' => ['card'],
         'metadata' => [
-            'product' => 'Argo Sales Tracker - Lifetime Access',
+            'product' => 'Argo Books - Lifetime Access',
             'email' => $data['email'] ?? '',
             'license_key' => $license_key ?? ''
         ],
         'receipt_email' => $data['email'] ?? null,
-        'description' => 'Argo Sales Tracker - Lifetime Access'
+        'description' => 'Argo Books - Lifetime Access'
     ]);
 
     // Store the payment intent ID in our database

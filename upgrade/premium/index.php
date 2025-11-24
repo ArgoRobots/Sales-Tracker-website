@@ -9,20 +9,20 @@
 
     <!-- SEO Meta Tags -->
     <meta name="description"
-        content="Get Argo Sales Tracker Premium for $20 CAD. Lifetime access to unlimited products, Windows Hello security, and priority support. Choose your payment method.">
+        content="Get Argo Books Premium for $20 CAD. Lifetime access to unlimited products, Windows Hello security, and priority support. Choose your payment method.">
     <meta name="keywords"
         content="argo sales tracker premium, lifetime access, unlimited products, one time payment, business software">
 
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Get Premium - Argo Sales Tracker | $20 CAD">
+    <meta property="og:title" content="Get Premium - Argo Books | $20 CAD">
     <meta property="og:description"
-        content="Get Argo Sales Tracker Premium for $20 CAD. Lifetime access to unlimited products, Windows Hello security, and priority support.">
+        content="Get Argo Books Premium for $20 CAD. Lifetime access to unlimited products, Windows Hello security, and priority support.">
     <meta property="og:url" content="https://argorobots.com/upgrade/premium.php">
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Argo Sales Tracker">
+    <meta property="og:site_name" content="Argo Books">
 
     <link rel="shortcut icon" type="image/x-icon" href="../../images/argo-logo/A-logo.ico">
-    <title>Get Premium - Argo Sales Tracker | $20 CAD Lifetime Access</title>
+    <title>Get Premium - Argo Books | $20 CAD Lifetime Access</title>
 
     <script src="../../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../../resources/scripts/main.js"></script>
@@ -54,7 +54,7 @@
                     <div class="summary-card">
                         <h2>Order Summary</h2>
                         <div class="summary-item">
-                            <span>Argo Sales Tracker Premium</span>
+                            <span>Argo Books Premium</span>
                             <span class="item-price">$20.00 CAD</span>
                         </div>
                         <div class="summary-total">

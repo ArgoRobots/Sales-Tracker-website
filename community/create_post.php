@@ -199,7 +199,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </header>
 
     <div class="community-header">
-        <h1>Argo Sales Tracker Community</h1>
+        <h1>Argo Books Community</h1>
     </div>
 
     <div class="community-wrapper">

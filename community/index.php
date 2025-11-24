@@ -28,7 +28,7 @@ if ($is_logged_in && $current_user) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
-    <title>Argo Sales Tracker Community</title>
+    <title>Argo Books Community</title>
 
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../resources/scripts/main.js"></script>
@@ -52,7 +52,7 @@ if ($is_logged_in && $current_user) {
     </header>
 
     <div class="community-header">
-        <h1>Argo Sales Tracker Community</h1>
+        <h1>Argo Books Community</h1>
         <p>Report bugs and suggest features to help us improve</p>
         <p class="guidelines-link"><a href="guidelines.php" class="link-no-underline">Community Guidelines</a></p>
     </div>

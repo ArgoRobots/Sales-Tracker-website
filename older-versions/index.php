@@ -32,8 +32,8 @@ function getOlderVersions()
         error_log("Files in " . $folder . ": " . print_r($files, true));
 
         foreach ($files as $file) {
-            // Look for installer files with the pattern "Argo Sales Tracker Installer V.{version}.exe"
-            if (preg_match('/^Argo Sales Tracker Installer V\.(.+)\.exe$/i', $file, $matches)) {
+            // Look for installer files with the pattern "Argo Books Installer V.{version}.exe"
+            if (preg_match('/^Argo Books Installer V\.(.+)\.exe$/i', $file, $matches)) {
                 $version = $matches[1];
                 $filepath = $versionPath . $file;
                 error_log("Found installer: " . $file . " for version: " . $version);
@@ -118,24 +118,24 @@ $older_versions = getOlderVersions();
 
     <!-- SEO Meta Tags -->
     <meta name="description"
-        content="Download older versions of Argo Sales Tracker. Access previous releases for compatibility or testing purposes. Windows software downloads.">
+        content="Download older versions of Argo Books. Access previous releases for compatibility or testing purposes. Windows software downloads.">
     <meta name="keywords"
         content="argo sales tracker older versions, previous releases, legacy versions, software downloads, version history, Windows software">
 
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Older Versions - Argo Sales Tracker | Previous Releases">
+    <meta property="og:title" content="Older Versions - Argo Books | Previous Releases">
     <meta property="og:description"
-        content="Download older versions of Argo Sales Tracker. Access previous releases for compatibility or testing purposes.">
+        content="Download older versions of Argo Books. Access previous releases for compatibility or testing purposes.">
     <meta property="og:url" content="https://argorobots.com/older-versions/">
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Argo Sales Tracker">
+    <meta property="og:site_name" content="Argo Books">
     <meta property="og:locale" content="en_CA">
 
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Older Versions - Argo Sales Tracker | Previous Releases">
+    <meta name="twitter:title" content="Older Versions - Argo Books | Previous Releases">
     <meta name="twitter:description"
-        content="Download older versions of Argo Sales Tracker. Access previous releases for compatibility or testing purposes.">
+        content="Download older versions of Argo Books. Access previous releases for compatibility or testing purposes.">
 
     <!-- Additional SEO Meta Tags -->
     <meta name="geo.region" content="CA-AB">
@@ -147,7 +147,7 @@ $older_versions = getOlderVersions();
     <link rel="canonical" href="https://argorobots.com/older-versions/">
 
     <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
-    <title>Older Versions - Argo Sales Tracker | Previous Releases</title>
+    <title>Older Versions - Argo Books | Previous Releases</title>
 
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../resources/scripts/main.js"></script>
@@ -169,7 +169,7 @@ $older_versions = getOlderVersions();
     <section class="hero">
         <div class="description-container">
             <h1>Older Versions</h1>
-            <p>Download previous releases of Argo Sales Tracker</p>
+            <p>Download previous releases of Argo Books</p>
         </div>
     </section>
 
