@@ -444,6 +444,7 @@
 }
 
 .btn-reactivate,
+.btn-subscribe,
 .btn-cancel {
     width: 210px !important;
     margin: auto;

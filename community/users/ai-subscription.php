@@ -250,7 +250,7 @@ if ($ai_subscription) {
                         <span class="price">$50</span>
                         <span class="period">CAD/year (save $10)</span>
                     </div>
-                    <a href="../../upgrade/ai/" class="btn btn-purple">Subscribe to AI Features</a>
+                    <a href="../../upgrade/ai/" class="btn btn-purple btn-subscribe">Subscribe to AI Features</a>
                 </div>
             <?php endif; ?>
         </div>
