@@ -159,13 +159,13 @@ if ($ai_subscription) {
                     </div>
 
                     <?php if ($creditBalance > 0 && $ai_subscription['status'] === 'active'): ?>
-                        <div class="subscription-notice credit-notice" style="background: #ecfdf5; border-color: #10b981;">
-                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#10b981" stroke-width="2">
+                        <div class="subscription-notice credit-notice">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke-width="2">
                                 <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
                             </svg>
                             <div>
-                                <p style="color: #047857;"><strong>Credit Balance Active</strong></p>
-                                <p class="notice-detail" style="color: #065f46;">You have $<?php echo number_format($creditBalance, 2); ?> in credit covering your next <?php echo $monthsRemaining; ?> month<?php echo $monthsRemaining !== 1 ? 's' : ''; ?>. You won't be charged until your credit is depleted.</p>
+                                <p><strong>Credit Balance Active</strong></p>
+                                <p class="notice-detail">You have $<?php echo number_format($creditBalance, 2); ?> in credit covering your next <?php echo $monthsRemaining; ?> month<?php echo $monthsRemaining !== 1 ? 's' : ''; ?>. You won't be charged until your credit is depleted.</p>
                             </div>
                         </div>
                     <?php endif; ?>

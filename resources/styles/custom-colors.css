@@ -31,4 +31,44 @@
   --gray-700: #334155;
   --gray-800: #1e293b;
   --gray-900: #0f172a;
+
+  /* Purple/Violet - AI subscription theme */
+  --purple-50: #faf5ff;
+  --purple-100: #f3e8ff;
+  --purple-200: #e9d5ff;
+  --purple-300: #c4b5fd;
+  --purple-400: #a78bfa;
+  --purple-500: #8b5cf6;
+  --purple-600: #7c3aed;
+  --purple-700: #6d28d9;
+  --purple-800: #5b21b6;
+
+  /* Emerald/Teal - Credit/success states */
+  --emerald-50: #ecfdf5;
+  --emerald-100: #d1fae5;
+  --emerald-500: #10b981;
+  --emerald-600: #059669;
+  --emerald-700: #047857;
+  --emerald-800: #065f46;
+
+  /* Amber/Orange - Warnings */
+  --amber-50: #fffbeb;
+  --amber-100: #fef3c7;
+  --amber-300: #fcd34d;
+  --amber-400: #fbbf24;
+  --amber-500: #f59e0b;
+  --amber-600: #d97706;
+  --amber-700: #b45309;
+  --amber-800: #92400e;
+  --amber-900: #78350f;
+
+  /* Additional grays */
+  --gray-border: #e5e7eb;
+  --gray-text: #6b7280;
+  --gray-text-dark: #374151;
+  --gray-text-darker: #1f2937;
+  --gray-text-light: #4b5563;
+  --gray-placeholder: #9ca3af;
+  --gray-input-border: #d1d5db;
+  --gray-bg-light: #f3f4f6;
 }

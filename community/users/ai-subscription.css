@@ -402,8 +402,42 @@
 }
 
 .payment-type.manual {
-    background: #fef3c7;
-    color: #92400e;
+    background: var(--amber-100);
+    color: var(--amber-800);
+}
+
+.payment-type.credit {
+    background: var(--emerald-50);
+    color: var(--emerald-800);
+}
+
+/* Credit Balance Display */
+.detail-value.credit-balance {
+    color: var(--emerald-600);
+    font-weight: 600;
+}
+
+.credit-payment {
+    color: var(--emerald-700);
+    font-style: italic;
+}
+
+/* Credit Notice */
+.subscription-notice.credit-notice {
+    background: var(--emerald-50);
+    border: 1px solid var(--emerald-500);
+}
+
+.subscription-notice.credit-notice svg {
+    stroke: var(--emerald-500);
+}
+
+.subscription-notice.credit-notice p {
+    color: var(--emerald-700);
+}
+
+.subscription-notice.credit-notice .notice-detail {
+    color: var(--emerald-800);
 }
 
 .no-payment-history {

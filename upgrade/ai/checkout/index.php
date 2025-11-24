@@ -177,9 +177,9 @@
                     <span>$<?php echo number_format($finalPrice, 2); ?> CAD/<?php echo $billingPeriod; ?></span>
                 </div>
                 <?php if ($hasDiscount && $billing === 'monthly'): ?>
-                <div class="credit-notice" style="background: #ecfdf5; border: 1px solid #10b981; padding: 15px; border-radius: 8px; margin-top: 15px;">
-                    <p style="color: #047857; margin: 0 0 8px 0;"><strong>$20 Credit Applied!</strong></p>
-                    <p style="color: #065f46; margin: 0; font-size: 14px;">Your first 4 months are covered by this credit. You won't be charged today - your card will be saved for when the credit is depleted.</p>
+                <div class="credit-notice">
+                    <p><strong>$20 Credit Applied!</strong></p>
+                    <p>Your first 4 months are covered by this credit. You won't be charged today - your card will be saved for when the credit is depleted.</p>
                 </div>
                 <?php endif; ?>
             </div>

@@ -1,28 +1,37 @@
 .ai-order-summary {
-    border: 2px solid #8b5cf6;
+    border: 2px solid var(--purple-500);
 }
 
 .discount-item {
-    color: #059669;
+    color: var(--emerald-600);
     font-weight: 500;
 }
 
 .discount-amount {
-    color: #059669 !important;
+    color: var(--emerald-600) !important;
 }
 
 .credit-notice {
     margin-top: 15px;
-    padding: 12px;
-    background: #fef3c7;
+    padding: 15px;
+    background: var(--emerald-50);
     border-radius: 8px;
-    border: 1px solid #f59e0b;
+    border: 1px solid var(--emerald-500);
 }
 
 .credit-notice p {
     margin: 0;
-    font-size: 13px;
-    color: #92400e;
+    font-size: 14px;
+}
+
+.credit-notice p:first-child {
+    color: var(--emerald-700);
+    margin-bottom: 8px;
+}
+
+.credit-notice p:last-child {
+    color: var(--emerald-800);
+    margin-bottom: 0;
 }
 
 .subscription-notice {
@@ -45,9 +54,9 @@
 }
 
 .ai-checkout-btn {
-    background: linear-gradient(135deg, #8b5cf6, #7c3aed) !important;
+    background: linear-gradient(135deg, var(--purple-500), var(--purple-600)) !important;
 }
 
 .ai-checkout-btn:hover {
-    background: linear-gradient(135deg, #7c3aed, #6d28d9) !important;
+    background: linear-gradient(135deg, var(--purple-600), var(--purple-700)) !important;
 }

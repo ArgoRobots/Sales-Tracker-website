@@ -275,13 +275,43 @@
 
 /* Alert Boxes */
 .alert-warning {
-    background: #fef3c7;
-    color: #92400e;
-    border: 1px solid #fcd34d;
+    background: var(--amber-100);
+    color: var(--amber-800);
+    border: 1px solid var(--amber-300);
     padding: 16px;
     border-radius: 8px;
     margin-bottom: 24px;
     text-align: left;
+}
+
+/* Discount Warning Box */
+.discount-warning-box {
+    background: var(--amber-100);
+    border: 1px solid var(--amber-500);
+    padding: 16px;
+    border-radius: 8px;
+    margin-top: 16px;
+}
+
+.discount-warning-box h3 {
+    color: var(--amber-700);
+    margin: 0 0 8px 0;
+    font-size: 16px;
+}
+
+.discount-warning-box p {
+    color: var(--amber-900);
+    margin: 0 0 8px 0;
+    font-size: 14px;
+}
+
+.discount-warning-box p:last-child {
+    margin-bottom: 0;
+}
+
+/* Credit Warning in list */
+.credit-warning {
+    color: var(--amber-700);
 }
 
 /* Action Buttons */
