@@ -7,7 +7,7 @@ include_once 'rate_limit.php';
 require_once 'formatting/formatting_functions.php';
 require_once 'report/ban_check.php';
 
-require_login('', true);
+require_login();
 $current_user = \CommunityUsers\get_current_user();
 
 // Check if user is banned and redirect to index

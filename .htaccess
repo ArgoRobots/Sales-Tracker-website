@@ -62,7 +62,8 @@ AddDefaultCharset UTF-8
             https://cdnjs.cloudflare.com \
             https://*.paypalobjects.com \
             https://*.stripe.com \
-            https://*.squarecdn.com; \
+            https://*.squarecdn.com \
+            https://*.cloudfront.net; \
         img-src 'self' data: \
             https://s3-us-west-2.amazonaws.com \
             https://chart.googleapis.com \

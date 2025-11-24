@@ -66,14 +66,12 @@
     </section>
 
     <div class="download-button-container">
-        <a href="/download" class="btn btn-blue" style="width: 280px;">Download latest
+        <a href="/download" class="btn btn-blue">Download latest
             release</a>
 
-        <a href="/older-versions/index.php" class="btn btn-outline" style="width: 280px; margin-top: 15px;">
+        <a href="../older-versions/index.php" class="btn btn-outline">
             Download older versions
         </a>
-
-        <p>Windows only</p>
     </div>
 
     <div class="container">
@@ -98,10 +96,22 @@
                                 <div class="icon icon-plus"></div>
                             </div>
                             <div class="feature-content">
+                                <h3>Cross platform<span class="type-tag feature">New Feature</span></h3>
+                                <p>We migrated our codebase to a new platform, meaning you can now use Argo Sales
+                                    Tracker on Windows, macOS, and Linux. We also overhauled the user interface to be
+                                    more modern and intuitve.</p>
+                            </div>
+                        </div>
+
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <div class="icon icon-plus"></div>
+                            </div>
+                            <div class="feature-content">
                                 <h3>Report Generator<span class="type-tag feature">New Feature</span></h3>
                                 <p>Create professional, customizable reports with our new Report Generator. Include
                                     sales summaries, inventory analysis, financial overviews, and performance metrics.
-                                    Export reports in multiple formats (PDF, Excel, Word) with your company branding,
+                                    Export reports in multiple formats (PDF, PNG, JPEG) with your company branding,
                                     custom date ranges, and flexible filtering options.</p>
                             </div>
                         </div>
@@ -115,17 +125,6 @@
                                 <p>You can now track services alongside products with the same comprehensive functionality.
                                     Manage service transactions, analytics, and reporting with the same powerful tools you
                                     use for physical products.</p>
-                            </div>
-                        </div>
-
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <div class="icon icon-plus"></div>
-                            </div>
-                            <div class="feature-content">
-                                <h3>Geographic Map Export<span class="type-tag feature">New Feature</span></h3>
-                                <p>Right-click the Geographic Map chart to save it as an image file, making it easy to
-                                    include geographic analytics in reports and presentations.</p>
                             </div>
                         </div>
 
@@ -198,38 +197,6 @@
                                 <h3>Transaction Deletion Confirmation<span class="type-tag feature">New Feature</span></h3>
                                 <p>Added a confirmation dialog when deleting transactions to prevent accidental deletions
                                     and ensure data safety.</p>
-                            </div>
-                        </div>
-
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <div class="icon icon-check"></div>
-                            </div>
-                            <div class="feature-content">
-                                <h3>Alignment Fix<span class="type-tag fix">Fix</span></h3>
-                                <p>Fixed alignment of the "No products exist" warning message on the "Add purchase" and "Add
-                                    sale" forms.</p>
-                            </div>
-                        </div>
-
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <div class="icon icon-check"></div>
-                            </div>
-                            <div class="feature-content">
-                                <h3>Chart Legend Duplication Fix<span class="type-tag fix">Fix</span></h3>
-                                <p>Resolved an issue where chart legends would sometimes duplicate when changing the color
-                                    theme.</p>
-                            </div>
-                        </div>
-
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <div class="icon icon-check"></div>
-                            </div>
-                            <div class="feature-content">
-                                <h3>Receipt Management Fix<span class="type-tag fix">Fix</span></h3>
-                                <p>Fixed a bug where changing receipts in transactions would not work properly.</p>
                             </div>
                         </div>
                     </div>

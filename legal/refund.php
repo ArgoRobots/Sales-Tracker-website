@@ -33,9 +33,7 @@
                 Tracker license keys. We strive to provide high-quality software that meets your needs, but we
                 understand that sometimes a purchase may not work out as expected.</p>
 
-            <h2>License Key Purchases</h2>
-
-            <h3>Eligibility for Refunds</h3>
+            <h2>Eligibility for Refunds</h2>
             <p>We offer a <strong>30-day money-back guarantee</strong> for purchases of Argo Sales Tracker license keys,
                 subject to the following conditions:</p>
             <ol>
@@ -44,16 +42,24 @@
                 <li>The license key must not have been used extensively (as determined by our system logs).</li>
             </ol>
 
-            <h3>Ineligible for Refunds</h3>
+            <h2>Ineligible for Refunds</h2>
             <p>Refunds will not be provided in the following situations:</p>
             <ol>
-                <li>More than 30 days have passed since the original purchase date.</li>
+                <li>More than 30 days have passed since the original purchase or renewal date.</li>
                 <li>The license key has been used extensively.</li>
                 <li>The license key was purchased as part of a special promotion or discount specifically marked as
                     non-refundable.</li>
                 <li>The license key was obtained through fraudulent means.</li>
-                <li>The license key was revoked due to violation of our Terms of Service.</li>
+                <li>The license key was revoked due to violation of our <a class="link" href="terms.php">Terms of Service</a>.</li>
             </ol>
+
+            <h2>Argo AI Subscription Refunds</h2>
+            <p>For Argo AI subscriptions:</p>
+            <ul>
+                <li>Refunds are prorated based on unused time in your billing period.</li>
+                <li>Cancelling your subscription does not automatically trigger a refund - you must request one separately.</li>
+                <li>After cancellation, you retain access until the end of your current billing period.</li>
+            </ul>
 
             <h2>How to Request a Refund</h2>
             <p>To request a refund, please contact our support team with the following information:</p>
@@ -67,7 +73,7 @@
             <p>You can contact our support team:</p>
             <ul>
                 <li>By email: <a class="link" href="mailto:contact@argorobots.com">contact@argorobots.com</a></li>
-                <li>Through the contact form on our website</li>
+                <li>Through the <a class="link" href="../contact-us/index.php">Contact Us Page</a> on our website</li>
             </ul>
 
             <h2>Refund Processing</h2>
@@ -90,7 +96,7 @@
                 <li>Review our <a class="link" href="../documentation/index.php">Documentation</a> for troubleshooting
                     guides and frequently asked questions</li>
                 <li>Contact our technical support team through our <a class="link"
-                        href="../contact-us/index.php">Contact Page</a> or by email</li>
+                        href="../contact-us/index.php">Contact Us Page</a> or by email</li>
             </ol>
             <p>Many issues can be resolved with proper guidance, and we are committed to helping you get the most out of
                 our software.</p>
@@ -108,7 +114,7 @@
                 <li>By email: <a class="link" href="mailto:contact@argorobots.com">contact@argorobots.com</a></li>
             </ul>
 
-            <p class="last-updated">Last updated: August 8, 2025</p>
+            <p class="last-updated">Last updated: November 24, 2025</p>
         </div>
     </div>
 

@@ -163,6 +163,8 @@
 .no-versions .btn {
   display: inline-block;
   margin: 0 auto;
+  padding: 12px 20px;
+  width: auto;
 }
 
 /* Additional info section */

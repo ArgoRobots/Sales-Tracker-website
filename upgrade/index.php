@@ -9,14 +9,14 @@
 
     <!-- SEO Meta Tags -->
     <meta name="description"
-        content="Upgrade to Argo Sales Tracker full version for just $20 CAD. Get unlimited products, AI search, Windows Hello, and priority support. Lifetime access with no monthly fees or subscriptions.">
+        content="Upgrade Argo Sales Tracker. Get Premium for $20 CAD lifetime access or subscribe to AI features for $5/month. Unlimited products, Windows Hello, AI-powered insights, and more.">
     <meta name="keywords"
-        content="upgrade argo sales tracker, buy full version, lifetime access software, unlimited products, business software pricing, sales tracker premium, one time payment, no subscription">
+        content="upgrade argo sales tracker, buy full version, lifetime access software, unlimited products, business software pricing, sales tracker premium, AI subscription">
 
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Upgrade to Premium - Argo Sales Tracker | $20 CAD Lifetime Access">
+    <meta property="og:title" content="Upgrade - Argo Sales Tracker">
     <meta property="og:description"
-        content="Upgrade to Argo Sales Tracker full version for just $20 CAD. Get unlimited products, AI search, Windows Hello, and priority support. Lifetime access with no monthly fees or subscriptions.">
+        content="Upgrade Argo Sales Tracker. Get Premium for $20 CAD lifetime access or subscribe to AI features for $5/month.">
     <meta property="og:url" content="https://argorobots.com/upgrade/">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Argo Sales Tracker">
@@ -24,25 +24,18 @@
 
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Upgrade to Premium - Argo Sales Tracker | $20 CAD Lifetime Access">
+    <meta name="twitter:title" content="Upgrade - Argo Sales Tracker">
     <meta name="twitter:description"
-        content="Upgrade to Argo Sales Tracker full version for just $20 CAD. Get unlimited products, AI search, Windows Hello, and priority support. Lifetime access with no monthly fees or subscriptions.">
-
-    <!-- Additional SEO Meta Tags -->
-    <meta name="geo.region" content="CA-AB">
-    <meta name="geo.placename" content="Calgary">
-    <meta name="geo.position" content="51.0447;-114.0719">
-    <meta name="ICBM" content="51.0447, -114.0719">
+        content="Upgrade Argo Sales Tracker. Get Premium for $20 CAD lifetime access or subscribe to AI features for $5/month.">
 
     <!-- Canonical URL -->
     <link rel="canonical" href="https://argorobots.com/upgrade/">
 
     <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
-    <title>Upgrade to Premium - Argo Sales Tracker | $20 CAD Lifetime Access</title>
+    <title>Upgrade - Argo Sales Tracker</title>
 
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../resources/scripts/main.js"></script>
-    <script src="../resources/scripts/ScrollToCenter.js"></script>
 
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
@@ -56,138 +49,100 @@
         <div id="includeHeader"></div>
     </header>
 
-    <section class="gradient-bg">
+    <section class="upgrade-hero">
         <div class="container">
-            <h1>Argo Sales Tracker</h1>
+            <h1>Upgrade Your Experience</h1>
+            <p class="hero-subtitle">Choose the plan that's right for your business</p>
+        </div>
+    </section>
 
-            <div class="hero-grid">
-                <div class="hero-content">
-                    <h2>Transform Your Business with Premium Features</h2>
-                    <p>Unlock the full power of Argo Sales Tracker and elevate your business — no monthly fees, no
-                        recurring charges. Just one payment for lifetime access to everything.</p>
-                    <div data-scroll-to="payment" class="price-tag">
-                        <p>Lifetime Access</p>
-                        <p class="price">$20 CAD</p>
-                    </div>
-                </div>
+    <section class="pricing-section">
+        <div class="container">
+            <div class="pricing-cards-wrapper">
+                <!-- Premium Plan Card -->
+                <a href="premium/" class="pricing-card-link">
+                    <div class="upgrade-pricing-card premium-card">
+                        <div class="card-badge">One-Time Payment</div>
+                        <h2>Premium</h2>
+                        <div class="card-price">
+                            <span class="currency">$</span>
+                            <span class="amount">20</span>
+                            <span class="period">CAD</span>
+                        </div>
+                        <p class="price-note">Lifetime access</p>
 
-                <div class="feature-section">
-                    <div class="feature-list">
-                        <h3>What You'll Get</h3>
-                        <ul>
+                        <ul class="card-features">
                             <li>
-                                <svg viewBox="0 0 24 24">
-                                    <path d="M5 13l4 4L19 7"></path>
-                                </svg>
-                                Unlimited Products
+                                <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"></path></svg>
+                                <span><strong>Unlimited products</strong></span>
                             </li>
                             <li>
-                                <svg viewBox="0 0 24 24">
-                                    <path d="M5 13l4 4L19 7"></path>
-                                </svg>
-                                Windows Hello
+                                <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"></path></svg>
+                                <span>Windows Hello security</span>
                             </li>
                             <li>
-                                <svg viewBox="0 0 24 24">
-                                    <path d="M5 13l4 4L19 7"></path>
-                                </svg>
-                                AI search
+                                <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"></path></svg>
+                                <span>Lifetime updates</span>
                             </li>
                             <li>
-                                <svg viewBox="0 0 24 24">
-                                    <path d="M5 13l4 4L19 7"></path>
-                                </svg>
-                                Priority Customer Support
+                                <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"></path></svg>
+                                <span>Priority support</span>
                             </li>
                         </ul>
+
+                        <div class="card-highlight">
+                            Pay once, use forever
+                        </div>
+
+                        <div class="card-cta">
+                            <span class="cta-button premium-cta">Get Premium</span>
+                        </div>
                     </div>
-                    <img src="../images/unlimited-products.svg" alt="Unlimited Products Illustration"
-                        class="hero-illustration">
-                </div>
+                </a>
+
+                <!-- AI Subscription Card -->
+                <a href="ai/" class="pricing-card-link">
+                    <div class="upgrade-pricing-card ai-card">
+                        <div class="card-badge ai-badge">AI-Powered</div>
+                        <h2>AI Subscription</h2>
+                        <div class="card-price">
+                            <span class="currency">$</span>
+                            <span class="amount">5</span>
+                            <span class="period">CAD/month</span>
+                        </div>
+                        <p class="price-note">or $50 CAD/year (save $10)</p>
+
+                        <ul class="card-features">
+                            <li>
+                                <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"></path></svg>
+                                <span><strong>AI receipt scanning</strong></span>
+                            </li>
+                            <li>
+                                <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"></path></svg>
+                                <span>Predictive sales analysis</span>
+                            </li>
+                            <li>
+                                <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"></path></svg>
+                                <span>AI business insights</span>
+                            </li>
+                            <li>
+                                <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"></path></svg>
+                                <span>Natural language AI search</span>
+                            </li>
+                        </ul>
+
+                        <div class="card-highlight ai-highlight">
+                            Premium users get a $20 discount!
+                        </div>
+
+                        <div class="card-cta">
+                            <span class="cta-button ai-cta">Subscribe to AI</span>
+                        </div>
+                    </div>
+                </a>
             </div>
-        </div>
-    </section>
 
-    <section class="features">
-        <div class="container">
-            <h2>Premium Features</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="icon-container">
-                        <svg viewBox="0 0 24 24">
-                            <path
-                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
-                            </path>
-                        </svg>
-                    </div>
-                    <h3>Unlimited Products</h3>
-                    <p>List and manage all your products without restrictions, helping you scale your business with
-                        complete flexibility.
-                    </p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="icon-container">
-                        <svg viewBox="0 0 24 24">
-                            <path
-                                d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4">
-                            </path>
-                        </svg>
-                    </div>
-                    <h3>Windows Hello</h3>
-                    <p>Securely access your password-protected projects with facial recognition or fingerprint scanning
-                        if your PC supports Windows Hello, making authentication both faster and more secure.</p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="icon-container">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="10" cy="10" r="6"></circle>
-                            <line x1="21" y1="21" x2="15" y2="15"></line>
-                        </svg>
-                    </div>
-                    <h3>AI search</h3>
-                    <p>Ask questions in plain English to find exactly what you need. Just type an exclamation mark (!)
-                        followed by your query like "!show me high-value sales from last month"</p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="icon-container">
-                        <svg viewBox="0 0 24 24">
-                            <path
-                                d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z">
-                            </path>
-                        </svg>
-                    </div>
-                    <h3>Priority Support</h3>
-                    <p>Get fast, personalized support from our dedicated customer support team.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="payment" class="payment">
-        <div class="container">
-            <h2>Ready to Upgrade?</h2>
-            <p>Choose your preferred payment method</p>
-
-            <div class="payment-grid">
-                <button class="payment-btn" onclick="window.location.href='checkout/index.php?method=paypal'">
-                    <img src="../images/PayPal-logo.svg" alt="PayPal">
-                    <span>Pay with PayPal</span>
-                </button>
-
-                <button class="payment-btn" onclick="window.location.href='checkout/index.php?method=stripe'">
-                    <img class="Stripe" src="../images/Stripe-logo.svg" alt="Stripe">
-                    <span>Pay with Stripe</span>
-                </button>
-
-                <button class="payment-btn" onclick="window.location.href='checkout/index.php?method=square'">
-                    <img class="Square" src="../images/Square-logo.svg" alt="Square">
-                    <span>Pay with Square</span>
-                </button>
-            </div>
+            <p class="pricing-note">30-day money back guarantee on all purchases</p>
         </div>
     </section>
 
@@ -201,36 +156,40 @@
                     </summary>
                     <p>No, you don't have to pay. We offer a free version that you can use indefinitely. The free
                         version includes all essential features needed to manage your basic business operations, with a
-                        limit of up to 10 products. If you need to track more products, consider upgrading to our
-                        full version.</p>
+                        limit of up to 10 products. If you need to track more products, consider upgrading to Premium.</p>
                 </details>
                 <details class="faq-card">
                     <summary>
-                        <h3>How long does the upgrade process take?</h3>
+                        <h3>What's the difference between Premium and AI Subscription?</h3>
                     </summary>
-                    <p>The upgrade process is instant. Once your payment is confirmed, you'll receive a license key to
-                        unlock all premium features.</p>
+                    <p><strong>Premium ($20 one-time)</strong> unlocks unlimited products, Windows Hello security, lifetime updates, and priority support.
+                        <strong>AI Subscription ($5/month)</strong> adds AI-powered features like receipt scanning, predictive analysis, and natural language search.
+                        You can have both for the complete experience!</p>
                 </details>
                 <details class="faq-card">
                     <summary>
-                        <h3>Is this a one-time payment?</h3>
+                        <h3>How does the $20 discount for Premium users work?</h3>
                     </summary>
-                    <p>Yes, pay once and get lifetime access to all premium features, including future updates.</p>
+                    <p>If you've purchased Premium, you get $20 off your first year of AI Subscription. Just enter your license key when subscribing, and the yearly price drops from $50 to $30.</p>
                 </details>
                 <details class="faq-card">
                     <summary>
-                        <h3>Can I transfer to a different computer?</h3>
+                        <h3>Can I cancel the AI Subscription anytime?</h3>
+                    </summary>
+                    <p>Yes, you can cancel your AI Subscription at any time. Your AI features will remain active until the end of your current billing period.</p>
+                </details>
+                <details class="faq-card">
+                    <summary>
+                        <h3>Is Premium a one-time payment?</h3>
+                    </summary>
+                    <p>Yes, pay once and get lifetime access to all Premium features, including future updates. No recurring charges.</p>
+                </details>
+                <details class="faq-card">
+                    <summary>
+                        <h3>Can I transfer my license to a different computer?</h3>
                     </summary>
                     <p>Yes, you can reactivate Argo Sales Tracker on your new computer, but this will deactivate it on
-                        your previous device. Each license can only be active on one computer at a time. Make sure to
-                        export your data from your old device to ensure you don't lose any data.</p>
-                </details>
-                <details class="faq-card">
-                    <summary>
-                        <h3>Does it include future updates?</h3>
-                    </summary>
-                    <p>Yes, both the free and paid versions will receive all future updates. We are continuously working
-                        to add new features, enhance stability, and improve the overall user experience.</p>
+                        your previous device. Each license can only be active on one computer at a time.</p>
                 </details>
                 <details class="faq-card">
                     <summary>
@@ -241,35 +200,10 @@
                 </details>
                 <details class="faq-card">
                     <summary>
-                        <h3>What happens if I lose my license key?</h3>
-                    </summary>
-                    <p>If you lose your license key, you have two options:</p>
-                    <p><strong>1. Self-service:</strong> Log into your account and click the "Get License" button on
-                        your
-                        profile
-                        page. Your license key will be automatically sent to your registered email address.</p>
-                    <p><strong>2. Contact support:</strong> If you don't have access to your account or don't receive
-                        the
-                        email,
-                        contact our support team. We'll need the email address you used during the purchase, and
-                        possibly other basic details like your name or transaction ID to verify your purchase. Once
-                        verified, we'll resend your key.</p>
-                </details>
-                <details class="faq-card">
-                    <summary>
                         <h3>Is my payment information secure?</h3>
                     </summary>
                     <p>Yes, all transactions are processed through trusted payment platforms like PayPal, Stripe, and
                         Square. We do not store any of your payment details.</p>
-                </details>
-                <details class="faq-card">
-                    <summary>
-                        <h3>What if I need help?</h3>
-                    </summary>
-                    <p>You can contact us <a class="link" href="../contact-us/index.php">here</a>. Customers who have
-                        paid for the full version get priority support. We typically respond within 8 business hours or
-                        less. We also have more information on our <a class="link"
-                            href="../documentation/index.php">documentation</a> page.</p>
                 </details>
             </div>
         </div>

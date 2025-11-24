@@ -247,40 +247,6 @@ CREATE TABLE IF NOT EXISTS referral_visits (
     INDEX idx_country_code (country_code)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Add indexes for license_keys table
-CREATE INDEX idx_license_keys_transaction_id ON license_keys(transaction_id);
-CREATE INDEX idx_license_keys_email ON license_keys(email);
-CREATE INDEX idx_license_keys_payment_intent ON license_keys(payment_intent);
-
--- Add indexes for payment_transactions table
-CREATE INDEX idx_payment_transactions_transaction_id ON payment_transactions(transaction_id);
-CREATE INDEX idx_payment_transactions_email ON payment_transactions(email);
-CREATE INDEX idx_payment_transactions_license_key ON payment_transactions(license_key);
-
--- Add indexes for community tables
-CREATE INDEX idx_users_username ON community_users(username);
-CREATE INDEX idx_users_email ON community_users(email);
-CREATE INDEX idx_posts_user_id ON community_posts(user_id);
-CREATE INDEX idx_posts_user_email ON community_posts(user_email);
-CREATE INDEX idx_posts_post_type ON community_posts(post_type);
-CREATE INDEX idx_posts_status ON community_posts(status);
-CREATE INDEX idx_posts_created_at ON community_posts(created_at);
-CREATE INDEX idx_comments_post_id ON community_comments(post_id);
-CREATE INDEX idx_comments_user_id ON community_comments(user_id);
-CREATE INDEX idx_comments_user_email ON community_comments(user_email);
-CREATE INDEX idx_comments_created_at ON community_comments(created_at);
-CREATE INDEX idx_votes_post_id ON community_votes(post_id);
-CREATE INDEX idx_votes_user_id ON community_votes(user_id);
-CREATE INDEX idx_votes_user_email ON community_votes(user_email);
-CREATE INDEX idx_comment_votes_comment_id ON comment_votes(comment_id);
-CREATE INDEX idx_comment_votes_user_id ON comment_votes(user_id);
-CREATE INDEX idx_comment_votes_user_email ON comment_votes(user_email);
-CREATE INDEX idx_post_edit_history_post_id ON post_edit_history(post_id);
-CREATE INDEX idx_rate_limits_user_action ON rate_limits(user_id, action_type);
-CREATE INDEX idx_remember_tokens_token ON remember_tokens(token);
-CREATE INDEX idx_remember_tokens_user_id ON remember_tokens(user_id);
-CREATE INDEX idx_notification_settings_user_id ON admin_notification_settings(user_id);
-
 -- Content reports table
 CREATE TABLE IF NOT EXISTS content_reports (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -321,3 +287,87 @@ CREATE TABLE IF NOT EXISTS user_bans (
     INDEX idx_is_active (is_active),
     INDEX idx_expires_at (expires_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- AI Subscriptions table
+CREATE TABLE IF NOT EXISTS ai_subscriptions (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    subscription_id VARCHAR(50) NOT NULL UNIQUE,
+    user_id INT NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    billing_cycle ENUM('monthly', 'yearly') NOT NULL DEFAULT 'monthly',
+    amount DECIMAL(10,2) NOT NULL,
+    currency VARCHAR(3) NOT NULL DEFAULT 'CAD',
+    start_date DATETIME NOT NULL,
+    end_date DATETIME NOT NULL,
+    status ENUM('active', 'cancelled', 'expired', 'past_due', 'payment_failed') NOT NULL DEFAULT 'active',
+    payment_method VARCHAR(50),
+    transaction_id VARCHAR(100),
+    payment_token VARCHAR(255) COMMENT 'Stored payment method token for recurring billing',
+    auto_renew TINYINT(1) DEFAULT 1 COMMENT 'Whether to auto-renew the subscription',
+    paypal_subscription_id VARCHAR(100) COMMENT 'PayPal subscription ID for recurring billing',
+    premium_license_key VARCHAR(255),
+    discount_applied TINYINT(1) DEFAULT 0,
+    cancelled_at DATETIME DEFAULT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_subscription_id (subscription_id),
+    INDEX idx_user_id (user_id),
+    INDEX idx_email (email),
+    INDEX idx_status (status),
+    INDEX idx_end_date (end_date),
+    INDEX idx_premium_license (premium_license_key),
+    INDEX idx_renewal (status, end_date, auto_renew),
+    FOREIGN KEY (user_id) REFERENCES community_users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- AI Subscription Payments table
+CREATE TABLE IF NOT EXISTS ai_subscription_payments (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    subscription_id VARCHAR(50) NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    currency VARCHAR(3) NOT NULL DEFAULT 'CAD',
+    payment_method VARCHAR(50) NOT NULL,
+    transaction_id VARCHAR(100),
+    status ENUM('pending', 'completed', 'failed', 'refunded') NOT NULL DEFAULT 'pending',
+    payment_type ENUM('initial', 'renewal', 'manual') DEFAULT 'initial' COMMENT 'Type of payment',
+    error_message TEXT NULL COMMENT 'Error message if payment failed',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_subscription_id (subscription_id),
+    INDEX idx_status (status),
+    INDEX idx_created_at (created_at),
+    INDEX idx_payment_type (payment_type)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Add indexes for license_keys table
+CREATE INDEX idx_license_keys_transaction_id ON license_keys(transaction_id);
+CREATE INDEX idx_license_keys_email ON license_keys(email);
+CREATE INDEX idx_license_keys_payment_intent ON license_keys(payment_intent);
+
+-- Add indexes for payment_transactions table
+CREATE INDEX idx_payment_transactions_transaction_id ON payment_transactions(transaction_id);
+CREATE INDEX idx_payment_transactions_email ON payment_transactions(email);
+CREATE INDEX idx_payment_transactions_license_key ON payment_transactions(license_key);
+
+-- Add indexes for community tables
+CREATE INDEX idx_users_username ON community_users(username);
+CREATE INDEX idx_users_email ON community_users(email);
+CREATE INDEX idx_posts_user_id ON community_posts(user_id);
+CREATE INDEX idx_posts_user_email ON community_posts(user_email);
+CREATE INDEX idx_posts_post_type ON community_posts(post_type);
+CREATE INDEX idx_posts_status ON community_posts(status);
+CREATE INDEX idx_posts_created_at ON community_posts(created_at);
+CREATE INDEX idx_comments_post_id ON community_comments(post_id);
+CREATE INDEX idx_comments_user_id ON community_comments(user_id);
+CREATE INDEX idx_comments_user_email ON community_comments(user_email);
+CREATE INDEX idx_comments_created_at ON community_comments(created_at);
+CREATE INDEX idx_votes_post_id ON community_votes(post_id);
+CREATE INDEX idx_votes_user_id ON community_votes(user_id);
+CREATE INDEX idx_votes_user_email ON community_votes(user_email);
+CREATE INDEX idx_comment_votes_comment_id ON comment_votes(comment_id);
+CREATE INDEX idx_comment_votes_user_id ON comment_votes(user_id);
+CREATE INDEX idx_comment_votes_user_email ON comment_votes(user_email);
+CREATE INDEX idx_post_edit_history_post_id ON post_edit_history(post_id);
+CREATE INDEX idx_rate_limits_user_action ON rate_limits(user_id, action_type);
+CREATE INDEX idx_remember_tokens_token ON remember_tokens(token);
+CREATE INDEX idx_remember_tokens_user_id ON remember_tokens(user_id);
+CREATE INDEX idx_notification_settings_user_id ON admin_notification_settings(user_id);

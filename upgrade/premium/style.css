@@ -1,0 +1,246 @@
+/* Premium Page Styles */
+
+.premium-hero {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    color: white;
+    padding: 60px 0 50px;
+    text-align: center;
+}
+
+.premium-hero h1 {
+    font-size: 42px;
+    margin-bottom: 12px;
+}
+
+.premium-hero .hero-subtitle {
+    font-size: 18px;
+    opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+    .premium-hero {
+        padding: 50px 0 40px;
+    }
+
+    .premium-hero h1 {
+        font-size: 32px;
+    }
+}
+
+/* Premium Content */
+.premium-content {
+    padding: 60px 0 80px;
+    background: #f8fafc;
+}
+
+.premium-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+@media (max-width: 900px) {
+    .premium-layout {
+        grid-template-columns: 1fr;
+        max-width: 500px;
+    }
+}
+
+/* Summary Card */
+.summary-card {
+    background: white;
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 2px solid #3b82f6;
+}
+
+.summary-card h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #1f2937;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 0;
+    border-bottom: 1px solid #e5e7eb;
+    color: #374151;
+}
+
+.item-price {
+    font-weight: 600;
+}
+
+.summary-total {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 0 16px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.summary-note {
+    text-align: center;
+    color: #3b82f6;
+    font-size: 14px;
+    font-weight: 600;
+    background: #dbeafe;
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 8px;
+}
+
+/* Features Included */
+.features-included {
+    margin-top: 24px;
+}
+
+.features-included h3 {
+    font-size: 16px;
+    color: #6b7280;
+    margin-bottom: 16px;
+}
+
+.features-included ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.features-included li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    color: #374151;
+    font-size: 14px;
+}
+
+.features-included svg {
+    width: 18px;
+    height: 18px;
+    stroke: #10b981;
+    stroke-width: 3;
+    fill: none;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+/* Payment Selection */
+.payment-selection {
+    background: white;
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.payment-selection h2 {
+    font-size: 24px;
+    margin-bottom: 8px;
+    color: #1f2937;
+}
+
+.payment-selection > p {
+    color: #6b7280;
+    margin-bottom: 24px;
+}
+
+.payment-options {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.payment-option {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 20px;
+    background: #f8fafc;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+}
+
+.payment-option:hover {
+    border-color: #3b82f6;
+    background: #eff6ff;
+    transform: translateX(4px);
+}
+
+.payment-option img {
+    height: 20px;
+    width: auto;
+}
+
+.payment-desc {
+    font-size: 13px;
+    color: #6b7280;
+    display: block;
+    margin-top: 2px;
+}
+
+.security-note {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 24px;
+    padding: 16px;
+    background: #f0fdf4;
+    border-radius: 10px;
+    color: #166534;
+    font-size: 13px;
+}
+
+.security-note svg {
+    flex-shrink: 0;
+    stroke: #16a34a;
+}
+
+/* Guarantee Section */
+.guarantee-section {
+    max-width: 600px;
+    margin: 40px auto 0;
+}
+
+.guarantee-badge {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e5e7eb;
+}
+
+.guarantee-badge svg {
+    stroke: #10b981;
+    flex-shrink: 0;
+}
+
+.guarantee-badge strong {
+    display: block;
+    color: #1f2937;
+    margin-bottom: 4px;
+}
+
+.guarantee-badge p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+@media (max-width: 600px) {
+    .guarantee-badge {
+        flex-direction: column;
+        text-align: center;
+    }
+}

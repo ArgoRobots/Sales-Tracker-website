@@ -6,7 +6,7 @@ require_once 'user_functions.php';
 require_once '../../email_sender.php';
 
 // Ensure user is logged in
-require_login('', true);
+require_login();
 
 $user_id = $_SESSION['user_id'];
 $user = get_user($user_id);

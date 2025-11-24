@@ -146,7 +146,6 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                                 <span class="btn-text">Get now for Free</span>
                                 <span class="btn-subtext">Setup in 3 minutes</span>
                             </a>
-                            <p class="windows-only">Windows only</p>
                         </div>
                         <a href="upgrade/index.php" class="btn btn-upgrade">
                             Upgrade for $20 CAD
@@ -515,7 +514,6 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                     <p>Make the switch to automated sales tracking and see the difference.</p>
                     <div class="text-center">
                         <a href="/download" class="btn btn-get-now">Make the Switch for Free</a>
-                        <p class="windows-only">Windows only</p>
                     </div>
                 </div>
             </div>
@@ -603,7 +601,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
         <div class="container">
             <div class="pricing-header text-center">
                 <h2 class="section-title">Simple, Honest Pricing</h2>
-                <p class="section-subtitle">No subscriptions, no hidden fees. Pay once, own forever.</p>
+                <p class="section-subtitle">Choose the plan that fits your needs. One-time purchase or AI-powered subscription.</p>
             </div>
 
             <div class="pricing-cards grid">
@@ -684,6 +682,48 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                         <p class="plan-note">30-day money back guarantee</p>
                     </div>
                 </div>
+
+                <!-- AI Subscription Plan -->
+                <div class="pricing-card ai-plan card">
+                    <div class="plan-header">
+                        <div class="plan-badge ai">AI Features</div>
+                        <h3 class="plan-name">AI Subscription</h3>
+                        <div class="plan-price">
+                            <span class="price-currency">$</span>
+                            <span class="price-amount">5</span>
+                            <span class="price-period">CAD/month</span>
+                        </div>
+                        <p class="plan-description-alt">or $50 CAD/year (save $10)</p>
+                        <p class="plan-description">Unlock AI-powered business intelligence</p>
+                    </div>
+
+                    <div class="plan-features">
+                        <div class="feature-item">
+                            <span class="feature-check">✅</span>
+                            <span><strong>AI-powered receipt scanning</strong></span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-check">✅</span>
+                            <span><strong>Predictive sales analysis</strong></span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-check">✅</span>
+                            <span><strong>AI business insights</strong></span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-check">✅</span>
+                            <span><strong>Natural language AI search</strong></span>
+                        </div>
+                        <div class="feature-item ai-feature">
+                            <span><strong>Premium users save $20!</strong></span>
+                        </div>
+                    </div>
+
+                    <div class="plan-cta">
+                        <a href="upgrade/ai/" class="btn btn-ai-subscribe">Subscribe Now</a>
+                        <p class="plan-note">Cancel anytime</p>
+                    </div>
+                </div>
             </div>
 
             <div class="pricing-guarantee">
@@ -711,7 +751,6 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                             <span class="btn-text">Get now for Free</span>
                             <span class="btn-subtext">Setup in 3 minutes</span>
                         </a>
-                        <p class="windows-only">Windows only</p>
                     </div>
                     <a href="upgrade/index.php" class="btn btn-upgrade">
                         Upgrade for $20 CAD

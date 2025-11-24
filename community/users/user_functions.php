@@ -1,6 +1,7 @@
 <?php
 
 namespace {
+    require_once __DIR__ . '/../../db_connect.php';
     require_once __DIR__ . '/../../email_sender.php';
 
     /**
@@ -532,7 +533,6 @@ namespace {
     {
         // First check session variables
         if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
-            error_log('Session user_id is not set or empty');
             return false;
         }
 
@@ -564,30 +564,35 @@ namespace {
             return true;
         } catch (Exception $e) {
             error_log('Exception in is_user_logged_in: ' . $e->getMessage());
-            if (isset($db)) {
-            }
             return false;
         }
     }
 
     /**
      * Require user to be logged in, redirect to login if not
-     * 
-     * @param string $redirect_url URL to redirect to after login
-     * @param bool $force_redirect If true, will always redirect non-logged users, otherwise allows read-only access
+     *
+     * @param string $redirect_url URL to redirect to after login (optional, defaults to current page)
      */
-    function require_login($redirect_url = '', $force_redirect = false)
+    function require_login($redirect_url = '')
     {
-        // For pages that require login for viewing (force_redirect=true), redirect to login
-        if ($force_redirect && !is_user_logged_in()) {
+        if (!is_user_logged_in()) {
             $current_url = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
             $redirect = !empty($redirect_url) ? $redirect_url : $current_url;
 
             // Store the intended destination for after login
             $_SESSION['redirect_after_login'] = $redirect;
 
-            // Redirect to login page
-            header('Location: login.php');
+            // Get the web path to login.php based on where this file is located
+            // __DIR__ gives us the filesystem path to community/users/
+            // We need to convert this to a web-accessible URL
+            $doc_root = realpath($_SERVER['DOCUMENT_ROOT']);
+            $login_dir = __DIR__;
+
+            // Get relative path from document root to login.php
+            $relative_path = str_replace($doc_root, '', $login_dir);
+            $relative_path = str_replace('\\', '/', $relative_path); // Windows compatibility
+
+            header('Location: ' . $relative_path . '/login.php');
             exit;
         }
     }
@@ -642,5 +647,36 @@ namespace {
     function generate_verification_code()
     {
         return sprintf('%06d', mt_rand(100000, 999999));
+    }
+
+    /**
+     * Get user's AI subscription information
+     *
+     * @param int $user_id User ID
+     * @return array|null Subscription data or null if no subscription
+     */
+    function get_user_ai_subscription($user_id)
+    {
+        global $pdo;
+
+        if (!$pdo) {
+            return null;
+        }
+
+        try {
+            $stmt = $pdo->prepare("
+                SELECT * FROM ai_subscriptions
+                WHERE user_id = ?
+                ORDER BY created_at DESC
+                LIMIT 1
+            ");
+            $stmt->execute([$user_id]);
+            $subscription = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            return $subscription ?: null;
+        } catch (PDOException $e) {
+            error_log('Error fetching AI subscription: ' . $e->getMessage());
+            return null;
+        }
     }
 }

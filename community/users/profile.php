@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     check_remember_me();
 }
 
-require_login('', true);
+require_login();
 
 $is_logged_in = isset($_SESSION['user_id']);
 $requested_username = isset($_GET['username']) ? trim($_GET['username']) : '';
@@ -660,6 +660,9 @@ if ($is_own_profile && isset($user['email'])) {
                                     </a>
                                 <?php endif; ?>
 
+                                <a href="ai-subscription.php" class="btn btn-blue">
+                                    Manage Subscription
+                                </a>
                                 <a href="edit_profile.php" class="btn btn-blue">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>

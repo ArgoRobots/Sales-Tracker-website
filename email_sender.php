@@ -1052,3 +1052,180 @@ function send_new_report_notification($email, $report_id, $content_type, $violat
     error_log("send_new_report_notification mail() result for $email: " . ($mail_result ? "TRUE" : "FALSE"));
     return $mail_result;
 }
+
+/**
+ * Send AI subscription confirmation/receipt email
+ *
+ * @param string $email User's email address
+ * @param string $subscriptionId Subscription ID
+ * @param string $billing Billing cycle (monthly/yearly)
+ * @param float $amount Payment amount
+ * @param string $endDate Next renewal date
+ * @param string $transactionId Transaction ID
+ * @param string $paymentMethod Payment method used
+ * @return bool Success status
+ */
+function send_ai_subscription_receipt($email, $subscriptionId, $billing, $amount, $endDate, $transactionId, $paymentMethod)
+{
+    $css = file_get_contents(__DIR__ . '/email.css');
+    $subject = "Payment Receipt - Argo AI Subscription";
+
+    $billingText = $billing === 'yearly' ? 'yearly' : 'monthly';
+    $renewalDate = date('F j, Y', strtotime($endDate));
+    $paymentDate = date('F j, Y');
+    $paymentMethodText = ucfirst($paymentMethod);
+
+    $email_html = <<<HTML
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Payment Receipt</title>
+    <style>
+        {$css}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+            <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" width="140">
+        </div>
+
+        <div class="content">
+            <h1>Payment Receipt</h1>
+            <p>Thank you for subscribing to Argo AI!</p>
+
+            <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0; border: 1px solid #e5e7eb;">
+                <h3 style="margin-top: 0;">Payment Details</h3>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr>
+                        <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong>Date</strong></td>
+                        <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb; text-align: right;">{$paymentDate}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong>Description</strong></td>
+                        <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb; text-align: right;">AI Subscription ({$billingText})</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong>Amount</strong></td>
+                        <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb; text-align: right;">\${$amount} CAD</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong>Payment Method</strong></td>
+                        <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb; text-align: right;">{$paymentMethodText}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong>Transaction ID</strong></td>
+                        <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb; text-align: right; font-size: 12px; font-family: monospace;">{$transactionId}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px 0;"><strong>Next Renewal</strong></td>
+                        <td style="padding: 8px 0; text-align: right;">{$renewalDate}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <h3>What's Included:</h3>
+            <ul style="list-style: none; padding: 0;">
+                <li style="padding: 8px 0; padding-left: 24px; position: relative;">✓ AI-powered receipt scanning</li>
+                <li style="padding: 8px 0; padding-left: 24px; position: relative;">✓ Predictive sales analysis</li>
+                <li style="padding: 8px 0; padding-left: 24px; position: relative;">✓ AI business insights</li>
+                <li style="padding: 8px 0; padding-left: 24px; position: relative;">✓ Natural language AI search</li>
+            </ul>
+
+            <p>You can manage your subscription anytime from your <a href="https://argorobots.com/community/users/ai-subscription.php">account settings</a>.</p>
+
+            <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb; color: #6b7280; font-size: 14px;">
+                <p>Subscription ID: {$subscriptionId}</p>
+                <p>Thank you for using Argo Sales Tracker!</p>
+                <p><a href="https://argorobots.com">argorobots.com</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+HTML;
+
+    $headers = [
+        'MIME-Version: 1.0',
+        'Content-Type: text/html; charset=UTF-8',
+        'From: Argo Sales Tracker <noreply@argorobots.com>',
+        'Reply-To: support@argorobots.com',
+        'X-Mailer: PHP/' . phpversion()
+    ];
+
+    return mail($email, $subject, $email_html, implode("\r\n", $headers));
+}
+
+/**
+ * Send AI subscription cancellation confirmation email
+ *
+ * @param string $email User's email address
+ * @param string $subscriptionId Subscription ID
+ * @param string $endDate Date when access ends
+ * @return bool Success status
+ */
+function send_ai_subscription_cancelled_email($email, $subscriptionId, $endDate)
+{
+    $css = file_get_contents(__DIR__ . '/email.css');
+    $subject = "Subscription Cancelled - Argo AI";
+
+    $accessUntil = date('F j, Y', strtotime($endDate));
+
+    $email_html = <<<HTML
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Subscription Cancelled</title>
+    <style>
+        {$css}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+            <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" width="140">
+        </div>
+
+        <div class="content">
+            <h1>Subscription Cancelled</h1>
+            <p>Your Argo AI subscription has been cancelled as requested.</p>
+
+            <div style="background: #fef3c7; border: 1px solid #fcd34d; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                <p style="margin: 0;"><strong>Important:</strong> You will continue to have access to AI features until <strong>{$accessUntil}</strong>.</p>
+            </div>
+
+            <p>After this date, AI features including receipt scanning, predictive analysis, and AI insights will no longer be available.</p>
+
+            <p>Changed your mind? You can resubscribe anytime from your account settings.</p>
+
+            <div style="text-align: center; margin: 30px 0;">
+                <a href="https://argorobots.com/upgrade/ai/" style="display: inline-block; background: #8b5cf6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">Resubscribe</a>
+            </div>
+
+            <p>If you have any questions, please <a href="https://argorobots.com/contact-us/">contact our support team</a>.</p>
+
+            <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb; color: #6b7280; font-size: 14px;">
+                <p>Subscription ID: {$subscriptionId}</p>
+                <p>Thank you for trying Argo AI!</p>
+                <p><a href="https://argorobots.com">argorobots.com</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+HTML;
+
+    $headers = [
+        'MIME-Version: 1.0',
+        'Content-Type: text/html; charset=UTF-8',
+        'From: Argo Sales Tracker <noreply@argorobots.com>',
+        'Reply-To: support@argorobots.com',
+        'X-Mailer: PHP/' . phpversion()
+    ];
+
+    return mail($email, $subject, $email_html, implode("\r\n", $headers));
+}

@@ -7,9 +7,9 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 // Load required files
-require_once '../../db_connect.php';
-require_once '../../license_functions.php';
-require_once '../../email_sender.php';
+require_once '../../../db_connect.php';
+require_once '../../../license_functions.php';
+require_once '../../../email_sender.php';
 
 // Get raw POST data
 $json_data = file_get_contents('php://input');
