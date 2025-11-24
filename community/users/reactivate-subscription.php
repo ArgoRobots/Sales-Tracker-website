@@ -122,7 +122,7 @@ $billing_cycle = $ai_subscription['billing_cycle'] ?? 'monthly';
             </div>
 
             <div class="info-box payment-method-box">
-                <h3>Payment Method</h3>
+                <h3>Current Payment Method</h3>
                 <div class="current-payment-method">
                     <div class="payment-method-icon">
                         <?php if (strtolower($ai_subscription['payment_method']) === 'stripe'): ?>
@@ -150,7 +150,31 @@ $billing_cycle = $ai_subscription['billing_cycle'] ?? 'monthly';
                         <span class="payment-method-note">This payment method will be charged on <?php echo $end_date; ?></span>
                     </div>
                 </div>
-                <a href="../../upgrade/ai/checkout/?method=<?php echo strtolower($ai_subscription['payment_method']); ?>&billing=<?php echo $billing_cycle; ?>&change_method=1" class="change-payment-link">Use a different payment method</a>
+
+                <div class="change-payment-section">
+                    <p class="change-payment-label">Use a different payment method:</p>
+                    <div class="payment-provider-options">
+                        <a href="../../upgrade/ai/checkout/?method=stripe&billing=<?php echo $billing_cycle; ?>&change_method=1" class="payment-provider-btn <?php echo strtolower($ai_subscription['payment_method']) === 'stripe' ? 'current' : ''; ?>">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                                <line x1="1" y1="10" x2="23" y2="10"></line>
+                            </svg>
+                            <span>Stripe</span>
+                        </a>
+                        <a href="../../upgrade/ai/checkout/?method=paypal&billing=<?php echo $billing_cycle; ?>&change_method=1" class="payment-provider-btn <?php echo strtolower($ai_subscription['payment_method']) === 'paypal' ? 'current' : ''; ?>">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="#003087">
+                                <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944 3.72a.771.771 0 0 1 .76-.654h6.396c3.027 0 5.178 1.97 4.737 4.997-.502 3.432-3.286 5.218-6.293 5.218H8.204l-1.128 8.057z"/>
+                            </svg>
+                            <span>PayPal</span>
+                        </a>
+                        <a href="../../upgrade/ai/checkout/?method=square&billing=<?php echo $billing_cycle; ?>&change_method=1" class="payment-provider-btn <?php echo strtolower($ai_subscription['payment_method']) === 'square' ? 'current' : ''; ?>">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            </svg>
+                            <span>Square</span>
+                        </a>
+                    </div>
+                </div>
             </div>
 
             <div class="confirm-actions">
