@@ -32,6 +32,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user = login_user($login, $password);
 
         if ($user) {
+            // Check if email is not verified
+            if (isset($user['email_not_verified']) && $user['email_not_verified']) {
+                // Set temp_user_id for verification page
+                $_SESSION['temp_user_id'] = $user['user_id'];
+                // Redirect to verification page
+                header('Location: verify_code.php');
+                exit;
+            }
+
             // Set session data
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $user['username'];
