@@ -261,16 +261,48 @@ if ($existing_subscription && in_array($existing_subscription['status'], ['activ
                 });
             });
 
-            // License verification
+            // License verification with rate limiting
+            let lastVerifyAttempt = 0;
+            let verifyAttempts = 0;
+            const RATE_LIMIT_WINDOW = 60000; // 1 minute
+            const MAX_ATTEMPTS = 5;
+            const COOLDOWN_TIME = 3000; // 3 seconds between attempts
+
             document.getElementById('verify-license').addEventListener('click', async function() {
                 const licenseKey = document.getElementById('license-key').value.trim();
                 const statusEl = document.getElementById('license-status');
+                const verifyBtn = this;
+                const now = Date.now();
+
+                // Reset attempt counter if window has passed
+                if (now - lastVerifyAttempt > RATE_LIMIT_WINDOW) {
+                    verifyAttempts = 0;
+                }
+
+                // Check rate limit
+                if (verifyAttempts >= MAX_ATTEMPTS) {
+                    const waitTime = Math.ceil((RATE_LIMIT_WINDOW - (now - lastVerifyAttempt)) / 1000);
+                    statusEl.innerHTML = `<span class="error">Too many attempts. Please wait ${waitTime} seconds.</span>`;
+                    return;
+                }
+
+                // Cooldown between attempts
+                if (now - lastVerifyAttempt < COOLDOWN_TIME && lastVerifyAttempt > 0) {
+                    statusEl.innerHTML = '<span class="error">Please wait a moment before trying again.</span>';
+                    return;
+                }
 
                 if (!licenseKey) {
                     statusEl.innerHTML = '<span class="error">Please enter a license key</span>';
                     return;
                 }
 
+                // Update rate limit tracking
+                lastVerifyAttempt = now;
+                verifyAttempts++;
+
+                // Disable button during verification
+                verifyBtn.disabled = true;
                 statusEl.innerHTML = '<span class="loading">Verifying...</span>';
 
                 try {
@@ -289,6 +321,8 @@ if ($existing_subscription && in_array($existing_subscription['status'], ['activ
                         verifiedLicenseKey = licenseKey;
                         statusEl.innerHTML = '<span class="success">License verified! $20 discount applied.</span>';
                         updatePriceDisplay();
+                        // Reset attempts on success
+                        verifyAttempts = 0;
                     } else {
                         hasDiscount = false;
                         verifiedLicenseKey = null;
@@ -297,6 +331,8 @@ if ($existing_subscription && in_array($existing_subscription['status'], ['activ
                     }
                 } catch (error) {
                     statusEl.innerHTML = '<span class="error">Error verifying license. Please try again.</span>';
+                } finally {
+                    verifyBtn.disabled = false;
                 }
             });
 

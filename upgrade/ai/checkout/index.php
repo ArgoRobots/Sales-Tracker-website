@@ -71,17 +71,30 @@
     $licenseKey = isset($_GET['license']) ? $_GET['license'] : '';
 
     // Auto-detect license key if not provided but user has an activated license
-    if (!$hasDiscount && empty($licenseKey) && !empty($user_email)) {
-        try {
-            $stmt = $pdo->prepare("SELECT license_key FROM license_keys WHERE email = ? AND activated = 1 LIMIT 1");
-            $stmt->execute([$user_email]);
-            $userLicense = $stmt->fetch(PDO::FETCH_ASSOC);
-            if ($userLicense) {
-                $licenseKey = $userLicense['license_key'];
-                $hasDiscount = true;
+    if (!$hasDiscount && empty($licenseKey) && $pdo !== null) {
+        // Get user email - try session first, then fetch from database
+        $lookup_email = $user_email;
+        if (empty($lookup_email) && !empty($user_id)) {
+            $user_data = get_user($user_id);
+            if ($user_data && !empty($user_data['email'])) {
+                $lookup_email = $user_data['email'];
             }
-        } catch (PDOException $e) {
-            // Silently fail - user just won't get auto-discount
+        }
+
+        if (!empty($lookup_email)) {
+            try {
+                // Use LOWER() for case-insensitive email comparison
+                $stmt = $pdo->prepare("SELECT license_key FROM license_keys WHERE LOWER(email) = LOWER(?) AND activated = 1 LIMIT 1");
+                $stmt->execute([$lookup_email]);
+                $userLicense = $stmt->fetch(PDO::FETCH_ASSOC);
+                if ($userLicense) {
+                    $licenseKey = $userLicense['license_key'];
+                    $hasDiscount = true;
+                }
+            } catch (PDOException $e) {
+                // Silently fail - user just won't get auto-discount
+                error_log("Auto-detect license error: " . $e->getMessage());
+            }
         }
     }
 
