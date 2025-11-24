@@ -264,6 +264,16 @@ document.addEventListener("DOMContentLoaded", function () {
         submitButton.disabled = true;
         submitButton.textContent = "Processing...";
 
+        // Show processing overlay
+        const processingOverlay = document.createElement("div");
+        processingOverlay.className = "processing-overlay";
+        processingOverlay.innerHTML = `
+          <div class="spinner"></div>
+          <h2>Processing Your Payment</h2>
+          <p>Please do not close this window or refresh the page.</p>
+        `;
+        document.body.appendChild(processingOverlay);
+
         const cardHolder = document.getElementById("card-holder").value;
         const email = document.getElementById("email").value;
 
@@ -280,6 +290,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
           if (error) {
             document.getElementById("card-errors").textContent = error.message;
+            const overlay = document.querySelector(".processing-overlay");
+            if (overlay) overlay.remove();
             submitButton.disabled = false;
             submitButton.textContent = `Subscribe - $${subscription.finalPrice.toFixed(
               2
@@ -324,6 +336,8 @@ document.addEventListener("DOMContentLoaded", function () {
             if (confirmError) {
               document.getElementById("card-errors").textContent =
                 confirmError.message;
+              const overlay = document.querySelector(".processing-overlay");
+              if (overlay) overlay.remove();
               submitButton.disabled = false;
               submitButton.textContent = `Subscribe - $${subscription.finalPrice.toFixed(
                 2
@@ -338,6 +352,8 @@ document.addEventListener("DOMContentLoaded", function () {
           } else {
             document.getElementById("card-errors").textContent =
               result.error || "Payment failed. Please try again.";
+            const overlay = document.querySelector(".processing-overlay");
+            if (overlay) overlay.remove();
             submitButton.disabled = false;
             submitButton.textContent = `Subscribe - $${subscription.finalPrice.toFixed(
               2
@@ -347,6 +363,8 @@ document.addEventListener("DOMContentLoaded", function () {
           console.error("Error:", err);
           document.getElementById("card-errors").textContent =
             "An error occurred. Please try again.";
+          const overlay = document.querySelector(".processing-overlay");
+          if (overlay) overlay.remove();
           submitButton.disabled = false;
           submitButton.textContent = `Subscribe - $${subscription.finalPrice.toFixed(
             2
@@ -423,6 +441,16 @@ document.addEventListener("DOMContentLoaded", function () {
           submitButton.textContent = "Processing...";
           errorDiv.textContent = "";
 
+          // Show processing overlay
+          const processingOverlay = document.createElement("div");
+          processingOverlay.className = "processing-overlay";
+          processingOverlay.innerHTML = `
+            <div class="spinner"></div>
+            <h2>Processing Your Payment</h2>
+            <p>Please do not close this window or refresh the page.</p>
+          `;
+          document.body.appendChild(processingOverlay);
+
           try {
             const result = await card.tokenize();
             if (result.status === "OK") {
@@ -458,6 +486,8 @@ document.addEventListener("DOMContentLoaded", function () {
               } else {
                 errorDiv.textContent =
                   data.error || "Payment failed. Please try again.";
+                const overlay = document.querySelector(".processing-overlay");
+                if (overlay) overlay.remove();
                 submitButton.disabled = false;
                 submitButton.textContent = `Subscribe - $${subscription.finalPrice.toFixed(
                   2
@@ -467,6 +497,8 @@ document.addEventListener("DOMContentLoaded", function () {
               }
             } else {
               errorDiv.textContent = "Card validation failed. Please try again.";
+              const overlay = document.querySelector(".processing-overlay");
+              if (overlay) overlay.remove();
               submitButton.disabled = false;
               submitButton.textContent = `Subscribe - $${subscription.finalPrice.toFixed(
                 2
@@ -475,6 +507,8 @@ document.addEventListener("DOMContentLoaded", function () {
           } catch (err) {
             console.error("Error:", err);
             errorDiv.textContent = "An error occurred. Please try again.";
+            const overlay = document.querySelector(".processing-overlay");
+            if (overlay) overlay.remove();
             submitButton.disabled = false;
             submitButton.textContent = `Subscribe - $${subscription.finalPrice.toFixed(
               2
