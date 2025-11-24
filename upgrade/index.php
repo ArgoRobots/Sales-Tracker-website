@@ -132,7 +132,7 @@
                         </ul>
 
                         <div class="card-highlight ai-highlight">
-                            Premium users get $20 off first year!
+                            Premium users get a $20 discount!
                         </div>
 
                         <div class="card-cta">
