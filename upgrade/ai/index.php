@@ -376,11 +376,7 @@ if ($existing_subscription && in_array($existing_subscription['status'], ['activ
                     billing: currentBilling
                 });
 
-                if (hasDiscount && verifiedLicenseKey) {
-                    params.append('discount', '1');
-                    params.append('license', verifiedLicenseKey);
-                }
-
+                // License/discount auto-detected on checkout page from database
                 return 'checkout/?' + params.toString();
             }
 

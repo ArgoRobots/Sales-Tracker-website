@@ -67,11 +67,12 @@
 
     // Get URL parameters
     $billing = isset($_GET['billing']) ? $_GET['billing'] : 'monthly';
-    $hasDiscount = isset($_GET['discount']) && $_GET['discount'] === '1';
-    $licenseKey = isset($_GET['license']) ? $_GET['license'] : '';
 
-    // Auto-detect license key if not provided but user has an activated license
-    if (!$hasDiscount && empty($licenseKey) && $pdo !== null) {
+    // Auto-detect license from database (never passed via URL for security)
+    $hasDiscount = false;
+    $licenseKey = '';
+
+    if ($pdo !== null) {
         // Get user email - try session first, then fetch from database
         $lookup_email = $user_email;
         if (empty($lookup_email) && !empty($user_id)) {
