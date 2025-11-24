@@ -5,6 +5,23 @@ require_once 'user_functions.php';
 
 $error = '';
 $success = false;
+$message = '';
+
+// Handle messages from resend verification code
+if (isset($_GET['message'])) {
+    if ($_GET['message'] === 'code_resent') {
+        $message = 'A new verification code has been sent to your email.';
+    }
+}
+
+// Handle errors from resend verification code
+if (isset($_GET['error'])) {
+    if ($_GET['error'] === 'email_failed') {
+        $error = 'Failed to send verification email. Please try again.';
+    } elseif ($_GET['error'] === 'update_failed') {
+        $error = 'Failed to generate new verification code. Please try again.';
+    }
+}
 
 // Check if temp_user_id is set
 if (!isset($_SESSION['temp_user_id'])) {
@@ -178,6 +195,12 @@ if ($success) {
             </div>
             <?php endif; ?>
 
+            <?php if ($message): ?>
+            <div class="success-message">
+                <?php echo htmlspecialchars($message); ?>
+            </div>
+            <?php endif; ?>
+
             <form method="post" class="auth-form">
                 <div class="verification-code-container">
                     <input type="text" maxlength="1" class="verification-digit" name="digit1" id="digit1"
@@ -201,7 +224,7 @@ if ($success) {
                 </div>
 
                 <div class="auth-links">
-                    <p>Didn't receive the code? <a href="resend_license.php">Resend code</a></p>
+                    <p>Didn't receive the code? <a href="resend_verification_code.php">Resend code</a></p>
                     <p>Back to <a href="login.php">Login</a></p>
                 </div>
             </form>
