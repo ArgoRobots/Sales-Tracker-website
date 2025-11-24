@@ -26,8 +26,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Connect to database
     $db = get_db_connection();
 
-    // Get existing license key for this user's email
-    $stmt = $db->prepare('SELECT license_key FROM license_keys WHERE email = ?');
+    // Get existing license key for this user's email (case-insensitive)
+    $stmt = $db->prepare('SELECT license_key FROM license_keys WHERE LOWER(email) = LOWER(?)');
     $stmt->bind_param('s', $email);
     $stmt->execute();
     $result = $stmt->get_result();

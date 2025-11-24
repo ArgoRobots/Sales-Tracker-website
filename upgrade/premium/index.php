@@ -1,3 +1,26 @@
+<?php
+session_start();
+require_once '../../db_connect.php';
+
+// Check if logged-in user already has a license key
+if (isset($_SESSION['user_id']) && isset($_SESSION['email'])) {
+    $user_email = $_SESSION['email'];
+
+    if ($pdo !== null) {
+        try {
+            $stmt = $pdo->prepare("SELECT license_key FROM license_keys WHERE LOWER(email) = LOWER(?) LIMIT 1");
+            $stmt->execute([$user_email]);
+            if ($stmt->fetch()) {
+                // User already has a license, redirect to profile
+                header('Location: ../../community/users/profile.php?user=' . $_SESSION['user_id']);
+                exit;
+            }
+        } catch (PDOException $e) {
+            // Silently continue to premium page
+        }
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 

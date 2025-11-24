@@ -472,11 +472,11 @@ if ($user) {
     $is_admin = isset($user['role']) && $user['role'] === 'admin';
 }
 
-// Check if user has a license key
+// Check if user has a license key (case-insensitive email match)
 $has_license = false;
 if ($is_own_profile && isset($user['email'])) {
     $db = get_db_connection();
-    $stmt = $db->prepare('SELECT license_key FROM license_keys WHERE email = ?');
+    $stmt = $db->prepare('SELECT license_key FROM license_keys WHERE LOWER(email) = LOWER(?)');
     $stmt->bind_param('s', $user['email']);
     $stmt->execute();
     $result = $stmt->get_result();
