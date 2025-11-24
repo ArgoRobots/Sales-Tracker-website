@@ -142,42 +142,95 @@ $billing_cycle = $ai_subscription['billing_cycle'] ?? 'monthly';
                 </div>
 
                 <div class="change-payment-section">
-                    <p class="change-payment-label">Change billing cycle:</p>
+                    <p class="change-payment-label">Billing cycle:</p>
                     <div class="billing-cycle-options">
-                        <a href="../../upgrade/ai/checkout/?method=<?php echo strtolower($ai_subscription['payment_method']); ?>&billing=monthly&change_method=1" class="billing-cycle-btn <?php echo $billing_cycle === 'monthly' ? 'current' : ''; ?>">
+                        <div class="billing-cycle-btn <?php echo $billing_cycle === 'monthly' ? 'current' : ''; ?>" data-billing="monthly">
                             <span class="billing-cycle-name">Monthly</span>
                             <span class="billing-cycle-price">$5/month</span>
-                        </a>
-                        <a href="../../upgrade/ai/checkout/?method=<?php echo strtolower($ai_subscription['payment_method']); ?>&billing=yearly&change_method=1" class="billing-cycle-btn <?php echo $billing_cycle === 'yearly' ? 'current' : ''; ?>">
+                        </div>
+                        <div class="billing-cycle-btn <?php echo $billing_cycle === 'yearly' ? 'current' : ''; ?>" data-billing="yearly">
                             <span class="billing-cycle-name">Yearly</span>
                             <span class="billing-cycle-price">$50/year</span>
-                        </a>
+                        </div>
                     </div>
                 </div>
 
                 <div class="change-payment-section">
-                    <p class="change-payment-label">Change payment provider:</p>
+                    <p class="change-payment-label">Payment provider:</p>
                     <div class="payment-provider-options">
-                        <a href="../../upgrade/ai/checkout/?method=stripe&billing=<?php echo $billing_cycle; ?>&change_method=1" class="payment-provider-btn <?php echo strtolower($ai_subscription['payment_method']) === 'stripe' ? 'current' : ''; ?>">
+                        <div class="payment-provider-btn <?php echo strtolower($ai_subscription['payment_method']) === 'stripe' ? 'current' : ''; ?>" data-method="stripe" data-name="Stripe">
                             <img src="../../images/Stripe-logo.svg" alt="Stripe">
-                        </a>
-                        <a href="../../upgrade/ai/checkout/?method=paypal&billing=<?php echo $billing_cycle; ?>&change_method=1" class="payment-provider-btn <?php echo strtolower($ai_subscription['payment_method']) === 'paypal' ? 'current' : ''; ?>">
+                        </div>
+                        <div class="payment-provider-btn <?php echo strtolower($ai_subscription['payment_method']) === 'paypal' ? 'current' : ''; ?>" data-method="paypal" data-name="PayPal">
                             <img src="../../images/PayPal-logo.svg" alt="PayPal">
-                        </a>
-                        <a href="../../upgrade/ai/checkout/?method=square&billing=<?php echo $billing_cycle; ?>&change_method=1" class="payment-provider-btn <?php echo strtolower($ai_subscription['payment_method']) === 'square' ? 'current' : ''; ?>">
+                        </div>
+                        <div class="payment-provider-btn <?php echo strtolower($ai_subscription['payment_method']) === 'square' ? 'current' : ''; ?>" data-method="square" data-name="Square">
                             <img src="../../images/Square-logo.svg" alt="Square">
-                        </a>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="confirm-actions">
-                <form method="post">
+                <form method="post" id="reactivate-form">
                     <input type="hidden" name="confirm_reactivate" value="1">
-                    <button type="submit" class="btn btn-purple">Reactivate with <?php echo $payment_method; ?></button>
+                    <button type="submit" id="reactivate-btn" class="btn btn-purple">Reactivate with <?php echo $payment_method; ?></button>
                 </form>
                 <a href="ai-subscription.php" class="btn btn-outline">Go Back</a>
             </div>
+
+            <script>
+            (function() {
+                const originalMethod = '<?php echo strtolower($ai_subscription['payment_method']); ?>';
+                const originalBilling = '<?php echo $billing_cycle; ?>';
+                let selectedMethod = originalMethod;
+                let selectedBilling = originalBilling;
+
+                const methodNames = { stripe: 'Stripe', paypal: 'PayPal', square: 'Square' };
+                const reactivateBtn = document.getElementById('reactivate-btn');
+                const reactivateForm = document.getElementById('reactivate-form');
+
+                function updateButton() {
+                    const methodName = methodNames[selectedMethod] || 'Unknown';
+                    const billingName = selectedBilling === 'yearly' ? 'Yearly' : 'Monthly';
+                    const hasChanges = selectedMethod !== originalMethod || selectedBilling !== originalBilling;
+
+                    if (hasChanges) {
+                        reactivateBtn.textContent = `Update to ${methodName} (${billingName})`;
+                        reactivateBtn.type = 'button';
+                        reactivateBtn.onclick = function() {
+                            window.location.href = `../../upgrade/ai/checkout/?method=${selectedMethod}&billing=${selectedBilling}&change_method=1`;
+                        };
+                    } else {
+                        reactivateBtn.textContent = `Reactivate with ${methodName}`;
+                        reactivateBtn.type = 'submit';
+                        reactivateBtn.onclick = null;
+                    }
+                }
+
+                // Billing cycle selection
+                document.querySelectorAll('.billing-cycle-btn').forEach(btn => {
+                    btn.style.cursor = 'pointer';
+                    btn.addEventListener('click', function() {
+                        document.querySelectorAll('.billing-cycle-btn').forEach(b => b.classList.remove('current'));
+                        this.classList.add('current');
+                        selectedBilling = this.dataset.billing;
+                        updateButton();
+                    });
+                });
+
+                // Payment provider selection
+                document.querySelectorAll('.payment-provider-btn').forEach(btn => {
+                    btn.style.cursor = 'pointer';
+                    btn.addEventListener('click', function() {
+                        document.querySelectorAll('.payment-provider-btn').forEach(b => b.classList.remove('current'));
+                        this.classList.add('current');
+                        selectedMethod = this.dataset.method;
+                        updateButton();
+                    });
+                });
+            })();
+            </script>
         </div>
     </div>
 
