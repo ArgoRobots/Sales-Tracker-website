@@ -25,7 +25,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     <meta name="description"
         content="Transform your small business with Argo Books. Save several hours weekly, reduce errors and boost profits. Free Windows software with 22+ interactive charts. No monthly fees.">
     <meta name="keywords"
-        content="sales tracker, business software, profit tracking, inventory management, small business automation, Windows software, Calgary business software, time saving, error reduction">
+        content="finance tracker, sales tracker, business software, profit tracking, inventory management, small business automation, Windows software, Calgary business software, time saving, error reduction">
 
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Argo Books - Save several Hours Weekly & Boost Profits">

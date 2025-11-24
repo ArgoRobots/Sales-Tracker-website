@@ -32,7 +32,7 @@ if ($existing_subscription && in_array($existing_subscription['status'], ['activ
     <meta name="description"
         content="Subscribe to Argo Books AI features. Get AI-powered receipt scanning, predictive sales analysis, and natural language search. $5/month or $50/year. Premium users save $20!">
     <meta name="keywords"
-        content="argo ai features, ai receipt scanning, predictive sales analysis, ai business insights, sales tracker subscription">
+        content="argo ai features, ai receipt scanning, predictive sales analysis, ai business insights, finance tracker, sales tracker subscription">
 
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="AI Subscription - Argo Books">

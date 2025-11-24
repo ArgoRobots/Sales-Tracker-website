@@ -295,13 +295,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <select id="bug_location" name="bug_location">
                                 <option value="">-- Select Location --</option>
                                 <option value="website" <?php echo isset($metadata['bug_location']) && $metadata['bug_location'] === 'website' ? 'selected' : ''; ?>>Website</option>
-                                <option value="sales_tracker" <?php echo isset($metadata['bug_location']) && $metadata['bug_location'] === 'sales_tracker' ? 'selected' : ''; ?>>Sales Tracker Application</option>
+                                <option value="sales_tracker" <?php echo isset($metadata['bug_location']) && $metadata['bug_location'] === 'sales_tracker' ? 'selected' : ''; ?>>Argo Books Application</option>
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="bug_version">Browser or Sales Tracker Version</label>
-                            <input type="text" id="bug_version" name="bug_version" placeholder="e.g., Chrome 99.0.4844 or Sales Tracker v2.1.3" value="<?php echo isset($metadata['bug_version']) ? htmlspecialchars($metadata['bug_version']) : ''; ?>">
+                            <label for="bug_version">Browser or Argo Books Version</label>
+                            <input type="text" id="bug_version" name="bug_version" placeholder="e.g., Chrome 99.0.4844 or Argo Books V.1.0.8" value="<?php echo isset($metadata['bug_version']) ? htmlspecialchars($metadata['bug_version']) : ''; ?>">
                         </div>
 
                         <div class="form-group">

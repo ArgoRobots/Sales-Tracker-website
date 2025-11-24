@@ -1,4 +1,4 @@
-# robots.txt for ArgoRobots Sales Tracker
+# robots.txt for ArgoRobots
 # Last updated: 2025-10-30
 
 # Allow all search engines to crawl the site

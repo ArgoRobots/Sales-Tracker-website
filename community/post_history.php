@@ -213,7 +213,7 @@ array_unshift($history, $current_post);
                                                 <?php
                                                 if (isset($version_metadata[$field_key]) && !empty($version_metadata[$field_key])) {
                                                     if ($field_key === 'bug_location') {
-                                                        echo $version_metadata[$field_key] === 'website' ? 'Website' : 'Sales Tracker Application';
+                                                        echo $version_metadata[$field_key] === 'website' ? 'Website' : 'Argo Books Application';
                                                     } else {
                                                         echo nl2br(htmlspecialchars($version_metadata[$field_key]));
                                                     }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
     <channel>
-        <title>Sales Tracker Updates</title>
+        <title>Argo Books Updates</title>
         <link>https://argorobots.com</link>
-        <description>Updates for Sales Tracker</description>
+        <description>Updates for Argo Books</description>
         <language>en</language>
         <item>
             <title>Version 1.0.7</title>

@@ -255,7 +255,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                                     <?php if (!empty($metadata['bug_location'])): ?>
                                         <div class="bug-info-item">
                                             <div class="bug-info-label">Location:</div>
-                                            <div class="bug-info-value"><?php echo $metadata['bug_location'] === 'website' ? 'Website' : 'Sales Tracker Application'; ?></div>
+                                            <div class="bug-info-value"><?php echo $metadata['bug_location'] === 'website' ? 'Website' : 'Argo Books Application'; ?></div>
                                         </div>
                                     <?php endif; ?>
 
