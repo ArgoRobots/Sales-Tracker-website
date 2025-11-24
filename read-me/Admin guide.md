@@ -94,37 +94,6 @@ APP_ENV=production
 
 ---
 
-## Database Tables
-
-### `license_keys`
-
-Stores generated license keys and activation status.
-
-**Key columns:**
-
-- `license_key` - Unique license key
-- `email` - Customer email
-- `transaction_id` - Payment processor transaction ID
-- `payment_method` - Stripe/PayPal/Square
-- `activated` - 0 or 1
-- `activation_date` - When payment completed
-
-### `payment_transactions`
-
-Audit log of all payment attempts.
-
-**Key columns:**
-
-- `transaction_id` - Unique transaction ID
-- `email` - Customer email
-- `amount` - Payment amount
-- `currency` - CAD/USD/etc
-- `payment_method` - Processor used
-- `status` - Payment status
-- `license_key` - Associated license key
-
----
-
 ## Admin Scripts
 
 **Contact Evan Di Placido to obtain these scripts.**
