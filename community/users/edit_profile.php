@@ -616,7 +616,6 @@ function handle_password_change()
 
                 <div class="form-actions">
                     <button type="submit" class="btn btn-blue">Update Profile</button>
-                    <a href="profile.php?username=<?php echo urlencode($user['username']); ?>" class="btn btn-gray">Cancel</a>
                 </div>
             </form>
         </div>
