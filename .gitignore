@@ -6,3 +6,6 @@ error_log.txt
 error_log
 /vendor/
 /.vscode/
+create_admin.php
+create_community_admin.php
+reset_admin_password.php
