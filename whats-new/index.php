@@ -66,14 +66,12 @@
     </section>
 
     <div class="download-button-container">
-        <a href="/download" class="btn btn-blue" style="width: 280px;">Download latest
+        <a href="/download" class="btn btn-blue">Download latest
             release</a>
 
-        <a href="../older-versions/index.php" class="btn btn-outline" style="width: 280px; margin-top: 15px;">
+        <a href="../older-versions/index.php" class="btn btn-outline">
             Download older versions
         </a>
-
-        <p>Windows only</p>
     </div>
 
     <div class="container">

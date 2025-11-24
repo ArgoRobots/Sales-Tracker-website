@@ -146,7 +146,6 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                                 <span class="btn-text">Get now for Free</span>
                                 <span class="btn-subtext">Setup in 3 minutes</span>
                             </a>
-                            <p class="windows-only">Windows only</p>
                         </div>
                         <a href="upgrade/index.php" class="btn btn-upgrade">
                             Upgrade for $20 CAD
@@ -515,7 +514,6 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                     <p>Make the switch to automated sales tracking and see the difference.</p>
                     <div class="text-center">
                         <a href="/download" class="btn btn-get-now">Make the Switch for Free</a>
-                        <p class="windows-only">Windows only</p>
                     </div>
                 </div>
             </div>
@@ -753,7 +751,6 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                             <span class="btn-text">Get now for Free</span>
                             <span class="btn-subtext">Setup in 3 minutes</span>
                         </a>
-                        <p class="windows-only">Windows only</p>
                     </div>
                     <a href="upgrade/index.php" class="btn btn-upgrade">
                         Upgrade for $20 CAD

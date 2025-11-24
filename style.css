@@ -312,14 +312,6 @@ h4 {
   justify-self: left;
 }
 
-.hero-cta .windows-only {
-  margin: 10px 0 20px 20px;
-}
-
-.windows-only {
-  margin-top: 10px;
-}
-
 .hero-guarantees {
   display: flex;
   gap: 32px;
