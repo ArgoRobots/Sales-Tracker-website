@@ -556,9 +556,6 @@ if ($is_own_profile && isset($user['email'])) {
                 <div class="container">
                     <div class="success-message">
                         <strong>Email verified successfully!</strong> Your account has been created.
-                        <?php if (!$has_license): ?>
-                            <br>📧 Your license key has been sent to your email address.
-                        <?php endif; ?>
                     </div>
                 </div>
             <?php endif; ?>
