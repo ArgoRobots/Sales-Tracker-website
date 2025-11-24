@@ -161,7 +161,7 @@ if ($ai_subscription) {
                         </div>
                         <div class="subscription-actions">
                             <?php if (strtotime($ai_subscription['end_date']) > time()): ?>
-                                <a href="reactivate-subscription.php" class="btn btn-purple">Reactivate Subscription</a>
+                                <a href="reactivate-subscription.php" class="btn btn-purple btn-reactivate">Reactivate Subscription</a>
                             <?php else: ?>
                                 <a href="../../upgrade/ai/" class="btn btn-purple">Resubscribe</a>
                             <?php endif; ?>

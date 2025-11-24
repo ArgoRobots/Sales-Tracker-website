@@ -443,6 +443,11 @@
     text-align: center;
 }
 
+.btn-reactivate {
+    width: 210px !important;
+    margin: auto;
+}
+
 /* Responsive */
 @media (max-width: 576px) {
     .subscription-page-container {
