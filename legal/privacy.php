@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
-    <title>Privacy Policy - Argo Sales Tracker</title>
+    <title>Privacy Policy - Argo Books</title>
 
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../resources/scripts/main.js"></script>
@@ -29,14 +29,14 @@
             <h1>Privacy Policy</h1>
 
             <h2>Introduction</h2>
-            <p>This Privacy Policy describes how Argo Sales Tracker ("we", "us", or "our") collects, uses, and discloses
+            <p>This Privacy Policy describes how Argo Books ("we", "us", or "our") collects, uses, and discloses
                 your information when you use our website and community forums (collectively, our "Website").</p>
             <p>We respect your privacy and are committed to protecting your personal data. This Privacy Policy will
-                inform you about how we look after your personal data when you visit our Website or use our Argo Sales
-                Tracker application and tell you about your privacy rights and how the law protects you.</p>
+                inform you about how we look after your personal data when you visit our Website or use our Argo Books
+                application and tell you about your privacy rights and how the law protects you.</p>
 
             <h2>Website Information</h2>
-            <p>To help us improve the Argo Sales Tracker website and provide you with our services, we collect the following types of information:</p>
+            <p>To help us improve the Argo Books website and provide you with our services, we collect the following types of information:</p>
 
             <h3>Data We Collect on the website</h3>
 
@@ -130,8 +130,8 @@
             <p>You can instruct your browser to refuse all cookies or to indicate when a cookie is being sent. However,
                 if you do not accept cookies, you may not be able to use some portions of our Website.</p>
 
-            <h2>Argo Sales Tracker Desktop Application Data</h2>
-            <p>To help us improve the Argo Sales Tracker <strong>desktop software</strong>, we collect anonymous usage
+            <h2>Argo Books Desktop Application Data</h2>
+            <p>To help us improve the Argo Books <strong>desktop software</strong>, we collect anonymous usage
                 statistics and geographic information. This data is completely anonymous, stored locally on your device,
                 and cannot be used to identify you personally. This feature is <strong>enabled by default</strong>, but
                 you can opt out at any time.</p>

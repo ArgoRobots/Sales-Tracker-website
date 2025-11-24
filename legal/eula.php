@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
-    <title>End User License Agreement - Argo Sales Tracker</title>
+    <title>End User License Agreement - Argo Books</title>
 
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../resources/scripts/main.js"></script>
@@ -26,11 +26,11 @@
 
     <div class="legal-container">
         <div class="legal-content">
-            <h1>End User License Agreement for Argo Sales Tracker</h1>
+            <h1>End User License Agreement for Argo Books</h1>
 
             <h2>Important - Read Carefully</h2>
             <p>This End User License Agreement ("Agreement") is a legal agreement between you (either an individual or a
-                single entity) and Argo ("Licensor") for the software product Argo Sales Tracker, which includes
+                single entity) and Argo ("Licensor") for the software product Argo Books, which includes
                 computer software and may include associated media, printed materials, and online or electronic
                 documentation ("Software").</p>
 

@@ -40,7 +40,7 @@
             <ul class="guidelines-list">
                 <li>Be respectful and constructive in all interactions.</li>
                 <li>Search before posting to avoid duplicate questions or requests.</li>
-                <li>Keep discussions relevant to the Argo Sales Tracker project.</li>
+                <li>Keep discussions relevant to the Argo Books project.</li>
                 <li>Use clear titles and provide context and details in your posts.</li>
                 <li>No spam, advertising or self-promotion.</li>
                 <li>Use votes to highlight helpful posts and comments.</li>
@@ -78,7 +78,7 @@
                 <li>Impersonation of other users, companies, or Argo team members.</li>
                 <li>Copyright infringement or unauthorized sharing of proprietary content.</li>
                 <li>Excessive profanity or inappropriate language.</li>
-                <li>Off-topic discussions unrelated to Argo Sales Tracker.</li>
+                <li>Off-topic discussions unrelated to Argo Books.</li>
             </ul>
         </div>
 
@@ -121,7 +121,7 @@
         </div>
 
         <!-- Reporting -->
-        <!-- <div class="guidelines-section">
+        <div class="guidelines-section">
             <h3>Reporting Issues</h3>
             <ul class="guidelines-list">
                 <li>Use the report button on posts or comments that violate guidelines.</li>
@@ -131,11 +131,11 @@
                 <li>Don't publicly call out violations - use the proper reporting channels.</li>
                 <li>False or malicious reports may result in penalties for the reporter.</li>
             </ul>
-        </div> -->
+        </div>
 
         <div class="important-note">
-            <strong>Remember:</strong> These guidelines help maintain a productive environment for all Argo Sales
-            Tracker users. When in doubt, ask yourself: "Does this contribute positively to helping others use the
+            <strong>Remember:</strong> These guidelines help maintain a productive environment for all Argo Books
+            users. When in doubt, ask yourself: "Does this contribute positively to helping others use the
             software effectively?" Thank you for being part of our community!
         </div>
 

@@ -9,7 +9,7 @@
   <meta name="keywords" content="">
   <meta name="author" content="Argo">
   <link rel="shortcut icon" type="image/x-icon" href="../../images/argo-logo/A-logo.ico">
-  <title>Argo Sales Tracker - Message Sent Successfully</title>
+  <title>Argo Books - Message Sent Successfully</title>
 
   <script src="../../resources/scripts/jquery-3.6.0.js"></script>
   <script src="../../resources/scripts/main.js"></script>

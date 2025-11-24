@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Checkout - Argo Sales Tracker">
+    <meta name="description" content="Checkout - Argo Books">
     <meta name="keywords" content="sales tracker, business software, analytics">
     <meta name="author" content="Argo">
     <link rel="shortcut icon" type="image/x-icon" href="../../../images/argo-logo/A-logo.ico">
-    <title>Checkout - Argo Sales Tracker</title>
+    <title>Checkout - Argo Books</title>
 
     <?php
     // Load environment variables
@@ -73,7 +73,7 @@
     </header>
 
     <section class="checkout-container">
-        <h1>Complete Your Purchase For Argo Sales Tracker</h1>
+        <h1>Complete Your Purchase For Argo Books</h1>
 
         <div class="checkout-form">
             <h2>Payment Details</h2>
@@ -81,7 +81,7 @@
             <div class="order-summary">
                 <h3>Order Summary</h3>
                 <div class="order-item">
-                    <span>Argo Sales Tracker Premium</span>
+                    <span>Argo Books Premium</span>
                     <span>$20.00 CAD</span>
                 </div>
                 <div class="order-total">

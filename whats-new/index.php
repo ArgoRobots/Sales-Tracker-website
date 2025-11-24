@@ -9,24 +9,24 @@
 
     <!-- SEO Meta Tags -->
     <meta name="description"
-        content="Latest updates and new features in Argo Sales Tracker. Download the latest Windows release.">
+        content="Latest updates and new features in Argo Books. Download the latest Windows release.">
     <meta name="keywords"
-        content="argo sales tracker updates, new features, version history, changelog, release notes, software updates, latest version, product improvements, Windows software updates">
+        content="argo books updates, new features, version history, changelog, release notes, software updates, latest version, product improvements, Windows software updates">
 
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="What's New - Argo Sales Tracker | Latest Features & Updates">
+    <meta property="og:title" content="What's New - Argo Books | Latest Features & Updates">
     <meta property="og:description"
-        content="Latest updates and new features in Argo Sales Tracker. Download the latest Windows release.">
+        content="Latest updates and new features in Argo Books. Download the latest Windows release.">
     <meta property="og:url" content="https://argorobots.com/whats-new/">
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Argo Sales Tracker">
+    <meta property="og:site_name" content="Argo Books">
     <meta property="og:locale" content="en_CA">
 
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="What's New - Argo Sales Tracker | Latest Features & Updates">
+    <meta name="twitter:title" content="What's New - Argo Books | Latest Features & Updates">
     <meta name="twitter:description"
-        content="Latest updates and new features in Argo Sales Tracker. Download the latest Windows release.">
+        content="Latest updates and new features in Argo Books. Download the latest Windows release.">
 
     <!-- Additional SEO Meta Tags -->
     <meta name="geo.region" content="CA-AB">
@@ -38,7 +38,7 @@
     <link rel="canonical" href="https://argorobots.com/whats-new/">
 
     <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
-    <title>What's New - Argo Sales Tracker | Latest Features & Updates</title>
+    <title>What's New - Argo Books | Latest Features & Updates</title>
 
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../resources/scripts/main.js"></script>
@@ -60,7 +60,7 @@
 
     <section class="hero">
         <div class="description-container">
-            <h1>What's New in Argo Sales Tracker</h1>
+            <h1>What's New in Argo Books</h1>
             <p>Discover the latest improvements and features we've added to make managing your business even easier</p>
         </div>
     </section>
@@ -97,8 +97,8 @@
                             </div>
                             <div class="feature-content">
                                 <h3>Cross platform<span class="type-tag feature">New Feature</span></h3>
-                                <p>We migrated our codebase to a new platform, meaning you can now use Argo Sales
-                                    Tracker on Windows, macOS, and Linux. We also overhauled the user interface to be
+                                <p>We migrated our codebase to a new platform, meaning you can now use Argo Books
+                                    on Windows, macOS, and Linux. We also overhauled the user interface to be
                                     more modern and intuitve.</p>
                             </div>
                         </div>
@@ -774,7 +774,7 @@
                             </div>
                             <div class="feature-content">
                                 <h3>Initial Release<span class="type-tag feature">New Feature</span></h3>
-                                <p>First stable release of Argo Sales Tracker, including core functionality for tracking
+                                <p>First stable release of Argo Books, including core functionality for tracking
                                     sales, managing products, and analyzing business performance.</p>
                             </div>
                         </div>

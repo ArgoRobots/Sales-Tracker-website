@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
-    <title>Terms of Service - Argo Sales Tracker</title>
+    <title>Terms of Service - Argo Books</title>
 
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../resources/scripts/main.js"></script>
@@ -29,8 +29,8 @@
             <h1>Terms of Service</h1>
 
             <h2>Introduction</h2>
-            <p>Welcome to Argo Sales Tracker. These Terms of Service ("Terms") govern your use of our website, community
-                forums, and the Argo Sales Tracker software (collectively, the "Service"). By accessing or using the
+            <p>Welcome to Argo Books. These Terms of Service ("Terms") govern your use of our website, community
+                forums, and the Argo Books software (collectively, the "Service"). By accessing or using the
                 Service, you agree to be bound by these Terms. If you disagree with any part of the terms, you may not
                 access the Service.</p>
 
@@ -41,7 +41,7 @@
             <p>You must immediately notify us of any unauthorized uses of your account or any other breaches of
                 security. We will not be liable for any acts or omissions by you, including any damages of any kind
                 incurred as a result of such acts or omissions.</p>
-            <p>The Argo Sales Tracker desktop application collects anonymous usage statistics and geographic information
+            <p>The Argo Books desktop application collects anonymous usage statistics and geographic information
                 by default to help us improve the quality and performance of our desktop software. This includes
                 operational data, API usage, error tracking, session information, and geographic data (country, region,
                 city, timezone) to identify and resolve software issues and optimize performance
@@ -79,8 +79,8 @@
                 <li>Using the Service for any commercial purpose not expressly permitted by us</li>
             </ul>
 
-            <h2>License and Use of Argo Sales Tracker</h2>
-            <p>Argo Sales Tracker is licensed, not sold. Upon purchasing a license key, you are granted a non-exclusive,
+            <h2>License and Use of Argo Books</h2>
+            <p>Argo Books is licensed, not sold. Upon purchasing a license key, you are granted a non-exclusive,
                 non-transferable license to use the software according to the terms of the license purchased.</p>
             <p>License keys may not be shared, distributed, or used on more instances than permitted by the license
                 terms. We reserve the right to revoke license keys that are used in violation of these Terms.</p>
@@ -96,7 +96,7 @@
             <p>We reserve the right to modify subscription pricing with 30 days notice to existing subscribers.</p>
 
             <h2>Google API Services</h2>
-            <p>The Argo Sales Tracker desktop application includes a feature to export data to Google Sheets. When you use this feature:</p>
+            <p>The Argo Books desktop application includes a feature to export data to Google Sheets. When you use this feature:</p>
             <ul>
                 <li>You will be prompted to sign in to your Google account and grant permission to the application</li>
                 <li>The application will only access your Google Drive to create and write to spreadsheets</li>
@@ -107,7 +107,7 @@
 
             <h2>Intellectual Property</h2>
             <p>The Service and its original content (excluding Content provided by users), features and functionality
-                are and will remain the exclusive property of Argo Sales Tracker and its licensors. The Service is
+                are and will remain the exclusive property of Argo Books and its licensors. The Service is
                 protected by copyright, trademark, and other laws of Canada. Our trademarks and trade dress may not be
                 used in connection with any product or service without our prior written consent.</p>
 
@@ -118,7 +118,7 @@
                 account, you may simply discontinue using the Service.</p>
 
             <h2>Limitation of Liability</h2>
-            <p>In no event shall Argo Sales Tracker, nor its directors, employees, partners, agents, suppliers, or
+            <p>In no event shall Argo Books, nor its directors, employees, partners, agents, suppliers, or
                 affiliates, be liable for any indirect, incidental, special, consequential or punitive damages,
                 including without limitation, loss of profits, data, use, goodwill, or other intangible losses,
                 resulting from:</p>

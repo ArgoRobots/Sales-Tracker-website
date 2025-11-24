@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
-    <title>Refund Policy - Argo Sales Tracker</title>
+    <title>Refund Policy - Argo Books</title>
 
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../resources/scripts/main.js"></script>
@@ -29,12 +29,12 @@
             <h1>Refund Policy</h1>
 
             <h2>Introduction</h2>
-            <p>This Refund Policy outlines the terms and conditions for refunds related to the purchase of Argo Sales
-                Tracker license keys. We strive to provide high-quality software that meets your needs, but we
+            <p>This Refund Policy outlines the terms and conditions for refunds related to the purchase of Argo Books
+                license keys. We strive to provide high-quality software that meets your needs, but we
                 understand that sometimes a purchase may not work out as expected.</p>
 
             <h2>Eligibility for Refunds</h2>
-            <p>We offer a <strong>30-day money-back guarantee</strong> for purchases of Argo Sales Tracker license keys,
+            <p>We offer a <strong>30-day money-back guarantee</strong> for purchases of Argo Books license keys,
                 subject to the following conditions:</p>
             <ol>
                 <li>The refund request must be made within 30 days of the original purchase date.</li>
@@ -91,7 +91,7 @@
                 eligibility period.</p>
 
             <h2>Technical Issues</h2>
-            <p>If you are experiencing technical issues with Argo Sales Tracker, we encourage you to:</p>
+            <p>If you are experiencing technical issues with Argo Books, we encourage you to:</p>
             <ol>
                 <li>Review our <a class="link" href="../documentation/index.php">Documentation</a> for troubleshooting
                     guides and frequently asked questions</li>

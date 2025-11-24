@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Thank You - Argo Sales Tracker">
+    <meta name="description" content="Thank You - Argo Books">
     <meta name="author" content="Argo">
     <link rel="shortcut icon" type="image/x-icon" href="../../../images/argo-logo/A-logo.ico">
-    <title>Purchase Confirmed - Argo Sales Tracker</title>
+    <title>Purchase Confirmed - Argo Books</title>
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17210317271"></script>
@@ -76,7 +76,7 @@
         </div>
 
         <h1>You're All Set!</h1>
-        <p class="subtitle">Your purchase is complete. Welcome to Argo Sales Tracker Premium!</p>
+        <p class="subtitle">Your purchase is complete. Welcome to Argo Books Premium!</p>
 
         <div class="purchase-details">
             <h2>Purchase Details</h2>
@@ -93,7 +93,7 @@
             </div>
             <div class="detail-row">
                 <span class="detail-label">Product</span>
-                <span class="detail-value">Argo Sales Tracker Premium</span>
+                <span class="detail-value">Argo Books Premium</span>
             </div>
             <div class="detail-row">
                 <span class="detail-label">License Type</span>
@@ -132,7 +132,7 @@
         <div class="activation-steps">
             <h3>How to Activate Premium</h3>
             <ol>
-                <li>Open <strong>Argo Sales Tracker</strong> on your computer</li>
+                <li>Open <strong>Argo Books</strong> on your computer</li>
                 <li>Click the blue <strong>Upgrade</strong> button in the top right corner</li>
                 <li>Enter your <strong>License Key</strong> shown above</li>
                 <li>Click <strong>Activate</strong> and enjoy all premium features!</li>
@@ -140,7 +140,7 @@
         </div>
 
         <div class="cta-buttons">
-            <a href="../../../download" class="btn-primary">Download Argo Sales Tracker</a>
+            <a href="../../../download" class="btn-primary">Download Argo Books</a>
             <a href="../../../documentation/index.php" class="btn-secondary">View Documentation</a>
         </div>
     </div>

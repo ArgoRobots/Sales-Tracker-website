@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="AI Subscription Confirmed - Argo Sales Tracker">
+    <meta name="description" content="AI Subscription Confirmed - Argo Books">
     <meta name="author" content="Argo">
     <link rel="shortcut icon" type="image/x-icon" href="../../../images/argo-logo/A-logo.ico">
-    <title>AI Subscription Confirmed - Argo Sales Tracker</title>
+    <title>AI Subscription Confirmed - Argo Books</title>
 
     <script src="../../../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../../../resources/scripts/main.js"></script>
@@ -93,7 +93,7 @@
         <div class="activation-steps">
             <h3>How to Activate AI Features</h3>
             <ol>
-                <li>Open <strong>Argo Sales Tracker</strong> on your computer</li>
+                <li>Open <strong>Argo Books</strong> on your computer</li>
                 <li>Go to <strong>Settings > AI Features</strong></li>
                 <li>Enter your <strong>Subscription ID</strong> shown above</li>
                 <li>Click <strong>Activate</strong> and start using AI features!</li>
@@ -101,7 +101,7 @@
         </div>
 
         <div class="cta-buttons">
-            <a href="../../../download" class="btn-primary">Download Argo Sales Tracker</a>
+            <a href="../../../download" class="btn-primary">Download Argo Books</a>
             <a href="../../../documentation/index.php" class="btn-secondary">View Documentation</a>
         </div>
     </div>

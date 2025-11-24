@@ -60,7 +60,7 @@ function preparePDFExport() {
   // Add a title page
   printWindow.document.write(`
     <div style="text-align: center; margin-top: 40mm; margin-bottom: 40mm;">
-      <h1 style="font-size: 28pt; margin-bottom: 10mm;">Argo Sales Tracker Documentation</h1>
+      <h1 style="font-size: 28pt; margin-bottom: 10mm;">Argo Books Documentation</h1>
       <p style="font-size: 14pt;">Generated on ${new Date().toLocaleDateString()}</p>
     </div>
   `);

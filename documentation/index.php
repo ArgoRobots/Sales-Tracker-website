@@ -9,24 +9,24 @@
 
     <!-- SEO Meta Tags -->
     <meta name="description"
-        content="Complete Argo Sales Tracker documentation and user guide. Learn installation, features, tutorials for sales tracking, product management, analytics, Excel import/export, and security settings.">
+        content="Complete Argo Books documentation and user guide. Learn installation, features, tutorials for sales tracking, product management, analytics, Excel import/export, and security settings.">
     <meta name="keywords"
-        content="argo sales tracker documentation, sales tracker tutorial, business software guide, how to use sales tracker, installation guide, user manual, sales tracking help, product management tutorial">
+        content="argo books documentation, sales tracker tutorial, business software guide, how to use sales tracker, installation guide, user manual, sales tracking help, product management tutorial">
 
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Documentation & User Guide - Argo Sales Tracker">
+    <meta property="og:title" content="Documentation & User Guide - Argo Books">
     <meta property="og:description"
-        content="Complete Argo Sales Tracker documentation and user guide. Learn installation, features, tutorials for sales tracking, product management, analytics, Excel import/export, and security settings.">
+        content="Complete Argo Books documentation and user guide. Learn installation, features, tutorials for sales tracking, product management, analytics, Excel import/export, and security settings.">
     <meta property="og:url" content="https://argorobots.com/documentation/">
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Argo Sales Tracker">
+    <meta property="og:site_name" content="Argo Books">
     <meta property="og:locale" content="en_CA">
 
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Documentation & User Guide - Argo Sales Tracker">
+    <meta name="twitter:title" content="Documentation & User Guide - Argo Books">
     <meta name="twitter:description"
-        content="Complete Argo Sales Tracker documentation and user guide. Learn installation, features, tutorials for sales tracking, product management, analytics, Excel import/export, and security settings.">
+        content="Complete Argo Books documentation and user guide. Learn installation, features, tutorials for sales tracking, product management, analytics, Excel import/export, and security settings.">
 
     <!-- Additional SEO Meta Tags -->
     <meta name="geo.region" content="CA-AB">
@@ -38,7 +38,7 @@
     <link rel="canonical" href="https://argorobots.com/documentation/">
 
     <link rel="shortcut icon" type="image/x-icon" href="../images/argo-logo/A-logo.ico">
-    <title>Documentation & User Guide - Argo Sales Tracker</title>
+    <title>Documentation & User Guide - Argo Books</title>
 
     <script src="main.js"></script>
     <script src="pdf-export.js"></script>
@@ -136,7 +136,7 @@
         <!-- Main Content -->
         <main class="content">
             <section class="article">
-                <h1>Argo Sales Tracker Documentation</h1>
+                <h1>Argo Books Documentation</h1>
                 <!-- SEARCH BAR -->
                     <div class="search-container">
                         <div class="search-box">
@@ -152,13 +152,13 @@
                         <div id="searchResults" class="search-results" style="display: none;"></div>
                     </div>
                 <!-- SEARCH BAR -->
-                <p>Welcome to the Argo Sales Tracker documentation. This guide will help you get started and make the
+                <p>Welcome to the Argo Books documentation. This guide will help you get started and make the
                     most of our software.</p>
 
                 <div class="contact-box">
                     <p><strong>Need Help?</strong> If you have questions or need assistance, please <a
                             href="../contact-us/index.php" class="link">contact us</a>. Our support team is here to help
-                        you succeed with Argo Sales Tracker.</p>
+                        you succeed with Argo Books.</p>
                 </div>
             </section>
 
@@ -179,9 +179,9 @@
                 <h2>Installation Guide</h2>
                 <ol class="steps-list">
                     <li>Download the installer <a class="link" href="../index.php">here</a></li>
-                    <li>Run the installer file (Argo Sales Tracker Installer.exe)</li>
+                    <li>Run the installer file (Argo Books Installer.exe)</li>
                     <li>Follow the installation wizard</li>
-                    <li>Launch Argo Sales Tracker from your desktop or start menu</li>
+                    <li>Launch Argo Books from your desktop or start menu</li>
                 </ol>
 
                 <div class="info-box">
@@ -208,7 +208,7 @@
 
                 <!-- <div class="video-container">
                     <iframe src="https://www.youtube-nocookie.com/embed/5aCbWqKl-wU"
-                        title="Argo Sales Tracker Quick Start Tutorial" frameborder="0"
+                        title="Argo Books Quick Start Tutorial" frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen>
                     </iframe>
@@ -219,7 +219,7 @@
             <section id="version-comparison" class="article">
                 <div class="description">
                     <h2>Free vs. Paid Version</h2>
-                    <p>Argo Sales Tracker offers two versions to match your business needs. Start with our free version,
+                    <p>Argo Books offers two versions to match your business needs. Start with our free version,
                         perfect for small businesses just getting started with inventory tracking. As your business
                         grows, seamlessly upgrade to our paid version for unlimited products and advanced features.</p>
                     <p>Not sure which version is right for you? <a href="../index.php" class="link">Try our free
@@ -432,11 +432,11 @@
             <!-- Spreadsheet Import section -->
             <section id="spreadsheet-import" class="article">
                 <h2>Spreadsheet Import</h2>
-                <p>Import your existing business data from Excel spreadsheets into Argo Sales Tracker. The import system
+                <p>Import your existing business data from Excel spreadsheets into Argo Books. The import system
                     supports multiple currencies and can automatically detect the currency used in your data.</p>
 
                 <h3>Preparing Your Spreadsheet</h3>
-                <p>Download our <a class="link" href="../resources/downloads/Argo Sales Tracker format.xlsx">template
+                <p>Download our <a class="link" href="../resources/downloads/Argo Books format.xlsx">template
                         spreadsheet</a> to see the exact format required. Your Excel file can include any combination of
                     the following sheets (not all are required):</p>
 
@@ -454,7 +454,7 @@
                 <h3>Formatting Requirements</h3>
                 <div class="info-box">
                     <p>Download our <a class="link"
-                            href="../resources/downloads/Argo Sales Tracker format.xlsx">template spreadsheet</a> and
+                            href="../resources/downloads/Argo Books format.xlsx">template spreadsheet</a> and
                         follow the exact format shown. This is much easier than trying to remember formatting rules!</p>
 
                     <p>Key points:</p>
@@ -613,7 +613,7 @@
             <!-- Search Bar section -->
             <section id="search-bar" class="article">
                 <h2>Advanced Search Features</h2>
-                <p>Argo Sales Tracker includes a powerful search system with advanced operators to help you find exactly
+                <p>Argo Books includes a powerful search system with advanced operators to help you find exactly
                     what you need. The search bar works across all your transactions, making it easy to filter and
                     locate specific data.</p>
 
@@ -707,7 +707,7 @@
             <!-- Supported Currencies section -->
             <section id="supported-currencies" class="article">
                 <h2>Supported Currencies</h2>
-                <p>Argo Sales Tracker supports 28 international currencies including USD, EUR, GBP, CAD, JPY, CNY, and
+                <p>Argo Books supports 28 international currencies including USD, EUR, GBP, CAD, JPY, CNY, and
                     others. The system uses real-time exchange rates to convert between currencies accurately for
                     import, export, and display.</p>
 
@@ -743,7 +743,7 @@
             <!-- Encryption -->
             <section id="encryption" class="article">
                 <h2>Encryption</h2>
-                <p>Argo Sales Tracker uses AES-256 encryption to protect your business data, the same standard used by
+                <p>Argo Books uses AES-256 encryption to protect your business data, the same standard used by
                     banks and military organizations.</p>
 
                 <p> Encryption is automatic and requires no additional setup from users. It's enabled by
@@ -807,7 +807,7 @@
             <!-- Anonymous usage data -->
             <section id="anonymous-data" class="article">
                 <h2>Anonymous Usage Data</h2>
-                <p>Argo Sales Tracker desktop application collects anonymous usage statistics and geo-location data to
+                <p>Argo Books desktop application collects anonymous usage statistics and geo-location data to
                     help us improve the software by understanding how it's being used, identifying performance issues,
                     and prioritizing new features. This feature is enabled by default.</p>
 

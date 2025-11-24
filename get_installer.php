@@ -32,8 +32,8 @@ function getOlderVersions()
         $files = scandir($versionPath);
 
         foreach ($files as $file) {
-            // Look for installer files with the pattern "Argo Sales Tracker Installer V.{version}.exe"
-            if (preg_match('/^Argo Sales Tracker Installer V\.(.+)\.exe$/i', $file, $matches)) {
+            // Look for installer files with the pattern "Argo Books Installer V.{version}.exe"
+            if (preg_match('/^Argo Books Installer V\.(.+)\.exe$/i', $file, $matches)) {
                 $version = $matches[1];
                 $filepath = $versionPath . $file;
 
@@ -109,7 +109,7 @@ if ($requestedVersion) {
     if (is_dir($versionPath)) {
         $files = scandir($versionPath);
         foreach ($files as $file) {
-            if (preg_match('/^Argo Sales Tracker Installer V\.(.+)\.exe$/i', $file)) {
+            if (preg_match('/^Argo Books Installer V\.(.+)\.exe$/i', $file)) {
                 $filePath = $versionPath . $file;
                 if (file_exists($filePath)) {
                     serveFile($filePath, $file, $requestedVersion);
