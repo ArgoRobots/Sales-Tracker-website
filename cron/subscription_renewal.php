@@ -203,7 +203,8 @@ foreach ($subscriptions as $subscription) {
     try {
         switch ($paymentMethod) {
             case 'stripe':
-                $paymentResult = processStripeRenewal($paymentToken, $amountToCharge, $subscriptionId, $email);
+                $stripeCustomerId = $subscription['stripe_customer_id'] ?? null;
+                $paymentResult = processStripeRenewal($paymentToken, $amountToCharge, $subscriptionId, $email, $stripeCustomerId);
                 break;
             case 'square':
                 $paymentResult = processSquareRenewal($paymentToken, $amountToCharge, $subscriptionId, $email, $squareAccessToken, $squareEnvironment);
@@ -330,10 +331,10 @@ try {
 /**
  * Process Stripe renewal payment
  */
-function processStripeRenewal($paymentMethodId, $amount, $subscriptionId, $email) {
+function processStripeRenewal($paymentMethodId, $amount, $subscriptionId, $email, $customerId = null) {
     try {
-        // Create payment intent
-        $paymentIntent = \Stripe\PaymentIntent::create([
+        // Build payment intent params
+        $params = [
             'amount' => intval($amount * 100), // Stripe uses cents
             'currency' => 'cad',
             'payment_method' => $paymentMethodId,
@@ -345,7 +346,15 @@ function processStripeRenewal($paymentMethodId, $amount, $subscriptionId, $email
                 'subscription_id' => $subscriptionId,
                 'type' => 'renewal'
             ]
-        ]);
+        ];
+
+        // Include customer ID if available (required for saved payment methods)
+        if ($customerId) {
+            $params['customer'] = $customerId;
+        }
+
+        // Create payment intent
+        $paymentIntent = \Stripe\PaymentIntent::create($params);
 
         if ($paymentIntent->status === 'succeeded') {
             return [
