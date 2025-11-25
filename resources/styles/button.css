@@ -56,6 +56,16 @@
   opacity: 0.7;
 }
 
+.btn-outline-red {
+    background: var(--white);
+    color: var(--red-600);
+    border: 2px solid var(--red-600);
+}
+
+.btn-outline-red:hover {
+    background: var(--red-50);
+}
+
 .btn-purple {
     background: linear-gradient(135deg, var(--purple-500), var(--purple-600));
     color: var(--white);
@@ -65,14 +75,14 @@
     background: linear-gradient(135deg, var(--purple-600), var(--purple-700));
 }
 
-.btn-outline-red {
-    background: var(--white);
-    color: var(--red-600);
-    border: 1px solid var(--red-600);
+.btn-outline-purple {
+    background: var(--purple);
+    color: var(--purple-600);
+    border: 2px solid var(--purple-600);
 }
 
-.btn-outline-red:hover {
-    background: var(--red-50);
+.btn-outline-purple:hover {
+    background: var(--purple-50);
 }
 
 .btn-black {

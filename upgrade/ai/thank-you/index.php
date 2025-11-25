@@ -14,6 +14,7 @@
     <script src="../../../resources/scripts/main.js"></script>
 
     <link rel="stylesheet" href="../../../resources/styles/custom-colors.css">
+    <link rel="stylesheet" href="../../../resources/styles/button.css">
     <link rel="stylesheet" href="../../../resources/styles/link.css">
     <link rel="stylesheet" href="../../../resources/header/style.css">
     <link rel="stylesheet" href="../../../resources/header/dark.css">
@@ -101,8 +102,8 @@
         </div>
 
         <div class="cta-buttons">
-            <a href="../../../download" class="btn-primary">Download Argo Books</a>
-            <a href="../../../documentation/index.php" class="btn-secondary">View Documentation</a>
+            <a href="../../../download" class="btn btn-purple">Download Argo Books</a>
+            <a href="../../../documentation/index.php" class="btn btn-outline-purple">View Documentation</a>
         </div>
     </div>
 
