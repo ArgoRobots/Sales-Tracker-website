@@ -130,16 +130,17 @@ if ($ai_subscription) {
                                 <span class="detail-label"><?php echo $ai_subscription['status'] === 'active' ? 'Next Billing Date' : 'Access Until'; ?></span>
                                 <span class="detail-value"><?php echo date('F j, Y', strtotime($ai_subscription['end_date'])); ?></span>
                             </div>
-                            <?php if ($ai_subscription['discount_applied']): ?>
+                            <?php
+                            $creditBalance = floatval($ai_subscription['credit_balance'] ?? 0);
+                            $originalCredit = floatval($ai_subscription['original_credit'] ?? 0);
+                            // Only show discount if there's still credit remaining
+                            if ($ai_subscription['discount_applied'] && $creditBalance > 0): ?>
                             <div class="detail-item">
                                 <span class="detail-label">Discount</span>
                                 <span class="detail-value discount">$20 Premium Discount Applied</span>
                             </div>
                             <?php endif; ?>
-                            <?php
-                            $creditBalance = floatval($ai_subscription['credit_balance'] ?? 0);
-                            $originalCredit = floatval($ai_subscription['original_credit'] ?? 0);
-                            if ($creditBalance > 0):
+                            <?php if ($creditBalance > 0):
                                 $monthsRemaining = floor($creditBalance / 5); // $5/month
                             ?>
                             <div class="detail-item">
