@@ -567,7 +567,6 @@ if (isset($_GET['view_log']) && is_cron_authenticated()) {
                 <p>Monitor and manage AI subscription renewals</p>
             </div>
             <div class="header-actions">
-                <a href="../admin/" class="btn btn-small" style="background: rgba(255,255,255,0.2); color: white;">Admin Dashboard</a>
                 <a href="?logout=1" class="btn btn-small btn-red">Logout</a>
             </div>
         </div>
@@ -695,7 +694,11 @@ if (isset($_GET['view_log']) && is_cron_authenticated()) {
                             <div class="payment-item">
                                 <div>
                                     <strong><?php echo htmlspecialchars($payment['username']); ?></strong>
-                                    <span style="color: #6b7280; margin-left: 5px;">$<?php echo number_format($payment['amount'], 2); ?></span>
+                                    <?php if ($payment['payment_type'] === 'credit' && floatval($payment['amount']) == 0): ?>
+                                        <span style="color: #7c3aed; margin-left: 5px; font-style: italic;">Credit (discount)</span>
+                                    <?php else: ?>
+                                        <span style="color: #6b7280; margin-left: 5px;">$<?php echo number_format($payment['amount'], 2); ?></span>
+                                    <?php endif; ?>
                                 </div>
                                 <div style="display: flex; align-items: center; gap: 10px;">
                                     <span style="color: #9ca3af; font-size: 0.75rem;">
@@ -712,7 +715,7 @@ if (isset($_GET['view_log']) && is_cron_authenticated()) {
             </div>
 
             <!-- Logs Viewer -->
-            <div class="panel full-width">
+            <div class="panel full-width" id="logs">
                 <div class="panel-header">
                     <h2>Renewal Logs</h2>
                 </div>
@@ -726,7 +729,7 @@ if (isset($_GET['view_log']) && is_cron_authenticated()) {
                         </div>
                     <?php else: ?>
                         <div class="log-selector">
-                            <form method="get">
+                            <form method="get" action="#logs">
                                 <select name="view_log" onchange="this.form.submit()">
                                     <option value="">Select a log file...</option>
                                     <?php foreach ($logFiles as $logFile): ?>

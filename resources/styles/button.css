@@ -6,8 +6,9 @@
   border: none;
   font-weight: bold;
   text-decoration: none;
-  display: block;
-  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 180px;
   max-height: 70px;
 }
