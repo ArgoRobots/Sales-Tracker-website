@@ -301,6 +301,69 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header('Location: index.php#free-sub-keys');
             exit;
         }
+    } elseif (isset($_POST['bulk_subscription_action'])) {
+        // Handle bulk actions for AI subscriptions (Give Credit)
+        $action = $_POST['bulk_subscription_action'];
+        $subscription_ids = $_POST['selected_subscriptions'] ?? [];
+        $credit_amount = floatval($_POST['credit_amount'] ?? 0);
+        $credit_note = trim($_POST['credit_note'] ?? '');
+
+        if (!empty($subscription_ids) && $action === 'give_credit' && $credit_amount > 0) {
+            $count = count($subscription_ids);
+            $placeholders = implode(',', array_fill(0, $count, '?'));
+            $success_count = 0;
+            $email_success = 0;
+
+            try {
+                // Update credit_balance for selected subscriptions
+                $stmt = $pdo->prepare("
+                    UPDATE ai_subscriptions
+                    SET credit_balance = credit_balance + ?
+                    WHERE id IN ($placeholders)
+                ");
+                $params = array_merge([$credit_amount], $subscription_ids);
+                $stmt->execute($params);
+                $success_count = $stmt->rowCount();
+
+                // Log the credit addition for debugging
+                error_log("Bulk credit: Added \$$credit_amount to " . count($subscription_ids) . " subscriptions. IDs: " . implode(',', $subscription_ids) . ". Rows affected: $success_count");
+
+                // Send emails to affected users and verify credit was saved
+                $stmt = $pdo->prepare("
+                    SELECT id, email, subscription_id, credit_balance
+                    FROM ai_subscriptions
+                    WHERE id IN ($placeholders)
+                ");
+                $stmt->execute($subscription_ids);
+                $subscriptions = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                // Log the actual credit balances after update
+                foreach ($subscriptions as $s) {
+                    error_log("Bulk credit verify: Subscription {$s['subscription_id']} now has credit_balance = {$s['credit_balance']}");
+                }
+
+                foreach ($subscriptions as $sub) {
+                    if (send_free_credit_email($sub['email'], $credit_amount, $credit_note, $sub['subscription_id'])) {
+                        $email_success++;
+                    }
+                }
+
+                $_SESSION['message'] = "\$$credit_amount credit added to $success_count subscription(s). $email_success email(s) sent.";
+                $_SESSION['message_type'] = 'success';
+            } catch (PDOException $e) {
+                error_log("Error adding bulk credit: " . $e->getMessage());
+                $_SESSION['message'] = "Error adding credit to subscriptions.";
+                $_SESSION['message_type'] = 'error';
+            }
+
+            header('Location: index.php#ai-subscriptions');
+            exit;
+        } else {
+            $_SESSION['message'] = "Please select subscriptions and enter a valid credit amount.";
+            $_SESSION['message_type'] = 'error';
+            header('Location: index.php#ai-subscriptions');
+            exit;
+        }
     }
 }
 
@@ -455,6 +518,7 @@ include '../admin_header.php';
     .form-group textarea {
         resize: vertical;
         min-height: 60px;
+        box-sizing: border-box;
     }
     .key-display {
         background: #f0fdf4;
@@ -487,6 +551,114 @@ include '../admin_header.php';
     .badge-expired {
         background: #f3f4f6;
         color: #6b7280;
+    }
+    .btn-purple {
+        background: #8b5cf6;
+        color: white;
+        border: none;
+    }
+    .btn-purple:hover {
+        background: #7c3aed;
+    }
+    .btn-purple:disabled {
+        background: #c4b5fd;
+        cursor: not-allowed;
+    }
+    .btn-secondary {
+        background: #f3f4f6;
+        color: #374151;
+        border: 1px solid #d1d5db;
+    }
+    .btn-secondary:hover {
+        background: #e5e7eb;
+    }
+    /* Modal Styles */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        animation: fadeIn 0.2s ease;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    .modal-content {
+        background: white;
+        border-radius: 12px;
+        width: 100%;
+        max-width: 450px;
+        margin: 20px;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        animation: slideUp 0.3s ease;
+    }
+    @keyframes slideUp {
+        from { transform: translateY(20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 24px;
+        border-bottom: 1px solid #e5e7eb;
+    }
+    .modal-header h3 {
+        margin: 0;
+        font-size: 1.25rem;
+        color: #111827;
+    }
+    .modal-close {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: #9ca3af;
+        cursor: pointer;
+        padding: 0;
+        line-height: 1;
+    }
+    .modal-close:hover {
+        color: #374151;
+    }
+    .modal-body {
+        padding: 24px;
+    }
+    .modal-body p {
+        margin: 0 0 20px 0;
+        color: #4b5563;
+    }
+    .modal-body .form-group {
+        margin-bottom: 20px;
+    }
+    .modal-body .form-group:last-of-type {
+        margin-bottom: 15px;
+    }
+    .modal-note {
+        font-size: 0.875rem;
+        color: #6b7280;
+        background: #f3f4f6;
+        padding: 12px;
+        border-radius: 6px;
+        margin-bottom: 0 !important;
+    }
+    .modal-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        padding: 16px 24px;
+        border-top: 1px solid #e5e7eb;
+        background: #f9fafb;
+        border-radius: 0 0 12px 12px;
+    }
+    .modal-footer .btn {
+        padding: 10px 20px;
     }
 </style>
 
@@ -721,44 +893,99 @@ include '../admin_header.php';
                 </div>
             </form>
 
+            <!-- Bulk Actions for AI Subscriptions -->
+            <div class="bulk-actions-container" id="subscription-bulk-actions">
+                <div class="selection-info">
+                    <span id="subscription-selected-count">0</span> selected
+                </div>
+                <div class="bulk-buttons">
+                    <button type="button" class="btn btn-bulk btn-purple" id="open-credit-modal" disabled>
+                        Give Credit
+                    </button>
+                </div>
+            </div>
+
             <?php if (empty($ai_subscriptions)): ?>
                 <p>No AI subscriptions found.</p>
             <?php else: ?>
-                <div class="table-responsive">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Subscription ID</th>
-                                <th>User</th>
-                                <th>Email</th>
-                                <th>Plan</th>
-                                <th>Status</th>
-                                <th>Start Date</th>
-                                <th>End Date</th>
-                                <th>Credit</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($ai_subscriptions as $sub): ?>
+                <form id="subscription-bulk-form" method="post">
+                    <input type="hidden" name="bulk_subscription_action" id="bulk_subscription_action_input" value="give_credit">
+                    <input type="hidden" name="credit_amount" id="credit_amount_input">
+                    <input type="hidden" name="credit_note" id="credit_note_input">
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
                                 <tr>
-                                    <td class="key-field"><?php echo htmlspecialchars($sub['subscription_id']); ?></td>
-                                    <td><?php echo htmlspecialchars($sub['username'] ?? 'N/A'); ?></td>
-                                    <td><?php echo htmlspecialchars($sub['email']); ?></td>
-                                    <td><?php echo ucfirst($sub['billing_cycle']); ?> - $<?php echo number_format($sub['amount'], 2); ?></td>
-                                    <td>
-                                        <span class="badge badge-<?php echo $sub['status']; ?>">
-                                            <?php echo ucfirst($sub['status']); ?>
-                                        </span>
-                                    </td>
-                                    <td><?php echo date('M j, Y', strtotime($sub['start_date'])); ?></td>
-                                    <td><?php echo date('M j, Y', strtotime($sub['end_date'])); ?></td>
-                                    <td>$<?php echo number_format($sub['credit_balance'] ?? 0, 2); ?></td>
+                                    <th class="checkbox-column">
+                                        <div class="checkbox">
+                                            <input type="checkbox" id="subscription-select-all">
+                                            <label for="subscription-select-all"></label>
+                                        </div>
+                                    </th>
+                                    <th>Subscription ID</th>
+                                    <th>User</th>
+                                    <th>Email</th>
+                                    <th>Plan</th>
+                                    <th>Status</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Credit</th>
                                 </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($ai_subscriptions as $sub): ?>
+                                    <tr>
+                                        <td class="checkbox-column">
+                                            <div class="checkbox">
+                                                <input type="checkbox" name="selected_subscriptions[]" value="<?php echo $sub['id']; ?>" class="subscription-checkbox" id="sub-<?php echo $sub['id']; ?>">
+                                                <label for="sub-<?php echo $sub['id']; ?>"></label>
+                                            </div>
+                                        </td>
+                                        <td class="key-field"><?php echo htmlspecialchars($sub['subscription_id']); ?></td>
+                                        <td><?php echo htmlspecialchars($sub['username'] ?? 'N/A'); ?></td>
+                                        <td><?php echo htmlspecialchars($sub['email']); ?></td>
+                                        <td><?php echo ucfirst($sub['billing_cycle']); ?> - $<?php echo number_format($sub['amount'], 2); ?></td>
+                                        <td>
+                                            <span class="badge badge-<?php echo $sub['status']; ?>">
+                                                <?php echo ucfirst($sub['status']); ?>
+                                            </span>
+                                        </td>
+                                        <td><?php echo date('M j, Y', strtotime($sub['start_date'])); ?></td>
+                                        <td><?php echo date('M j, Y', strtotime($sub['end_date'])); ?></td>
+                                        <td>$<?php echo number_format($sub['credit_balance'] ?? 0, 2); ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
             <?php endif; ?>
+        </div>
+    </div>
+
+    <!-- Credit Modal -->
+    <div id="credit-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Give Free Credit</h3>
+                <button type="button" class="modal-close" id="close-credit-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Add free credit to <strong><span id="modal-selected-count">0</span></strong> selected subscription(s).</p>
+                <div class="form-group">
+                    <label for="modal-credit-amount">Credit Amount ($)</label>
+                    <input type="number" id="modal-credit-amount" min="0.01" step="0.01" placeholder="e.g., 5.00" required>
+                </div>
+                <div class="form-group">
+                    <label for="modal-credit-note">Note (optional)</label>
+                    <textarea id="modal-credit-note" rows="3" placeholder="e.g., Thank you for being a loyal customer!"></textarea>
+                </div>
+                <p class="modal-note">An email will be sent to each user notifying them of the free credit.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancel-credit-modal">Cancel</button>
+                <button type="button" class="btn btn-purple" id="confirm-give-credit">Give Credit</button>
+            </div>
         </div>
     </div>
 
@@ -972,6 +1199,127 @@ document.addEventListener('DOMContentLoaded', function() {
             if (confirm(`Are you sure you want to delete ${checked.length} subscription key(s)?`)) {
                 subKeyBulkActionInput.value = 'delete';
                 subKeyBulkForm.submit();
+            }
+        });
+    }
+
+    // AI Subscription Bulk Selection
+    const subscriptionSelectAll = document.getElementById('subscription-select-all');
+    const subscriptionCheckboxes = document.querySelectorAll('.subscription-checkbox');
+    const subscriptionSelectedCount = document.getElementById('subscription-selected-count');
+    const openCreditModalBtn = document.getElementById('open-credit-modal');
+    const subscriptionBulkForm = document.getElementById('subscription-bulk-form');
+    const creditAmountInput = document.getElementById('credit_amount_input');
+    const creditNoteInput = document.getElementById('credit_note_input');
+
+    // Modal elements
+    const creditModal = document.getElementById('credit-modal');
+    const closeCreditModalBtn = document.getElementById('close-credit-modal');
+    const cancelCreditModalBtn = document.getElementById('cancel-credit-modal');
+    const confirmGiveCreditBtn = document.getElementById('confirm-give-credit');
+    const modalSelectedCount = document.getElementById('modal-selected-count');
+    const modalCreditAmount = document.getElementById('modal-credit-amount');
+    const modalCreditNote = document.getElementById('modal-credit-note');
+
+    function updateSubscriptionSelection() {
+        const checked = document.querySelectorAll('.subscription-checkbox:checked');
+        const count = checked.length;
+        subscriptionSelectedCount.textContent = count;
+        if (openCreditModalBtn) {
+            openCreditModalBtn.disabled = count === 0;
+        }
+    }
+
+    if (subscriptionSelectAll) {
+        subscriptionSelectAll.addEventListener('change', function() {
+            subscriptionCheckboxes.forEach(cb => cb.checked = this.checked);
+            updateSubscriptionSelection();
+        });
+    }
+
+    subscriptionCheckboxes.forEach(cb => {
+        cb.addEventListener('change', function() {
+            updateSubscriptionSelection();
+            // Update select all checkbox state
+            if (subscriptionSelectAll) {
+                const checkedCount = document.querySelectorAll('.subscription-checkbox:checked').length;
+                const allChecked = checkedCount === subscriptionCheckboxes.length;
+                subscriptionSelectAll.checked = allChecked && subscriptionCheckboxes.length > 0;
+                subscriptionSelectAll.indeterminate = checkedCount > 0 && !allChecked;
+            }
+        });
+    });
+
+    // Modal functionality
+    function openModal() {
+        const count = document.querySelectorAll('.subscription-checkbox:checked').length;
+        if (count === 0) return;
+        modalSelectedCount.textContent = count;
+        modalCreditAmount.value = '';
+        modalCreditNote.value = '';
+        creditModal.style.display = 'flex';
+        modalCreditAmount.focus();
+    }
+
+    function closeModal() {
+        creditModal.style.display = 'none';
+    }
+
+    if (openCreditModalBtn) {
+        openCreditModalBtn.addEventListener('click', openModal);
+    }
+
+    if (closeCreditModalBtn) {
+        closeCreditModalBtn.addEventListener('click', closeModal);
+    }
+
+    if (cancelCreditModalBtn) {
+        cancelCreditModalBtn.addEventListener('click', closeModal);
+    }
+
+    // Close modal on overlay click
+    if (creditModal) {
+        creditModal.addEventListener('click', function(e) {
+            if (e.target === creditModal) {
+                closeModal();
+            }
+        });
+    }
+
+    // Close modal on Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && creditModal && creditModal.style.display === 'flex') {
+            closeModal();
+        }
+    });
+
+    // Confirm give credit
+    if (confirmGiveCreditBtn) {
+        confirmGiveCreditBtn.addEventListener('click', function() {
+            const amount = parseFloat(modalCreditAmount.value);
+            const note = modalCreditNote.value.trim();
+            const checkedCount = document.querySelectorAll('.subscription-checkbox:checked').length;
+
+            if (isNaN(amount) || amount <= 0) {
+                alert('Please enter a valid credit amount greater than 0.');
+                modalCreditAmount.focus();
+                return;
+            }
+
+            if (confirm(`Are you sure you want to give $${amount.toFixed(2)} credit to ${checkedCount} subscription(s)?`)) {
+                creditAmountInput.value = amount;
+                creditNoteInput.value = note;
+                subscriptionBulkForm.submit();
+            }
+        });
+    }
+
+    // Allow Enter key in credit amount field to submit
+    if (modalCreditAmount) {
+        modalCreditAmount.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                confirmGiveCreditBtn.click();
             }
         });
     }

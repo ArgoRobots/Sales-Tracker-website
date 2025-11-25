@@ -292,6 +292,8 @@ if (isset($_GET['view_log']) && is_cron_authenticated()) {
 
         .panel-content {
             padding: 20px;
+            max-height: 500px;
+            overflow-y: scroll;
         }
 
         .renewal-item {
