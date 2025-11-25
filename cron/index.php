@@ -68,11 +68,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['run_renewal']) && is_
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
+    // Post/Redirect/Get pattern to prevent duplicate submissions on refresh
     if ($httpCode === 200) {
-        $success = 'Renewal process completed successfully. Check the logs for details.';
+        $_SESSION['cron_success'] = 'Renewal process completed successfully. Check the logs for details.';
     } else {
-        $error = 'Failed to execute renewal process. HTTP Code: ' . $httpCode;
+        $_SESSION['cron_error'] = 'Failed to execute renewal process. HTTP Code: ' . $httpCode;
     }
+    header('Location: index.php');
+    exit;
+}
+
+// Check for flash messages from redirect
+if (isset($_SESSION['cron_success'])) {
+    $success = $_SESSION['cron_success'];
+    unset($_SESSION['cron_success']);
+}
+if (isset($_SESSION['cron_error'])) {
+    $error = $_SESSION['cron_error'];
+    unset($_SESSION['cron_error']);
 }
 
 // Get subscriptions data if authenticated
