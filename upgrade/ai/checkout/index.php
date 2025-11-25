@@ -73,27 +73,45 @@
     $licenseKey = '';
 
     if ($pdo !== null && !empty($user_id)) {
-        // Get user email for fallback lookup
-        $lookup_email = $user_email;
-        if (empty($lookup_email)) {
-            $user_data = get_user($user_id);
-            if ($user_data && !empty($user_data['email'])) {
-                $lookup_email = $user_data['email'];
-            }
+        // First check if user has ALREADY used the discount on a previous subscription
+        // Once used, the discount cannot be applied again (even after cancellation)
+        $alreadyUsedDiscount = false;
+        try {
+            $stmt = $pdo->prepare("
+                SELECT id FROM ai_subscriptions
+                WHERE user_id = ? AND (discount_applied = 1 OR original_credit > 0)
+                LIMIT 1
+            ");
+            $stmt->execute([$user_id]);
+            $alreadyUsedDiscount = $stmt->fetch() !== false;
+        } catch (PDOException $e) {
+            error_log("Check discount usage error: " . $e->getMessage());
         }
 
-        try {
-            // Check by user_id first, then by email (case-insensitive)
-            $stmt = $pdo->prepare("SELECT license_key FROM license_keys WHERE (user_id = ? OR LOWER(email) = LOWER(?)) AND activated = 1 LIMIT 1");
-            $stmt->execute([$user_id, $lookup_email]);
-            $userLicense = $stmt->fetch(PDO::FETCH_ASSOC);
-            if ($userLicense) {
-                $licenseKey = $userLicense['license_key'];
-                $hasDiscount = true;
+        // Only check for license discount if user hasn't already used it
+        if (!$alreadyUsedDiscount) {
+            // Get user email for fallback lookup
+            $lookup_email = $user_email;
+            if (empty($lookup_email)) {
+                $user_data = get_user($user_id);
+                if ($user_data && !empty($user_data['email'])) {
+                    $lookup_email = $user_data['email'];
+                }
             }
-        } catch (PDOException $e) {
-            // Silently fail - user just won't get auto-discount
-            error_log("Auto-detect license error: " . $e->getMessage());
+
+            try {
+                // Check by user_id first, then by email (case-insensitive)
+                $stmt = $pdo->prepare("SELECT license_key FROM license_keys WHERE (user_id = ? OR LOWER(email) = LOWER(?)) AND activated = 1 LIMIT 1");
+                $stmt->execute([$user_id, $lookup_email]);
+                $userLicense = $stmt->fetch(PDO::FETCH_ASSOC);
+                if ($userLicense) {
+                    $licenseKey = $userLicense['license_key'];
+                    $hasDiscount = true;
+                }
+            } catch (PDOException $e) {
+                // Silently fail - user just won't get auto-discount
+                error_log("Auto-detect license error: " . $e->getMessage());
+            }
         }
     }
 
