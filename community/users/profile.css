@@ -690,9 +690,7 @@
 }
 
 .profile-actions svg {
-  margin-right: 5px;
-  top: 3px;
-  position: relative;
+  margin-right: 8px;
 }
 
 @keyframes slideIn {
