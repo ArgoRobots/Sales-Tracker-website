@@ -13,6 +13,11 @@
 // Prevent timeout for long-running process
 set_time_limit(300);
 
+// Load environment variables before authentication check
+require_once __DIR__ . '/../vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
+$dotenv->load();
+
 // Only allow CLI or authenticated web requests
 $isCli = php_sapi_name() === 'cli';
 $isAuthenticated = isset($_GET['key']) && $_GET['key'] === ($_ENV['CRON_SECRET'] ?? '');
