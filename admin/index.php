@@ -32,6 +32,48 @@ $monthly_licenses = $result->fetch_assoc()['count'] ?? 0;
 $result = $db->query('SELECT COUNT(*) as count FROM community_users WHERE created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)');
 $monthly_users = $result->fetch_assoc()['count'] ?? 0;
 
+// Posts created in the last 30 days
+$result = $db->query('SELECT COUNT(*) as count FROM community_posts WHERE created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)');
+$monthly_posts = $result->fetch_assoc()['count'] ?? 0;
+
+// App users from data-logs (unique IP addresses)
+$total_app_users = 0;
+$monthly_app_users = 0;
+$dataDir = __DIR__ . '/data-logs/';
+$thirtyDaysAgo = strtotime('-30 days');
+
+if (is_dir($dataDir)) {
+    $allIPs = [];
+    $monthlyIPs = [];
+    $dataFiles = glob($dataDir . '*.json');
+
+    foreach ($dataFiles as $file) {
+        $jsonData = file_get_contents($file);
+        if ($jsonData === false) continue;
+
+        $fileData = json_decode($jsonData, true);
+        if ($fileData === null || !isset($fileData['dataPoints'])) continue;
+
+        foreach ($fileData['dataPoints'] as $category => $dataPoints) {
+            foreach ($dataPoints as $dataPoint) {
+                if (!empty($dataPoint['hashedIP'])) {
+                    $allIPs[$dataPoint['hashedIP']] = true;
+
+                    if (!empty($dataPoint['timestamp'])) {
+                        $timestamp = strtotime($dataPoint['timestamp']);
+                        if ($timestamp >= $thirtyDaysAgo) {
+                            $monthlyIPs[$dataPoint['hashedIP']] = true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    $total_app_users = count($allIPs);
+    $monthly_app_users = count($monthlyIPs);
+}
+
 // Get recent activity items for timeline
 $recent_items = [];
 
@@ -166,6 +208,8 @@ include 'admin_header.php';
             <div class="stat-value"><?php echo number_format($total_licenses); ?></div>
         </div>
         <div class="stat-card">
+            <div class="stat-label">Total Users</div>
+            <div class="stat-value"><?php echo number_format($total_app_users); ?></div>
         </div>
         <div class="stat-card">
             <div class="stat-label">Total Community Posts</div>
@@ -202,6 +246,8 @@ include 'admin_header.php';
             <div class="nav-card-title">App Statistics</div>
             <div class="nav-card-description">View application analytics and metrics</div>
             <div class="nav-card-stat">
+                <span class="nav-card-stat-label">This Month</span>
+                <span class="nav-card-stat-value"><?php echo number_format($monthly_app_users); ?></span>
             </div>
         </a>
 
@@ -215,7 +261,7 @@ include 'admin_header.php';
             <div class="nav-card-description">View website analytics and metrics</div>
             <div class="nav-card-stat">
                 <span class="nav-card-stat-label">This Month</span>
-                <span class="nav-card-stat-value"><?php echo number_format($monthly_users); ?></span>
+                <span class="nav-card-stat-value"><?php echo number_format($monthly_posts); ?></span>
             </div>
         </a>
 
@@ -228,6 +274,8 @@ include 'admin_header.php';
             <div class="nav-card-title">User Management</div>
             <div class="nav-card-description">Manage community users</div>
             <div class="nav-card-stat">
+                <span class="nav-card-stat-label">This Month</span>
+                <span class="nav-card-stat-value"><?php echo number_format($monthly_users); ?></span>
             </div>
         </a>
     </div>
