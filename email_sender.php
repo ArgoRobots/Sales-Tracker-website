@@ -1326,3 +1326,91 @@ HTML;
 
     return mail($email, $subject, $email_html, implode("\r\n", $headers));
 }
+
+/**
+ * Send free credit notification email
+ *
+ * @param string $email User's email address
+ * @param float $creditAmount Amount of credit given
+ * @param string $note Optional note from admin
+ * @param string $subscriptionId Subscription ID
+ * @return bool Success status
+ */
+function send_free_credit_email($email, $creditAmount, $note = '', $subscriptionId = '')
+{
+    $css = file_get_contents(__DIR__ . '/email.css');
+    $subject = "You've Received Free Credit - Argo AI";
+
+    $formattedAmount = number_format($creditAmount, 2);
+    $noteSection = '';
+    if (!empty($note)) {
+        $noteSection = "
+            <div style=\"background: #f0fdf4; border: 1px solid #86efac; padding: 15px; border-radius: 8px; margin: 20px 0;\">
+                <p style=\"margin: 0;\"><strong>Note from Argo:</strong> " . htmlspecialchars($note) . "</p>
+            </div>";
+    }
+
+    $email_html = <<<HTML
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Free Credit Received</title>
+    <style>
+        {$css}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+            <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" width="140">
+        </div>
+
+        <div class="content">
+            <h1>You've Received Free Credit!</h1>
+            <p>Great news! Free credit has been added to your Argo AI subscription.</p>
+
+            <div style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; padding: 30px; border-radius: 12px; margin: 25px 0; text-align: center;">
+                <p style="margin: 0 0 10px 0; font-size: 14px; opacity: 0.9;">Credit Added</p>
+                <p style="margin: 0; font-size: 42px; font-weight: bold;">\${$formattedAmount} CAD</p>
+            </div>
+
+            {$noteSection}
+
+            <p>This credit will be automatically applied to your future subscription renewals, saving you money on upcoming payments.</p>
+
+            <h3>How Credit Works:</h3>
+            <ul style="color: #374151; line-height: 1.8;">
+                <li>Credit is applied automatically at renewal time</li>
+                <li>If your credit covers the full renewal amount, you won't be charged</li>
+                <li>Any remaining credit carries over to future renewals</li>
+                <li>You can view your credit balance in your subscription settings</li>
+            </ul>
+
+            <div style="text-align: center; margin: 30px 0;">
+                <a href="https://argorobots.com/community/users/ai-subscription.php" style="display: inline-block; background: #8b5cf6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">View Your Subscription</a>
+            </div>
+
+            <p>If you have any questions about your credit or subscription, please <a href="https://argorobots.com/contact-us/">contact our support team</a>.</p>
+
+            <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb; color: #6b7280; font-size: 14px;">
+                <p>Thank you for being an Argo AI subscriber!</p>
+                <p><a href="https://argorobots.com">argorobots.com</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+HTML;
+
+    $headers = [
+        'MIME-Version: 1.0',
+        'Content-Type: text/html; charset=UTF-8',
+        'From: Argo Books <noreply@argorobots.com>',
+        'Reply-To: support@argorobots.com',
+        'X-Mailer: PHP/' . phpversion()
+    ];
+
+    return mail($email, $subject, $email_html, implode("\r\n", $headers));
+}
