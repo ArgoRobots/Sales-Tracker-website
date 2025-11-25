@@ -201,24 +201,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         header('Location: index.php#free-sub-keys');
         exit;
-    } elseif (isset($_POST['delete_sub_key'])) {
-        $key_id = intval($_POST['key_id']);
-        try {
-            $stmt = $pdo->prepare("DELETE FROM ai_subscription_keys WHERE id = ? AND redeemed_at IS NULL");
-            $stmt->execute([$key_id]);
-            if ($stmt->rowCount() > 0) {
-                $_SESSION['message'] = "Subscription key deleted.";
-                $_SESSION['message_type'] = 'success';
-            } else {
-                $_SESSION['message'] = "Cannot delete redeemed key or key not found.";
-                $_SESSION['message_type'] = 'error';
-            }
-        } catch (PDOException $e) {
-            $_SESSION['message'] = "Error deleting key.";
-            $_SESSION['message_type'] = 'error';
-        }
-        header('Location: index.php#free-sub-keys');
-        exit;
     } elseif (isset($_POST['bulk_action'])) {
         // Handle bulk actions for license keys
         $action = $_POST['bulk_action'];
@@ -507,11 +489,6 @@ include '../admin_header.php';
     .badge-expired {
         background: #f3f4f6;
         color: #6b7280;
-    }
-    .small-btn {
-        padding: 4px 10px;
-        font-size: 0.75rem;
-        border-radius: 4px;
     }
 </style>
 
@@ -871,7 +848,6 @@ include '../admin_header.php';
                                     <th>Created</th>
                                     <th>Redeemed By</th>
                                     <th>Notes</th>
-                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -905,16 +881,6 @@ include '../admin_header.php';
                                             <?php endif; ?>
                                         </td>
                                         <td><?php echo $key['notes'] ? htmlspecialchars($key['notes']) : '-'; ?></td>
-                                        <td>
-                                            <?php if (!$key['redeemed_at']): ?>
-                                                <form method="post" style="display:inline;" onsubmit="return confirm('Delete this key?');">
-                                                    <input type="hidden" name="key_id" value="<?php echo $key['id']; ?>">
-                                                    <button type="submit" name="delete_sub_key" class="btn btn-red small-btn">Delete</button>
-                                                </form>
-                                            <?php else: ?>
-                                                -
-                                            <?php endif; ?>
-                                        </td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
