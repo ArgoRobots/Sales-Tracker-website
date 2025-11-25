@@ -127,7 +127,7 @@ include '../admin_header.php';
             <h2>Enhance Your Account Security</h2>
             <p>Two-factor authentication adds an extra layer of security to your account. After enabling, you'll need both your password and a verification code from your mobile device to sign in.</p>
 
-            <a href="2fa-setup.php?setup=1" class="btn btn-blue">Set Up 2FA</a>
+            <a href="?setup=1" class="btn btn-blue">Set Up 2FA</a>
         <?php endif; ?>
     </div>
 </div>
