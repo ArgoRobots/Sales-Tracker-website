@@ -1265,7 +1265,7 @@ function send_ai_subscription_reactivated_email($email, $subscriptionId, $endDat
 
         <div class="content">
             <h1>Welcome Back!</h1>
-            <p>Great news! Your Argo AI subscription has been reactivated.</p>
+            <p>Your Argo AI subscription has been reactivated.</p>
 
             <div style="background: #d1fae5; border: 1px solid #6ee7b7; padding: 15px; border-radius: 8px; margin: 20px 0;">
                 <p style="margin: 0;"><strong>Your AI features are now active!</strong> You have full access to all AI-powered features.</p>
