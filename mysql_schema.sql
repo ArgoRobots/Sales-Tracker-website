@@ -305,6 +305,7 @@ CREATE TABLE IF NOT EXISTS ai_subscriptions (
     payment_method VARCHAR(50),
     transaction_id VARCHAR(100),
     payment_token VARCHAR(255) COMMENT 'Stored payment method token for recurring billing',
+    stripe_customer_id VARCHAR(255) COMMENT 'Stripe customer ID for recurring billing',
     auto_renew TINYINT(1) DEFAULT 1 COMMENT 'Whether to auto-renew the subscription',
     paypal_subscription_id VARCHAR(100) COMMENT 'PayPal subscription ID for recurring billing',
     premium_license_key VARCHAR(255),

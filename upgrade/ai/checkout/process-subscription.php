@@ -132,6 +132,7 @@ try {
     // Process payment and get transaction details based on payment method
     $transactionId = '';
     $paymentToken = null; // Token for recurring billing
+    $stripeCustomerId = null; // Stripe customer ID for recurring billing
 
     // Check if this is a PayPal subscription
     $paypalSubscriptionId = null;
@@ -185,6 +186,9 @@ try {
                 \Stripe\Customer::update($customer->id, [
                     'invoice_settings' => ['default_payment_method' => $paymentMethodId]
                 ]);
+
+                // Store customer ID for recurring billing
+                $stripeCustomerId = $customer->id;
 
                 // For monthly with credit, just store the payment method without charging
                 if ($skipPaymentProcessing) {
@@ -341,6 +345,7 @@ try {
             UPDATE ai_subscriptions
             SET payment_method = ?,
                 payment_token = ?,
+                stripe_customer_id = ?,
                 transaction_id = ?,
                 status = 'active',
                 auto_renew = 1,
@@ -351,6 +356,7 @@ try {
         $stmt->execute([
             $paymentMethod,
             $paymentToken,
+            $stripeCustomerId,
             $transactionId,
             $subscriptionId
         ]);
@@ -380,12 +386,12 @@ try {
                 subscription_id, user_id, email, billing_cycle, amount, currency,
                 start_date, end_date, status, payment_method, transaction_id,
                 premium_license_key, discount_applied, credit_balance, original_credit,
-                payment_token, auto_renew, created_at
+                payment_token, stripe_customer_id, auto_renew, created_at
             ) VALUES (
                 ?, ?, ?, ?, ?, ?,
                 ?, ?, 'active', ?, ?,
                 ?, ?, ?, ?,
-                ?, 1, NOW()
+                ?, ?, 1, NOW()
             )
         ");
 
@@ -407,7 +413,8 @@ try {
             $hasDiscount ? 1 : 0,
             $creditBalance,
             $originalCredit,
-            $paymentToken
+            $paymentToken,
+            $stripeCustomerId
         ]);
 
         // Update with PayPal subscription ID if applicable (column may not exist in older schema)
