@@ -72,8 +72,9 @@ if ($hasDiscount && !empty($premiumLicenseKey)) {
 
 // Set credit balance for monthly subscriptions with verified discount
 if ($isMonthlyWithCredit) {
-    $creditBalance = $discountAmount;
     $originalCredit = $discountAmount;
+    // Deduct first month from credit balance
+    $creditBalance = $discountAmount - $monthlyPrice; // $20 - $5 = $15 remaining
     // Set amount to 0 for initial payment - will use credit
     $amount = 0;
 }
@@ -483,14 +484,14 @@ try {
         }
 
         $responseMessage = $isMonthlyWithCredit
-            ? 'Subscription created with $' . number_format($creditBalance, 2) . ' credit applied. Your first ' . floor($creditBalance / $monthlyPrice) . ' months are covered!'
+            ? 'Subscription created with $' . number_format($originalCredit, 2) . ' credit applied. Your first ' . floor($originalCredit / $monthlyPrice) . ' months are covered! Remaining credit: $' . number_format($creditBalance, 2)
             : 'Subscription created successfully';
 
         echo json_encode([
             'success' => true,
             'subscription_id' => $subscriptionId,
             'message' => $responseMessage,
-            'credit_applied' => $isMonthlyWithCredit ? $creditBalance : 0
+            'credit_applied' => $isMonthlyWithCredit ? $originalCredit : 0
         ]);
     }
 
