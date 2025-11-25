@@ -424,37 +424,6 @@ if (isset($_GET['view_log']) && is_cron_authenticated()) {
             font-size: 0.875rem;
         }
 
-        .cron-schedule {
-            background: #f0fdf4;
-            border: 1px solid #bbf7d0;
-            border-radius: 8px;
-            padding: 15px 20px;
-            margin-bottom: 30px;
-        }
-
-        .cron-schedule h3 {
-            margin: 0 0 10px;
-            color: #166534;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .cron-schedule code {
-            background: #dcfce7;
-            padding: 8px 12px;
-            border-radius: 4px;
-            font-family: 'Monaco', 'Consolas', monospace;
-            display: block;
-            margin: 10px 0;
-        }
-
-        .cron-schedule p {
-            margin: 0;
-            color: #166534;
-            font-size: 0.875rem;
-        }
-
         .full-width {
             grid-column: 1 / -1;
         }
@@ -584,19 +553,6 @@ if (isset($_GET['view_log']) && is_cron_authenticated()) {
                 <?php echo htmlspecialchars($success); ?>
             </div>
         <?php endif; ?>
-
-        <!-- Cron Schedule Info -->
-        <div class="cron-schedule">
-            <h3>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
-                </svg>
-                Automatic Scheduling
-            </h3>
-            <p>To run the renewal process automatically every day at 3:00 PM, add this cron entry:</p>
-            <code>0 15 * * * /usr/bin/php <?php echo realpath(__DIR__); ?>/subscription_renewal.php</code>
-            <p>This will check for subscriptions due within 24 hours and process their renewals automatically.</p>
-        </div>
 
         <!-- Stats -->
         <div class="stats-grid">
