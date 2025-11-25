@@ -54,7 +54,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['run_renewal']) && is_
     // Execute the renewal script
     $cronSecret = $_ENV['CRON_SECRET'] ?? '';
     $baseUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'];
-    $renewalUrl = $baseUrl . '/cron/subscription_renewal.php?key=' . urlencode($cronSecret);
+    // Get the correct path by using the current script's directory
+    $scriptDir = dirname($_SERVER['SCRIPT_NAME']);
+    $renewalUrl = $baseUrl . $scriptDir . '/subscription_renewal.php?key=' . urlencode($cronSecret);
 
     // Use cURL to execute the renewal
     $ch = curl_init();
