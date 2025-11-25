@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once '../../db_connect.php';
+require_once '../../email_sender.php';
 require_once '../community_functions.php';
 require_once 'user_functions.php';
 
@@ -40,6 +41,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_reactivate'])
         $stmt->execute([$user_id]);
 
         if ($stmt->rowCount() > 0) {
+            // Send reactivation email
+            try {
+                send_ai_subscription_reactivated_email(
+                    $ai_subscription['email'],
+                    $ai_subscription['subscription_id'],
+                    $ai_subscription['end_date'],
+                    $ai_subscription['billing_cycle'] ?? 'monthly'
+                );
+            } catch (Exception $e) {
+                error_log("Failed to send reactivation email: " . $e->getMessage());
+            }
+
             $_SESSION['subscription_success'] = 'Your subscription has been reactivated! AI features are now available.';
         } else {
             $_SESSION['subscription_error'] = 'Could not reactivate subscription. It may have expired.';
