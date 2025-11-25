@@ -16,29 +16,21 @@ $db = get_db_connection();
 $result = $db->query('SELECT COUNT(*) as count FROM license_keys');
 $total_licenses = $result->fetch_assoc()['count'] ?? 0;
 
-// Active licenses
-$result = $db->query('SELECT COUNT(*) as count FROM license_keys WHERE activated = 1');
-$active_licenses = $result->fetch_assoc()['count'] ?? 0;
+// Total community posts
+$result = $db->query('SELECT COUNT(*) as count FROM community_posts');
+$total_posts = $result->fetch_assoc()['count'] ?? 0;
 
 // Total users
 $result = $db->query('SELECT COUNT(*) as count FROM community_users');
 $total_users = $result->fetch_assoc()['count'] ?? 0;
 
-// Total community posts (for website statistics)
-$result = $db->query('SELECT COUNT(*) as count FROM community_posts');
-$total_posts = $result->fetch_assoc()['count'] ?? 0;
-
-// Recent activity (last 7 days)
-$result = $db->query('SELECT COUNT(*) as count FROM license_keys WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)');
-$recent_activity = $result->fetch_assoc()['count'] ?? 0;
-
-// Monthly active users (active in last 30 days)
-$result = $db->query('SELECT COUNT(*) as count FROM community_users WHERE last_login >= DATE_SUB(NOW(), INTERVAL 30 DAY)');
-$monthly_active_users = $result->fetch_assoc()['count'] ?? 0;
-
-// Licenses created this month
+// Licenses created in the last 30 days
 $result = $db->query('SELECT COUNT(*) as count FROM license_keys WHERE created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)');
 $monthly_licenses = $result->fetch_assoc()['count'] ?? 0;
+
+// Users registered in the last 30 days
+$result = $db->query('SELECT COUNT(*) as count FROM community_users WHERE created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)');
+$monthly_users = $result->fetch_assoc()['count'] ?? 0;
 
 // Get recent activity items for timeline
 $recent_items = [];
@@ -174,16 +166,14 @@ include 'admin_header.php';
             <div class="stat-value"><?php echo number_format($total_licenses); ?></div>
         </div>
         <div class="stat-card">
-            <div class="stat-label">Community Posts</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Total Community Posts</div>
             <div class="stat-value"><?php echo number_format($total_posts); ?></div>
         </div>
         <div class="stat-card">
             <div class="stat-label">Total Accounts</div>
             <div class="stat-value"><?php echo number_format($total_users); ?></div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-label">Accounts Made This Week</div>
-            <div class="stat-value"><?php echo number_format($recent_activity); ?></div>
         </div>
     </div>
 
@@ -212,8 +202,6 @@ include 'admin_header.php';
             <div class="nav-card-title">App Statistics</div>
             <div class="nav-card-description">View application analytics and metrics</div>
             <div class="nav-card-stat">
-                <span class="nav-card-stat-label">Monthly Users</span>
-                <span class="nav-card-stat-value"><?php echo number_format($monthly_active_users); ?></span>
             </div>
         </a>
 
@@ -226,8 +214,8 @@ include 'admin_header.php';
             <div class="nav-card-title">Website Statistics</div>
             <div class="nav-card-description">View website analytics and metrics</div>
             <div class="nav-card-stat">
-                <span class="nav-card-stat-label">Total Posts</span>
-                <span class="nav-card-stat-value"><?php echo number_format($total_posts); ?></span>
+                <span class="nav-card-stat-label">This Month</span>
+                <span class="nav-card-stat-value"><?php echo number_format($monthly_users); ?></span>
             </div>
         </a>
 
@@ -240,8 +228,6 @@ include 'admin_header.php';
             <div class="nav-card-title">User Management</div>
             <div class="nav-card-description">Manage community users</div>
             <div class="nav-card-stat">
-                <span class="nav-card-stat-label">Registered</span>
-                <span class="nav-card-stat-value"><?php echo number_format($total_users); ?></span>
             </div>
         </a>
     </div>
