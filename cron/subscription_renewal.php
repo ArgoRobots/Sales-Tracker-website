@@ -13,7 +13,7 @@
 // Prevent timeout for long-running process
 set_time_limit(300);
 
-// Load environment variables before authentication check
+// Load environment variables
 require_once __DIR__ . '/../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
 $dotenv->load();
