@@ -347,7 +347,7 @@ CREATE TABLE IF NOT EXISTS ai_subscription_keys (
     id INT PRIMARY KEY AUTO_INCREMENT,
     subscription_key VARCHAR(50) NOT NULL UNIQUE,
     email VARCHAR(100) DEFAULT NULL COMMENT 'Optional: restrict to specific email',
-    duration_months INT NOT NULL DEFAULT 1 COMMENT 'Duration of free subscription in months',
+    duration_months INT NOT NULL DEFAULT 1 COMMENT 'Duration in months (0 = permanent)',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     redeemed_at DATETIME DEFAULT NULL,
     redeemed_by_user_id INT DEFAULT NULL,

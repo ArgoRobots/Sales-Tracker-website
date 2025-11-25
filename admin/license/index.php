@@ -183,8 +183,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $duration = intval($_POST['duration_months'] ?? 1);
         $notes = trim($_POST['notes'] ?? '');
 
-        if ($duration < 1) $duration = 1;
-        if ($duration > 24) $duration = 24;
+        // Allow 0 for permanent, otherwise 1-24 months
+        if ($duration < 0) $duration = 1;
+        if ($duration > 24 && $duration !== 0) $duration = 24;
 
         $generated_sub_key = generate_ai_subscription_key($email ?: null, $duration, $notes);
 
@@ -263,6 +264,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             header('Location: index.php#premium-keys');
+            exit;
+        }
+    } elseif (isset($_POST['bulk_sub_key_action'])) {
+        // Handle bulk actions for subscription keys
+        $action = $_POST['bulk_sub_key_action'];
+        $key_ids = $_POST['selected_sub_keys'] ?? [];
+
+        if (!empty($key_ids)) {
+            $count = count($key_ids);
+            $placeholders = implode(',', array_fill(0, $count, '?'));
+
+            if ($action === 'delete') {
+                try {
+                    $stmt = $pdo->prepare("DELETE FROM ai_subscription_keys WHERE id IN ($placeholders) AND redeemed_at IS NULL");
+                    $stmt->execute($key_ids);
+                    $deleted = $stmt->rowCount();
+                    if ($deleted > 0) {
+                        $_SESSION['message'] = "$deleted subscription key(s) deleted successfully.";
+                        $_SESSION['message_type'] = 'success';
+                    } else {
+                        $_SESSION['message'] = "No keys deleted. Keys may have been redeemed.";
+                        $_SESSION['message_type'] = 'error';
+                    }
+                } catch (PDOException $e) {
+                    $_SESSION['message'] = "Error deleting keys.";
+                    $_SESSION['message_type'] = 'error';
+                }
+            }
+
+            header('Location: index.php#free-sub-keys');
             exit;
         }
     }
@@ -774,7 +805,7 @@ include '../admin_header.php';
                 <div class="key-display">
                     <strong>Key Generated:</strong><br>
                     <code><?php echo htmlspecialchars($generated_sub_key); ?></code><br>
-                    <small>Duration: <?php echo $sub_key_duration; ?> month(s) | For: <?php echo htmlspecialchars($sub_key_email); ?></small>
+                    <small>Duration: <?php echo $sub_key_duration == 0 ? 'Permanent' : $sub_key_duration . ' month(s)'; ?> | For: <?php echo htmlspecialchars($sub_key_email); ?></small>
                 </div>
             <?php endif; ?>
 
@@ -791,6 +822,7 @@ include '../admin_header.php';
                             <option value="3">3 months</option>
                             <option value="6">6 months</option>
                             <option value="12">12 months</option>
+                            <option value="0">Permanent</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -807,61 +839,88 @@ include '../admin_header.php';
         <div class="table-container">
             <h2>Free Subscription Keys</h2>
 
+            <!-- Bulk Actions for Subscription Keys -->
+            <div class="bulk-actions-container" id="sub-key-bulk-actions">
+                <div class="selection-info">
+                    <span id="sub-key-selected-count">0</span> selected
+                </div>
+                <div class="bulk-buttons">
+                    <button type="button" class="btn btn-bulk btn-delete" id="sub-key-bulk-delete" data-action="delete" disabled>Delete Selected</button>
+                </div>
+            </div>
+
             <?php if (empty($ai_subscription_keys)): ?>
                 <p>No free subscription keys generated yet.</p>
             <?php else: ?>
-                <div class="table-responsive">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Key</th>
-                                <th>Duration</th>
-                                <th>Restricted To</th>
-                                <th>Status</th>
-                                <th>Created</th>
-                                <th>Redeemed By</th>
-                                <th>Notes</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($ai_subscription_keys as $key): ?>
+                <form id="sub-key-bulk-form" method="post">
+                    <input type="hidden" name="bulk_sub_key_action" id="bulk_sub_key_action_input">
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
                                 <tr>
-                                    <td class="key-field"><?php echo htmlspecialchars($key['subscription_key']); ?></td>
-                                    <td><?php echo $key['duration_months']; ?> month<?php echo $key['duration_months'] > 1 ? 's' : ''; ?></td>
-                                    <td><?php echo $key['email'] ? htmlspecialchars($key['email']) : '<span style="color:#9ca3af;">Any user</span>'; ?></td>
-                                    <td>
-                                        <?php if ($key['redeemed_at']): ?>
-                                            <span class="badge badge-redeemed">Redeemed</span>
-                                        <?php else: ?>
-                                            <span class="badge badge-free">Available</span>
-                                        <?php endif; ?>
-                                    </td>
-                                    <td><?php echo date('M j, Y', strtotime($key['created_at'])); ?></td>
-                                    <td>
-                                        <?php if ($key['redeemed_by_username']): ?>
-                                            <?php echo htmlspecialchars($key['redeemed_by_username']); ?>
-                                            <br><small><?php echo date('M j, Y', strtotime($key['redeemed_at'])); ?></small>
-                                        <?php else: ?>
-                                            -
-                                        <?php endif; ?>
-                                    </td>
-                                    <td><?php echo $key['notes'] ? htmlspecialchars($key['notes']) : '-'; ?></td>
-                                    <td>
-                                        <?php if (!$key['redeemed_at']): ?>
-                                            <form method="post" style="display:inline;" onsubmit="return confirm('Delete this key?');">
-                                                <input type="hidden" name="key_id" value="<?php echo $key['id']; ?>">
-                                                <button type="submit" name="delete_sub_key" class="btn btn-red small-btn">Delete</button>
-                                            </form>
-                                        <?php else: ?>
-                                            -
-                                        <?php endif; ?>
-                                    </td>
+                                    <th class="checkbox-column">
+                                        <div class="checkbox">
+                                            <input type="checkbox" id="sub-key-select-all">
+                                            <label for="sub-key-select-all"></label>
+                                        </div>
+                                    </th>
+                                    <th>Key</th>
+                                    <th>Duration</th>
+                                    <th>Restricted To</th>
+                                    <th>Status</th>
+                                    <th>Created</th>
+                                    <th>Redeemed By</th>
+                                    <th>Notes</th>
+                                    <th>Actions</th>
                                 </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($ai_subscription_keys as $key): ?>
+                                    <tr class="<?php echo $key['redeemed_at'] ? 'redeemed-row' : ''; ?>">
+                                        <td class="checkbox-column">
+                                            <?php if (!$key['redeemed_at']): ?>
+                                                <div class="checkbox">
+                                                    <input type="checkbox" name="selected_sub_keys[]" value="<?php echo $key['id']; ?>" class="sub-key-checkbox" id="sub-key-<?php echo $key['id']; ?>">
+                                                    <label for="sub-key-<?php echo $key['id']; ?>"></label>
+                                                </div>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td class="key-field"><?php echo htmlspecialchars($key['subscription_key']); ?></td>
+                                        <td><?php echo $key['duration_months'] == 0 ? '<span style="color:#8b5cf6;font-weight:500;">Permanent</span>' : $key['duration_months'] . ' month' . ($key['duration_months'] > 1 ? 's' : ''); ?></td>
+                                        <td><?php echo $key['email'] ? htmlspecialchars($key['email']) : '<span style="color:#9ca3af;">Any user</span>'; ?></td>
+                                        <td>
+                                            <?php if ($key['redeemed_at']): ?>
+                                                <span class="badge badge-redeemed">Redeemed</span>
+                                            <?php else: ?>
+                                                <span class="badge badge-free">Available</span>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td><?php echo date('M j, Y', strtotime($key['created_at'])); ?></td>
+                                        <td>
+                                            <?php if ($key['redeemed_by_username']): ?>
+                                                <?php echo htmlspecialchars($key['redeemed_by_username']); ?>
+                                                <br><small><?php echo date('M j, Y', strtotime($key['redeemed_at'])); ?></small>
+                                            <?php else: ?>
+                                                -
+                                            <?php endif; ?>
+                                        </td>
+                                        <td><?php echo $key['notes'] ? htmlspecialchars($key['notes']) : '-'; ?></td>
+                                        <td>
+                                            <?php if (!$key['redeemed_at']): ?>
+                                                <form method="post" style="display:inline;" onsubmit="return confirm('Delete this key?');">
+                                                    <input type="hidden" name="key_id" value="<?php echo $key['id']; ?>">
+                                                    <button type="submit" name="delete_sub_key" class="btn btn-red small-btn">Delete</button>
+                                                </form>
+                                            <?php else: ?>
+                                                -
+                                            <?php endif; ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
             <?php endif; ?>
         </div>
     </div>
@@ -900,5 +959,50 @@ document.addEventListener('DOMContentLoaded', function() {
             history.replaceState(null, null, '#' + target);
         });
     });
+
+    // Subscription Key Bulk Selection
+    const subKeySelectAll = document.getElementById('sub-key-select-all');
+    const subKeyCheckboxes = document.querySelectorAll('.sub-key-checkbox');
+    const subKeySelectedCount = document.getElementById('sub-key-selected-count');
+    const subKeyBulkDelete = document.getElementById('sub-key-bulk-delete');
+    const subKeyBulkForm = document.getElementById('sub-key-bulk-form');
+    const subKeyBulkActionInput = document.getElementById('bulk_sub_key_action_input');
+
+    function updateSubKeySelection() {
+        const checked = document.querySelectorAll('.sub-key-checkbox:checked');
+        const count = checked.length;
+        subKeySelectedCount.textContent = count;
+        subKeyBulkDelete.disabled = count === 0;
+    }
+
+    if (subKeySelectAll) {
+        subKeySelectAll.addEventListener('change', function() {
+            subKeyCheckboxes.forEach(cb => cb.checked = this.checked);
+            updateSubKeySelection();
+        });
+    }
+
+    subKeyCheckboxes.forEach(cb => {
+        cb.addEventListener('change', function() {
+            updateSubKeySelection();
+            // Update select all checkbox state
+            if (subKeySelectAll) {
+                const allChecked = document.querySelectorAll('.sub-key-checkbox:checked').length === subKeyCheckboxes.length;
+                subKeySelectAll.checked = allChecked && subKeyCheckboxes.length > 0;
+            }
+        });
+    });
+
+    if (subKeyBulkDelete) {
+        subKeyBulkDelete.addEventListener('click', function() {
+            const checked = document.querySelectorAll('.sub-key-checkbox:checked');
+            if (checked.length === 0) return;
+
+            if (confirm(`Are you sure you want to delete ${checked.length} subscription key(s)?`)) {
+                subKeyBulkActionInput.value = 'delete';
+                subKeyBulkForm.submit();
+            }
+        });
+    }
 });
 </script>
