@@ -208,6 +208,8 @@ include 'admin_header.php';
             <div class="stat-value"><?php echo number_format($total_licenses); ?></div>
         </div>
         <div class="stat-card">
+            <div class="stat-label">Total Users</div>
+            <div class="stat-value"><?php echo number_format($total_app_users); ?></div>
         </div>
         <div class="stat-card">
             <div class="stat-label">Total Community Posts</div>
@@ -242,7 +244,7 @@ include 'admin_header.php';
                 </svg>
             </div>
             <div class="nav-card-title">App Statistics</div>
-            <div class="nav-card-description"><?php echo number_format($total_app_users); ?> total users</div>
+            <div class="nav-card-description">View application analytics and metrics</div>
             <div class="nav-card-stat">
                 <span class="nav-card-stat-label">This Month</span>
                 <span class="nav-card-stat-value"><?php echo number_format($monthly_app_users); ?></span>
