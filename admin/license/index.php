@@ -325,14 +325,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt->execute($params);
                 $success_count = $stmt->rowCount();
 
-                // Send emails to affected users
+                // Log the credit addition for debugging
+                error_log("Bulk credit: Added \$$credit_amount to " . count($subscription_ids) . " subscriptions. IDs: " . implode(',', $subscription_ids) . ". Rows affected: $success_count");
+
+                // Send emails to affected users and verify credit was saved
                 $stmt = $pdo->prepare("
-                    SELECT id, email, subscription_id
+                    SELECT id, email, subscription_id, credit_balance
                     FROM ai_subscriptions
                     WHERE id IN ($placeholders)
                 ");
                 $stmt->execute($subscription_ids);
                 $subscriptions = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                // Log the actual credit balances after update
+                foreach ($subscriptions as $s) {
+                    error_log("Bulk credit verify: Subscription {$s['subscription_id']} now has credit_balance = {$s['credit_balance']}");
+                }
 
                 foreach ($subscriptions as $sub) {
                     if (send_free_credit_email($sub['email'], $credit_amount, $credit_note, $sub['subscription_id'])) {
