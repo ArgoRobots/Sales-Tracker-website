@@ -428,32 +428,6 @@ include '../admin_header.php';
     .tab-content.active {
         display: block;
     }
-    .sub-stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: 15px;
-        margin-bottom: 25px;
-    }
-    .sub-stat-card {
-        background: white;
-        border-radius: 10px;
-        padding: 20px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    .sub-stat-card h4 {
-        margin: 0 0 8px;
-        font-size: 0.85rem;
-        color: #6b7280;
-        font-weight: 500;
-    }
-    .sub-stat-card .value {
-        font-size: 1.75rem;
-        font-weight: bold;
-        color: #1f2937;
-    }
-    .sub-stat-card.active .value { color: #10b981; }
-    .sub-stat-card.pending .value { color: #f59e0b; }
-    .sub-stat-card.free .value { color: #8b5cf6; }
     .generate-form-grid {
         display: grid;
         grid-template-columns: 1fr 120px 1fr auto;
@@ -716,17 +690,17 @@ include '../admin_header.php';
 
     <!-- AI Subscriptions Tab -->
     <div id="ai-subscriptions" class="tab-content">
-        <div class="sub-stats-grid">
-            <div class="sub-stat-card active">
-                <h4>Active Subscriptions</h4>
+        <div class="stats-grid">
+            <div class="stat-card active">
+                <h3>Active Subscriptions</h3>
                 <div class="value"><?php echo $active_ai_subs; ?></div>
             </div>
-            <div class="sub-stat-card">
-                <h4>Total Subscriptions</h4>
+            <div class="stat-card">
+                <h3>Total Subscriptions</h3>
                 <div class="value"><?php echo count($ai_subscriptions); ?></div>
             </div>
-            <div class="sub-stat-card free">
-                <h4>Free Keys Available</h4>
+            <div class="stat-card free">
+                <h3>Free Keys Available</h3>
                 <div class="value"><?php echo $unredeemed_keys; ?></div>
             </div>
         </div>
@@ -790,17 +764,17 @@ include '../admin_header.php';
 
     <!-- Free Subscription Keys Tab -->
     <div id="free-sub-keys" class="tab-content">
-        <div class="sub-stats-grid">
-            <div class="sub-stat-card free">
-                <h4>Available Keys</h4>
+        <div class="stats-grid">
+            <div class="stat-card free">
+                <h3>Available Keys</h3>
                 <div class="value"><?php echo $unredeemed_keys; ?></div>
             </div>
-            <div class="sub-stat-card pending">
-                <h4>Redeemed Keys</h4>
+            <div class="stat-card pending">
+                <h3>Redeemed Keys</h3>
                 <div class="value"><?php echo count($ai_subscription_keys) - $unredeemed_keys; ?></div>
             </div>
-            <div class="sub-stat-card">
-                <h4>Total Generated</h4>
+            <div class="stat-card">
+                <h3>Total Generated</h3>
                 <div class="value"><?php echo count($ai_subscription_keys); ?></div>
             </div>
         </div>
