@@ -95,9 +95,9 @@
             <h3>How to Activate AI Features</h3>
             <ol>
                 <li>Open <strong>Argo Books</strong> on your computer</li>
-                <li>Go to <strong>Settings > AI Features</strong></li>
+                <li>Click the blue <strong>Upgrade</strong> button in the top right corner</li>
                 <li>Enter your <strong>Subscription ID</strong> shown above</li>
-                <li>Click <strong>Activate</strong> and start using AI features!</li>
+                <li>Click <strong>Activate</strong> and enjoy all premium features!</li>
             </ol>
         </div>
 
