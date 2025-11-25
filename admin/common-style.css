@@ -69,6 +69,8 @@ body.menu-open::after {
   position: relative;
   height: 50px;
   z-index: 1000;
+  display: flex;
+  justify-content: center;
 }
 
 /* Burger Menu Icon */
@@ -200,15 +202,29 @@ body.menu-open::after {
 }
 
 .header-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0.75rem 1rem;
+  width: 90%;
+  max-width: 1400px;
+  padding: 0.75rem 0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 1rem;
   height: 50px;
   box-sizing: border-box;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+  margin-left: auto;
 }
 
 .logo-section {
@@ -943,7 +959,7 @@ tbody tr:hover {
     display: none;
   }
 
-  .btn-home {
+  .header-left {
     display: none;
   }
 
@@ -955,9 +971,15 @@ tbody tr:hover {
     display: block;
   }
 
+  .admin-header {
+    justify-content: flex-start;
+  }
+
   .header-container {
+    width: 100%;
     padding: 0.75rem;
     position: relative;
+    justify-content: center;
   }
 
   .logo-section {
