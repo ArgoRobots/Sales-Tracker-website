@@ -525,9 +525,9 @@ include '../admin_header.php';
 <div class="container">
     <!-- Section Tabs -->
     <div class="section-tabs">
-        <button class="section-tab active" data-tab="premium-keys">Premium License Keys</button>
+        <button class="section-tab active" data-tab="premium-keys">Premium Licenses</button>
         <button class="section-tab" data-tab="ai-subscriptions">AI Subscriptions</button>
-        <button class="section-tab" data-tab="free-sub-keys">Free Subscription Keys</button>
+        <button class="section-tab" data-tab="free-sub-keys">Free AI Subscription Keys</button>
     </div>
 
     <?php if (!empty($message)): ?>
@@ -874,7 +874,7 @@ include '../admin_header.php';
                                     </th>
                                     <th>Key</th>
                                     <th>Duration</th>
-                                    <th>Restricted To</th>
+                                    <th>Email</th>
                                     <th>Status</th>
                                     <th>Created</th>
                                     <th>Redeemed By</th>
