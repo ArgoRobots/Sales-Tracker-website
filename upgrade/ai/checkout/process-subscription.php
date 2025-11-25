@@ -235,63 +235,87 @@ try {
         case 'square':
             $sourceId = $input['source_id'] ?? '';
 
-            // Initialize Square
+            // Initialize Square API credentials
             $squareAccessToken = $isProduction
                 ? $_ENV['SQUARE_LIVE_ACCESS_TOKEN']
                 : $_ENV['SQUARE_SANDBOX_ACCESS_TOKEN'];
-            $squareEnvironment = $isProduction ? 'production' : 'sandbox';
             $squareLocationId = $isProduction
                 ? $_ENV['SQUARE_LIVE_LOCATION_ID']
                 : $_ENV['SQUARE_SANDBOX_LOCATION_ID'];
+            $squareApiBaseUrl = $isProduction
+                ? 'https://connect.squareup.com/v2'
+                : 'https://connect.squareupsandbox.com/v2';
+
+            // Helper function for Square API calls
+            $squareApiCall = function($endpoint, $method, $data = null) use ($squareApiBaseUrl, $squareAccessToken) {
+                $ch = curl_init("$squareApiBaseUrl/$endpoint");
+                curl_setopt_array($ch, [
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_CUSTOMREQUEST => $method,
+                    CURLOPT_HTTPHEADER => [
+                        "Square-Version: 2025-10-16",
+                        "Authorization: Bearer $squareAccessToken",
+                        "Content-Type: application/json"
+                    ]
+                ]);
+                if ($data !== null) {
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+                }
+                $response = curl_exec($ch);
+                $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                curl_close($ch);
+                return ['response' => json_decode($response, true), 'http_code' => $httpCode];
+            };
 
             try {
-                $client = new \Square\SquareClient([
-                    'accessToken' => $squareAccessToken,
-                    'environment' => $squareEnvironment
-                ]);
-
-                // Create customer for recurring billing
-                $customerApi = $client->getCustomersApi();
-                $searchRequest = new \Square\Models\SearchCustomersRequest();
-                $query = new \Square\Models\CustomerQuery();
-                $filter = new \Square\Models\CustomerFilter();
-                $emailFilter = new \Square\Models\CustomerTextFilter();
-                $emailFilter->setExact($email);
-                $filter->setEmailAddress($emailFilter);
-                $query->setFilter($filter);
-                $searchRequest->setQuery($query);
-
-                $searchResponse = $customerApi->searchCustomers($searchRequest);
+                // Search for existing customer by email
+                $searchData = [
+                    'query' => [
+                        'filter' => [
+                            'email_address' => [
+                                'exact' => $email
+                            ]
+                        ]
+                    ]
+                ];
+                $searchResult = $squareApiCall('customers/search', 'POST', $searchData);
                 $customerId = null;
 
-                if ($searchResponse->isSuccess() && count($searchResponse->getResult()->getCustomers() ?? []) > 0) {
-                    $customerId = $searchResponse->getResult()->getCustomers()[0]->getId();
+                if ($searchResult['http_code'] >= 200 && $searchResult['http_code'] < 300
+                    && !empty($searchResult['response']['customers'])) {
+                    $customerId = $searchResult['response']['customers'][0]['id'];
                 } else {
                     // Create new customer
-                    $customerRequest = new \Square\Models\CreateCustomerRequest();
-                    $customerRequest->setEmailAddress($email);
-                    $customerRequest->setReferenceId("user_$userId");
-                    $createResponse = $customerApi->createCustomer($customerRequest);
+                    $customerData = [
+                        'idempotency_key' => uniqid('cust_', true),
+                        'email_address' => $email,
+                        'reference_id' => "user_$userId"
+                    ];
+                    $createResult = $squareApiCall('customers', 'POST', $customerData);
 
-                    if ($createResponse->isSuccess()) {
-                        $customerId = $createResponse->getResult()->getCustomer()->getId();
+                    if ($createResult['http_code'] >= 200 && $createResult['http_code'] < 300
+                        && isset($createResult['response']['customer'])) {
+                        $customerId = $createResult['response']['customer']['id'];
                     }
                 }
 
                 // Create card on file for recurring billing
-                $cardsApi = $client->getCardsApi();
-                $cardRequest = new \Square\Models\CreateCardRequest(
-                    uniqid('card_', true),
-                    $sourceId,
-                    new \Square\Models\Card()
-                );
-                $cardRequest->getCard()->setCustomerId($customerId);
-
-                $cardResponse = $cardsApi->createCard($cardRequest);
+                $cardData = [
+                    'idempotency_key' => uniqid('card_', true),
+                    'source_id' => $sourceId,
+                    'card' => [
+                        'customer_id' => $customerId
+                    ]
+                ];
+                $cardResult = $squareApiCall('cards', 'POST', $cardData);
                 $cardId = null;
 
-                if ($cardResponse->isSuccess()) {
-                    $cardId = $cardResponse->getResult()->getCard()->getId();
+                if ($cardResult['http_code'] >= 200 && $cardResult['http_code'] < 300
+                    && isset($cardResult['response']['card'])) {
+                    $cardId = $cardResult['response']['card']['id'];
+                } else {
+                    $errorDetail = $cardResult['response']['errors'][0]['detail'] ?? 'Failed to save card';
+                    throw new Exception($errorDetail);
                 }
 
                 // For monthly with credit, just store the card without charging
@@ -300,37 +324,34 @@ try {
                     $paymentToken = $cardId; // Store card ID for future renewals when credit depleted
                 } else {
                     // Process initial payment
-                    $paymentsApi = $client->getPaymentsApi();
-                    $amountMoney = new \Square\Models\Money();
-                    $amountMoney->setAmount(intval($amount * 100));
-                    $amountMoney->setCurrency('CAD');
+                    $paymentData = [
+                        'idempotency_key' => uniqid('payment_', true),
+                        'source_id' => $cardId ?? $sourceId,
+                        'amount_money' => [
+                            'amount' => intval($amount * 100),
+                            'currency' => 'CAD'
+                        ],
+                        'location_id' => $squareLocationId,
+                        'customer_id' => $customerId,
+                        'note' => "AI Subscription - Initial Payment ($billing)",
+                        'autocomplete' => true
+                    ];
+                    $paymentResult = $squareApiCall('payments', 'POST', $paymentData);
 
-                    $paymentRequest = new \Square\Models\CreatePaymentRequest(
-                        $cardId ?? $sourceId,
-                        uniqid('payment_', true)
-                    );
-                    $paymentRequest->setAmountMoney($amountMoney);
-                    $paymentRequest->setLocationId($squareLocationId);
-                    $paymentRequest->setCustomerId($customerId);
-                    $paymentRequest->setNote("AI Subscription - Initial Payment ($billing)");
-                    $paymentRequest->setAutocomplete(true);
-
-                    $paymentResponse = $paymentsApi->createPayment($paymentRequest);
-
-                    if ($paymentResponse->isSuccess()) {
-                        $payment = $paymentResponse->getResult()->getPayment();
-                        $transactionId = $payment->getId();
+                    if ($paymentResult['http_code'] >= 200 && $paymentResult['http_code'] < 300
+                        && isset($paymentResult['response']['payment'])) {
+                        $transactionId = $paymentResult['response']['payment']['id'];
                         $paymentToken = $cardId; // Store card ID for recurring billing
                     } else {
-                        $errors = $paymentResponse->getErrors();
-                        throw new Exception($errors[0]->getDetail() ?? 'Payment failed');
+                        $errorDetail = $paymentResult['response']['errors'][0]['detail'] ?? 'Payment failed';
+                        throw new Exception($errorDetail);
                     }
                 }
 
             } catch (Exception $e) {
                 $pdo->rollBack();
                 error_log("Square error: " . $e->getMessage());
-                echo json_encode(['success' => false, 'error' => 'Payment processing failed']);
+                echo json_encode(['success' => false, 'error' => 'Payment processing failed: ' . $e->getMessage()]);
                 exit();
             }
             break;
