@@ -70,12 +70,12 @@ try {
         'currency' => strtolower($data['currency']),
         'payment_method_types' => ['card'],
         'metadata' => [
-            'product' => 'Argo Books - Lifetime Access',
+            'product' => 'Argo Books - Premium License',
             'email' => $data['email'] ?? '',
             'license_key' => $license_key ?? ''
         ],
         'receipt_email' => $data['email'] ?? null,
-        'description' => 'Argo Books - Lifetime Access'
+        'description' => 'Argo Books - Premium License'
     ]);
 
     // Store the payment intent ID in our database

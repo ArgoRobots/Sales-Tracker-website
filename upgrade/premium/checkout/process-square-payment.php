@@ -86,8 +86,8 @@ try {
         ],
         'autocomplete' => true,
         'location_id' => $square_location_id,
-        'reference_id' => $data['reference_id'] ?? 'Argo_Sales_Tracker_License',
-        'note' => 'Argo Books - Lifetime Access'
+        'reference_id' => $data['reference_id'] ?? 'Argo_Books_License',
+        'note' => 'Argo Books - Premium License'
     ];
 
     // Process the payment through Square API using cURL
