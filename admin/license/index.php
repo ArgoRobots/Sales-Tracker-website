@@ -158,6 +158,29 @@ function get_chart_data()
     return $data;
 }
 
+// Get chart data - AI subscriptions by date
+function get_subscription_chart_data()
+{
+    global $pdo;
+    $data = [];
+
+    try {
+        $stmt = $pdo->query("
+            SELECT DATE(created_at) as date,
+                   COUNT(*) as total,
+                   SUM(CASE WHEN status = 'active' THEN 1 ELSE 0 END) as active
+            FROM ai_subscriptions
+            GROUP BY DATE(created_at)
+            ORDER BY date
+        ");
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Error fetching subscription chart data: " . $e->getMessage());
+    }
+
+    return $data;
+}
+
 // Handle form submissions
 $generated_key = '';
 $generated_sub_key = '';
@@ -338,6 +361,7 @@ $licenses = get_license_keys($search, $date_from, $date_to);
 $ai_subscriptions = get_ai_subscriptions($sub_search);
 $ai_subscription_keys = get_ai_subscription_keys();
 $chart_data = get_chart_data();
+$subscription_chart_data = get_subscription_chart_data();
 
 // Count stats
 $db = get_db_connection();
@@ -494,6 +518,7 @@ include '../admin_header.php';
 
 <script>
     const chartData = <?php echo json_encode($chart_data); ?>;
+    const subscriptionChartData = <?php echo json_encode($subscription_chart_data); ?>;
 </script>
 <script src="main.js"></script>
 
@@ -704,6 +729,12 @@ include '../admin_header.php';
                 <h4>Free Keys Available</h4>
                 <div class="value"><?php echo $unredeemed_keys; ?></div>
             </div>
+        </div>
+
+        <!-- Subscription Chart -->
+        <div class="chart-container">
+            <h2>AI Subscriptions Over Time</h2>
+            <canvas id="subscriptionsChart"></canvas>
         </div>
 
         <div class="table-container">
