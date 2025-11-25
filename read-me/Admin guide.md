@@ -120,6 +120,51 @@ Creates admin users for the community system
 
 ---
 
+## Subscription Renewal Cron Job
+
+The subscription renewal process checks for AI subscriptions due for renewal and processes payments automatically.
+
+### Automatic Scheduling
+
+To run the renewal process automatically every day at 3:00 PM, add this cron entry:
+
+```bash
+0 15 * * * /usr/bin/php /path/to/your/website/cron/subscription_renewal.php
+```
+
+This will check for subscriptions due within 24 hours and process their renewals automatically.
+
+### What the Renewal Process Does
+
+1. Finds active subscriptions due for renewal within 24 hours
+2. Processes credit-based renewals first (no charge if credit covers it)
+3. Charges payment methods (Stripe/Square) for remaining balance
+4. Sends email receipts for successful renewals
+5. Sends failure notifications for failed payments
+6. Suspends subscriptions after 3 consecutive failures
+7. Marks non-auto-renew subscriptions as expired
+
+### Manual Execution
+
+**Via CLI:**
+```bash
+php /path/to/your/website/cron/subscription_renewal.php
+```
+
+**Via Web (with secret key):**
+```
+https://argorobots.com/cron/subscription_renewal.php?key=YOUR_CRON_SECRET
+```
+
+**Via Management UI:**
+Visit `/cron/` and authenticate with TOTP to access the renewal management dashboard.
+
+### Logs
+
+Logs are stored in: `/cron/logs/subscription_renewal_YYYY-MM-DD.log`
+
+---
+
 ## Security Best Practices
 
 ### API Keys

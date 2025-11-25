@@ -3,11 +3,33 @@
  * AI Subscription Renewal Cron Job
  *
  * This script should be run daily via cron to check for and process subscription renewals.
- * Example cron entry (run daily at 2 AM):
- * 0 2 * * * /usr/bin/php /path/to/subscription_renewal.php
  *
- * Alternatively, can be called via web with a secret key for testing:
- * subscription_renewal.php?key=YOUR_CRON_SECRET
+ * RECOMMENDED SCHEDULE: Daily at 3:00 PM (15:00)
+ * Add to your crontab with: crontab -e
+ *
+ * Example cron entries:
+ *
+ *   # Run daily at 3:00 PM (recommended)
+ *   0 15 * * * /usr/bin/php /path/to/subscription_renewal.php
+ *
+ *   # Run daily at 2:00 AM (alternative)
+ *   0 2 * * * /usr/bin/php /path/to/subscription_renewal.php
+ *
+ * The script will:
+ *   1. Find active subscriptions due for renewal within 24 hours
+ *   2. Process credit-based renewals first (no charge)
+ *   3. Charge payment methods (Stripe/Square) for remaining balance
+ *   4. Send email receipts for successful renewals
+ *   5. Send failure notifications for failed payments
+ *   6. Suspend subscriptions after 3 consecutive failures
+ *   7. Mark non-auto-renew subscriptions as expired
+ *
+ * Manual execution options:
+ *   - CLI: php subscription_renewal.php
+ *   - Web: subscription_renewal.php?key=YOUR_CRON_SECRET
+ *   - UI:  Visit /cron/ for the management dashboard
+ *
+ * Logs are stored in: /cron/logs/subscription_renewal_YYYY-MM-DD.log
  */
 
 // Prevent timeout for long-running process
@@ -181,7 +203,8 @@ foreach ($subscriptions as $subscription) {
     try {
         switch ($paymentMethod) {
             case 'stripe':
-                $paymentResult = processStripeRenewal($paymentToken, $amountToCharge, $subscriptionId, $email);
+                $stripeCustomerId = $subscription['stripe_customer_id'] ?? null;
+                $paymentResult = processStripeRenewal($paymentToken, $amountToCharge, $subscriptionId, $email, $stripeCustomerId);
                 break;
             case 'square':
                 $paymentResult = processSquareRenewal($paymentToken, $amountToCharge, $subscriptionId, $email, $squareAccessToken, $squareEnvironment);
@@ -308,10 +331,10 @@ try {
 /**
  * Process Stripe renewal payment
  */
-function processStripeRenewal($paymentMethodId, $amount, $subscriptionId, $email) {
+function processStripeRenewal($paymentMethodId, $amount, $subscriptionId, $email, $customerId = null) {
     try {
-        // Create payment intent
-        $paymentIntent = \Stripe\PaymentIntent::create([
+        // Build payment intent params
+        $params = [
             'amount' => intval($amount * 100), // Stripe uses cents
             'currency' => 'cad',
             'payment_method' => $paymentMethodId,
@@ -323,7 +346,15 @@ function processStripeRenewal($paymentMethodId, $amount, $subscriptionId, $email
                 'subscription_id' => $subscriptionId,
                 'type' => 'renewal'
             ]
-        ]);
+        ];
+
+        // Include customer ID if available (required for saved payment methods)
+        if ($customerId) {
+            $params['customer'] = $customerId;
+        }
+
+        // Create payment intent
+        $paymentIntent = \Stripe\PaymentIntent::create($params);
 
         if ($paymentIntent->status === 'succeeded') {
             return [

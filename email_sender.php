@@ -1229,3 +1229,100 @@ HTML;
 
     return mail($email, $subject, $email_html, implode("\r\n", $headers));
 }
+
+/**
+ * Send AI subscription reactivated email
+ * @param string $email User's email address
+ * @param string $subscriptionId Subscription ID
+ * @param string $endDate Next billing date
+ * @param string $billingCycle Monthly or yearly
+ * @return bool Success status
+ */
+function send_ai_subscription_reactivated_email($email, $subscriptionId, $endDate, $billingCycle = 'monthly')
+{
+    $css = file_get_contents(__DIR__ . '/email.css');
+    $subject = "Subscription Reactivated - Argo AI";
+
+    $nextBillingDate = date('F j, Y', strtotime($endDate));
+    $billingLabel = ucfirst($billingCycle);
+
+    $email_html = <<<HTML
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Subscription Reactivated</title>
+    <style>
+        {$css}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+            <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" width="140">
+        </div>
+
+        <div class="content">
+            <h1>Welcome Back!</h1>
+            <p>Your Argo AI subscription has been reactivated.</p>
+
+            <div style="background: #d1fae5; border: 1px solid #6ee7b7; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                <p style="margin: 0;"><strong>Your AI features are now active!</strong> You have full access to all AI-powered features.</p>
+            </div>
+
+            <p>Here's a summary of your subscription:</p>
+
+            <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+                <tr>
+                    <td style="padding: 10px; border-bottom: 1px solid #e5e7eb; color: #6b7280;">Subscription ID</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #e5e7eb; text-align: right; font-weight: bold;">{$subscriptionId}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border-bottom: 1px solid #e5e7eb; color: #6b7280;">Billing Cycle</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #e5e7eb; text-align: right; font-weight: bold;">{$billingLabel}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border-bottom: 1px solid #e5e7eb; color: #6b7280;">Next Billing Date</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #e5e7eb; text-align: right; font-weight: bold;">{$nextBillingDate}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; color: #6b7280;">Status</td>
+                    <td style="padding: 10px; text-align: right;"><span style="background: #d1fae5; color: #065f46; padding: 4px 12px; border-radius: 4px; font-weight: bold;">Active</span></td>
+                </tr>
+            </table>
+
+            <p>Features now available:</p>
+            <ul style="color: #374151; line-height: 1.8;">
+                <li>AI-powered receipt scanning</li>
+                <li>Predictive sales analysis</li>
+                <li>AI business insights</li>
+                <li>Natural language search</li>
+            </ul>
+
+            <div style="text-align: center; margin: 30px 0;">
+                <a href="https://argorobots.com/community/users/ai-subscription.php" style="display: inline-block; background: #8b5cf6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">View Subscription</a>
+            </div>
+
+            <p>If you have any questions, please <a href="https://argorobots.com/contact-us/">contact our support team</a>.</p>
+
+            <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb; color: #6b7280; font-size: 14px;">
+                <p>Thank you for continuing with Argo AI!</p>
+                <p><a href="https://argorobots.com">argorobots.com</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+HTML;
+
+    $headers = [
+        'MIME-Version: 1.0',
+        'Content-Type: text/html; charset=UTF-8',
+        'From: Argo Books <noreply@argorobots.com>',
+        'Reply-To: support@argorobots.com',
+        'X-Mailer: PHP/' . phpversion()
+    ];
+
+    return mail($email, $subject, $email_html, implode("\r\n", $headers));
+}

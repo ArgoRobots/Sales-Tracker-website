@@ -149,13 +149,7 @@ $end_date = date('F j, Y', strtotime($ai_subscription['end_date']));
                 </ul>
             </div>
 
-            <?php if ($hasUsedCredit): ?>
-            <div class="info-box discount-warning-box">
-                <h3>Important: Discount No Longer Available</h3>
-                <p>You have used $<?php echo number_format($creditUsed, 2); ?> of your $<?php echo number_format($originalCredit, 2); ?> premium user discount credit.</p>
-                <p><strong>If you cancel and later resubscribe, the premium user discount will not be available again.</strong></p>
-            </div>
-            <?php elseif ($hasUnusedCredit): ?>
+            <?php if ($hasUnusedCredit): ?>
             <div class="info-box discount-warning-box">
                 <h3>Credit Will Be Lost</h3>
                 <p>You have $<?php echo number_format($creditBalance, 2); ?> in unused premium user discount credit.</p>

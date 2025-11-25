@@ -25,7 +25,7 @@ $base_path = $in_subdir ? '../' : '';
     <link rel="stylesheet" href="<?php echo $base_path; ?>../resources/styles/button.css">
     <link rel="stylesheet" href="<?php echo $base_path; ?>../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="<?php echo $base_path; ?>../resources/notifications/notifications.css">
-     <link rel="stylesheet" href="<?php echo $base_path; ?>../resources/styles/table-auto-size.css">
+    <link rel="stylesheet" href="<?php echo $base_path; ?>../resources/styles/table-auto-size.css">
 </head>
 
 <body>
@@ -37,19 +37,22 @@ $base_path = $in_subdir ? '../' : '';
             <label class="menu-icon" id="menu-icon" for="menu-btn"><span class="nav-icon"></span></label>
 
             <div class="header-container">
-                <a href="<?php echo $base_path; ?>../index.php" class="btn-small btn-home" title="Go to Main Site">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-                    </svg>
-                    <span class="home-text">Home</span>
-                </a>
+                <!-- Left: Home button and Logo -->
+                <div class="header-left">
+                    <a href="<?php echo $base_path; ?>../index.php" class="btn-small btn-home" title="Go to Main Site">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                        </svg>
+                        <span class="home-text">Home</span>
+                    </a>
 
-                <a href="<?php echo $base_path; ?>index.php" class="logo-section">
-                    <img src="<?php echo $base_path; ?>../images/argo-logo/A-logo.ico" alt="Argo Logo" class="header-logo">
-                    <span class="header-title">Admin Dashboard</span>
-                </a>
+                    <a href="<?php echo $base_path; ?>index.php" class="logo-section">
+                        <img src="<?php echo $base_path; ?>../images/argo-logo/A-logo.ico" alt="Argo Logo" class="header-logo">
+                        <span class="header-title">Admin Dashboard</span>
+                    </a>
+                </div>
 
-                <!-- Desktop Navigation -->
+                <!-- Center: Desktop Navigation -->
                 <nav class="header-nav desktop-nav">
                     <a href="<?php echo $base_path; ?>license/" class="header-link <?php echo $current_dir === 'license' ? 'active' : ''; ?>">
                         License Keys
@@ -74,8 +77,8 @@ $base_path = $in_subdir ? '../' : '';
                     </a>
                 </nav>
 
-                <!-- Desktop Actions -->
-                <div class="header-actions desktop-actions">
+                <!-- Right: Desktop Actions (Logout) -->
+                <div class="header-right desktop-actions">
                     <span class="user-name"><?php echo htmlspecialchars($_SESSION['admin_username'] ?? 'Admin'); ?></span>
                     <a href="<?php echo $base_path; ?>logout.php" class="btn btn-small btn-red">Logout</a>
                 </div>
@@ -97,6 +100,7 @@ $base_path = $in_subdir ? '../' : '';
                             Home
                         </a>
                     </li>
+                    <li><a href="<?php echo $base_path; ?>index.php" class="<?php echo $current_dir === 'license' ? 'active' : ''; ?>">Dashboard</a></li>
                     <li><a href="<?php echo $base_path; ?>license/" class="<?php echo $current_dir === 'license' ? 'active' : ''; ?>">License Keys</a></li>
                     <li><a href="<?php echo $base_path; ?>app-stats/" class="<?php echo $current_dir === 'app-stats' ? 'active' : ''; ?>">App Stats</a></li>
                     <li><a href="<?php echo $base_path; ?>website-stats/" class="<?php echo $current_dir === 'website-stats' ? 'active' : ''; ?>">Website Stats</a></li>

@@ -342,6 +342,22 @@ CREATE TABLE IF NOT EXISTS ai_subscription_payments (
     INDEX idx_payment_type (payment_type)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- AI Subscription Keys table (free/promo keys)
+CREATE TABLE IF NOT EXISTS ai_subscription_keys (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    subscription_key VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(100) DEFAULT NULL COMMENT 'Optional: restrict to specific email',
+    duration_months INT NOT NULL DEFAULT 1 COMMENT 'Duration in months (0 = permanent)',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    redeemed_at DATETIME DEFAULT NULL,
+    redeemed_by_user_id INT DEFAULT NULL,
+    subscription_id VARCHAR(50) DEFAULT NULL COMMENT 'Link to created subscription',
+    notes TEXT DEFAULT NULL COMMENT 'Admin notes about this key',
+    INDEX idx_subscription_key (subscription_key),
+    INDEX idx_email (email),
+    INDEX idx_redeemed (redeemed_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- Add indexes for license_keys table
 CREATE INDEX idx_license_keys_transaction_id ON license_keys(transaction_id);
 CREATE INDEX idx_license_keys_email ON license_keys(email);
