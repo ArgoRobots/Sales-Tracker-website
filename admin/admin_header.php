@@ -100,6 +100,7 @@ $base_path = $in_subdir ? '../' : '';
                             Home
                         </a>
                     </li>
+                    <li><a href="<?php echo $base_path; ?>index.php" class="<?php echo $current_dir === 'license' ? 'active' : ''; ?>">Dashboard</a></li>
                     <li><a href="<?php echo $base_path; ?>license/" class="<?php echo $current_dir === 'license' ? 'active' : ''; ?>">License Keys</a></li>
                     <li><a href="<?php echo $base_path; ?>app-stats/" class="<?php echo $current_dir === 'app-stats' ? 'active' : ''; ?>">App Stats</a></li>
                     <li><a href="<?php echo $base_path; ?>website-stats/" class="<?php echo $current_dir === 'website-stats' ? 'active' : ''; ?>">Website Stats</a></li>
