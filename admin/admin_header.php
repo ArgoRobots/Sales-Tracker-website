@@ -25,7 +25,7 @@ $base_path = $in_subdir ? '../' : '';
     <link rel="stylesheet" href="<?php echo $base_path; ?>../resources/styles/button.css">
     <link rel="stylesheet" href="<?php echo $base_path; ?>../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="<?php echo $base_path; ?>../resources/notifications/notifications.css">
-     <link rel="stylesheet" href="<?php echo $base_path; ?>../resources/styles/table-auto-size.css">
+    <link rel="stylesheet" href="<?php echo $base_path; ?>../resources/styles/table-auto-size.css">
 </head>
 
 <body>

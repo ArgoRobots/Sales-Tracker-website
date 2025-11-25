@@ -950,7 +950,7 @@ tbody tr:hover {
 }
 
 /* Mobile Navigation - Hide desktop nav and show mobile nav */
-@media (max-width: 1100px) {
+@media (max-width: 1350px) {
   .desktop-nav {
     display: none;
   }
