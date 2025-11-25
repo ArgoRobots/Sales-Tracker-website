@@ -699,6 +699,7 @@ if (isset($_GET['view_log']) && is_cron_authenticated()) {
                                     <?php else: ?>
                                         <span style="color: #6b7280; margin-left: 5px;">$<?php echo number_format($payment['amount'], 2); ?></span>
                                     <?php endif; ?>
+                                    <br><span style="color: #9ca3af; font-size: 0.75rem; font-family: monospace;"><?php echo htmlspecialchars($payment['subscription_id']); ?></span>
                                 </div>
                                 <div style="display: flex; align-items: center; gap: 10px;">
                                     <span style="color: #9ca3af; font-size: 0.75rem;">
