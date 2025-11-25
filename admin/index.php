@@ -32,6 +32,10 @@ $monthly_licenses = $result->fetch_assoc()['count'] ?? 0;
 $result = $db->query('SELECT COUNT(*) as count FROM community_users WHERE created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)');
 $monthly_users = $result->fetch_assoc()['count'] ?? 0;
 
+// Posts created in the last 30 days
+$result = $db->query('SELECT COUNT(*) as count FROM community_posts WHERE created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)');
+$monthly_posts = $result->fetch_assoc()['count'] ?? 0;
+
 // Get recent activity items for timeline
 $recent_items = [];
 
@@ -215,7 +219,7 @@ include 'admin_header.php';
             <div class="nav-card-description">View website analytics and metrics</div>
             <div class="nav-card-stat">
                 <span class="nav-card-stat-label">This Month</span>
-                <span class="nav-card-stat-value"><?php echo number_format($monthly_users); ?></span>
+                <span class="nav-card-stat-value"><?php echo number_format($monthly_posts); ?></span>
             </div>
         </a>
 
