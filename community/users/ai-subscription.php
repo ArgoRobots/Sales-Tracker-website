@@ -316,7 +316,7 @@ if ($ai_subscription) {
                                 </td>
                                 <td>
                                     <?php if (floatval($payment['amount']) == 0 && ($payment['payment_type'] ?? '') === 'credit'): ?>
-                                        <span class="credit-payment">$0.00 (Credit)</span>
+                                        <span class="credit-payment">$0.00</span>
                                     <?php else: ?>
                                         $<?php echo number_format($payment['amount'], 2); ?> <?php echo $payment['currency']; ?>
                                     <?php endif; ?>

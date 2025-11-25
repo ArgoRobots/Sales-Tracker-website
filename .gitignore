@@ -10,3 +10,4 @@ create_admin.php
 create_community_admin.php
 reset_admin_password.php
 /community/uploads/
+/cron/logs/

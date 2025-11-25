@@ -67,7 +67,12 @@ $(document).ready(function () {
         if (accountAvatar) {
           if (data.logged_in) {
             if (data.has_avatar) {
-              accountAvatar.innerHTML = `<img src="${data.avatar_url}" alt="Profile">`;
+              // Apply BASE_PATH to avatar URL if it starts with /
+              var avatarUrl = data.avatar_url;
+              if (avatarUrl && avatarUrl.startsWith("/") && !avatarUrl.startsWith("//") && BASE_PATH !== "/") {
+                avatarUrl = BASE_PATH + avatarUrl.substring(1);
+              }
+              accountAvatar.innerHTML = `<img src="${avatarUrl}" alt="Profile">`;
             } else {
               accountAvatar.innerHTML = `<span class="author-avatar-placeholder">${data.initial}</span>`;
             }
