@@ -228,6 +228,8 @@ include 'admin_header.php';
             <div class="nav-card-title">User Management</div>
             <div class="nav-card-description">Manage community users</div>
             <div class="nav-card-stat">
+                <span class="nav-card-stat-label">This Month</span>
+                <span class="nav-card-stat-value"><?php echo number_format($monthly_users); ?></span>
             </div>
         </a>
     </div>
