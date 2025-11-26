@@ -393,10 +393,33 @@ function processSquareRenewal($cardId, $amount, $subscriptionId, $email, $access
             ? 'https://connect.squareup.com/v2'
             : 'https://connect.squareupsandbox.com/v2';
 
-        // Create payment request
+        // First, retrieve the card to get the customer_id (required for card-on-file payments)
+        $ch = curl_init("$apiBaseUrl/cards/$cardId");
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => [
+                "Square-Version: 2025-10-16",
+                "Authorization: Bearer $accessToken",
+                "Content-Type: application/json"
+            ]
+        ]);
+        $cardResponse = curl_exec($ch);
+        $cardHttpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        $cardResult = json_decode($cardResponse, true);
+        if ($cardHttpCode < 200 || $cardHttpCode >= 300 || !isset($cardResult['card'])) {
+            $errorMessage = $cardResult['errors'][0]['detail'] ?? 'Failed to retrieve card details';
+            return ['success' => false, 'error' => $errorMessage];
+        }
+
+        $customerId = $cardResult['card']['customer_id'];
+
+        // Create payment request with customer_id
         $paymentData = [
             'idempotency_key' => uniqid('renewal_', true),
             'source_id' => $cardId,
+            'customer_id' => $customerId,
             'amount_money' => [
                 'amount' => intval($amount * 100), // Square uses cents
                 'currency' => 'CAD'
