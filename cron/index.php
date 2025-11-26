@@ -664,6 +664,20 @@ if (isset($_GET['view_log']) && is_cron_authenticated()) {
                         </div>
                     <?php else: ?>
                         <?php foreach ($recentPayments as $payment): ?>
+                            <?php
+                            $providerColors = [
+                                'paypal' => '#003087',
+                                'stripe' => '#635bff',
+                                'square' => '#006aff'
+                            ];
+                            $providerNames = [
+                                'paypal' => 'PayPal',
+                                'stripe' => 'Stripe',
+                                'square' => 'Square'
+                            ];
+                            $providerColor = $providerColors[strtolower($payment['payment_method'])] ?? '#6b7280';
+                            $providerName = $providerNames[strtolower($payment['payment_method'])] ?? ucfirst($payment['payment_method']);
+                            ?>
                             <div class="payment-item">
                                 <div>
                                     <strong><?php echo htmlspecialchars($payment['username']); ?></strong>
@@ -672,7 +686,9 @@ if (isset($_GET['view_log']) && is_cron_authenticated()) {
                                     <?php else: ?>
                                         <span style="color: #6b7280; margin-left: 5px;">$<?php echo number_format($payment['amount'], 2); ?></span>
                                     <?php endif; ?>
-                                    <br><span style="color: #9ca3af; font-size: 0.75rem; font-family: monospace;"><?php echo htmlspecialchars($payment['subscription_id']); ?></span>
+                                    <br>
+                                    <span style="color: <?php echo $providerColor; ?>; font-size: 0.75rem; font-weight: 600;"><?php echo $providerName; ?></span>
+                                    <span style="color: #9ca3af; font-size: 0.75rem; font-family: monospace; margin-left: 8px;"><?php echo htmlspecialchars($payment['subscription_id']); ?></span>
                                 </div>
                                 <div style="display: flex; align-items: center; gap: 10px;">
                                     <span style="color: #9ca3af; font-size: 0.75rem;">
