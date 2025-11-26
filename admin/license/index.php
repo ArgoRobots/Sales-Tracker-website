@@ -926,6 +926,7 @@ include '../admin_header.php';
                                     <th>User</th>
                                     <th>Email</th>
                                     <th>Plan</th>
+                                    <th>Payment</th>
                                     <th>Status</th>
                                     <th>Start Date</th>
                                     <th>End Date</th>
@@ -945,6 +946,16 @@ include '../admin_header.php';
                                         <td><?php echo htmlspecialchars($sub['username'] ?? 'N/A'); ?></td>
                                         <td><?php echo htmlspecialchars($sub['email']); ?></td>
                                         <td><?php echo ucfirst($sub['billing_cycle']); ?> - $<?php echo number_format($sub['amount'], 2); ?></td>
+                                        <td>
+                                            <?php
+                                            $providerNames = ['paypal' => 'PayPal', 'stripe' => 'Stripe', 'square' => 'Square'];
+                                            $providerColors = ['paypal' => '#003087', 'stripe' => '#635bff', 'square' => '#006aff'];
+                                            $method = strtolower($sub['payment_method'] ?? '');
+                                            $providerName = $providerNames[$method] ?? ucfirst($sub['payment_method'] ?? 'N/A');
+                                            $providerColor = $providerColors[$method] ?? '#6b7280';
+                                            ?>
+                                            <span style="color: <?php echo $providerColor; ?>; font-weight: 600;"><?php echo $providerName; ?></span>
+                                        </td>
                                         <td>
                                             <span class="badge badge-<?php echo $sub['status']; ?>">
                                                 <?php echo ucfirst($sub['status']); ?>
