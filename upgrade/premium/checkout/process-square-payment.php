@@ -4,14 +4,8 @@ session_start();
 // Set headers for JSON response
 header('Content-Type: application/json');
 
-// Enable detailed error logging for debugging
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
-// Load database connection and license functions
-require_once '../../../db_connect.php';
-require_once '../../../license_functions.php';
-require_once '../../../email_sender.php';
+// Load payment helper
+require_once 'payment-helper.php';
 
 // Get user_id if logged in
 $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
@@ -22,11 +16,9 @@ $data = json_decode($json_data, true);
 
 // Check for required data
 if (!$data || !isset($data['source_id']) || !isset($data['email'])) {
-    $error_msg = 'Missing required payment information';
-    error_log('Payment error: ' . $error_msg);
     echo json_encode([
         'success' => false,
-        'message' => $error_msg
+        'message' => 'Missing required payment information'
     ]);
     exit;
 }
@@ -46,33 +38,21 @@ try {
     $square_location_id = $is_production
         ? $_ENV['SQUARE_LIVE_LOCATION_ID']
         : $_ENV['SQUARE_SANDBOX_LOCATION_ID'];
-
-    // Base URL for Square API
     $api_base_url = $is_production
         ? 'https://connect.squareup.com/v2'
         : 'https://connect.squareupsandbox.com/v2';
 
-    // Database connection
-    $db = get_db_connection();
-
     // Check if we've already processed this payment (idempotency)
     if (isset($data['idempotency_key'])) {
-        $stmt = $db->prepare('SELECT license_key FROM license_keys WHERE transaction_id = ? LIMIT 1');
-        $stmt->bind_param('s', $data['idempotency_key']);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($row = $result->fetch_assoc()) {
-            // Transaction already processed, return existing license key
-            $response = [
+        $existing = check_transaction_processed($data['idempotency_key']);
+        if ($existing) {
+            echo json_encode([
                 'success' => true,
-                'license_key' => $row['license_key'],
+                'license_key' => $existing['license_key'],
                 'message' => 'Payment already processed'
-            ];
-            echo json_encode($response);
+            ]);
             exit;
         }
-        $stmt->close();
     }
 
     // Create payment request for Square
@@ -90,7 +70,7 @@ try {
         'note' => 'Argo Books - Premium License'
     ];
 
-    // Process the payment through Square API using cURL
+    // Process the payment through Square API
     $ch = curl_init("$api_base_url/payments");
     curl_setopt_array($ch, [
         CURLOPT_RETURNTRANSFER => true,
@@ -115,117 +95,56 @@ try {
             $payment = $payment_result['payment'];
             $transaction_id = $payment['id'];
             $status = $payment['status'];
-            $amount = $payment['amount_money']['amount'] / 100; // Convert cents to dollars
+            $amount = $payment['amount_money']['amount'] / 100;
             $currency = $payment['amount_money']['currency'];
 
-            // Verify payment was approved
             if ($status === 'COMPLETED') {
-                // Create a new license key
-                $license_key = create_license_key($data['email'], $user_id);
-
-                if ($license_key) {
-                    // Update the license key with transaction details
-                    $stmt = $db->prepare('UPDATE license_keys SET 
-                        transaction_id = ?,
-                        order_id = ?,
-                        payment_method = ?,
-                        activated = 1,
-                        activation_date = CURRENT_TIMESTAMP
-                        WHERE license_key = ?');
-
-                    $payment_method = 'Square';
-                    $order_id = $data['reference_id'] ?? '';
-                    $stmt->bind_param('ssss', $transaction_id, $order_id, $payment_method, $license_key);
-                    $stmt->execute();
-                    $stmt->close();
-
-                    // Send license key via email
-                    $email_sent = send_license_email($data['email'], $license_key);
-
-                    $response = [
-                        'success' => true,
-                        'license_key' => $license_key,
-                        'transaction_id' => $transaction_id,
-                        'order_id' => $data['reference_id'] ?? '',
-                        'email_sent' => $email_sent,
-                        'message' => 'Payment processed successfully'
-                    ];
-
-                    // Log the transaction for record keeping
-                    $stmt = $db->prepare('INSERT INTO payment_transactions 
-                        (transaction_id, order_id, email, amount, currency, payment_method, status, license_key, created_at) 
-                        VALUES 
-                        (?, ?, ?, ?, ?, ?, ?, ?, NOW())');
-
-                    $stmt->bind_param(
-                        'sssdssss',
-                        $transaction_id,
-                        $order_id,
-                        $data['email'],
-                        $amount,
-                        $currency,
-                        $payment_method,
-                        $status,
-                        $license_key
-                    );
-                    $stmt->execute();
-                    $stmt->close();
-                } else {
-                    $response = [
-                        'success' => false,
-                        'message' => 'Failed to generate license key'
-                    ];
-                    error_log("Failed to generate license key");
-                }
+                // Use shared helper for license creation and logging
+                $response = process_payment_completion([
+                    'email' => $data['email'],
+                    'transaction_id' => $transaction_id,
+                    'order_id' => $data['reference_id'] ?? '',
+                    'amount' => $amount,
+                    'currency' => $currency,
+                    'payment_method' => 'Square',
+                    'status' => $status,
+                    'user_id' => $user_id
+                ]);
             } else {
                 $response = [
                     'success' => false,
                     'message' => 'Payment not completed. Status: ' . $status
                 ];
-                error_log("Payment not completed. Status: $status");
             }
         } else {
             $response = [
                 'success' => false,
                 'message' => 'Invalid response from Square API'
             ];
-            error_log("Invalid response from Square API: $response_data");
         }
     } else {
         $errors = json_decode($response_data, true);
         $error_msg = '';
-        $detailed_error = 'Unknown error';
 
         if (isset($errors['errors']) && is_array($errors['errors'])) {
             foreach ($errors['errors'] as $error) {
                 $error_msg .= isset($error['detail']) ? $error['detail'] . ' ' : '';
-                $detailed_error = json_encode($error);
             }
         } else {
             $error_msg = 'HTTP error ' . $http_code;
             if ($curl_error) {
                 $error_msg .= ': ' . $curl_error;
             }
-            $detailed_error = $response_data;
         }
 
         error_log("Square payment error: $error_msg");
-        error_log("Detailed error: $detailed_error");
-
         $response = [
             'success' => false,
-            'message' => 'Square payment error: ' . $error_msg,
-            'debug_info' => $is_production ? null : [
-                'http_code' => $http_code,
-                'detailed_error' => $detailed_error
-            ]
+            'message' => 'Square payment error: ' . $error_msg
         ];
     }
 } catch (Exception $e) {
-    $error_message = 'Square payment processing error: ' . $e->getMessage();
-    error_log($error_message);
-    error_log('Exception trace: ' . $e->getTraceAsString());
-
+    error_log('Square payment processing error: ' . $e->getMessage());
     $response = [
         'success' => false,
         'message' => 'Server error: ' . $e->getMessage()

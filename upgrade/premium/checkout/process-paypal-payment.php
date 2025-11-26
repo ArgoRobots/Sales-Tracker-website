@@ -4,14 +4,8 @@ session_start();
 // Set headers for JSON response
 header('Content-Type: application/json');
 
-// Enable detailed error logging for debugging
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
-// Load required files
-require_once '../../../db_connect.php';
-require_once '../../../license_functions.php';
-require_once '../../../email_sender.php';
+// Load payment helper
+require_once 'payment-helper.php';
 
 // Get user_id if logged in
 $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
@@ -70,9 +64,6 @@ try {
 
     // Step 3: Verify order status
     $order_status = $order_details['status'] ?? '';
-
-    // For PayPal, the order should already be captured by the frontend
-    // But let's verify it's completed
     if ($order_status !== 'COMPLETED') {
         throw new Exception("Payment not completed. Status: $order_status");
     }
@@ -90,103 +81,24 @@ try {
         $currency = $capture['amount']['currency_code'] ?? $currency;
     }
 
-    // Step 5: Database connection
-    $db = get_db_connection();
+    // Step 5: Use shared helper for license creation and logging
+    $response = process_payment_completion([
+        'email' => $payer_email,
+        'transaction_id' => $transaction_id,
+        'order_id' => $order_id,
+        'amount' => $amount,
+        'currency' => $currency,
+        'payment_method' => 'PayPal',
+        'status' => $order_status,
+        'user_id' => $user_id
+    ]);
 
-    // Check if this transaction has already been processed
-    $stmt = $db->prepare('SELECT license_key FROM license_keys WHERE transaction_id = ? LIMIT 1');
-    $stmt->bind_param('s', $transaction_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($row = $result->fetch_assoc()) {
-        // Transaction already processed, return existing license key
-        $response = [
-            'success' => true,
-            'license_key' => $row['license_key'],
-            'transaction_id' => $transaction_id,
-            'order_id' => $order_id,
-            'message' => 'Payment already processed'
-        ];
-        $stmt->close();
-    } else {
-        $stmt->close();
-
-        // Create new license key
-        $license_key = create_license_key($payer_email, $user_id);
-
-        if ($license_key) {
-            // Update the license key with transaction details
-            $stmt = $db->prepare('UPDATE license_keys SET 
-                transaction_id = ?, 
-                order_id = ?, 
-                payment_method = ?,
-                activated = 1,
-                activation_date = CURRENT_TIMESTAMP
-                WHERE license_key = ?');
-
-            $payment_method = 'PayPal';
-            $stmt->bind_param('ssss', $transaction_id, $order_id, $payment_method, $license_key);
-            $stmt->execute();
-            $stmt->close();
-
-            // Send license email
-            $email_sent = send_license_email($payer_email, $license_key);
-
-            // Log transaction for record keeping
-            $stmt = $db->prepare('INSERT INTO payment_transactions 
-                (transaction_id, order_id, email, amount, currency, payment_method, status, license_key, created_at) 
-                VALUES 
-                (?, ?, ?, ?, ?, ?, ?, ?, NOW())');
-
-            $stmt->bind_param(
-                'ssssssss',
-                $transaction_id,
-                $order_id,
-                $payer_email,
-                $amount,
-                $currency,
-                $payment_method,
-                $order_status,
-                $license_key
-            );
-            $stmt->execute();
-            $stmt->close();
-
-            $response = [
-                'success' => true,
-                'license_key' => $license_key,
-                'transaction_id' => $transaction_id,
-                'order_id' => $order_id,
-                'email_sent' => $email_sent,
-                'message' => 'Payment processed successfully'
-            ];
-
-            error_log("PayPal payment transaction recorded in database");
-        } else {
-            $response = [
-                'success' => false,
-                'message' => 'Failed to generate license key'
-            ];
-            error_log("Failed to generate license key");
-        }
-    }
-
-    // Close database connection
-    if (isset($db) && $db instanceof mysqli) {
-        $db->close();
-    }
 } catch (Exception $e) {
     error_log('PayPal payment processing error: ' . $e->getMessage());
     $response = [
         'success' => false,
         'message' => 'Payment processing error: ' . $e->getMessage()
     ];
-
-    // Close database connection if it exists
-    if (isset($db) && $db instanceof mysqli) {
-        $db->close();
-    }
 }
 
 // Send JSON response

@@ -12,41 +12,45 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 $page_title = "Website Statistics";
 $page_description = "View comprehensive analytics, user statistics, and performance metrics";
 
-// Function to get download statistics by period
-function get_downloads_by_period($period = 'month', $limit = 12)
+/**
+ * Get SQL period formatting based on period type
+ * @param string $period Period type (day, week, month, year)
+ * @return array [sql_period, display_format]
+ */
+function get_period_formatting($period)
+{
+    $formats = [
+        'day' => ['DATE(created_at)', 'DATE(created_at)'],
+        'week' => ['YEARWEEK(created_at)', 'CONCAT("Week ", WEEK(created_at), ", ", YEAR(created_at))'],
+        'month' => ['DATE_FORMAT(created_at, "%Y-%m")', 'DATE_FORMAT(created_at, "%b %Y")'],
+        'year' => ['YEAR(created_at)', 'YEAR(created_at)']
+    ];
+    return $formats[$period] ?? $formats['month'];
+}
+
+/**
+ * Generic function to get statistics by period from any table
+ * @param string $table Table name
+ * @param string $period Period type
+ * @param int $limit Number of results
+ * @param string $where_clause Optional WHERE clause (without WHERE keyword)
+ * @return array Statistics data
+ */
+function get_stats_by_period($table, $period = 'month', $limit = 12, $where_clause = '')
 {
     $db = get_db_connection();
+    list($sql_period, $display_format) = get_period_formatting($period);
 
-    $sql_period = '';
-    $display_format = '';
-    switch ($period) {
-        case 'day':
-            $sql_period = 'DATE(created_at)';
-            $display_format = 'DATE(created_at)';
-            break;
-        case 'week':
-            $sql_period = 'YEARWEEK(created_at)';
-            $display_format = 'CONCAT("Week ", WEEK(created_at), ", ", YEAR(created_at))';
-            break;
-        case 'month':
-            $sql_period = 'DATE_FORMAT(created_at, "%Y-%m")';
-            $display_format = 'DATE_FORMAT(created_at, "%b %Y")';
-            break;
-        case 'year':
-            $sql_period = 'YEAR(created_at)';
-            $display_format = 'YEAR(created_at)';
-            break;
-    }
-
+    $where = $where_clause ? "WHERE $where_clause" : '';
     $query = "
-        SELECT 
-            $sql_period as period, 
+        SELECT
+            $sql_period as period,
             $display_format as display_period,
-            COUNT(*) as count 
-        FROM statistics 
-        WHERE event_type = 'download'
-        GROUP BY period 
-        ORDER BY period DESC 
+            COUNT(*) as count
+        FROM $table
+        $where
+        GROUP BY period
+        ORDER BY period DESC
         LIMIT ?";
 
     $stmt = $db->prepare($query);
@@ -61,106 +65,24 @@ function get_downloads_by_period($period = 'month', $limit = 12)
 
     $stmt->close();
     return $data;
+}
+
+// Function to get download statistics by period
+function get_downloads_by_period($period = 'month', $limit = 12)
+{
+    return get_stats_by_period('statistics', $period, $limit, "event_type = 'download'");
 }
 
 // Function to get user registrations by period
 function get_registrations_by_period($period = 'month', $limit = 12)
 {
-    $db = get_db_connection();
-
-    $sql_period = '';
-    $display_format = '';
-    switch ($period) {
-        case 'day':
-            $sql_period = 'DATE(created_at)';
-            $display_format = 'DATE(created_at)';
-            break;
-        case 'week':
-            $sql_period = 'YEARWEEK(created_at)';
-            $display_format = 'CONCAT("Week ", WEEK(created_at), ", ", YEAR(created_at))';
-            break;
-        case 'month':
-            $sql_period = 'DATE_FORMAT(created_at, "%Y-%m")';
-            $display_format = 'DATE_FORMAT(created_at, "%b %Y")';
-            break;
-        case 'year':
-            $sql_period = 'YEAR(created_at)';
-            $display_format = 'YEAR(created_at)';
-            break;
-    }
-
-    $query = "
-        SELECT 
-            $sql_period as period, 
-            $display_format as display_period,
-            COUNT(*) as count 
-        FROM community_users 
-        GROUP BY period 
-        ORDER BY period DESC 
-        LIMIT ?";
-
-    $stmt = $db->prepare($query);
-    $stmt->bind_param('i', $limit);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    $data = [];
-    while ($row = $result->fetch_assoc()) {
-        $data[] = $row;
-    }
-
-    $stmt->close();
-    return $data;
+    return get_stats_by_period('community_users', $period, $limit);
 }
 
 // Function to get license purchases by period
 function get_licenses_by_period($period = 'month', $limit = 12)
 {
-    $db = get_db_connection();
-
-    $sql_period = '';
-    $display_format = '';
-    switch ($period) {
-        case 'day':
-            $sql_period = 'DATE(created_at)';
-            $display_format = 'DATE(created_at)';
-            break;
-        case 'week':
-            $sql_period = 'YEARWEEK(created_at)';
-            $display_format = 'CONCAT("Week ", WEEK(created_at), ", ", YEAR(created_at))';
-            break;
-        case 'month':
-            $sql_period = 'DATE_FORMAT(created_at, "%Y-%m")';
-            $display_format = 'DATE_FORMAT(created_at, "%b %Y")';
-            break;
-        case 'year':
-            $sql_period = 'YEAR(created_at)';
-            $display_format = 'YEAR(created_at)';
-            break;
-    }
-
-    $query = "
-        SELECT 
-            $sql_period as period, 
-            $display_format as display_period,
-            COUNT(*) as count 
-        FROM license_keys 
-        GROUP BY period 
-        ORDER BY period DESC 
-        LIMIT ?";
-
-    $stmt = $db->prepare($query);
-    $stmt->bind_param('i', $limit);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    $data = [];
-    while ($row = $result->fetch_assoc()) {
-        $data[] = $row;
-    }
-
-    $stmt->close();
-    return $data;
+    return get_stats_by_period('license_keys', $period, $limit);
 }
 
 // Function to get activation statistics

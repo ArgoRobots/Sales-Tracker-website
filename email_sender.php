@@ -1,6 +1,59 @@
 <?php
 
 /**
+ * Base function to send an email with standard Argo styling
+ *
+ * @param string $to_email Recipient email address
+ * @param string $subject Email subject
+ * @param string $body_content HTML content for the email body (will be wrapped in template)
+ * @param string $header_style Optional custom header style (default: blue gradient)
+ * @return bool True if successful, false otherwise
+ */
+function send_styled_email($to_email, $subject, $body_content, $header_style = '')
+{
+    $css = file_get_contents(__DIR__ . '/email.css');
+    $header_bg = $header_style ?: 'background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);';
+
+    $email_html = <<<HTML
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>{$subject}</title>
+    <style>
+        {$css}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header" style="{$header_bg}">
+            <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" width="140">
+        </div>
+        <div class="content">
+            {$body_content}
+        </div>
+        <div class="footer">
+            <p>Argo Books &copy; 2025. All rights reserved.</p>
+            <p>This email was sent to {$to_email}</p>
+        </div>
+    </div>
+</body>
+</html>
+HTML;
+
+    $headers = [
+        'MIME-Version: 1.0',
+        'Content-Type: text/html; charset=UTF-8',
+        'From: Argo Books <noreply@argorobots.com>',
+        'Reply-To: support@argorobots.com',
+        'X-Mailer: PHP/' . phpversion()
+    ];
+
+    return mail($to_email, $subject, $email_html, implode("\r\n", $headers));
+}
+
+/**
  * Send license key via email using PHP mail
  * 
  * @param string $to_email Recipient email address
