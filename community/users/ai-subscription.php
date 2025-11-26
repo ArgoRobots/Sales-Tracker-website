@@ -116,7 +116,15 @@ if ($ai_subscription) {
                         <div class="detail-grid">
                             <div class="detail-item">
                                 <span class="detail-label">Subscription ID</span>
-                                <span class="detail-value monospace"><?php echo htmlspecialchars($ai_subscription['subscription_id']); ?></span>
+                                <span class="detail-value">
+                                    <a href="resend_subscription_id.php" class="send-id-link" title="Send subscription ID to your email">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                            <polyline points="22,6 12,13 2,6"></polyline>
+                                        </svg>
+                                        Send to Email
+                                    </a>
+                                </span>
                             </div>
                             <div class="detail-item">
                                 <span class="detail-label">Price</span>

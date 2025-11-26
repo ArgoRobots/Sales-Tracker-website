@@ -149,6 +149,89 @@ function resend_license_email($to_email, $license_key)
 }
 
 /**
+ * Resend AI subscription ID email
+ *
+ * @param string $to_email User's email address
+ * @param string $subscription_id AI subscription ID
+ * @param string $billing_cycle Billing cycle (monthly/yearly)
+ * @param string $end_date Subscription end date
+ * @return bool Success status
+ */
+function resend_subscription_id_email($to_email, $subscription_id, $billing_cycle = 'monthly', $end_date = '')
+{
+    $css = file_get_contents(__DIR__ . '/email.css');
+    $subject = 'Your Requested Argo AI Subscription ID';
+
+    $billing_text = $billing_cycle === 'yearly' ? 'yearly' : 'monthly';
+    $end_date_text = !empty($end_date) ? date('F j, Y', strtotime($end_date)) : 'N/A';
+
+    $email_html = <<<HTML
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+            <title>Your Argo AI Subscription ID</title>
+            <style>
+                {$css}
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                    <img src="https://argorobots.com/images/argo-logo/Argo-white.svg" alt="Argo Logo" width="140">
+                </div>
+
+                <div class="content content-centered">
+                    <h1>Your AI Subscription ID</h1>
+                    <p>As requested, here is your Argo AI Subscription ID:</p>
+
+                    <div class="license-key">{$subscription_id}</div>
+
+                    <div class="steps steps-centered">
+                        <h2>Subscription Details</h2>
+                        <table style="width: 100%; max-width: 300px; margin: 0 auto; border-collapse: collapse;">
+                            <tr>
+                                <td style="padding: 8px; text-align: left; border-bottom: 1px solid #e5e7eb;"><strong>Plan</strong></td>
+                                <td style="padding: 8px; text-align: right; border-bottom: 1px solid #e5e7eb;">{$billing_text}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; text-align: left;"><strong>Next Billing</strong></td>
+                                <td style="padding: 8px; text-align: right;">{$end_date_text}</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="button-container">
+                        <a href="https://argorobots.com/community/users/ai-subscription.php" class="button" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">Manage Subscription</a>
+                    </div>
+
+                    <p>Keep this ID safe. You may need it when contacting support about your subscription.</p>
+                    <p>If you have any questions or need assistance, please don't hesitate to <a href="https://argorobots.com/contact-us/index.php">contact our support team</a>.</p>
+                </div>
+
+                <div class="footer">
+                    <p>Argo Books &copy; 2025. All rights reserved.</p>
+                    <p>This email was sent to {$to_email}</p>
+                </div>
+            </div>
+        </body>
+        </html>
+    HTML;
+
+    $headers = [
+        'MIME-Version: 1.0',
+        'Content-Type: text/html; charset=UTF-8',
+        'From: Argo Books <noreply@argorobots.com>',
+        'Reply-To: support@argorobots.com',
+        'X-Mailer: PHP/' . phpversion()
+    ];
+
+    $mail_result = mail($to_email, $subject, $email_html, implode("\r\n", $headers));
+    return $mail_result;
+}
+
+/**
  * Send verification email with code
  * 
  * @param string $email User's email address
