@@ -512,3 +512,27 @@
         padding: 10px 12px;
     }
 }
+
+/* Send ID Link */
+.send-id-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--purple-500);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 6px 12px;
+    background: var(--purple-50);
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.send-id-link:hover {
+    background: var(--purple-100);
+    color: var(--purple-600);
+}
+
+.send-id-link svg {
+    stroke: currentColor;
+}

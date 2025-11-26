@@ -2,6 +2,7 @@
 session_start();
 require_once '../../db_connect.php';
 require_once '../../email_sender.php';
+require_once '../../community/report/ban_check.php';
 
 // Check if user is already logged in
 if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
@@ -91,18 +92,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['bulk_action'])) {
         header('Location: ' . $redirect_url);
         exit;
     }
-}
-
-// Function to check if user is currently banned
-function is_user_banned($user_id) {
-    $db = get_db_connection();
-    $stmt = $db->prepare('SELECT id FROM user_bans WHERE user_id = ? AND is_active = 1 AND (expires_at IS NULL OR expires_at > NOW()) LIMIT 1');
-    $stmt->bind_param('i', $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $is_banned = $result->num_rows > 0;
-    $stmt->close();
-    return $is_banned;
 }
 
 // Function to get all users with optional filters

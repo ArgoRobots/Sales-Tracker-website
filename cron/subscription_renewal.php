@@ -385,39 +385,76 @@ function processStripeRenewal($paymentMethodId, $amount, $subscriptionId, $email
  */
 function processSquareRenewal($cardId, $amount, $subscriptionId, $email, $accessToken, $environment) {
     try {
-        $client = new \Square\SquareClient([
-            'accessToken' => $accessToken,
-            'environment' => $environment
-        ]);
-
         $locationId = ($environment === 'production')
             ? $_ENV['SQUARE_LIVE_LOCATION_ID']
             : $_ENV['SQUARE_SANDBOX_LOCATION_ID'];
 
-        $amountMoney = new \Square\Models\Money();
-        $amountMoney->setAmount(intval($amount * 100)); // Square uses cents
-        $amountMoney->setCurrency('CAD');
+        $apiBaseUrl = ($environment === 'production')
+            ? 'https://connect.squareup.com/v2'
+            : 'https://connect.squareupsandbox.com/v2';
 
-        $createPaymentRequest = new \Square\Models\CreatePaymentRequest(
-            $cardId,
-            uniqid('renewal_', true)
-        );
-        $createPaymentRequest->setAmountMoney($amountMoney);
-        $createPaymentRequest->setLocationId($locationId);
-        $createPaymentRequest->setNote("AI Subscription Renewal - $subscriptionId");
-        $createPaymentRequest->setAutocomplete(true);
+        // First, retrieve the card to get the customer_id (required for card-on-file payments)
+        $ch = curl_init("$apiBaseUrl/cards/$cardId");
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => [
+                "Square-Version: 2025-10-16",
+                "Authorization: Bearer $accessToken",
+                "Content-Type: application/json"
+            ]
+        ]);
+        $cardResponse = curl_exec($ch);
+        $cardHttpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
 
-        $response = $client->getPaymentsApi()->createPayment($createPaymentRequest);
+        $cardResult = json_decode($cardResponse, true);
+        if ($cardHttpCode < 200 || $cardHttpCode >= 300 || !isset($cardResult['card'])) {
+            $errorMessage = $cardResult['errors'][0]['detail'] ?? 'Failed to retrieve card details';
+            return ['success' => false, 'error' => $errorMessage];
+        }
 
-        if ($response->isSuccess()) {
-            $payment = $response->getResult()->getPayment();
+        $customerId = $cardResult['card']['customer_id'];
+
+        // Create payment request with customer_id
+        $paymentData = [
+            'idempotency_key' => uniqid('renewal_', true),
+            'source_id' => $cardId,
+            'customer_id' => $customerId,
+            'amount_money' => [
+                'amount' => intval($amount * 100), // Square uses cents
+                'currency' => 'CAD'
+            ],
+            'location_id' => $locationId,
+            'note' => "AI Subscription Renewal - $subscriptionId",
+            'autocomplete' => true
+        ];
+
+        // Make API call
+        $ch = curl_init("$apiBaseUrl/payments");
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => json_encode($paymentData),
+            CURLOPT_HTTPHEADER => [
+                "Square-Version: 2025-10-16",
+                "Authorization: Bearer $accessToken",
+                "Content-Type: application/json"
+            ]
+        ]);
+
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        $result = json_decode($response, true);
+
+        if ($httpCode >= 200 && $httpCode < 300 && isset($result['payment'])) {
             return [
                 'success' => true,
-                'transaction_id' => $payment->getId()
+                'transaction_id' => $result['payment']['id']
             ];
         } else {
-            $errors = $response->getErrors();
-            $errorMessage = $errors[0]->getDetail() ?? 'Unknown error';
+            $errorMessage = $result['errors'][0]['detail'] ?? 'Unknown error';
             return [
                 'success' => false,
                 'error' => $errorMessage
