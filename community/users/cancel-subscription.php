@@ -4,6 +4,7 @@ require_once '../../db_connect.php';
 require_once '../../email_sender.php';
 require_once '../community_functions.php';
 require_once 'user_functions.php';
+require_once '../../webhooks/paypal-helper.php';
 
 // Ensure user is logged in
 require_login();
@@ -33,12 +34,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_cancel'])) {
     try {
         // Get subscription details before cancelling
         $stmt = $pdo->prepare("
-            SELECT subscription_id, email, end_date, credit_balance, original_credit
+            SELECT subscription_id, email, end_date, credit_balance, original_credit, payment_method, paypal_subscription_id
             FROM ai_subscriptions
             WHERE user_id = ? AND status = 'active'
         ");
         $stmt->execute([$user_id]);
         $subscription = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // If this is a PayPal subscription, cancel it on PayPal's side first
+        $paypalCancelFailed = false;
+        if ($subscription && $subscription['payment_method'] === 'paypal' && !empty($subscription['paypal_subscription_id'])) {
+            try {
+                $cancelled = cancelPayPalSubscription($subscription['paypal_subscription_id'], 'Cancelled by user from account settings');
+                if (!$cancelled) {
+                    $paypalCancelFailed = true;
+                    error_log("Failed to cancel PayPal subscription: " . $subscription['paypal_subscription_id']);
+                }
+            } catch (Exception $e) {
+                $paypalCancelFailed = true;
+                error_log("Error cancelling PayPal subscription: " . $e->getMessage());
+            }
+        }
 
         // Cancel the subscription and invalidate any remaining credit
         // Credit is forfeited upon cancellation
@@ -63,6 +79,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_cancel'])) {
         }
 
         $successMsg = 'Your AI subscription has been cancelled. You will retain access until the end of your billing period.';
+
+        // Add PayPal warning if cancellation on their side failed
+        if ($paypalCancelFailed) {
+            $successMsg .= ' Note: We could not automatically cancel your PayPal subscription. Please also cancel it directly from your PayPal account to prevent future charges.';
+        }
 
         // Add credit forfeiture notice if applicable
         $forfeitedCredit = floatval($subscription['credit_balance'] ?? 0);
