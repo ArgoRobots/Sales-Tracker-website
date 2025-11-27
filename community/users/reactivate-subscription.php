@@ -205,13 +205,13 @@ $billing_cycle = $ai_subscription['billing_cycle'] ?? 'monthly';
                     const hasChanges = selectedMethod !== originalMethod || selectedBilling !== originalBilling;
 
                     if (hasChanges) {
-                        reactivateBtn.textContent = `Update to ${methodName} (${billingName})`;
+                        reactivateBtn.textContent = `Reactivate with ${methodName} (${billingName})`;
                         reactivateBtn.type = 'button';
                         reactivateBtn.onclick = function() {
                             window.location.href = `../../upgrade/ai/checkout/?method=${selectedMethod}&billing=${selectedBilling}&change_method=1`;
                         };
                     } else {
-                        reactivateBtn.textContent = `Reactivate with ${methodName}`;
+                        reactivateBtn.textContent = `Reactivate with ${methodName} (${billingName})`;
                         reactivateBtn.type = 'submit';
                         reactivateBtn.onclick = null;
                     }
