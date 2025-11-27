@@ -107,9 +107,11 @@ if ($ai_subscription) {
                             <span class="plan-name">Argo AI Features</span>
                             <span class="billing-cycle"><?php echo ucfirst($ai_subscription['billing_cycle']); ?> Plan</span>
                         </div>
-                        <div class="subscription-status <?php echo $ai_subscription['status']; ?>">
-                            <span class="status-badge"><?php echo ucfirst($ai_subscription['status']); ?></span>
-                        </div>
+                        <?php if ($ai_subscription['status'] != 'payment_failed'): ?>
+                            <div class="subscription-status <?php echo $ai_subscription['status']; ?>">
+                                <span class="status-badge"><?php echo ucfirst($ai_subscription['status']); ?></span>
+                            </div>
+                        <?php endif; ?>
                     </div>
 
                     <div class="subscription-details">
@@ -199,7 +201,7 @@ if ($ai_subscription) {
                             <?php if (strtotime($ai_subscription['end_date']) > time()): ?>
                                 <a href="reactivate-subscription.php" class="btn btn-purple btn-reactivate">Reactivate Subscription</a>
                             <?php else: ?>
-                                <a href="../../upgrade/ai/" class="btn btn-purple">Resubscribe</a>
+                                <a href="reactivate-subscription.php" class="btn btn-purple">Resubscribe</a>
                             <?php endif; ?>
                         </div>
                     <?php elseif ($ai_subscription['status'] === 'payment_failed'): ?>
