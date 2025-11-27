@@ -97,6 +97,7 @@ try {
 // Check if user is updating payment method for existing subscription
 $isUpdatingPaymentMethod = $input['update_payment_method'] ?? false;
 $existingSubscription = null;
+$subscriptionStillValid = false;
 
 try {
     $stmt = $pdo->prepare("
@@ -107,6 +108,7 @@ try {
     ");
     $stmt->execute([$userId]);
     $existingSubscription = $stmt->fetch(PDO::FETCH_ASSOC);
+    $subscriptionStillValid = ($existingSubscription !== false);
 } catch (PDOException $e) {
     // Continue with new subscription if check fails
 }
@@ -138,8 +140,10 @@ try {
     // Check if this is a PayPal subscription
     $paypalSubscriptionId = null;
 
-    // Skip payment processing for monthly subscriptions with credit (no charge needed)
-    $skipPaymentProcessing = $isMonthlyWithCredit;
+    // Skip payment processing for:
+    // 1. Monthly subscriptions with credit (no charge needed)
+    // 2. Updating payment method when subscription is still within paid period
+    $skipPaymentProcessing = $isMonthlyWithCredit || ($isUpdatingPaymentMethod && $subscriptionStillValid);
 
     switch ($paymentMethod) {
         case 'paypal':
@@ -360,8 +364,11 @@ try {
 
     // Check if updating existing subscription's payment method
     if ($existingSubscription && $isUpdatingPaymentMethod) {
-        // Update existing subscription with new payment method
+        // Update existing subscription with new payment method and billing cycle
         $subscriptionId = $existingSubscription['subscription_id'];
+
+        // Calculate new amount based on billing cycle
+        $newAmount = ($billing === 'yearly') ? 50.00 : 5.00;
 
         $stmt = $pdo->prepare("
             UPDATE ai_subscriptions
@@ -369,6 +376,8 @@ try {
                 payment_token = ?,
                 stripe_customer_id = ?,
                 transaction_id = ?,
+                billing_cycle = ?,
+                amount = ?,
                 status = 'active',
                 auto_renew = 1,
                 cancelled_at = NULL,
@@ -380,6 +389,8 @@ try {
             $paymentToken,
             $stripeCustomerId,
             $transactionId,
+            $billing,
+            $newAmount,
             $subscriptionId
         ]);
 
@@ -395,10 +406,15 @@ try {
 
         $pdo->commit();
 
+        // Build appropriate success message
+        $chargeMessage = $subscriptionStillValid
+            ? 'Your subscription has been updated. You will not be charged until your current billing period ends.'
+            : 'Payment method updated successfully.';
+
         echo json_encode([
             'success' => true,
             'subscription_id' => $subscriptionId,
-            'message' => 'Payment method updated successfully'
+            'message' => $chargeMessage
         ]);
 
     } else {
