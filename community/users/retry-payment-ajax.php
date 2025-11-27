@@ -42,17 +42,6 @@ if ($ai_subscription['status'] !== 'payment_failed') {
     exit;
 }
 
-// Check if subscription is expired
-$is_expired = strtotime($ai_subscription['end_date']) < time();
-if ($is_expired) {
-    echo json_encode([
-        'success' => false,
-        'error' => 'Your subscription has expired. Please subscribe again to access AI features.',
-        'redirect' => '../../upgrade/ai/'
-    ]);
-    exit;
-}
-
 $payment_method = strtolower($ai_subscription['payment_method'] ?? '');
 $billing_cycle = $ai_subscription['billing_cycle'] ?? 'monthly';
 
@@ -127,21 +116,25 @@ try {
 
     // If we got here, reactivation was successful
     if ($reactivated) {
-        // Update the subscription status in database
+        // Calculate new end date based on billing cycle
+        $interval = ($billing_cycle === 'yearly') ? '+1 year' : '+1 month';
+        $new_end_date = date('Y-m-d H:i:s', strtotime($interval));
+
+        // Update the subscription status in database and extend the end date
         $stmt = $pdo->prepare("
             UPDATE ai_subscriptions
-            SET status = 'active', auto_renew = 1, updated_at = NOW()
+            SET status = 'active', auto_renew = 1, end_date = ?, updated_at = NOW()
             WHERE user_id = ? AND status = 'payment_failed'
         ");
-        $stmt->execute([$user_id]);
+        $stmt->execute([$new_end_date, $user_id]);
 
         if ($stmt->rowCount() > 0) {
-            // Send reactivation email
+            // Send reactivation email with new end date
             try {
                 send_ai_subscription_reactivated_email(
                     $ai_subscription['email'],
                     $ai_subscription['subscription_id'],
-                    $ai_subscription['end_date'],
+                    $new_end_date,
                     $billing_cycle
                 );
             } catch (Exception $e) {

@@ -211,7 +211,7 @@ if ($ai_subscription) {
                             </svg>
                             <div>
                                 <p><strong>Payment Failed</strong></p>
-                                <p class="notice-detail">We were unable to process your renewal payment. Please update your payment method to continue your subscription.</p>
+                                <p class="notice-detail">We were unable to process your renewal payment. Please update your payment method or retry with your existing method.</p>
                             </div>
                         </div>
                         <div class="subscription-actions payment-failed-actions">
