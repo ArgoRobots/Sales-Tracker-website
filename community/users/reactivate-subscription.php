@@ -14,20 +14,6 @@ $user_id = $_SESSION['user_id'];
 // Get subscription info
 $ai_subscription = get_user_ai_subscription($user_id);
 
-// Redirect if no subscription or not in a reactivatable state
-if (!$ai_subscription || !in_array($ai_subscription['status'], ['cancelled', 'payment_failed'])) {
-    header('Location: ai-subscription.php');
-    exit;
-}
-
-// Check if subscription is expired
-$is_expired = strtotime($ai_subscription['end_date']) < time();
-if ($is_expired) {
-    $_SESSION['subscription_error'] = 'Your subscription has expired. Please subscribe again to access AI features.';
-    header('Location: ai-subscription.php');
-    exit;
-}
-
 // Check if this is a PayPal subscription that was cancelled
 // PayPal subscriptions cannot be reactivated via API once cancelled - user must create a new subscription
 $is_cancelled_paypal = ($ai_subscription['payment_method'] === 'paypal'
@@ -147,18 +133,6 @@ $billing_cycle = $ai_subscription['billing_cycle'] ?? 'monthly';
                 <div class="alert alert-error"><?php echo htmlspecialchars($error_message); ?></div>
             <?php endif; ?>
 
-            <?php if ($status === 'payment_failed'): ?>
-                <div class="alert alert-warning">
-                    Your previous payment failed. Reactivating will attempt to charge your payment method on file.
-                </div>
-            <?php endif; ?>
-
-            <?php if ($is_cancelled_paypal): ?>
-                <div class="alert alert-warning">
-                    <strong>PayPal subscription cancelled.</strong> Since your PayPal subscription was cancelled, you'll need to create a new subscription. Click "Reactivate" below to set up a new PayPal subscription.
-                </div>
-            <?php endif; ?>
-
             <p class="confirm-description">
                 You're about to reactivate your Argo AI subscription. Here's what you need to know:
             </p>
@@ -174,24 +148,7 @@ $billing_cycle = $ai_subscription['billing_cycle'] ?? 'monthly';
             </div>
 
             <div class="info-box payment-method-box">
-                <h3>Current Payment Method</h3>
-                <div class="current-payment-method">
-                    <div class="payment-method-icon">
-                        <?php if (strtolower($ai_subscription['payment_method']) === 'stripe'): ?>
-                            <img src="../../images/Stripe-logo.svg" alt="Stripe">
-                        <?php elseif (strtolower($ai_subscription['payment_method']) === 'paypal'): ?>
-                            <img src="../../images/PayPal-logo.svg" alt="PayPal">
-                        <?php elseif (strtolower($ai_subscription['payment_method']) === 'square'): ?>
-                            <img src="../../images/Square-logo.svg" alt="Square">
-                        <?php else: ?>
-                            <img src="../../images/Stripe-logo.svg" alt="Payment">
-                        <?php endif; ?>
-                    </div>
-                    <div class="payment-method-details">
-                        <span class="payment-method-name"><?php echo $payment_method; ?> (<?php echo ucfirst($billing_cycle); ?>)</span>
-                        <span class="payment-method-note">This payment method will be charged on <?php echo $end_date; ?></span>
-                    </div>
-                </div>
+                <h3>Payment Options</h3>
 
                 <div class="change-payment-section">
                     <p class="change-payment-label">Billing cycle:</p>
@@ -226,7 +183,7 @@ $billing_cycle = $ai_subscription['billing_cycle'] ?? 'monthly';
             <div class="confirm-actions">
                 <form method="post" id="reactivate-form">
                     <input type="hidden" name="confirm_reactivate" value="1">
-                    <button type="submit" id="reactivate-btn" class="btn btn-purple">Reactivate with <?php echo $payment_method; ?></button>
+                    <button type="submit" id="reactivate-btn" class="btn btn-purple">Reactivate with <?php echo $payment_method; ?> (<?php echo ucfirst($billing_cycle); ?>)</button>
                 </form>
                 <a href="ai-subscription.php" class="btn btn-outline">Go Back</a>
             </div>
@@ -248,13 +205,13 @@ $billing_cycle = $ai_subscription['billing_cycle'] ?? 'monthly';
                     const hasChanges = selectedMethod !== originalMethod || selectedBilling !== originalBilling;
 
                     if (hasChanges) {
-                        reactivateBtn.textContent = `Update to ${methodName} (${billingName})`;
+                        reactivateBtn.textContent = `Reactivate with ${methodName} (${billingName})`;
                         reactivateBtn.type = 'button';
                         reactivateBtn.onclick = function() {
                             window.location.href = `../../upgrade/ai/checkout/?method=${selectedMethod}&billing=${selectedBilling}&change_method=1`;
                         };
                     } else {
-                        reactivateBtn.textContent = `Reactivate with ${methodName}`;
+                        reactivateBtn.textContent = `Reactivate with ${methodName} (${billingName})`;
                         reactivateBtn.type = 'submit';
                         reactivateBtn.onclick = null;
                     }

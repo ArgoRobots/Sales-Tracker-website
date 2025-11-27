@@ -120,7 +120,6 @@ function get_paypal_access_token($client_id, $client_secret, $api_url)
     $response = curl_exec($ch);
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $curl_error = curl_error($ch);
-    curl_close($ch);
 
     if ($http_code !== 200 || !$response) {
         error_log("PayPal auth error ($http_code): $curl_error");
@@ -156,7 +155,6 @@ function call_paypal_api($url, $method, $access_token, $data = null)
     $response = curl_exec($ch);
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $error = curl_error($ch);
-    curl_close($ch);
 
     if (($http_code < 200 || $http_code >= 300) || !$response) {
         error_log("PayPal API error ($http_code): $error, Response: $response");

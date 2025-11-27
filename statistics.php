@@ -59,7 +59,6 @@ function track_event($event_type, $event_data = '')
             curl_setopt($ch, CURLOPT_USERAGENT, 'ArgoSalesTracker/1.0');
             $response = curl_exec($ch);
             $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            curl_close($ch);
 
             if ($http_code == 200 && !empty($response)) {
                 $country_code = trim($response);
@@ -145,7 +144,6 @@ function track_referral_visit($source_code, $page_url = '')
             curl_setopt($ch, CURLOPT_USERAGENT, 'ArgoSalesTracker/1.0');
             $response = curl_exec($ch);
             $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            curl_close($ch);
 
             if ($http_code == 200 && !empty($response)) {
                 $country_code = trim($response);
