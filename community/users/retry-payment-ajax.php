@@ -50,31 +50,42 @@ try {
     $message = '';
 
     // Handle PayPal subscriptions
-    if ($payment_method === 'paypal' && !empty($ai_subscription['paypal_subscription_id'])) {
-        // Try to reactivate the suspended PayPal subscription
-        try {
-            $reactivated = activatePayPalSubscription(
-                $ai_subscription['paypal_subscription_id'],
-                'Reactivated by user - retry payment'
-            );
+    if ($payment_method === 'paypal') {
+        if (!empty($ai_subscription['paypal_subscription_id'])) {
+            // Try to reactivate the suspended PayPal subscription
+            try {
+                $reactivated = activatePayPalSubscription(
+                    $ai_subscription['paypal_subscription_id'],
+                    'Reactivated by user - retry payment'
+                );
 
-            if ($reactivated) {
-                $message = 'Your PayPal subscription has been reactivated. Payment will be processed by PayPal.';
-            } else {
-                // PayPal reactivation failed - subscription may be cancelled not suspended
+                if ($reactivated) {
+                    $message = 'Your PayPal subscription has been reactivated. Payment will be processed by PayPal.';
+                } else {
+                    // PayPal reactivation failed - subscription may be cancelled not suspended
+                    echo json_encode([
+                        'success' => false,
+                        'error' => 'Unable to reactivate your PayPal subscription. The subscription may have been cancelled. Please set up a new subscription.',
+                        'action' => 'new_subscription',
+                        'redirect' => "../../upgrade/ai/checkout/?method=paypal&billing={$billing_cycle}&change_method=1"
+                    ]);
+                    exit;
+                }
+            } catch (Exception $e) {
+                error_log("PayPal reactivation failed: " . $e->getMessage());
                 echo json_encode([
                     'success' => false,
-                    'error' => 'Unable to reactivate your PayPal subscription. The subscription may have been cancelled. Please set up a new subscription.',
+                    'error' => 'Failed to reactivate PayPal subscription. Please try setting up a new subscription.',
                     'action' => 'new_subscription',
                     'redirect' => "../../upgrade/ai/checkout/?method=paypal&billing={$billing_cycle}&change_method=1"
                 ]);
                 exit;
             }
-        } catch (Exception $e) {
-            error_log("PayPal reactivation failed: " . $e->getMessage());
+        } else {
+            // No PayPal subscription ID - need to create a new subscription
             echo json_encode([
                 'success' => false,
-                'error' => 'Failed to reactivate PayPal subscription. Please try setting up a new subscription.',
+                'error' => 'No PayPal subscription found. Please set up a new subscription.',
                 'action' => 'new_subscription',
                 'redirect' => "../../upgrade/ai/checkout/?method=paypal&billing={$billing_cycle}&change_method=1"
             ]);
@@ -82,9 +93,8 @@ try {
         }
     }
     // Handle Stripe subscriptions
-    else if ($payment_method === 'stripe' && !empty($ai_subscription['stripe_subscription_id'])) {
-        // For Stripe, we can try to create a new payment intent
-        // but typically the user needs to update their card
+    else if ($payment_method === 'stripe') {
+        // Stripe uses saved cards, not subscriptions - user needs to update payment method
         echo json_encode([
             'success' => false,
             'error' => 'Your card was declined. Please update your payment method to continue.',
@@ -107,7 +117,7 @@ try {
     else {
         echo json_encode([
             'success' => false,
-            'error' => 'Unable to retry payment. Please update your payment method.',
+            'error' => 'Unknown payment method (' . htmlspecialchars($payment_method) . '). Please update your payment method.',
             'action' => 'update_payment',
             'redirect' => "reactivate-subscription.php"
         ]);
