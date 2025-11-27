@@ -136,8 +136,14 @@ if (is_cron_authenticated()) {
         $stmt = $pdo->query("SELECT COUNT(*) as count FROM ai_subscription_payments WHERE status = 'completed' AND created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)");
         $stats['successful_30d'] = $stmt->fetch()['count'];
 
-        $stmt = $pdo->query("SELECT COUNT(*) as count FROM ai_subscription_payments WHERE status = 'failed' AND created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)");
+        $stmt = $pdo->query("
+            SELECT COUNT(DISTINCT subscription_id) AS count
+            FROM ai_subscription_payments
+            WHERE status = 'failed'
+            AND created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+        ");
         $stats['failed_30d'] = $stmt->fetch()['count'];
+
 
     } catch (PDOException $e) {
         $error = 'Database error: ' . $e->getMessage();
