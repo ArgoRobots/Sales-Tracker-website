@@ -148,24 +148,7 @@ $billing_cycle = $ai_subscription['billing_cycle'] ?? 'monthly';
             </div>
 
             <div class="info-box payment-method-box">
-                <h3>Current Payment Method</h3>
-                <div class="current-payment-method">
-                    <div class="payment-method-icon">
-                        <?php if (strtolower($ai_subscription['payment_method']) === 'stripe'): ?>
-                            <img src="../../images/Stripe-logo.svg" alt="Stripe">
-                        <?php elseif (strtolower($ai_subscription['payment_method']) === 'paypal'): ?>
-                            <img src="../../images/PayPal-logo.svg" alt="PayPal">
-                        <?php elseif (strtolower($ai_subscription['payment_method']) === 'square'): ?>
-                            <img src="../../images/Square-logo.svg" alt="Square">
-                        <?php else: ?>
-                            <img src="../../images/Stripe-logo.svg" alt="Payment">
-                        <?php endif; ?>
-                    </div>
-                    <div class="payment-method-details">
-                        <span class="payment-method-name"><?php echo $payment_method; ?> (<?php echo ucfirst($billing_cycle); ?>)</span>
-                        <span class="payment-method-note">This payment method will be charged on <?php echo $end_date; ?></span>
-                    </div>
-                </div>
+                <h3>Payment Options</h3>
 
                 <div class="change-payment-section">
                     <p class="change-payment-label">Billing cycle:</p>
