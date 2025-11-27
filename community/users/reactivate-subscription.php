@@ -14,20 +14,6 @@ $user_id = $_SESSION['user_id'];
 // Get subscription info
 $ai_subscription = get_user_ai_subscription($user_id);
 
-// Redirect if no subscription or not in a reactivatable state
-if (!$ai_subscription || !in_array($ai_subscription['status'], ['cancelled', 'payment_failed'])) {
-    header('Location: ai-subscription.php');
-    exit;
-}
-
-// Check if subscription is expired
-$is_expired = strtotime($ai_subscription['end_date']) < time();
-if ($is_expired) {
-    $_SESSION['subscription_error'] = 'Your subscription has expired. Please subscribe again to access AI features.';
-    header('Location: ai-subscription.php');
-    exit;
-}
-
 // Check if this is a PayPal subscription that was cancelled
 // PayPal subscriptions cannot be reactivated via API once cancelled - user must create a new subscription
 $is_cancelled_paypal = ($ai_subscription['payment_method'] === 'paypal'
@@ -145,18 +131,6 @@ $billing_cycle = $ai_subscription['billing_cycle'] ?? 'monthly';
 
             <?php if ($error_message): ?>
                 <div class="alert alert-error"><?php echo htmlspecialchars($error_message); ?></div>
-            <?php endif; ?>
-
-            <?php if ($status === 'payment_failed'): ?>
-                <div class="alert alert-warning">
-                    Your previous payment failed. Reactivating will attempt to charge your payment method on file.
-                </div>
-            <?php endif; ?>
-
-            <?php if ($is_cancelled_paypal): ?>
-                <div class="alert alert-warning">
-                    <strong>PayPal subscription cancelled.</strong> Since your PayPal subscription was cancelled, you'll need to create a new subscription. Click "Reactivate" below to set up a new PayPal subscription.
-                </div>
             <?php endif; ?>
 
             <p class="confirm-description">
