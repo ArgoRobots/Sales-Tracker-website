@@ -215,8 +215,8 @@ if ($ai_subscription) {
                             </div>
                         </div>
                         <div class="subscription-actions payment-failed-actions">
-                            <a href="../../upgrade/ai/" class="btn btn-purple">Update Payment Method</a>
-                            <a href="reactivate-subscription.php" class="btn btn-outline">Retry with Existing Method</a>
+                            <a href="reactivate-subscription.php" class="btn btn-purple">Update Payment Method</a>
+                            <button type="button" class="btn btn-outline" id="retry-payment-btn">Retry with Existing Method</button>
                         </div>
                     <?php elseif ($ai_subscription['status'] === 'expired'): ?>
                         <div class="subscription-notice expired">
@@ -359,6 +359,195 @@ if ($ai_subscription) {
     <footer class="footer">
         <div id="includeFooter"></div>
     </footer>
+
+    <!-- Retry Payment Modal -->
+    <?php if ($ai_subscription && $ai_subscription['status'] === 'payment_failed'): ?>
+    <div class="modal-overlay" id="retry-payment-modal">
+        <div class="modal-container">
+            <button class="modal-close" id="modal-close-btn" aria-label="Close modal">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+
+            <!-- Initial State -->
+            <div class="modal-state" id="modal-state-confirm">
+                <div class="modal-icon">
+                    <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12a9 9 0 11-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path>
+                        <path d="M21 3v5h-5"></path>
+                    </svg>
+                </div>
+                <h2>Retry Payment</h2>
+                <p class="modal-description">
+                    This will attempt to charge your existing payment method:
+                </p>
+                <div class="modal-payment-info">
+                    <div class="payment-method-badge">
+                        <?php
+                        $paymentMethodLower = strtolower($ai_subscription['payment_method'] ?? 'unknown');
+                        $paymentMethodDisplay = ucfirst($ai_subscription['payment_method'] ?? 'Unknown');
+                        ?>
+                        <?php if ($paymentMethodLower === 'stripe'): ?>
+                            <img src="../../images/Stripe-logo.svg" alt="Stripe" class="payment-logo">
+                        <?php elseif ($paymentMethodLower === 'paypal'): ?>
+                            <img src="../../images/PayPal-logo.svg" alt="PayPal" class="payment-logo">
+                        <?php elseif ($paymentMethodLower === 'square'): ?>
+                            <img src="../../images/Square-logo.svg" alt="Square" class="payment-logo">
+                        <?php else: ?>
+                            <span class="payment-text"><?php echo $paymentMethodDisplay; ?></span>
+                        <?php endif; ?>
+                    </div>
+                    <span class="billing-info"><?php echo ucfirst($ai_subscription['billing_cycle'] ?? 'Monthly'); ?> billing</span>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-purple" id="confirm-retry-btn">
+                        <span class="btn-text">Retry Payment</span>
+                    </button>
+                    <button type="button" class="btn btn-outline" id="cancel-retry-btn">Cancel</button>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div class="modal-state hidden" id="modal-state-loading">
+                <div class="modal-spinner">
+                    <div class="spinner"></div>
+                </div>
+                <h2>Processing...</h2>
+                <p class="modal-description">Please wait while we retry your payment.</p>
+            </div>
+
+            <!-- Success State -->
+            <div class="modal-state hidden" id="modal-state-success">
+                <div class="modal-icon success">
+                    <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                </div>
+                <h2>Payment Successful!</h2>
+                <p class="modal-description" id="success-message">Your subscription has been reactivated.</p>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-purple" id="success-close-btn">Done</button>
+                </div>
+            </div>
+
+            <!-- Error State -->
+            <div class="modal-state hidden" id="modal-state-error">
+                <div class="modal-icon error">
+                    <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="15" y1="9" x2="9" y2="15"></line>
+                        <line x1="9" y1="9" x2="15" y2="15"></line>
+                    </svg>
+                </div>
+                <h2>Payment Failed</h2>
+                <p class="modal-description" id="error-message">Unable to process your payment.</p>
+                <div class="modal-actions">
+                    <a href="reactivate-subscription.php" class="btn btn-purple" id="error-update-btn">Update Payment Method</a>
+                    <button type="button" class="btn btn-outline" id="error-close-btn">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    (function() {
+        const modal = document.getElementById('retry-payment-modal');
+        const retryBtn = document.getElementById('retry-payment-btn');
+        const closeBtn = document.getElementById('modal-close-btn');
+        const cancelBtn = document.getElementById('cancel-retry-btn');
+        const confirmBtn = document.getElementById('confirm-retry-btn');
+        const successCloseBtn = document.getElementById('success-close-btn');
+        const errorCloseBtn = document.getElementById('error-close-btn');
+        const errorUpdateBtn = document.getElementById('error-update-btn');
+
+        const stateConfirm = document.getElementById('modal-state-confirm');
+        const stateLoading = document.getElementById('modal-state-loading');
+        const stateSuccess = document.getElementById('modal-state-success');
+        const stateError = document.getElementById('modal-state-error');
+        const successMessage = document.getElementById('success-message');
+        const errorMessage = document.getElementById('error-message');
+
+        function showState(state) {
+            [stateConfirm, stateLoading, stateSuccess, stateError].forEach(s => s.classList.add('hidden'));
+            state.classList.remove('hidden');
+            // Show/hide close button based on state
+            closeBtn.style.display = (state === stateLoading) ? 'none' : 'block';
+        }
+
+        function openModal() {
+            showState(stateConfirm);
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+            // Reset to confirm state after animation
+            setTimeout(() => showState(stateConfirm), 300);
+        }
+
+        function handleRetryPayment() {
+            showState(stateLoading);
+
+            fetch('retry-payment-ajax.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'same-origin'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    successMessage.textContent = data.message || 'Your subscription has been reactivated!';
+                    showState(stateSuccess);
+                } else {
+                    errorMessage.textContent = data.error || 'Unable to process your payment.';
+                    if (data.redirect) {
+                        errorUpdateBtn.href = data.redirect;
+                    }
+                    showState(stateError);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                errorMessage.textContent = 'An unexpected error occurred. Please try again.';
+                showState(stateError);
+            });
+        }
+
+        // Event listeners
+        if (retryBtn) retryBtn.addEventListener('click', openModal);
+        if (closeBtn) closeBtn.addEventListener('click', closeModal);
+        if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
+        if (confirmBtn) confirmBtn.addEventListener('click', handleRetryPayment);
+        if (errorCloseBtn) errorCloseBtn.addEventListener('click', closeModal);
+        if (successCloseBtn) {
+            successCloseBtn.addEventListener('click', function() {
+                window.location.reload();
+            });
+        }
+
+        // Close on overlay click (only if not in loading state)
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal && stateLoading.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+
+        // Close on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.classList.contains('active') && stateLoading.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+    })();
+    </script>
+    <?php endif; ?>
 </body>
 
 </html>
