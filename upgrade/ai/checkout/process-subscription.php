@@ -370,6 +370,19 @@ try {
         // Calculate new amount based on billing cycle
         $newAmount = ($billing === 'yearly') ? 50.00 : 5.00;
 
+        // Determine the new end date:
+        // - If subscription still valid (end_date > now) AND not charged: keep existing end_date
+        // - If charged (new subscription period): calculate new end_date from now
+        $existingEndDate = $existingSubscription['end_date'];
+        $newEndDate = $existingEndDate; // Default: keep existing
+
+        if (!$skipPaymentProcessing) {
+            // User was charged, so start a new billing period
+            $newEndDate = ($billing === 'yearly')
+                ? date('Y-m-d H:i:s', strtotime('+1 year'))
+                : date('Y-m-d H:i:s', strtotime('+1 month'));
+        }
+
         $stmt = $pdo->prepare("
             UPDATE ai_subscriptions
             SET payment_method = ?,
@@ -378,6 +391,7 @@ try {
                 transaction_id = ?,
                 billing_cycle = ?,
                 amount = ?,
+                end_date = ?,
                 status = 'active',
                 auto_renew = 1,
                 cancelled_at = NULL,
@@ -391,6 +405,7 @@ try {
             $transactionId,
             $billing,
             $newAmount,
+            $newEndDate,
             $subscriptionId
         ]);
 
@@ -407,14 +422,18 @@ try {
         $pdo->commit();
 
         // Build appropriate success message
-        $chargeMessage = $subscriptionStillValid
-            ? 'Your subscription has been updated. You will not be charged until your current billing period ends.'
-            : 'Payment method updated successfully.';
+        $formattedEndDate = date('F j, Y', strtotime($newEndDate));
+        if ($skipPaymentProcessing) {
+            $chargeMessage = "Your subscription has been updated. You will not be charged until $formattedEndDate.";
+        } else {
+            $chargeMessage = "Payment successful! Your subscription is now active until $formattedEndDate.";
+        }
 
         echo json_encode([
             'success' => true,
             'subscription_id' => $subscriptionId,
-            'message' => $chargeMessage
+            'message' => $chargeMessage,
+            'next_billing_date' => $newEndDate
         ]);
 
     } else {
