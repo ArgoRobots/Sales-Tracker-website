@@ -183,7 +183,7 @@ $billing_cycle = $ai_subscription['billing_cycle'] ?? 'monthly';
             <div class="confirm-actions">
                 <form method="post" id="reactivate-form">
                     <input type="hidden" name="confirm_reactivate" value="1">
-                    <button type="submit" id="reactivate-btn" class="btn btn-purple">Reactivate with <?php echo $payment_method; ?></button>
+                    <button type="submit" id="reactivate-btn" class="btn btn-purple">Reactivate with <?php echo $payment_method; ?> (<?php echo ucfirst($billing_cycle); ?>)</button>
                 </form>
                 <a href="ai-subscription.php" class="btn btn-outline">Go Back</a>
             </div>
