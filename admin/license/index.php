@@ -703,12 +703,6 @@ include '../admin_header.php';
                 </div>
             </div>
             <div class="stat-card">
-                <h3>Pending Keys</h3>
-                <div class="stat-value">
-                    <?php echo count($licenses) - $active_count; ?>
-                </div>
-            </div>
-            <div class="stat-card">
                 <h3>Registered Users</h3>
                 <div class="stat-value"><?php echo $user_count; ?></div>
             </div>
