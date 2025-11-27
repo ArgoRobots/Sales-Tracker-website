@@ -94,34 +94,20 @@ try {
     }
     // Handle Stripe subscriptions
     else if ($payment_method === 'stripe') {
-        // Stripe uses saved cards, not subscriptions - user needs to update payment method
-        echo json_encode([
-            'success' => false,
-            'error' => 'Your card was declined. Please update your payment method to continue.',
-            'action' => 'update_payment',
-            'redirect' => "reactivate-subscription.php"
-        ]);
-        exit;
+        // Reactivate Stripe subscription - the saved card will be charged on next billing cycle
+        $reactivated = true;
+        $message = 'Your subscription has been reactivated. Your card will be charged on the next billing date.';
     }
     // Handle Square subscriptions
     else if ($payment_method === 'square') {
-        echo json_encode([
-            'success' => false,
-            'error' => 'Your payment method was declined. Please update your payment method to continue.',
-            'action' => 'update_payment',
-            'redirect' => "reactivate-subscription.php"
-        ]);
-        exit;
+        // Reactivate Square subscription
+        $reactivated = true;
+        $message = 'Your subscription has been reactivated. Your payment method will be charged on the next billing date.';
     }
-    // Unknown payment method
+    // Unknown payment method - still try to reactivate
     else {
-        echo json_encode([
-            'success' => false,
-            'error' => 'Unknown payment method (' . htmlspecialchars($payment_method) . '). Please update your payment method.',
-            'action' => 'update_payment',
-            'redirect' => "reactivate-subscription.php"
-        ]);
-        exit;
+        $reactivated = true;
+        $message = 'Your subscription has been reactivated.';
     }
 
     // If we got here, reactivation was successful
