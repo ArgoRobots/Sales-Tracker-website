@@ -405,7 +405,6 @@ function processSquareRenewal($cardId, $amount, $subscriptionId, $email, $access
         ]);
         $cardResponse = curl_exec($ch);
         $cardHttpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
 
         $cardResult = json_decode($cardResponse, true);
         if ($cardHttpCode < 200 || $cardHttpCode >= 300 || !isset($cardResult['card'])) {
@@ -444,7 +443,6 @@ function processSquareRenewal($cardId, $amount, $subscriptionId, $email, $access
 
         $response = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
 
         $result = json_decode($response, true);
 

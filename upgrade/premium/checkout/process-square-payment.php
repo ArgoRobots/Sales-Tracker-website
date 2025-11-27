@@ -86,7 +86,6 @@ try {
     $response_data = curl_exec($ch);
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $curl_error = curl_error($ch);
-    curl_close($ch);
 
     if ($http_code >= 200 && $http_code < 300) {
         $payment_result = json_decode($response_data, true);

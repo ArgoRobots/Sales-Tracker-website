@@ -139,7 +139,6 @@ function getAccessToken($baseUrl, $clientId, $clientSecret) {
 
     $response = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
 
     if ($httpCode !== 200) {
         echo "Token Error: HTTP $httpCode\n$response\n";
@@ -173,7 +172,6 @@ function createProduct($baseUrl, $accessToken) {
 
     $response = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
 
     if ($httpCode !== 201) {
         echo "Product Error: HTTP $httpCode\n$response\n";
@@ -230,7 +228,6 @@ function createPlan($baseUrl, $accessToken, $productId, $interval, $price) {
 
     $response = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
 
     if ($httpCode !== 201) {
         echo "Plan Error: HTTP $httpCode\n$response\n";
