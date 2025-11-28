@@ -6,6 +6,7 @@ require_once 'statistics.php';
 
 track_page_view($_SERVER['REQUEST_URI']);
 
+// Check for remember me cookie and auto-login user if valid
 if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     check_remember_me();
 }
@@ -19,11 +20,13 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Argo">
 
+    <!-- SEO Meta Tags -->
     <meta name="description"
         content="Transform your small business with Argo Books. AI-powered receipt scanning, predictive analytics, inventory management and more. Free Windows software.">
     <meta name="keywords"
         content="AI receipt scanning, predictive sales analysis, business software, inventory management, rental management, invoice generator, small business automation">
 
+    <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Argo Books - AI-Powered Business Management">
     <meta property="og:description"
         content="Transform your business with AI receipt scanning, predictive analytics, inventory management and automated invoicing.">
@@ -32,18 +35,22 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     <meta property="og:site_name" content="Argo Books">
     <meta property="og:locale" content="en_CA">
 
+    <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Argo Books - AI-Powered Business Management">
     <meta name="twitter:description"
         content="Transform your business with AI receipt scanning, predictive analytics, and automated business management.">
 
+    <!-- Additional SEO Meta Tags -->
     <meta name="geo.region" content="CA-AB">
     <meta name="geo.placename" content="Calgary">
     <meta name="geo.position" content="51.0447;-114.0719">
     <meta name="ICBM" content="51.0447, -114.0719">
 
+     <!-- Canonical URL -->
     <link rel="canonical" href="https://argorobots.com/">
 
+    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17210317271"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
