@@ -16,7 +16,7 @@
     require_once '../../../community/users/user_functions.php';
 
     // Require login to checkout
-    require_login('/upgrade/ai/');
+    require_login('upgrade/ai/');
 
     $user_id = $_SESSION['user_id'];
     $user_email = $_SESSION['email'] ?? '';
