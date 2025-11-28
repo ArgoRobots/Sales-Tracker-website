@@ -265,7 +265,7 @@
                 <p>As a growing Calgary-based startup, we're excited about what's ahead. Our roadmap is filled with new
                     features and improvements based directly on user feedback. We're committed to expanding our offerings
                     while maintaining the simplicity and affordability that makes Argo special.</p>
-                <a href="/whats-new/" class="btn btn-secondary">
+                <a href="../whats-new/index.php" class="btn btn-secondary">
                     <span>View Changelog</span>
                     <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M5 12h14M12 5l7 7-7 7"/>

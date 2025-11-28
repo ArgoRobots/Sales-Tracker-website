@@ -62,7 +62,6 @@ if (isset($_SESSION['contact_success'])) {
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="../resources/styles/custom-colors.css">
   <link rel="stylesheet" href="../resources/header/style.css">
-  <link rel="stylesheet" href="../resources/header/dark.css">
   <link rel="stylesheet" href="../resources/footer/style.css">
 </head>
 
@@ -142,7 +141,7 @@ if (isset($_SESSION['contact_success'])) {
           </div>
           <h3>Community Forum</h3>
           <p>Connect with other users, share tips, and get help from the community.</p>
-          <a href="/community/" class="option-link">
+          <a href="../community/index.php" class="option-link">
             Visit Community
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -245,7 +244,7 @@ if (isset($_SESSION['contact_success'])) {
           </div>
           <h4>Check the Docs First</h4>
           <p>Many common questions are already answered in our documentation.</p>
-          <a href="/documentation/" class="sidebar-link">View Documentation</a>
+          <a href="../documentation/index.php" class="sidebar-link">View Documentation</a>
         </div>
 
         <div class="sidebar-card">
