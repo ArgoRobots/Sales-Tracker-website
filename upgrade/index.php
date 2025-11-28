@@ -40,6 +40,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../resources/styles/link.css">
+    <link rel="stylesheet" href="../resources/styles/faq.css">
     <link rel="stylesheet" href="../resources/header/style.css">
     <link rel="stylesheet" href="../resources/footer/style.css">
 </head>
@@ -150,64 +151,154 @@
         <div class="container">
             <h2>Frequently Asked Questions</h2>
             <div class="faq-grid">
-                <details class="faq-card">
-                    <summary>
+                <div class="faq-item">
+                    <div class="faq-question">
                         <h3>Do I have to pay to use Argo Books?</h3>
-                    </summary>
-                    <p>No, you don't have to pay. We offer a free version that you can use indefinitely. The free
-                        version includes all essential features needed to manage your basic business operations, with a
-                        limit of up to 10 products. If you need to track more products, consider upgrading to Premium.</p>
-                </details>
-                <details class="faq-card">
-                    <summary>
+                        <div class="faq-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6,9 12,15 18,9"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>No, you don't have to pay. We offer a free version that you can use indefinitely. The free version includes all essential features needed to manage your basic business operations, with a limit of up to 10 products. If you need to track more products, consider upgrading to Premium.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
                         <h3>What's the difference between Premium and AI Subscription?</h3>
-                    </summary>
-                    <p><strong>Premium ($20 one-time)</strong> unlocks unlimited products, Windows Hello security, lifetime updates, and priority support.
-                        <strong>AI Subscription ($5/month)</strong> adds AI-powered features like receipt scanning, predictive analysis, and natural language search.
-                        You can have both for the complete experience!</p>
-                </details>
-                <details class="faq-card">
-                    <summary>
+                        <div class="faq-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6,9 12,15 18,9"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p><strong>Premium ($20 one-time)</strong> unlocks unlimited products, Windows Hello security, lifetime updates, and priority support. <strong>AI Subscription ($5/month)</strong> adds AI-powered features like receipt scanning, predictive analysis, and natural language search. You can have both for the complete experience!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
                         <h3>How does the $20 discount for Premium users work?</h3>
-                    </summary>
-                    <p>If you've purchased Premium, you get $20 off your first year of AI Subscription. Just enter your license key when subscribing, and the yearly price drops from $50 to $30.</p>
-                </details>
-                <details class="faq-card">
-                    <summary>
+                        <div class="faq-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6,9 12,15 18,9"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>If you've purchased Premium, you get $20 off your first year of AI Subscription. Just enter your license key when subscribing, and the yearly price drops from $50 to $30.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
                         <h3>Can I cancel the AI Subscription anytime?</h3>
-                    </summary>
-                    <p>Yes, you can cancel your AI Subscription at any time. Your AI features will remain active until the end of your current billing period.</p>
-                </details>
-                <details class="faq-card">
-                    <summary>
+                        <div class="faq-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6,9 12,15 18,9"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>Yes, you can cancel your AI Subscription at any time. Your AI features will remain active until the end of your current billing period.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
                         <h3>Is Premium a one-time payment?</h3>
-                    </summary>
-                    <p>Yes, pay once and get lifetime access to all Premium features, including future updates. No recurring charges.</p>
-                </details>
-                <details class="faq-card">
-                    <summary>
+                        <div class="faq-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6,9 12,15 18,9"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>Yes, pay once and get lifetime access to all Premium features, including future updates. No recurring charges.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
                         <h3>Can I transfer my license to a different computer?</h3>
-                    </summary>
-                    <p>Yes, you can reactivate Argo Books on your new computer, but this will deactivate it on
-                        your previous device. Each license can only be active on one computer at a time.</p>
-                </details>
-                <details class="faq-card">
-                    <summary>
+                        <div class="faq-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6,9 12,15 18,9"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>Yes, you can reactivate Argo Books on your new computer, but this will deactivate it on your previous device. Each license can only be active on one computer at a time.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
                         <h3>When will I receive my license key?</h3>
-                    </summary>
-                    <p>Immediately after your payment is confirmed, your license key will be sent to the email you
-                        provided during checkout. This process usually only takes a few seconds.</p>
-                </details>
-                <details class="faq-card">
-                    <summary>
+                        <div class="faq-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6,9 12,15 18,9"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>Immediately after your payment is confirmed, your license key will be sent to the email you provided during checkout. This process usually only takes a few seconds.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
                         <h3>Is my payment information secure?</h3>
-                    </summary>
-                    <p>Yes, all transactions are processed through trusted payment platforms like PayPal, Stripe, and
-                        Square. We do not store any of your payment details.</p>
-                </details>
+                        <div class="faq-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6,9 12,15 18,9"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>Yes, all transactions are processed through trusted payment platforms like PayPal, Stripe, and Square. We do not store any of your payment details.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            question.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                faqItems.forEach(otherItem => {
+                    otherItem.classList.remove('active');
+                });
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+    });
+    </script>
 
     <footer class="footer">
         <div id="includeFooter"></div>

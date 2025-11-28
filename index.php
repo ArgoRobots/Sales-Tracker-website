@@ -94,6 +94,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="resources/styles/custom-colors.css">
     <link rel="stylesheet" href="resources/styles/button.css">
+    <link rel="stylesheet" href="resources/styles/faq.css">
     <link rel="stylesheet" href="resources/header/style.css">
     <link rel="stylesheet" href="resources/footer/style.css">
 </head>
@@ -133,22 +134,6 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                     <a href="#features" class="btn btn-secondary btn-lg">
                         <span>See Features</span>
                     </a>
-                </div>
-                <div class="hero-stats animate-fade-in-up delay-3">
-                    <div class="hero-stat">
-                        <span class="stat-value">10k+</span>
-                        <span class="stat-label">Transactions Tracked</span>
-                    </div>
-                    <div class="hero-stat-divider"></div>
-                    <div class="hero-stat">
-                        <span class="stat-value">99.9%</span>
-                        <span class="stat-label">Accuracy</span>
-                    </div>
-                    <div class="hero-stat-divider"></div>
-                    <div class="hero-stat">
-                        <span class="stat-value">8+ hrs</span>
-                        <span class="stat-label">Saved Weekly</span>
-                    </div>
                 </div>
             </div>
             <div class="hero-visual animate-fade-in-up delay-2">
@@ -1042,9 +1027,6 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                         </div>
                     </div>
 
-                    <div class="app-store-badges">
-                        <span class="coming-soon-badge">Coming Soon</span>
-                    </div>
                 </div>
             </div>
         </div>
