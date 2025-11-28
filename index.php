@@ -959,8 +959,8 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                             <div class="mobile-phone-screen">
                                 <div class="mobile-screen-placeholder">
                                     <div class="mobile-screen-header">
-                                        <div class="mobile-screen-logo">A</div>
-                                        <span class="mobile-screen-title">Scan Receipt</span>
+                                        <div class="mobile-screen-logo">Y</div>
+                                        <span class="mobile-screen-title">Your Company</span>
                                     </div>
                                     <div class="mobile-screen-stats">
                                         <div class="mobile-stat-card">

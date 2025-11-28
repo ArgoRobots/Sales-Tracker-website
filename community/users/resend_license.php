@@ -112,6 +112,7 @@ if ($has_premium_license && $has_ai_subscription) {
             border-radius: 8px;
             padding: 20px;
             margin: 20px 0;
+            text-align: center;
         }
         .resend-section.premium {
             background: linear-gradient(135deg, #eff6ff, #dbeafe);

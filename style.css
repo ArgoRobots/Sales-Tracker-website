@@ -320,7 +320,6 @@ a {
 
 .hero .container {
     position: relative;
-    z-index: 2;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 60px;
