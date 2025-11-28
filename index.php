@@ -369,8 +369,13 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                                     <div class="visual-mockup receipt-mockup">
                                         <div class="phone-frame">
                                             <div class="phone-screen">
-                                                <div class="scan-animation">
+                                                <div class="scan-animation" id="receiptScanAnimation">
                                                     <div class="scan-line"></div>
+                                                    <div class="scan-complete-indicator">
+                                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                                            <polyline points="20,6 9,17 4,12"/>
+                                                        </svg>
+                                                    </div>
                                                 </div>
                                                 <div class="receipt-preview">
                                                     <div class="receipt-header">
@@ -396,12 +401,20 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                                                         <span class="total-amount">$127.43</span>
                                                     </div>
                                                 </div>
-                                                <div class="ai-badge">
-                                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                        <circle cx="12" cy="12" r="10"/>
-                                                        <polyline points="12,6 12,12 16,14"/>
-                                                    </svg>
-                                                    AI Processing...
+                                                <div class="ai-badge" id="aiBadge">
+                                                    <span class="badge-text-scanning">
+                                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10"/>
+                                                            <polyline points="12,6 12,12 16,14"/>
+                                                        </svg>
+                                                        AI Processing...
+                                                    </span>
+                                                    <span class="badge-text-complete">
+                                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <polyline points="20,6 9,17 4,12"/>
+                                                        </svg>
+                                                        Scan Complete!
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
@@ -913,6 +926,130 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
         </div>
     </section>
 
+    <!-- Mobile Experience Section -->
+    <section class="mobile-section">
+        <div class="container">
+            <div class="mobile-content">
+                <div class="mobile-visual animate-on-scroll">
+                    <div class="mobile-phones">
+                        <div class="mobile-phone phone-1">
+                            <div class="mobile-phone-screen">
+                                <div class="mobile-screen-placeholder">
+                                    <div class="mobile-screen-header">
+                                        <div class="mobile-screen-logo">A</div>
+                                        <span class="mobile-screen-title">Argo Books</span>
+                                    </div>
+                                    <div class="mobile-screen-stats">
+                                        <div class="mobile-stat-card">
+                                            <span class="stat-label">Today's Sales</span>
+                                            <span class="stat-value">$2,450</span>
+                                        </div>
+                                        <div class="mobile-stat-card">
+                                            <span class="stat-label">Growth</span>
+                                            <span class="stat-value positive">+18%</span>
+                                        </div>
+                                    </div>
+                                    <div class="mobile-screen-chart">
+                                        <span class="mobile-chart-title">Weekly Revenue</span>
+                                        <div class="mobile-chart-bars">
+                                            <div class="mobile-chart-bar"></div>
+                                            <div class="mobile-chart-bar"></div>
+                                            <div class="mobile-chart-bar"></div>
+                                            <div class="mobile-chart-bar"></div>
+                                            <div class="mobile-chart-bar"></div>
+                                            <div class="mobile-chart-bar"></div>
+                                            <div class="mobile-chart-bar"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mobile-phone phone-2">
+                            <div class="mobile-phone-screen">
+                                <div class="mobile-screen-placeholder">
+                                    <div class="mobile-screen-header">
+                                        <div class="mobile-screen-logo">A</div>
+                                        <span class="mobile-screen-title">Scan Receipt</span>
+                                    </div>
+                                    <div class="mobile-screen-stats">
+                                        <div class="mobile-stat-card">
+                                            <span class="stat-label">Scanned</span>
+                                            <span class="stat-value">24</span>
+                                        </div>
+                                        <div class="mobile-stat-card">
+                                            <span class="stat-label">This Month</span>
+                                            <span class="stat-value">$890</span>
+                                        </div>
+                                    </div>
+                                    <div class="mobile-screen-chart">
+                                        <span class="mobile-chart-title">Recent Receipts</span>
+                                        <div class="mobile-chart-bars">
+                                            <div class="mobile-chart-bar"></div>
+                                            <div class="mobile-chart-bar"></div>
+                                            <div class="mobile-chart-bar"></div>
+                                            <div class="mobile-chart-bar"></div>
+                                            <div class="mobile-chart-bar"></div>
+                                            <div class="mobile-chart-bar"></div>
+                                            <div class="mobile-chart-bar"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mobile-text animate-on-scroll">
+                    <span class="section-tag">Mobile App</span>
+                    <h2 class="section-title text-left">Your business in your pocket</h2>
+                    <p class="section-description text-left">Access your business data anywhere with the Argo Books mobile app. Scan receipts on the go, check real-time analytics, and stay connected to your business 24/7.</p>
+
+                    <div class="mobile-features">
+                        <div class="mobile-feature-item">
+                            <div class="mobile-feature-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="16" rx="2"/>
+                                    <path d="M7 8h10M7 12h6"/>
+                                    <circle cx="17" cy="14" r="3"/>
+                                </svg>
+                            </div>
+                            <div class="mobile-feature-text">
+                                <h4>Snap & Scan Receipts</h4>
+                                <p>Take a photo of any receipt and let AI extract all the details automatically</p>
+                            </div>
+                        </div>
+                        <div class="mobile-feature-item">
+                            <div class="mobile-feature-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M3 3v18h18"/>
+                                    <path d="M18 9l-5 5-4-4-3 3"/>
+                                </svg>
+                            </div>
+                            <div class="mobile-feature-text">
+                                <h4>Real-time Dashboard</h4>
+                                <p>Monitor sales, inventory, and key metrics wherever you are</p>
+                            </div>
+                        </div>
+                        <div class="mobile-feature-item">
+                            <div class="mobile-feature-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                                </svg>
+                            </div>
+                            <div class="mobile-feature-text">
+                                <h4>Instant Notifications</h4>
+                                <p>Get alerts for low stock, large orders, and important business events</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="app-store-badges">
+                        <span class="coming-soon-badge">Coming Soon</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Security Section -->
     <section class="security-section">
         <div class="container">
@@ -1140,6 +1277,120 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
         </div>
     </section>
 
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container">
+            <div class="section-header animate-on-scroll">
+                <span class="section-tag">FAQ</span>
+                <h2 class="section-title">Frequently Asked Questions</h2>
+                <p class="section-description">Everything you need to know about Argo Books. Can't find the answer you're looking for? Feel free to contact us.</p>
+            </div>
+
+            <div class="faq-grid">
+                <div class="faq-item animate-on-scroll">
+                    <div class="faq-question">
+                        <h3>What platforms does Argo Books support?</h3>
+                        <div class="faq-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6,9 12,15 18,9"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>Argo Books is currently available for Windows (Windows 10 and later). A mobile companion app for iOS and Android is coming soon, which will allow you to scan receipts and view your business data on the go.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item animate-on-scroll">
+                    <div class="faq-question">
+                        <h3>Is my data secure?</h3>
+                        <div class="faq-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6,9 12,15 18,9"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>Absolutely. Your data is stored locally on your computer using AES-256 encryption - the same standard used by banks and government agencies. We don't store your business data on our servers. Premium users can also enable Windows Hello for biometric authentication.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item animate-on-scroll">
+                    <div class="faq-question">
+                        <h3>How does AI receipt scanning work?</h3>
+                        <div class="faq-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6,9 12,15 18,9"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>Simply take a photo of your receipt with your phone or upload an image. Our AI analyzes the receipt and automatically extracts the vendor name, date, individual line items, taxes, and total amount. The extracted data is then added to your expense records with 99% accuracy.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item animate-on-scroll">
+                    <div class="faq-question">
+                        <h3>Can I try Argo Books for free?</h3>
+                        <div class="faq-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6,9 12,15 18,9"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>Yes! Argo Books has a free tier that includes up to 10 products, unlimited transactions, real-time analytics, and receipt management. No credit card required to get started. You can upgrade to Premium or add AI features whenever you're ready.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item animate-on-scroll">
+                    <div class="faq-question">
+                        <h3>What's included in the AI subscription?</h3>
+                        <div class="faq-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6,9 12,15 18,9"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>The AI subscription ($5/month or $50/year) includes AI-powered receipt scanning, predictive sales analytics, intelligent business insights, and natural language search. These features use advanced machine learning to help you understand your business better and make smarter decisions.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item animate-on-scroll">
+                    <div class="faq-question">
+                        <h3>What is your refund policy?</h3>
+                        <div class="faq-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6,9 12,15 18,9"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>We offer a 30-day money-back guarantee on all purchases. If you're not satisfied with Argo Books for any reason, simply contact us within 30 days and we'll process a full refund - no questions asked.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-cta animate-on-scroll">
+                <p>Still have questions?</p>
+                <a href="/contact-us">Contact our support team</a>
+            </div>
+        </div>
+    </section>
+
     <!-- CTA Section -->
     <section class="cta-section">
         <div class="container">
@@ -1242,6 +1493,59 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                 gtag('event', 'conversion', {
                     'send_to': 'AW-17210317271/niGZCJv2vbkbENezwo5A'
                 });
+            });
+        });
+
+        // Receipt scan animation cycle
+        const scanAnimation = document.getElementById('receiptScanAnimation');
+        const aiBadge = document.getElementById('aiBadge');
+        const scanLine = scanAnimation ? scanAnimation.querySelector('.scan-line') : null;
+
+        function runScanCycle() {
+            if (!scanAnimation || !aiBadge || !scanLine) return;
+
+            // Reset to scanning state
+            scanAnimation.classList.remove('scan-complete');
+            aiBadge.classList.remove('complete');
+
+            // Reset scan line animation
+            scanLine.style.animation = 'none';
+            scanLine.offsetHeight; // Trigger reflow
+            scanLine.style.animation = 'scanLine 1.5s ease-in-out 3';
+
+            // After 3 scans (4.5 seconds), show complete state
+            setTimeout(() => {
+                scanAnimation.classList.add('scan-complete');
+                aiBadge.classList.add('complete');
+
+                // After showing complete for 3 seconds, restart the cycle
+                setTimeout(() => {
+                    runScanCycle();
+                }, 3000);
+            }, 4500);
+        }
+
+        // Start the scan animation cycle
+        if (scanAnimation) {
+            runScanCycle();
+        }
+
+        // FAQ Accordion
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            question.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+
+                // Close all other items
+                faqItems.forEach(otherItem => {
+                    otherItem.classList.remove('active');
+                });
+
+                // Toggle current item
+                if (!isActive) {
+                    item.classList.add('active');
+                }
             });
         });
     });
