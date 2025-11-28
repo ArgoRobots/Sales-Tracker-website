@@ -143,9 +143,21 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
         <div id="includeHeader"></div>
     </header>
 
-    <div class="community-header">
-        <h1>Argo Books Community</h1>
-        <p>Report bugs and suggest features to help us improve</p>
+    <div class="community-hero">
+        <div class="hero-bg">
+            <div class="hero-gradient-orb hero-orb-1"></div>
+            <div class="hero-gradient-orb hero-orb-2"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+                </svg>
+                <span><?php echo $post['post_type'] === 'bug' ? 'Bug Report' : 'Feature Request'; ?></span>
+            </div>
+            <h1><?php echo htmlspecialchars($post['title']); ?></h1>
+            <p>View details, vote, and join the discussion</p>
+        </div>
     </div>
 
     <?php if ($status_message): ?>
