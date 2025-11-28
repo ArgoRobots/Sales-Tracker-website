@@ -194,7 +194,7 @@
                     </div>
                     <div class="faq-answer">
                         <div class="faq-answer-content">
-                            <p>If you've purchased Premium, you get $20 off your first year of AI Subscription. Just enter your license key when subscribing, and the yearly price drops from $50 to $30.</p>
+                            <p>If you've purchased Premium, you get $20 off your first year of AI Subscription. Just enter your license key when subscribing, and the yearly price drops from $50 to $30. You will still have access to your premium license key after you switch to the AI subscription.</p>
                         </div>
                     </div>
                 </div>
