@@ -1423,7 +1423,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                     </div>
                     <h3>Community</h3>
                     <p>Join our community to connect with other users and share tips.</p>
-                    <a href="/community/" class="contact-link">
+                    <a href="community/index.php" class="contact-link">
                         Visit Community
                         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -1440,7 +1440,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                     </div>
                     <h3>Documentation</h3>
                     <p>Browse guides, tutorials, and references to get the most out of Argo Books.</p>
-                    <a href="/documentation/" class="contact-link">
+                    <a href="documentation/index.php" class="contact-link">
                         View Docs
                         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -1449,8 +1449,8 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                 </div>
             </div>
             <div class="contact-cta animate-on-scroll">
-                <p>Prefer to send a detailed message?</p>
-                <a href="/contact-us" class="btn btn-primary">
+                <p>Want to reach out directly?</p>
+                <a href="contact-us/index.php" class="btn btn-primary">
                     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/>
                     </svg>
