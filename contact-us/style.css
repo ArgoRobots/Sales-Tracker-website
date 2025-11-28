@@ -9,7 +9,7 @@ header .header-inner .menu-container .menu .contact-us:after {
 .contact-hero {
   position: relative;
   padding: 140px 0 80px;
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
   overflow: hidden;
   text-align: center;
 }
@@ -34,7 +34,7 @@ header .header-inner .menu-container .menu .contact-us:after {
 .contact-hero .hero-orb-1 {
   width: 400px;
   height: 400px;
-  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  background: linear-gradient(135deg, var(--primary-blue), var(--purple-500));
   top: -100px;
   left: -100px;
 }
@@ -42,7 +42,7 @@ header .header-inner .menu-container .menu .contact-us:after {
 .contact-hero .hero-orb-2 {
   width: 300px;
   height: 300px;
-  background: linear-gradient(135deg, #06b6d4, #3b82f6);
+  background: linear-gradient(135deg, var(--cyan-500), var(--primary-blue));
   bottom: -50px;
   right: -50px;
 }
@@ -58,14 +58,14 @@ header .header-inner .menu-container .menu .contact-us:after {
 .contact-hero h1 {
   font-size: 3rem;
   font-weight: 700;
-  color: white;
+  color: var(--white);
   margin-bottom: 16px;
   letter-spacing: -0.02em;
 }
 
 .contact-hero .hero-subtitle {
   font-size: 1.25rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--hero-text-muted);
   margin: 0;
 }
 
@@ -97,7 +97,7 @@ header .header-inner .menu-container .menu .contact-us:after {
    ======================================== */
 .contact-options {
   padding: 80px 0;
-  background: #f8fafc;
+  background: var(--gray-50);
 }
 
 .contact-options .container {
@@ -113,7 +113,7 @@ header .header-inner .menu-container .menu .contact-us:after {
 }
 
 .option-card {
-  background: white;
+  background: var(--white);
   border-radius: 16px;
   padding: 32px;
   text-align: center;
@@ -129,7 +129,7 @@ header .header-inner .menu-container .menu .contact-us:after {
 .option-icon {
   width: 64px;
   height: 64px;
-  background: linear-gradient(135deg, #eff6ff, #dbeafe);
+  background: linear-gradient(135deg, var(--blue-50), var(--blue-100));
   border-radius: 16px;
   display: flex;
   align-items: center;
@@ -140,35 +140,35 @@ header .header-inner .menu-container .menu .contact-us:after {
 .option-icon svg {
   width: 32px;
   height: 32px;
-  color: #3b82f6;
+  color: var(--primary-blue);
 }
 
 .option-icon.feedback {
-  background: linear-gradient(135deg, #f5f3ff, #ede9fe);
+  background: linear-gradient(135deg, var(--purple-50), var(--purple-100));
 }
 
 .option-icon.feedback svg {
-  color: #8b5cf6;
+  color: var(--purple-500);
 }
 
 .option-icon.community {
-  background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+  background: linear-gradient(135deg, var(--green-50), var(--green-100));
 }
 
 .option-icon.community svg {
-  color: #10b981;
+  color: var(--emerald-500);
 }
 
 .option-card h3 {
   font-size: 1.25rem;
-  color: #0f172a;
+  color: var(--gray-900);
   margin-bottom: 8px;
   font-weight: 600;
 }
 
 .option-card p {
   font-size: 0.95rem;
-  color: #64748b;
+  color: var(--gray-500);
   margin-bottom: 16px;
   line-height: 1.6;
 }
@@ -177,7 +177,7 @@ header .header-inner .menu-container .menu .contact-us:after {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: #3b82f6;
+  color: var(--primary-blue);
   font-weight: 500;
   font-size: 0.95rem;
   text-decoration: none;
@@ -195,7 +195,7 @@ header .header-inner .menu-container .menu .contact-us:after {
   justify-content: center;
   gap: 6px;
   font-size: 0.85rem;
-  color: #94a3b8;
+  color: var(--gray-400);
 }
 
 .response-time svg {
@@ -207,7 +207,7 @@ header .header-inner .menu-container .menu .contact-us:after {
    ======================================== */
 .contact-form-section {
   padding: 80px 0 100px;
-  background: white;
+  background: var(--white);
 }
 
 .contact-form-section .container {
@@ -221,7 +221,7 @@ header .header-inner .menu-container .menu .contact-us:after {
 }
 
 .form-wrapper {
-  background: #f8fafc;
+  background: var(--gray-50);
   border-radius: 20px;
   padding: 40px;
 }
@@ -232,13 +232,13 @@ header .header-inner .menu-container .menu .contact-us:after {
 
 .form-header h2 {
   font-size: 1.75rem;
-  color: #0f172a;
+  color: var(--gray-900);
   margin-bottom: 8px;
   font-weight: 600;
 }
 
 .form-header p {
-  color: #64748b;
+  color: var(--gray-500);
   font-size: 1rem;
 }
 
@@ -256,7 +256,7 @@ header .header-inner .menu-container .menu .contact-us:after {
   display: block;
   font-size: 0.9rem;
   font-weight: 500;
-  color: #374151;
+  color: var(--gray-700);
   margin-bottom: 8px;
 }
 
@@ -266,9 +266,9 @@ header .header-inner .menu-container .menu .contact-us:after {
   width: 100%;
   padding: 14px 18px;
   font-size: 1rem;
-  border: 2px solid #e5e7eb;
+  border: 2px solid var(--gray-border);
   border-radius: 12px;
-  background: white;
+  background: var(--white);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
   font-family: inherit;
 }
@@ -277,13 +277,13 @@ header .header-inner .menu-container .menu .contact-us:after {
 .form-group select:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #3b82f6;
+  border-color: var(--primary-blue);
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .form-group input::placeholder,
 .form-group textarea::placeholder {
-  color: #9ca3af;
+  color: var(--gray-400);
 }
 
 .form-group textarea {
@@ -307,8 +307,8 @@ header .header-inner .menu-container .menu .contact-us:after {
   justify-content: center;
   gap: 10px;
   padding: 16px 32px;
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
-  color: white;
+  background: linear-gradient(135deg, var(--primary-blue), var(--blueHover));
+  color: var(--white);
   font-size: 1rem;
   font-weight: 600;
   border: none;
@@ -336,7 +336,7 @@ header .header-inner .menu-container .menu .contact-us:after {
 }
 
 .sidebar-card {
-  background: #f8fafc;
+  background: var(--gray-50);
   border-radius: 16px;
   padding: 24px;
 }
@@ -344,7 +344,7 @@ header .header-inner .menu-container .menu .contact-us:after {
 .sidebar-icon {
   width: 48px;
   height: 48px;
-  background: linear-gradient(135deg, #eff6ff, #dbeafe);
+  background: linear-gradient(135deg, var(--blue-50), var(--blue-100));
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -355,19 +355,19 @@ header .header-inner .menu-container .menu .contact-us:after {
 .sidebar-icon svg {
   width: 24px;
   height: 24px;
-  color: #3b82f6;
+  color: var(--primary-blue);
 }
 
 .sidebar-card h4 {
   font-size: 1.1rem;
-  color: #0f172a;
+  color: var(--gray-900);
   margin-bottom: 8px;
   font-weight: 600;
 }
 
 .sidebar-card p {
   font-size: 0.9rem;
-  color: #64748b;
+  color: var(--gray-500);
   line-height: 1.6;
   margin-bottom: 12px;
 }
@@ -376,7 +376,7 @@ header .header-inner .menu-container .menu .contact-us:after {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  color: #3b82f6;
+  color: var(--primary-blue);
   font-weight: 500;
   font-size: 0.9rem;
   text-decoration: none;
@@ -391,15 +391,15 @@ header .header-inner .menu-container .menu .contact-us:after {
   align-items: center;
   gap: 6px;
   padding: 8px 14px;
-  background: white;
+  background: var(--white);
   border-radius: 20px;
   font-size: 0.85rem;
-  color: #64748b;
-  border: 1px solid #e5e7eb;
+  color: var(--gray-500);
+  border: 1px solid var(--gray-border);
 }
 
 .location-badge svg {
-  color: #ef4444;
+  color: var(--red-500);
 }
 
 /* ========================================
@@ -417,24 +417,24 @@ header .header-inner .menu-container .menu .contact-us:after {
 }
 
 .success-message {
-  background: #ecfdf5;
-  border: 1px solid #a7f3d0;
-  color: #065f46;
+  background: var(--green-50);
+  border: 1px solid var(--green-200);
+  color: var(--green-800);
 }
 
 .success-message svg {
-  color: #10b981;
+  color: var(--emerald-500);
   flex-shrink: 0;
 }
 
 .error-message {
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  color: #991b1b;
+  background: var(--red-50);
+  border: 1px solid var(--red-200);
+  color: var(--red-800);
 }
 
 .error-message svg {
-  color: #ef4444;
+  color: var(--red-500);
   flex-shrink: 0;
 }
 
