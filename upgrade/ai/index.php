@@ -52,6 +52,7 @@ if ($existing_subscription && in_array($existing_subscription['status'], ['activ
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="../../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../../resources/styles/link.css">
+    <link rel="stylesheet" href="../../resources/styles/faq.css">
     <link rel="stylesheet" href="../../resources/header/style.css">
     <link rel="stylesheet" href="../../resources/footer/style.css">
 </head>
@@ -198,44 +199,106 @@ if ($existing_subscription && in_array($existing_subscription['status'], ['activ
         <div class="container">
             <h2>Frequently Asked Questions</h2>
             <div class="faq-grid">
-                <details class="faq-card">
-                    <summary>
+                <div class="faq-item">
+                    <div class="faq-question">
                         <h3>Do I need the Premium version to use AI features?</h3>
-                    </summary>
-                    <p>No, the AI subscription is available to all users. However, Premium users receive a $20 discount
-                        on their first year as a thank you for their support.</p>
-                </details>
-                <details class="faq-card">
-                    <summary>
+                        <div class="faq-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6,9 12,15 18,9"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>No, the AI subscription is available to all users. However, Premium users receive a $20 discount on their first year as a thank you for their support.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
                         <h3>How does the $20 discount work?</h3>
-                    </summary>
-                    <p>If you've purchased the $20 Premium version, enter your license key when subscribing. The $20
-                        discount will be applied to your first yearly subscription ($50 - $20 = $30 for the first year)
-                        or as credit toward monthly payments.</p>
-                </details>
-                <details class="faq-card">
-                    <summary>
+                        <div class="faq-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6,9 12,15 18,9"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>If you've purchased the $20 Premium version, enter your license key when subscribing. The $20 discount will be applied to your first yearly subscription ($50 - $20 = $30 for the first year) or as credit toward monthly payments.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
                         <h3>Can I cancel my subscription?</h3>
-                    </summary>
-                    <p>Yes, you can cancel your subscription at any time. Your AI features will remain active until the
-                        end of your current billing period.</p>
-                </details>
-                <details class="faq-card">
-                    <summary>
+                        <div class="faq-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6,9 12,15 18,9"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>Yes, you can cancel your subscription at any time. Your AI features will remain active until the end of your current billing period.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
                         <h3>Is there a free trial?</h3>
-                    </summary>
-                    <p>Yes! New subscribers get a 7-day free trial to experience all AI features before being charged.</p>
-                </details>
-                <details class="faq-card">
-                    <summary>
+                        <div class="faq-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6,9 12,15 18,9"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>Yes! New subscribers get a 7-day free trial to experience all AI features before being charged.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
                         <h3>What happens to my data if I cancel?</h3>
-                    </summary>
-                    <p>Your data remains safe in Argo Books. You'll just lose access to AI-specific features
-                        until you resubscribe.</p>
-                </details>
+                        <div class="faq-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6,9 12,15 18,9"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>Your data remains safe in Argo Books. You'll just lose access to AI-specific features until you resubscribe.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            question.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                faqItems.forEach(otherItem => {
+                    otherItem.classList.remove('active');
+                });
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+    });
+    </script>
 
     <footer class="footer">
         <div id="includeFooter"></div>

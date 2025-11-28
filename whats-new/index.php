@@ -66,7 +66,7 @@
     </section>
 
     <div class="download-button-container">
-        <a href="/download" class="btn btn-blue">Download latest
+        <a href="../download" class="btn btn-blue">Download latest
             release</a>
 
         <a href="../older-versions/index.php" class="btn btn-outline">
