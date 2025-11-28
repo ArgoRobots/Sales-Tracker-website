@@ -1378,9 +1378,67 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     <!-- Contact Section -->
     <section class="contact-section">
         <div class="container">
-            <div class="contact-content animate-on-scroll">
-                <p>Still have questions?</p>
-                <a href="/contact-us" class="btn btn-primary">Contact our support team</a>
+            <div class="contact-header animate-on-scroll">
+                <h2>We're here to help</h2>
+                <p>Have questions about Argo Books? Our team is ready to assist you.</p>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-card animate-on-scroll">
+                    <div class="contact-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <h3>Email Support</h3>
+                    <p>Get help with technical issues, account questions, or general inquiries.</p>
+                    <a href="mailto:support@argorobots.com" class="contact-link">
+                        support@argorobots.com
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+                <div class="contact-card animate-on-scroll">
+                    <div class="contact-icon feedback">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z"/>
+                        </svg>
+                    </div>
+                    <h3>Send Feedback</h3>
+                    <p>Share your ideas, feature requests, or suggestions to help us improve.</p>
+                    <a href="mailto:feedback@argorobots.com" class="contact-link">
+                        feedback@argorobots.com
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+                <div class="contact-card animate-on-scroll">
+                    <div class="contact-icon community">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+                        </svg>
+                    </div>
+                    <h3>Community</h3>
+                    <p>Join our community to connect with other users and share tips.</p>
+                    <a href="/community/" class="contact-link">
+                        Visit Community
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <div class="contact-cta animate-on-scroll">
+                <p>Prefer to send a detailed message?</p>
+                <a href="/contact-us" class="btn btn-primary">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/>
+                    </svg>
+                    Contact Form
+                </a>
             </div>
         </div>
     </section>
