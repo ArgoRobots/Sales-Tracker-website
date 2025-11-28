@@ -122,7 +122,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                     <span class="text-gradient">run your business</span>
                 </h1>
                 <p class="hero-subtitle animate-fade-in-up delay-1">
-                    From AI receipt scanning to predictive analytics. Everything you need to manage your business, all in one powerful platform.
+                    AI-powered accounting software with receipt scanning, predictive analytics, and inventory management. Everything you need to run your business.
                 </p>
                 <div class="hero-cta animate-fade-in-up delay-2">
                     <a href="/download" class="btn btn-primary btn-lg">
@@ -1368,7 +1368,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
 
             <div class="faq-cta animate-on-scroll">
                 <p>Still have questions?</p>
-                <a href="/contact-us">Contact our support team</a>
+                <a href="/contact-us" class="btn btn-primary">Contact our support team</a>
             </div>
         </div>
     </section>
@@ -1517,17 +1517,8 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
         faqItems.forEach(item => {
             const question = item.querySelector('.faq-question');
             question.addEventListener('click', () => {
-                const isActive = item.classList.contains('active');
-
-                // Close all other items
-                faqItems.forEach(otherItem => {
-                    otherItem.classList.remove('active');
-                });
-
-                // Toggle current item
-                if (!isActive) {
-                    item.classList.add('active');
-                }
+                // Toggle current item without closing others
+                item.classList.toggle('active');
             });
         });
     });
