@@ -738,7 +738,6 @@ a {
     background: linear-gradient(145deg, #1e293b, #0f172a);
     border-radius: 24px;
     padding: 8px;
-    max-width: 280px;
     margin: 0 auto;
 }
 
@@ -1381,14 +1380,14 @@ a {
     background: #f8fafc;
     border: 1px solid #e2e8f0;
     border-radius: 12px;
-    padding: 16px 24px;
+    padding: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .provider-logo {
-    height: 24px;
+    height: 20px;
     width: auto;
     opacity: 0.7;
 }
