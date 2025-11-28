@@ -1430,6 +1430,23 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                         </svg>
                     </a>
                 </div>
+                <div class="contact-card animate-on-scroll">
+                    <div class="contact-icon docs">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>
+                            <path d="M8 7h8M8 11h8M8 15h5"/>
+                        </svg>
+                    </div>
+                    <h3>Documentation</h3>
+                    <p>Browse guides, tutorials, and references to get the most out of Argo Books.</p>
+                    <a href="/documentation/" class="contact-link">
+                        View Docs
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
             </div>
             <div class="contact-cta animate-on-scroll">
                 <p>Prefer to send a detailed message?</p>
