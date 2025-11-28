@@ -1360,7 +1360,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                     </div>
                     <div class="faq-answer">
                         <div class="faq-answer-content">
-                            <p>We offer a 30-day money-back guarantee on all purchases. If you're not satisfied with Argo Books for any reason, simply contact us within 30 days and we'll process a full refund - no questions asked.</p>
+                            <p>We offer a 30-day money-back guarantee on Premium license purchases. For AI subscriptions, refunds are prorated based on the unused time remaining in your billing period. Simply contact us and we'll process your refund promptly. <a href="/legal/refund.php" class="link">View full refund policy</a></p>
                         </div>
                     </div>
                 </div>
