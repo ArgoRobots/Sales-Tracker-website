@@ -2288,6 +2288,36 @@ a {
         flex-direction: column;
         gap: 12px;
     }
+
+    /* Customer card responsive */
+    .customer-card {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .customer-stats {
+        width: 100%;
+        justify-content: flex-start;
+        gap: 16px;
+        margin-top: 8px;
+    }
+
+    /* Payment providers responsive */
+    .payment-providers {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .provider-card {
+        flex: 1 1 auto;
+        min-width: 80px;
+        max-width: 100px;
+        padding: 12px;
+    }
+
+    .provider-logo {
+        height: 16px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -2326,5 +2356,46 @@ a {
 
     .pricing-amount .amount {
         font-size: 3rem;
+    }
+
+    /* Customer card - stack vertically on small screens */
+    .customer-card {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 16px;
+    }
+
+    .customer-stats {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .customer-stats .stat {
+        min-width: 60px;
+    }
+
+    /* Payment providers - smaller on very small screens */
+    .payment-providers {
+        justify-content: center;
+    }
+
+    .provider-card {
+        min-width: 70px;
+        max-width: 90px;
+        padding: 10px;
+    }
+
+    .provider-logo {
+        height: 14px;
+    }
+
+    /* Feature visual card padding */
+    .feature-visual-card {
+        padding: 16px;
+    }
+
+    .customers-mockup,
+    .payments-mockup {
+        padding: 16px;
     }
 }
