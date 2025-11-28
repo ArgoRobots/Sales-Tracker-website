@@ -143,7 +143,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
         <div id="includeHeader"></div>
     </header>
 
-    <div class="community-hero">
+    <div class="community-hero community-hero-compact">
         <div class="hero-bg">
             <div class="hero-gradient-orb hero-orb-1"></div>
             <div class="hero-gradient-orb hero-orb-2"></div>
@@ -155,8 +155,6 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
                 </svg>
                 <span><?php echo $post['post_type'] === 'bug' ? 'Bug Report' : 'Feature Request'; ?></span>
             </div>
-            <h1><?php echo htmlspecialchars($post['title']); ?></h1>
-            <p>View details, vote, and join the discussion</p>
         </div>
     </div>
 
