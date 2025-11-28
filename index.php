@@ -177,7 +177,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
     </section>
 
     <!-- Trusted By Section -->
-    <section class="trusted-section">
+    <!-- <section class="trusted-section">
         <div class="container">
             <p class="trusted-label animate-on-scroll">Trusted by businesses across Canada</p>
             <div class="trusted-logos animate-on-scroll">
@@ -208,7 +208,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
 
     <!-- Features Tabbed Section -->
     <section id="features" class="features-section">

@@ -597,7 +597,7 @@ a {
     display: flex;
     align-items: center;
     gap: 16px;
-    padding: 16px 20px;
+    padding: 12px 20px;
     background: white;
     border: 1px solid #e2e8f0;
     border-radius: 12px;
@@ -1553,7 +1553,7 @@ a {
     background: white;
     border-radius: 26px;
     overflow: hidden;
-    aspect-ratio: 9/16;
+    aspect-ratio: 9/17;
 }
 
 .mobile-phone-screen img {
@@ -1841,7 +1841,7 @@ a {
    Pricing Section
    ======================================== */
 .pricing-section {
-    padding: 120px 0;
+    padding: 60px 0 120px 0;
     background: #f8fafc;
 }
 
@@ -2031,6 +2031,10 @@ a {
 .contact-section {
     padding: 60px 0;
     background: #f8fafc;
+}
+
+.contact-section .btn {
+    width: 220px;
 }
 
 .contact-content {
