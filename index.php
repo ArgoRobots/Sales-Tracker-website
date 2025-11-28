@@ -783,7 +783,6 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                                         <div class="invoice-preview">
                                             <div class="invoice-header">
                                                 <div class="invoice-logo">INVOICE</div>
-                                                <div class="invoice-number">#INV-2024-0042</div>
                                             </div>
                                             <div class="invoice-meta">
                                                 <div class="meta-item">
