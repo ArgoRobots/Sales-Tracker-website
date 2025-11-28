@@ -472,19 +472,24 @@ if ($user) {
     $is_admin = isset($user['role']) && $user['role'] === 'admin';
 }
 
-// Check if user has a license key (by user_id or case-insensitive email match)
-$has_license = false;
+// Check if user has a premium license key (by user_id or case-insensitive email match)
+$has_premium_license = false;
+$has_ai_subscription = false;
 if ($is_own_profile) {
     $db = get_db_connection();
-    // Check by user_id first, then by email
-    $stmt = $db->prepare('SELECT license_key FROM license_keys WHERE user_id = ? OR LOWER(email) = LOWER(?) LIMIT 1');
+    // Check for premium license key (must have a non-empty license_key value)
+    $stmt = $db->prepare('SELECT license_key FROM license_keys WHERE (user_id = ? OR LOWER(email) = LOWER(?)) AND license_key IS NOT NULL AND license_key != "" LIMIT 1');
     $user_id_check = $user['id'];
     $email_check = $user['email'] ?? '';
     $stmt->bind_param('is', $user_id_check, $email_check);
     $stmt->execute();
     $result = $stmt->get_result();
-    $has_license = ($result->num_rows > 0);
+    $has_premium_license = ($result->num_rows > 0);
     $stmt->close();
+
+    // Check for AI subscription
+    $ai_subscription = get_user_ai_subscription($user['id']);
+    $has_ai_subscription = ($ai_subscription !== null);
 }
 
 ?>
@@ -640,13 +645,19 @@ if ($is_own_profile) {
 
                         <div class="profile-actions">
                             <?php if ($is_own_profile): ?>
-                                <?php if ($has_license): ?>
+                                <?php if ($has_premium_license || $has_ai_subscription): ?>
                                     <a href="resend_license.php" class="btn btn-blue">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                                             <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                                         </svg>
-                                        Resend License Key
+                                        <?php if ($has_premium_license && $has_ai_subscription): ?>
+                                            Resend License/Subscription
+                                        <?php elseif ($has_premium_license): ?>
+                                            Resend License Key
+                                        <?php else: ?>
+                                            Resend Subscription ID
+                                        <?php endif; ?>
                                     </a>
                                 <?php endif; ?>
 
