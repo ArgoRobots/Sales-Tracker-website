@@ -2026,6 +2026,30 @@ a {
 }
 
 /* ========================================
+   Contact Section
+   ======================================== */
+.contact-section {
+    padding: 60px 0;
+    background: #f8fafc;
+}
+
+.contact-content {
+    text-align: center;
+    padding: 32px;
+    background: white;
+    border-radius: 16px;
+    max-width: 500px;
+    margin: 0 auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.contact-content p {
+    color: #64748b;
+    margin-bottom: 16px;
+    font-size: 1.1rem;
+}
+
+/* ========================================
    CTA Section
    ======================================== */
 .cta-section {

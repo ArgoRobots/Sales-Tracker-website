@@ -1372,7 +1372,13 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                 </div>
             </div>
 
-            <div class="faq-cta animate-on-scroll">
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <div class="container">
+            <div class="contact-content animate-on-scroll">
                 <p>Still have questions?</p>
                 <a href="/contact-us" class="btn btn-primary">Contact our support team</a>
             </div>
