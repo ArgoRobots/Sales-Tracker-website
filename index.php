@@ -85,7 +85,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                     "addressCountry": "CA"
                 }
             },
-            "downloadUrl": "https://argorobots.com/download",
+            "downloadUrl": "https://argorobots.com/downloads",
             "softwareVersion": "1.0.4",
             "datePublished": "2025-05-01",
             "dateModified": "2025-11-28"
@@ -133,7 +133,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                     AI-powered accounting software with receipt scanning, predictive analytics, and inventory management. Everything you need to run your business.
                 </p>
                 <div class="hero-cta animate-fade-in-up delay-2">
-                    <a href="download" class="btn btn-primary btn-lg">
+                    <a href="downloads" class="btn btn-primary btn-lg">
                         <span>Get Started Free</span>
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -1158,7 +1158,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                             <span>Email support</span>
                         </li>
                     </ul>
-                    <a href="download" class="btn btn-secondary btn-block">Get Started Free</a>
+                    <a href="downloads" class="btn btn-secondary btn-block">Get Started Free</a>
                 </div>
 
                 <!-- Premium Plan -->
@@ -1470,7 +1470,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                     <h2>Ready to transform your business?</h2>
                     <p>Join thousands of businesses using Argo Books to save time, reduce errors, and grow smarter.</p>
                     <div class="cta-buttons">
-                        <a href="download" class="btn btn-white btn-lg">
+                        <a href="downloads" class="btn btn-white btn-lg">
                             <span>Get Started Free</span>
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -1560,7 +1560,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
         });
 
         // Download conversion tracking
-        const downloadLinks = document.querySelectorAll('a[href="download"]');
+        const downloadLinks = document.querySelectorAll('a[href="downloads"]');
         downloadLinks.forEach(function(link) {
             link.addEventListener('click', function(e) {
                 gtag('event', 'conversion', {
