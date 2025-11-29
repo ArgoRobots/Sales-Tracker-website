@@ -1,13 +1,4 @@
-/* ========================================
-   Argo Books - Professional Landing Page Styles
-   Modern, Apple-inspired design with scroll animations
-   ======================================== */
-
 /* Base Reset & Typography */
-*, *::before, *::after {
-    box-sizing: border-box;
-}
-
 html {
     scroll-behavior: smooth;
 }
@@ -738,7 +729,6 @@ a {
     justify-content: center;
     color: #3b82f6;
     flex-shrink: 0;
-    transition: all 0.3s ease;
 }
 
 .tab-btn.active .tab-icon {
