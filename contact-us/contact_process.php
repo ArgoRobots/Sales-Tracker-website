@@ -133,7 +133,7 @@ function get_contact_email_template($firstName, $lastName, $email, $subject, $me
         }
         
         .header h1 {
-            color: #ffffff;
+            color: #000;
             font-size: 22px;
         }
         
