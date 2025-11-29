@@ -297,7 +297,7 @@ a {
     background: linear-gradient(135deg, #3b82f6, #8b5cf6);
     top: -200px;
     right: -100px;
-    animation: heroOrbFadeIn 2s ease-out forwards, heroOrbPulse 8s ease-in-out infinite 2s, heroOrbFloat1 25s ease-in-out infinite;
+    animation: heroOrbFadeIn 2s ease-out forwards, heroOrbPulse 4s ease-in-out infinite 2s, heroOrbFloat1 15s ease-in-out infinite;
 }
 
 .hero-orb-2 {
@@ -306,7 +306,7 @@ a {
     background: linear-gradient(135deg, #06b6d4, #3b82f6);
     bottom: -100px;
     left: -100px;
-    animation: heroOrbFadeIn 2s ease-out 0.3s forwards, heroOrbPulse 10s ease-in-out infinite 2.3s, heroOrbFloat2 30s ease-in-out infinite;
+    animation: heroOrbFadeIn 2s ease-out 0.3s forwards, heroOrbPulse 5s ease-in-out infinite 2.3s, heroOrbFloat2 18s ease-in-out infinite;
 }
 
 .hero-orb-3 {
@@ -315,7 +315,7 @@ a {
     background: linear-gradient(135deg, #8b5cf6, #ec4899);
     top: 50%;
     left: 30%;
-    animation: heroOrbFadeIn 2s ease-out 0.6s forwards, heroOrbPulse 12s ease-in-out infinite 2.6s, heroOrbFloat3 20s ease-in-out infinite;
+    animation: heroOrbFadeIn 2s ease-out 0.6s forwards, heroOrbPulse 6s ease-in-out infinite 2.6s, heroOrbFloat3 12s ease-in-out infinite;
 }
 
 @keyframes heroOrbFadeIn {
@@ -324,17 +324,17 @@ a {
         transform: scale(0.6);
     }
     to {
-        opacity: 0.6;
+        opacity: 0.7;
         transform: scale(1);
     }
 }
 
 @keyframes heroOrbPulse {
     0%, 100% {
-        opacity: 0.6;
+        opacity: 0.7;
     }
     50% {
-        opacity: 0.8;
+        opacity: 0.95;
     }
 }
 
@@ -343,13 +343,13 @@ a {
         transform: translate(0, 0) rotate(0deg);
     }
     25% {
-        transform: translate(-40px, 30px) rotate(5deg);
+        transform: translate(-80px, 60px) rotate(5deg);
     }
     50% {
-        transform: translate(20px, -20px) rotate(-3deg);
+        transform: translate(40px, -40px) rotate(-3deg);
     }
     75% {
-        transform: translate(50px, 40px) rotate(2deg);
+        transform: translate(100px, 80px) rotate(2deg);
     }
 }
 
@@ -358,13 +358,13 @@ a {
         transform: translate(0, 0);
     }
     25% {
-        transform: translate(35px, -25px);
+        transform: translate(70px, -50px);
     }
     50% {
-        transform: translate(-20px, 35px);
+        transform: translate(-40px, 70px);
     }
     75% {
-        transform: translate(25px, 15px);
+        transform: translate(50px, 30px);
     }
 }
 
@@ -373,10 +373,10 @@ a {
         transform: translate(0, 0);
     }
     33% {
-        transform: translate(-30px, -40px);
+        transform: translate(-60px, -80px);
     }
     66% {
-        transform: translate(40px, 20px);
+        transform: translate(80px, 40px);
     }
 }
 

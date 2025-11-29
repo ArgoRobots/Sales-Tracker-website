@@ -30,7 +30,7 @@
   border-radius: 50%;
   filter: blur(80px);
   opacity: 0;
-  animation: orbFadeIn 1.5s ease-out forwards, orbPulse 8s ease-in-out infinite 1.5s;
+  animation: orbFadeIn 1.5s ease-out forwards, orbPulse 4s ease-in-out infinite 1.5s;
 }
 
 .footer .footer-orb-1 {
@@ -39,7 +39,7 @@
   background: linear-gradient(135deg, var(--primary-blue), var(--cyan-500));
   bottom: -100px;
   left: -100px;
-  animation: orbFadeIn 1.5s ease-out forwards, orbPulse 8s ease-in-out infinite 1.5s, orbFloat1 20s ease-in-out infinite;
+  animation: orbFadeIn 1.5s ease-out forwards, orbPulse 4s ease-in-out infinite 1.5s, orbFloat1 12s ease-in-out infinite;
 }
 
 .footer .footer-orb-2 {
@@ -48,7 +48,7 @@
   background: linear-gradient(135deg, var(--purple-500), var(--pink-500));
   top: -80px;
   right: -80px;
-  animation: orbFadeIn 1.5s ease-out 0.3s forwards, orbPulse 8s ease-in-out infinite 1.8s, orbFloat2 25s ease-in-out infinite;
+  animation: orbFadeIn 1.5s ease-out 0.3s forwards, orbPulse 5s ease-in-out infinite 1.8s, orbFloat2 15s ease-in-out infinite;
 }
 
 @keyframes orbFadeIn {
@@ -57,17 +57,17 @@
     transform: scale(0.8);
   }
   to {
-    opacity: 0.3;
+    opacity: 0.5;
     transform: scale(1);
   }
 }
 
 @keyframes orbPulse {
   0%, 100% {
-    opacity: 0.3;
+    opacity: 0.5;
   }
   50% {
-    opacity: 0.45;
+    opacity: 0.75;
   }
 }
 
@@ -76,13 +76,13 @@
     transform: translate(0, 0);
   }
   25% {
-    transform: translate(30px, -20px);
+    transform: translate(60px, -40px);
   }
   50% {
-    transform: translate(15px, 25px);
+    transform: translate(30px, 50px);
   }
   75% {
-    transform: translate(-20px, 10px);
+    transform: translate(-40px, 20px);
   }
 }
 
@@ -91,13 +91,13 @@
     transform: translate(0, 0);
   }
   25% {
-    transform: translate(-25px, 15px);
+    transform: translate(-50px, 30px);
   }
   50% {
-    transform: translate(-10px, -30px);
+    transform: translate(-20px, -60px);
   }
   75% {
-    transform: translate(20px, -15px);
+    transform: translate(40px, -30px);
   }
 }
 
