@@ -29,7 +29,8 @@
   position: absolute;
   border-radius: 50%;
   filter: blur(80px);
-  opacity: 0.3;
+  opacity: 0;
+  animation: orbFadeIn 1.5s ease-out forwards, orbPulse 8s ease-in-out infinite 1.5s;
 }
 
 .footer .footer-orb-1 {
@@ -38,6 +39,7 @@
   background: linear-gradient(135deg, var(--primary-blue), var(--cyan-500));
   bottom: -100px;
   left: -100px;
+  animation: orbFadeIn 1.5s ease-out forwards, orbPulse 8s ease-in-out infinite 1.5s, orbFloat1 20s ease-in-out infinite;
 }
 
 .footer .footer-orb-2 {
@@ -46,6 +48,57 @@
   background: linear-gradient(135deg, var(--purple-500), var(--pink-500));
   top: -80px;
   right: -80px;
+  animation: orbFadeIn 1.5s ease-out 0.3s forwards, orbPulse 8s ease-in-out infinite 1.8s, orbFloat2 25s ease-in-out infinite;
+}
+
+@keyframes orbFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+}
+
+@keyframes orbPulse {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+@keyframes orbFloat1 {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(30px, -20px);
+  }
+  50% {
+    transform: translate(15px, 25px);
+  }
+  75% {
+    transform: translate(-20px, 10px);
+  }
+}
+
+@keyframes orbFloat2 {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(-25px, 15px);
+  }
+  50% {
+    transform: translate(-10px, -30px);
+  }
+  75% {
+    transform: translate(20px, -15px);
+  }
 }
 
 .footer-content {
