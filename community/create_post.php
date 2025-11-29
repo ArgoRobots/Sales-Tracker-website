@@ -198,8 +198,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div id="includeHeader"></div>
     </header>
 
-    <div class="community-header">
-        <h1>Argo Books Community</h1>
+    <div class="community-hero">
+        <div class="hero-bg">
+            <div class="hero-gradient-orb hero-orb-1"></div>
+            <div class="hero-gradient-orb hero-orb-2"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 20h9"/>
+                    <path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                </svg>
+                <span>New Post</span>
+            </div>
+            <h1>Create a Post</h1>
+            <p>Share a bug report or feature request with the community</p>
+        </div>
     </div>
 
     <div class="community-wrapper">

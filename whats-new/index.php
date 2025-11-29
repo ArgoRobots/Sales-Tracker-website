@@ -59,20 +59,32 @@
     </header>
 
     <section class="hero">
-        <div class="description-container">
+        <div class="hero-bg">
+            <div class="hero-gradient-orb hero-orb-1"></div>
+            <div class="hero-gradient-orb hero-orb-2"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+                </svg>
+                <span>Changelog</span>
+            </div>
             <h1>What's New in Argo Books</h1>
             <p>Discover the latest improvements and features we've added to make managing your business even easier</p>
+            <div class="hero-buttons">
+                <a href="../download" class="btn btn-primary">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                    </svg>
+                    Download Latest
+                </a>
+                <a href="../older-versions/index.php" class="btn btn-secondary">
+                    Older Versions
+                </a>
+            </div>
         </div>
     </section>
-
-    <div class="download-button-container">
-        <a href="../download" class="btn btn-blue">Download latest
-            release</a>
-
-        <a href="../older-versions/index.php" class="btn btn-outline">
-            Download older versions
-        </a>
-    </div>
 
     <div class="container">
         <div class="version-grid">

@@ -53,23 +53,21 @@ header .header-inner .menu-container .menu .community:after {
   gap: 8px;
 }
 
-.community-header {
-  background: linear-gradient(135deg, var(--blue-900) 0%, var(--primary-blue) 100%);
-  text-align: center;
-  padding: 60px 0;
-  color: var(--white);
+/* Hero styles are in create-post.css which is imported */
+
+/* Compact hero for view post page */
+.community-hero.community-hero-compact {
+  padding: 100px 0 30px;
 }
 
-.community-header h1 {
-  font-size: 28px;
-  padding: 10px 0;
+.community-hero.community-hero-compact .hero-badge {
+  margin-bottom: 0;
 }
 
-.community-header p {
-  font-size: 18px;
-  max-width: 672px;
-  margin: 0 auto;
-  padding: 0 15px;
+@media (max-width: 768px) {
+  .community-hero.community-hero-compact {
+    padding: 90px 0 24px;
+  }
 }
 
 /* Post detail */
@@ -560,18 +558,6 @@ header .header-inner .menu-container .menu .community:after {
   .community-container {
     width: 100%;
     padding: 0 10px;
-  }
-
-  .community-header {
-    padding: 40px 0;
-  }
-
-  .community-header h1 {
-    font-size: 24px;
-  }
-
-  .community-header p {
-    font-size: 16px;
   }
 
   .post-status-controls {

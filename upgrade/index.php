@@ -51,7 +51,17 @@
     </header>
 
     <section class="upgrade-hero">
+        <div class="hero-bg">
+            <div class="hero-gradient-orb hero-orb-1"></div>
+            <div class="hero-gradient-orb hero-orb-2"></div>
+        </div>
         <div class="container">
+            <div class="hero-badge">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+                <span>Pricing</span>
+            </div>
             <h1>Upgrade Your Experience</h1>
             <p class="hero-subtitle">Choose the plan that's right for your business</p>
         </div>
@@ -194,7 +204,7 @@
                     </div>
                     <div class="faq-answer">
                         <div class="faq-answer-content">
-                            <p>If you've purchased Premium, you get $20 off your first year of AI Subscription. Just enter your license key when subscribing, and the yearly price drops from $50 to $30.</p>
+                            <p>If you've purchased Premium, you get $20 off your first year of AI Subscription. Just enter your license key when subscribing, and the yearly price drops from $50 to $30. You will still have access to your premium license key after you switch to the AI subscription.</p>
                         </div>
                     </div>
                 </div>

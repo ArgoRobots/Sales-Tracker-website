@@ -65,8 +65,10 @@
 
   /* Green palette */
   --green-100: #dcfce7;
+  --green-200: #bbf7d0;
   --green-300: #86efac;
   --green-600: #16a34a;
+  --green-700: #15803d;
   --green-900: #14532d;
 
   /* Red palette */
@@ -76,6 +78,7 @@
   --red-400: #f87171;
   --red-500: #ef4444;
   --red-600: #dc2626;
+  --red-700: #b91c1c;
 
   /* Amber/Orange - Warnings */
   --amber-50: #fffbeb;
@@ -114,4 +117,19 @@
   --indigo-500: #6366f1;
   --indigo-600: #4f46e5;
   --indigo-800: #3730a3;
+
+  /* Cyan/Teal */
+  --cyan-400: #22d3ee;
+  --cyan-500: #06b6d4;
+
+  /* Pink */
+  --pink-500: #ec4899;
+
+  /* Hero/Footer theme */
+  --hero-gradient-start: #0f172a;
+  --hero-gradient-end: #1e293b;
+  --hero-text-muted: rgba(255, 255, 255, 0.8);
+  --hero-badge-bg: rgba(255, 255, 255, 0.1);
+  --hero-badge-border: rgba(255, 255, 255, 0.2);
+  --footer-border: rgba(255, 255, 255, 0.1);
 }
