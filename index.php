@@ -1460,50 +1460,53 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
         </div>
     </section>
 
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="container">
-            <div class="cta-content animate-on-scroll">
-                <h2>Ready to transform your business?</h2>
-                <p>Join thousands of businesses using Argo Books to save time, reduce errors, and grow smarter.</p>
-                <div class="cta-buttons">
-                    <a href="download" class="btn btn-white btn-lg">
-                        <span>Get Started Free</span>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7"/>
-                        </svg>
-                    </a>
-                    <a href="upgrade/index.php" class="btn btn-outline-white btn-lg">
-                        <span>View Pricing</span>
-                    </a>
-                </div>
-                <div class="cta-features">
-                    <span class="cta-feature">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="20,6 9,17 4,12"/>
-                        </svg>
-                        Free to start
-                    </span>
-                    <span class="cta-feature">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="20,6 9,17 4,12"/>
-                        </svg>
-                        No credit card required
-                    </span>
-                    <span class="cta-feature">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="20,6 9,17 4,12"/>
-                        </svg>
-                        Setup in minutes
-                    </span>
+    <!-- CTA + Footer Wrapper -->
+    <div class="dark-section-wrapper">
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <div class="container">
+                <div class="cta-content animate-on-scroll">
+                    <h2>Ready to transform your business?</h2>
+                    <p>Join thousands of businesses using Argo Books to save time, reduce errors, and grow smarter.</p>
+                    <div class="cta-buttons">
+                        <a href="download" class="btn btn-white btn-lg">
+                            <span>Get Started Free</span>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                        <a href="upgrade/index.php" class="btn btn-outline-white btn-lg">
+                            <span>View Pricing</span>
+                        </a>
+                    </div>
+                    <div class="cta-features">
+                        <span class="cta-feature">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20,6 9,17 4,12"/>
+                            </svg>
+                            Free to start
+                        </span>
+                        <span class="cta-feature">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20,6 9,17 4,12"/>
+                            </svg>
+                            No credit card required
+                        </span>
+                        <span class="cta-feature">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20,6 9,17 4,12"/>
+                            </svg>
+                            Setup in minutes
+                        </span>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <footer class="footer">
-        <div id="includeFooter"></div>
-    </footer>
+        <footer class="footer">
+            <div id="includeFooter"></div>
+        </footer>
+    </div>
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {

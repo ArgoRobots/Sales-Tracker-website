@@ -2206,13 +2206,30 @@ a {
 }
 
 /* ========================================
+   Dark Section Wrapper (CTA + Footer)
+   ======================================== */
+.dark-section-wrapper {
+    position: relative;
+    background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
+    overflow: hidden;
+}
+
+.dark-section-wrapper .footer {
+    background: transparent;
+}
+
+.dark-section-wrapper .contact-section {
+    background: transparent;
+}
+
+/* ========================================
    CTA Section
    ======================================== */
 .cta-section {
     padding: 120px 0;
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    background: transparent;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .cta-section::before {

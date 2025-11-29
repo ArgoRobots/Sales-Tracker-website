@@ -510,11 +510,24 @@ body {
 }
 
 /* ========================================
+   Dark Section Wrapper (Contact + Footer)
+   ======================================== */
+.dark-section-wrapper {
+  position: relative;
+  background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
+  overflow: hidden;
+}
+
+.dark-section-wrapper .footer {
+  background: transparent;
+}
+
+/* ========================================
    Contact Section
    ======================================== */
 .contact-section {
   padding: 100px 0;
-  background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
+  background: transparent;
 }
 
 .contact-card {
