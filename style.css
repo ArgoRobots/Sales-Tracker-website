@@ -666,6 +666,7 @@ a {
 /* Tab Content */
 .features-tabs-content {
     min-height: 500px;
+    margin: auto;
 }
 
 .tab-content {
