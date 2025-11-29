@@ -380,19 +380,23 @@ a {
     }
 }
 
-.hero-orb-cursor {
+/* Generic cursor orb for all dark sections */
+.cursor-orb {
     width: 400px;
     height: 400px;
     background: linear-gradient(135deg, #a78bfa, #f472b6);
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.5s ease, transform 0.15s ease-out;
-    animation: none;
+    animation: none !important;
     mix-blend-mode: screen;
     will-change: transform;
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
 }
 
-.hero-orb-cursor.active {
+.cursor-orb.active {
     opacity: 0.6;
 }
 
