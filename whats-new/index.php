@@ -74,7 +74,7 @@
             <h1>What's New in Argo Books</h1>
             <p>Discover the latest improvements and features we've added to make managing your business even easier</p>
             <div class="hero-buttons">
-                <a href="../download" class="btn btn-primary">
+                <a href="../downloads" class="btn btn-primary">
                     <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
                     </svg>

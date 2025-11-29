@@ -1,0 +1,37 @@
+{
+    "windows": {
+        "name": "Windows",
+        "icon": "windows",
+        "available": true,
+        "requirements": [
+            "Windows 10 or later (64-bit)",
+            "4 GB RAM minimum",
+            "200 MB available disk space",
+            "1280x720 screen resolution or higher"
+        ]
+    },
+    "macos": {
+        "name": "macOS",
+        "icon": "apple",
+        "available": false,
+        "requirements": [
+            "macOS 10.15 Catalina or later",
+            "Apple Silicon or Intel processor",
+            "4 GB RAM minimum",
+            "200 MB available disk space",
+            "1280x720 screen resolution or higher"
+        ]
+    },
+    "linux": {
+        "name": "Linux",
+        "icon": "linux",
+        "available": false,
+        "requirements": [
+            "Ubuntu 20.04+, Debian 11+, Fedora 35+, or equivalent",
+            "64-bit processor",
+            "4 GB RAM minimum",
+            "200 MB available disk space",
+            "1280x720 screen resolution or higher"
+        ]
+    }
+}
