@@ -203,7 +203,6 @@ $systemRequirements = getSystemRequirements();
                     <button class="btn btn-gray download-btn disabled" disabled>
                         Coming Soon
                     </button>
-                    <span class="platform-badge coming-soon">In Development</span>
                 </div>
             </div>
 
@@ -222,7 +221,6 @@ $systemRequirements = getSystemRequirements();
                     <button class="btn btn-gray download-btn disabled" disabled>
                         Coming Soon
                     </button>
-                    <span class="platform-badge coming-soon">In Development</span>
                 </div>
             </div>
         </div>

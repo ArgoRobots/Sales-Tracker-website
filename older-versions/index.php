@@ -167,7 +167,7 @@ foreach ($platforms as $key => $platform) {
 
     <div class="warning-box">
         <h3>⚠️ Important Notice</h3>
-        <p><strong>We recommend using the <a href="../download">latest version</a>.</strong> Older versions may have
+        <p><strong>We recommend using the <a href="../downloads">latest version</a>.</strong> Older versions may have
             security vulnerabilities, compatibility issues, or missing features. Only use previous versions if you have
             a specific need for it.</p>
     </div>

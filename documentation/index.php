@@ -193,15 +193,12 @@ $systemRequirements = getSystemRequirements();
                 <h2>System Requirements</h2>
                 <div class="requirements-grid">
                     <?php foreach ($systemRequirements as $platform => $data): ?>
-                    <div class="requirement-card <?php echo !$data['available'] ? 'coming-soon' : ''; ?>">
+                    <div class="requirement-card">
                         <h3>
                             <svg viewBox="0 0 24 24" fill="currentColor" class="req-icon">
                                 <path d="<?php echo getPlatformIconPath($platform); ?>"/>
                             </svg>
                             <?php echo htmlspecialchars($data['name']); ?>
-                            <?php if (!$data['available']): ?>
-                            <span class="coming-soon-badge">Coming Soon</span>
-                            <?php endif; ?>
                         </h3>
                         <ul>
                             <?php foreach ($data['requirements'] as $req): ?>
@@ -217,7 +214,7 @@ $systemRequirements = getSystemRequirements();
             <section id="installation" class="article">
                 <h2>Installation Guide</h2>
                 <ol class="steps-list">
-                    <li>Download the installer <a class="link" href="../index.php">here</a></li>
+                    <li>Download the installer <a class="link" href="../downloads">here</a></li>
                     <li>Run the installer file (Argo Books Installer.exe)</li>
                     <li>Follow the installation wizard</li>
                     <li>Launch Argo Books from your desktop or start menu</li>

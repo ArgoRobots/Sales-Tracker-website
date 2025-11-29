@@ -141,7 +141,7 @@
         </div>
 
         <div class="cta-buttons">
-            <a href="../../../download" class="btn-primary">Download Argo Books</a>
+            <a href="../../../downloads" class="btn-primary">Download Argo Books</a>
             <a href="../../../documentation/index.php" class="btn-secondary">View Documentation</a>
         </div>
     </div>

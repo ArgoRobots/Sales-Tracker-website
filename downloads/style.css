@@ -192,9 +192,6 @@ body {
 
 .platform-actions .btn {
     width: 100%;
-    max-width: 220px;
-    padding: 14px 24px;
-    font-size: 0.95rem;
     border-radius: 10px;
 }
 
@@ -207,25 +204,6 @@ body {
     width: 18px;
     height: 18px;
     margin-right: 8px;
-}
-
-.platform-badge {
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    padding: 6px 14px;
-    border-radius: 20px;
-}
-
-.platform-badge.available {
-    background: var(--green-50);
-    color: var(--green-700);
-}
-
-.platform-badge.coming-soon {
-    background: var(--gray-bg-light);
-    color: var(--gray-text);
 }
 
 /* Requirements Section */

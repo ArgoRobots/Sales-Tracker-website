@@ -7,7 +7,6 @@
             "Windows 10 or later (64-bit)",
             "4 GB RAM minimum",
             "200 MB available disk space",
-            ".NET Framework 4.7.2 or later",
             "1280x720 screen resolution or higher"
         ]
     },
@@ -16,7 +15,7 @@
         "icon": "apple",
         "available": false,
         "requirements": [
-            "macOS 11 Big Sur or later",
+            "macOS 10.15 Catalina or later",
             "Apple Silicon or Intel processor",
             "4 GB RAM minimum",
             "200 MB available disk space",
@@ -28,10 +27,10 @@
         "icon": "linux",
         "available": false,
         "requirements": [
-            "Ubuntu 20.04+, Debian 11+, Fedora 35+",
+            "Ubuntu 20.04+, Debian 11+, Fedora 35+, or equivalent",
+            "64-bit processor",
             "4 GB RAM minimum",
             "200 MB available disk space",
-            "GTK 3.0 or later",
             "1280x720 screen resolution or higher"
         ]
     }

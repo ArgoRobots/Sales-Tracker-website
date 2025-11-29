@@ -103,7 +103,7 @@
         </div>
 
         <div class="cta-buttons">
-            <a href="../../../download" class="btn btn-purple">Download Argo Books</a>
+            <a href="../../../downloads" class="btn btn-purple">Download Argo Books</a>
             <a href="../../../documentation/index.php" class="btn btn-outline-purple">View Documentation</a>
         </div>
     </div>
