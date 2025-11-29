@@ -22,7 +22,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
 
     <!-- SEO Meta Tags -->
     <meta name="description"
-        content="Transform your small business with Argo Books. AI-powered receipt scanning, predictive analytics, inventory management and more. Free Windows software.">
+        content="Transform your small business with Argo Books. AI-powered receipt scanning, predictive analytics, inventory management and more. Free software.">
     <meta name="keywords"
         content="AI receipt scanning, predictive sales analysis, business software, inventory management, rental management, invoice generator, small business automation">
 
@@ -888,7 +888,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                         </svg>
                     </div>
                     <h3>Download</h3>
-                    <p>Get Argo Books free for Windows. Installation takes less than 2 minutes.</p>
+                    <p>Get Argo Books for free. Installation takes less than 2 minutes.</p>
                 </div>
                 <div class="step-connector animate-on-scroll"></div>
                 <div class="step-card animate-on-scroll">
@@ -1287,7 +1287,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                     </div>
                     <div class="faq-answer">
                         <div class="faq-answer-content">
-                            <p>Argo Books is currently available for Windows (Windows 10 and later). A mobile companion app for iOS and Android is coming soon, which will allow you to scan receipts and view your business data on the go.</p>
+                            <p>Argo Books is available for Windows, macOS, and Linux. A mobile app for Android and iOS allows you to scan receipts and view your business data on the go.</p>
                         </div>
                     </div>
                 </div>

@@ -167,7 +167,7 @@
             <section id="system-requirements" class="article">
                 <h2>System Requirements</h2>
                 <ul>
-                    <li>Windows 10 or newer</li>
+                    <li>Windows 10 or newer, macOS, or Linux</li>
                     <li>4GB RAM minimum</li>
                     <li>1GB free disk space</li>
                     <li>1280*720 screen resolution or higher</li>
@@ -185,7 +185,7 @@
                 </ol>
 
                 <div class="info-box">
-                    <strong>Tip:</strong> Windows may display a security warning. This is normal for new applications.
+                    <strong>Tip:</strong> Your computer may display a security warning. This is normal for new applications.
                     Click "More info" and then "Run anyway" to proceed.
                 </div>
             </section>

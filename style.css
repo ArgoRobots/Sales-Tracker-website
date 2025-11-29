@@ -2571,14 +2571,6 @@ a {
         margin: 0;
     }
 
-    .mobile-phones {
-        height: 420px;
-    }
-
-    .mobile-phone {
-        width: 180px;
-    }
-
     .app-store-badges {
         flex-direction: column;
         align-items: center;
@@ -2586,16 +2578,6 @@ a {
 
     .cta-content h2 {
         font-size: 2rem;
-    }
-
-    .cta-buttons {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .cta-features {
-        flex-direction: column;
-        gap: 12px;
     }
 
     /* Customer card responsive */
@@ -2626,6 +2608,19 @@ a {
 
     .provider-logo {
         height: 16px;
+    }
+}
+
+@media (max-width: 600px){
+    .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .cta-features {
+        flex-direction: column;
+        gap: 12px;
+        align-items: center;
     }
 }
 

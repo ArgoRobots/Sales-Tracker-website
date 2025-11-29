@@ -43,7 +43,8 @@
                 const rect = container.getBoundingClientRect();
                 mouseX = e.clientX - rect.left - (ORB_SIZE / 2);
                 mouseY = e.clientY - rect.top - (ORB_SIZE / 2);
-                // Snap orb to cursor position instantly
+               
+                // Snap orb to cursor position
                 orbX = mouseX;
                 orbY = mouseY;
                 orb.style.transform = `translate(${orbX}px, ${orbY}px)`;

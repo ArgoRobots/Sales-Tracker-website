@@ -118,9 +118,9 @@ $older_versions = getOlderVersions();
 
     <!-- SEO Meta Tags -->
     <meta name="description"
-        content="Download older versions of Argo Books. Access previous releases for compatibility or testing purposes. Windows software downloads.">
+        content="Download older versions of Argo Books. Access previous releases for compatibility or testing purposes. software downloads.">
     <meta name="keywords"
-        content="argo books older versions, previous releases, legacy versions, software downloads, version history, Windows software">
+        content="argo books older versions, previous releases, legacy versions, software downloads, version history, software">
 
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Older Versions - Argo Books | Previous Releases">
