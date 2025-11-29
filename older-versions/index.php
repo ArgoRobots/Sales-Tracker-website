@@ -1,95 +1,78 @@
 <?php
-// Get available versions from filesystem
-function getOlderVersions()
+// Platform configuration
+$platforms = [
+    'windows' => [
+        'name' => 'Windows',
+        'pattern' => '/^Argo Books Installer V\.(.+)\.exe$/i',
+        'available' => true,
+        'icon' => 'M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801'
+    ],
+    'macos' => [
+        'name' => 'macOS',
+        'pattern' => '/^Argo Books.*\.dmg$/i',
+        'available' => false,
+        'icon' => 'M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z'
+    ],
+    'linux' => [
+        'name' => 'Linux',
+        'pattern' => '/^Argo Books.*\.(deb|rpm|AppImage)$/i',
+        'available' => false,
+        'icon' => 'M12.504 0c-.155 0-.315.008-.48.021-4.226.333-3.105 4.807-3.17 6.298-.076 1.092-.3 1.953-1.05 3.02-.885 1.051-2.127 2.75-2.716 4.521-.278.832-.41 1.684-.287 2.489a.424.424 0 00-.11.135c-.26.268-.45.6-.663.839-.199.199-.485.267-.797.4-.313.136-.658.269-.864.68-.09.189-.136.394-.132.602 0 .199.027.4.055.536.058.399.116.728.04.97-.249.68-.28 1.145-.106 1.484.174.334.535.47.94.601.81.2 1.91.135 2.774.6.926.466 1.866.67 2.616.47.526-.116.97-.464 1.208-.946.587-.003 1.23-.269 2.26-.334.699-.058 1.574.267 2.577.2.025.134.063.198.114.333l.003.003c.391.778 1.113 1.132 1.884 1.071.771-.06 1.592-.536 2.257-1.306.631-.765 1.683-1.084 2.378-1.503.348-.199.629-.469.649-.853.023-.4-.2-.811-.714-1.376v-.097l-.003-.003c-.17-.2-.25-.535-.338-.926-.085-.401-.182-.786-.492-1.046h-.003c-.059-.054-.123-.067-.188-.135a.357.357 0 00-.19-.064c.431-1.278.264-2.55-.173-3.694-.533-1.41-1.465-2.638-2.175-3.483-.796-1.005-1.576-1.957-1.56-3.368.026-2.152.236-6.133-3.544-6.139z'
+    ]
+];
+
+// Get available versions for a specific platform
+function getOlderVersions($pattern)
 {
     $versionsPath = '../resources/downloads/versions/';
     $versions = [];
 
-    // Debug: Check if directory exists
     if (!is_dir($versionsPath)) {
-        error_log("Versions directory does not exist: " . $versionsPath);
         return $versions;
     }
 
-    // Scan the versions directory for version folders
     $versionFolders = scandir($versionsPath);
-    error_log("Found version folders: " . print_r($versionFolders, true));
 
     foreach ($versionFolders as $folder) {
         if ($folder === '.' || $folder === '..') continue;
 
         $versionPath = $versionsPath . $folder . '/';
-        error_log("Checking version path: " . $versionPath);
 
-        // Check if it's a directory
-        if (!is_dir($versionPath)) {
-            error_log("Not a directory: " . $versionPath);
-            continue;
-        }
+        if (!is_dir($versionPath)) continue;
 
-        // Look for installer files in the version directory
         $files = scandir($versionPath);
-        error_log("Files in " . $folder . ": " . print_r($files, true));
 
         foreach ($files as $file) {
-            // Look for installer files with the pattern "Argo Books Installer V.{version}.exe"
-            if (preg_match('/^Argo Books Installer V\.(.+)\.exe$/i', $file, $matches)) {
+            if (preg_match($pattern, $file, $matches)) {
                 $version = $matches[1];
                 $filepath = $versionPath . $file;
-                error_log("Found installer: " . $file . " for version: " . $version);
 
                 if (file_exists($filepath)) {
-                    $filesize = filesize($filepath);
-                    $modified = filemtime($filepath);
-
-                    // Check if languages folder exists for this version
-                    $languagesPath = $versionPath . 'languages/';
-                    $hasLanguages = is_dir($languagesPath);
-
-                    $versionData = [
+                    $versions[] = [
                         'version' => $version,
                         'filename' => $file,
                         'filepath' => $filepath,
-                        'relativePath' => 'versions/' . $folder . '/' . $file,
-                        'filesize' => $filesize,
-                        'modified' => $modified,
-                        'release_date' => date('Y-m-d', $modified),
-                        'hasLanguages' => $hasLanguages,
-                        'languagesPath' => $hasLanguages ? 'versions/' . $folder . '/languages/' : null
+                        'filesize' => filesize($filepath),
+                        'modified' => filemtime($filepath)
                     ];
-
-                    $versions[] = $versionData;
-                    error_log("Added version: " . print_r($versionData, true));
                 }
-                break; // Only one installer per version folder
+                break;
             }
         }
     }
-
-    error_log("All versions before sorting: " . print_r(array_column($versions, 'version'), true));
 
     // Sort versions in descending order
     usort($versions, function ($a, $b) {
         return version_compare($b['version'], $a['version']);
     });
 
-    error_log("All versions after sorting: " . print_r(array_column($versions, 'version'), true));
-
-    // Only remove the latest version if we have more than 2 versions
-    // This ensures we show at least one older version
-    if (count($versions) > 2) {
-        $removed = array_shift($versions); // Remove the latest version
-        error_log("Removed latest version (>2 versions): " . $removed['version']);
-    } elseif (count($versions) == 2) {
-        $removed = array_shift($versions); // Remove latest, show the one older version
-        error_log("Removed latest version (2 versions): " . $removed['version']);
+    // Remove the latest version
+    if (count($versions) > 1) {
+        array_shift($versions);
     } else {
-        // If only one version or none, don't show anything
-        error_log("Only " . count($versions) . " version(s) found, showing none");
         $versions = [];
     }
 
-    error_log("Final versions to display: " . print_r(array_column($versions, 'version'), true));
     return $versions;
 }
 
@@ -105,7 +88,11 @@ function formatFileSize($bytes)
     return round($bytes, 1) . ' ' . $units[$pow];
 }
 
-$older_versions = getOlderVersions();
+// Get versions for each platform
+$platformVersions = [];
+foreach ($platforms as $key => $platform) {
+    $platformVersions[$key] = getOlderVersions($platform['pattern']);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -186,23 +173,53 @@ $older_versions = getOlderVersions();
     </div>
 
     <div class="container">
-        <div class="version-grid">
-            <?php if (empty($older_versions)): ?>
+        <!-- Platform Tabs -->
+        <div class="platform-tabs">
+            <?php foreach ($platforms as $key => $platform): ?>
+            <button class="platform-tab <?php echo $key === 'windows' ? 'active' : ''; ?>"
+                    data-platform="<?php echo $key; ?>"
+                    <?php echo !$platform['available'] ? 'disabled' : ''; ?>>
+                <svg viewBox="0 0 24 24" fill="currentColor" class="tab-icon">
+                    <path d="<?php echo $platform['icon']; ?>"/>
+                </svg>
+                <span><?php echo $platform['name']; ?></span>
+                <?php if (!$platform['available']): ?>
+                <span class="coming-soon-label">Coming Soon</span>
+                <?php endif; ?>
+            </button>
+            <?php endforeach; ?>
+        </div>
+
+        <!-- Platform Content -->
+        <?php foreach ($platforms as $key => $platform): ?>
+        <div class="platform-content <?php echo $key === 'windows' ? 'active' : ''; ?>" id="platform-<?php echo $key; ?>">
+            <?php if (!$platform['available']): ?>
+                <div class="version-card">
+                    <div class="no-versions">
+                        <svg viewBox="0 0 24 24" fill="currentColor" class="platform-icon-large">
+                            <path d="<?php echo $platform['icon']; ?>"/>
+                        </svg>
+                        <h3><?php echo $platform['name']; ?> Version Coming Soon</h3>
+                        <p>We're working on bringing Argo Books to <?php echo $platform['name']; ?>.
+                           Check back later for updates.</p>
+                        <a href="../downloads" class="btn btn-blue" style="margin-top: 15px;">View All Downloads</a>
+                    </div>
+                </div>
+            <?php elseif (empty($platformVersions[$key])): ?>
                 <div class="version-card">
                     <div class="no-versions">
                         <h3>No Older Versions Available</h3>
                         <p>Currently, only the latest version is available for download. Check back later for access to
                             previous releases.</p>
-                        <a href="../download" class="btn btn-blue" style="margin-top: 15px;">Download Latest Version</a>
+                        <a href="../downloads" class="btn btn-blue" style="margin-top: 15px;">Download Latest Version</a>
                     </div>
                 </div>
             <?php else: ?>
-                <?php foreach ($older_versions as $version): ?>
+                <div class="version-grid">
+                    <?php foreach ($platformVersions[$key] as $version): ?>
                     <div class="version-download-card">
                         <div class="version-info">
-                            <h3>Version
-                                <?php echo htmlspecialchars($version['version']); ?>
-                            </h3>
+                            <h3>Version <?php echo htmlspecialchars($version['version']); ?></h3>
                             <div class="version-meta">
                                 <div class="meta-item">
                                     <strong>Released:</strong>
@@ -223,7 +240,8 @@ $older_versions = getOlderVersions();
                                 class="btn btn-blue download-btn"
                                 download="<?php echo htmlspecialchars($version['filename']); ?>"
                                 title="Download Version <?php echo htmlspecialchars($version['version']); ?>"
-                                data-version="<?php echo htmlspecialchars($version['version']); ?>">
+                                data-version="<?php echo htmlspecialchars($version['version']); ?>"
+                                data-platform="<?php echo $key; ?>">
                                 Download V.<?php echo htmlspecialchars($version['version']); ?>
                             </a>
                             <div class="version-badge">
@@ -231,9 +249,11 @@ $older_versions = getOlderVersions();
                             </div>
                         </div>
                     </div>
-                <?php endforeach; ?>
+                    <?php endforeach; ?>
+                </div>
             <?php endif; ?>
         </div>
+        <?php endforeach; ?>
     </div>
 
     <footer class="footer">
@@ -241,19 +261,34 @@ $older_versions = getOlderVersions();
     </footer>
 
     <script>
-        // Add download tracking without confirmation popup
+        // Platform tab switching
+        document.querySelectorAll('.platform-tab').forEach(function(tab) {
+            tab.addEventListener('click', function() {
+                if (this.disabled) return;
+
+                // Update active tab
+                document.querySelectorAll('.platform-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+
+                // Update active content
+                const platform = this.getAttribute('data-platform');
+                document.querySelectorAll('.platform-content').forEach(c => c.classList.remove('active'));
+                document.getElementById('platform-' + platform).classList.add('active');
+            });
+        });
+
+        // Add download tracking
         document.querySelectorAll('.download-btn').forEach(function(btn) {
             btn.addEventListener('click', function(e) {
                 const version = this.getAttribute('data-version');
-                if (version) {
-                    // Track download event if analytics is available
-                    if (typeof gtag !== 'undefined') {
-                        gtag('event', 'download', {
-                            'event_category': 'software',
-                            'event_label': 'argo_sales_tracker_v' + version,
-                            'version': version
-                        });
-                    }
+                const platform = this.getAttribute('data-platform');
+                if (version && typeof gtag !== 'undefined') {
+                    gtag('event', 'download', {
+                        'event_category': 'software',
+                        'event_label': 'argo_books_v' + version + '_' + platform,
+                        'version': version,
+                        'platform': platform
+                    });
                 }
             });
         });
