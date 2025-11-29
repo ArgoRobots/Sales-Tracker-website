@@ -113,6 +113,8 @@
   mix-blend-mode: screen;
   will-change: transform;
   position: absolute;
+  top: 0;
+  left: 0;
   border-radius: 50%;
   filter: blur(80px);
 }
