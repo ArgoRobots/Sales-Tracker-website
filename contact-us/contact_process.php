@@ -16,7 +16,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $firstName = isset($_POST['firstName']) ? trim($_POST['firstName']) : '';
     $lastName = isset($_POST['lastName']) ? trim($_POST['lastName']) : '';
     $email = isset($_POST['email']) ? trim($_POST['email']) : '';
+    $subject = isset($_POST['subject']) ? trim($_POST['subject']) : 'general';
     $message = isset($_POST['message']) ? trim($_POST['message']) : '';
+
+    // Map subject values to display labels
+    $subject_labels = [
+        'general' => 'General Inquiry',
+        'support' => 'Technical Support',
+        'billing' => 'Billing Question',
+        'feature' => 'Feature Request',
+        'bug' => 'Bug Report',
+        'other' => 'Other'
+    ];
+    $subject_label = isset($subject_labels[$subject]) ? $subject_labels[$subject] : 'General Inquiry';
 
     // Basic validation
     if (empty($firstName) || empty($lastName) || empty($email) || empty($message)) {
@@ -28,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $subject = "Argo Books Contact: {$firstName} {$lastName}";
 
         // Build HTML email content
-        $email_html = get_contact_email_template($firstName, $lastName, $email, $message);
+        $email_html = get_contact_email_template($firstName, $lastName, $email, $subject_label, $message);
 
         // Email headers for HTML email
         $headers = [
@@ -72,14 +84,15 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 
 /**
  * Get HTML email template for contact form
- * 
+ *
  * @param string $firstName Sender's first name
  * @param string $lastName Sender's last name
  * @param string $email Sender's email
+ * @param string $subject Subject/category of the inquiry
  * @param string $message Message content
  * @return string HTML email content
  */
-function get_contact_email_template($firstName, $lastName, $email, $message)
+function get_contact_email_template($firstName, $lastName, $email, $subject, $message)
 {
     // Format message with line breaks
     $formatted_message = nl2br(htmlspecialchars($message));
@@ -181,7 +194,12 @@ function get_contact_email_template($firstName, $lastName, $email, $message)
                 <span class="field-label">Email:</span>
                 <div class="field-value">{$email}</div>
             </div>
-            
+
+            <div class="field">
+                <span class="field-label">Category:</span>
+                <div class="field-value">{$subject}</div>
+            </div>
+
             <div class="field">
                 <span class="field-label">Message:</span>
                 <div class="message-content">{$formatted_message}</div>
