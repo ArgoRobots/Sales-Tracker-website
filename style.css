@@ -2137,6 +2137,7 @@ a {
 .contact-section {
     padding: 80px 0;
     background: #f8fafc;
+    overflow: hidden;
 }
 
 .contact-header {
@@ -2705,5 +2706,26 @@ a {
     .customers-mockup,
     .payments-mockup {
         padding: 16px;
+    }
+}
+
+/* Very small screens - prevent any overflow issues */
+@media (max-width: 400px) {
+    .cursor-orb {
+        width: 250px;
+        height: 250px;
+    }
+
+    .hero-badge {
+        font-size: 0.75rem;
+        padding: 8px 14px;
+        gap: 6px;
+    }
+
+    .hero-badge span:last-child {
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 }
