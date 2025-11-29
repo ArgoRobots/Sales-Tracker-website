@@ -108,7 +108,7 @@
   background: linear-gradient(135deg, #a78bfa, #f472b6);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.5s ease, transform 0.15s ease-out;
+  transition: opacity 0.5s ease;
   animation: none !important;
   mix-blend-mode: screen;
   will-change: transform;
@@ -218,5 +218,16 @@
 
   .footer-section:first-child {
     margin-right: 0;
+  }
+}
+
+@media (max-width: 400px) {
+  .footer .cursor-orb {
+    width: 250px;
+    height: 250px;
+  }
+
+  .footer-section {
+    min-width: unset;
   }
 }

@@ -221,7 +221,7 @@ $systemRequirements = getSystemRequirements();
                 </ol>
 
                 <div class="info-box">
-                    <strong>Tip:</strong> Windows may display a security warning. This is normal for new applications.
+                    <strong>Tip:</strong> Your computer may display a security warning. This is normal for new applications.
                     Click "More info" and then "Run anyway" to proceed.
                 </div>
             </section>

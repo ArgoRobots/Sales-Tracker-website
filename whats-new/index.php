@@ -9,14 +9,14 @@
 
     <!-- SEO Meta Tags -->
     <meta name="description"
-        content="Latest updates and new features in Argo Books. Download the latest Windows release.">
+        content="Latest updates and new features in Argo Books. Download the latest release.">
     <meta name="keywords"
-        content="argo books updates, new features, version history, changelog, release notes, software updates, latest version, product improvements, Windows software updates">
+        content="argo books updates, new features, version history, changelog, release notes, software updates, latest version, product improvements, software updates">
 
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="What's New - Argo Books | Latest Features & Updates">
     <meta property="og:description"
-        content="Latest updates and new features in Argo Books. Download the latest Windows release.">
+        content="Latest updates and new features in Argo Books. Download the latest release.">
     <meta property="og:url" content="https://argorobots.com/whats-new/">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Argo Books">
@@ -26,7 +26,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="What's New - Argo Books | Latest Features & Updates">
     <meta name="twitter:description"
-        content="Latest updates and new features in Argo Books. Download the latest Windows release.">
+        content="Latest updates and new features in Argo Books. Download the latest release.">
 
     <!-- Additional SEO Meta Tags -->
     <meta name="geo.region" content="CA-AB">
