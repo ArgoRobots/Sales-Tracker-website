@@ -79,10 +79,10 @@ function send_license_email($to_email, $license_key)
         </div>
 
         <div class="button-container">
-            <a href="https://argorobots.com/documentation/index.php" class="button">View Documentation</a>
+            <a href="https://argorobots.com/documentation/" class="button">View Documentation</a>
         </div>
 
-        <p>If you have any questions or need assistance, please don't hesitate to <a href="https://argorobots.com/contact-us/index.php">contact our support team</a>.</p>
+        <p>If you have any questions or need assistance, please don't hesitate to <a href="https://argorobots.com/contact-us/">contact our support team</a>.</p>
         <p>Thank you for choosing Argo Books!</p>
         HTML;
 
@@ -115,10 +115,10 @@ function resend_license_email($to_email, $license_key)
         </div>
 
         <div class="button-container">
-            <a href="https://argorobots.com/documentation/index.php" class="button">View Documentation</a>
+            <a href="https://argorobots.com/documentation/" class="button">View Documentation</a>
         </div>
 
-        <p>If you have any questions or need assistance, please don't hesitate to <a href="https://argorobots.com/contact-us/index.php">contact our support team</a>.</p>
+        <p>If you have any questions or need assistance, please don't hesitate to <a href="https://argorobots.com/contact-us/">contact our support team</a>.</p>
         <p>Thank you for using Argo Books!</p>
         HTML;
 
@@ -164,7 +164,7 @@ function resend_subscription_id_email($to_email, $subscription_id, $billing_cycl
         </div>
 
         <p>Keep this ID safe. You may need it when contacting support about your subscription.</p>
-        <p>If you have any questions or need assistance, please don't hesitate to <a href="https://argorobots.com/contact-us/index.php">contact our support team</a>.</p>
+        <p>If you have any questions or need assistance, please don't hesitate to <a href="https://argorobots.com/contact-us/">contact our support team</a>.</p>
         HTML;
 
     return send_styled_email($to_email, 'Your Requested Argo AI Subscription ID', $body, 'background: linear-gradient(135deg, #8b5cf6, #7c3aed);');
@@ -599,7 +599,7 @@ function send_ban_notification_email($email, $username, $ban_reason, $ban_durati
         $expiration_info = "<p>Your ban will expire on <strong>{$formatted_date}</strong>.</p>";
     }
 
-    $appeal_text = $can_appeal ? '<p>If you believe this ban was issued in error, you can <a href="https://argorobots.com/contact-us/index.php">contact our support team</a> to request a review. Please include your username and explain why you believe the ban should be reconsidered.</p>' : '';
+    $appeal_text = $can_appeal ? '<p>If you believe this ban was issued in error, you can <a href="https://argorobots.com/contact-us/">contact our support team</a> to request a review. Please include your username and explain why you believe the ban should be reconsidered.</p>' : '';
 
     $email_html = <<<HTML
         <!DOCTYPE html>
@@ -799,7 +799,7 @@ function send_username_reset_email($email, $old_username, $new_username, $violat
                         <li>All your posts and comments have been updated with the new username</li>
                     </ul>
 
-                    <p>If you believe this action was taken in error, please <a href="https://argorobots.com/contact-us/index.php">contact our support team</a> with your account details.</p>
+                    <p>If you believe this action was taken in error, please <a href="https://argorobots.com/contact-us/">contact our support team</a> with your account details.</p>
 
                     <p>Please review our <a href="https://argorobots.com/community/guidelines.php">community guidelines</a> to ensure future compliance.</p>
 
@@ -886,7 +886,7 @@ function send_bio_cleared_email($email, $username, $violation_type, $additional_
                         <li>Ensure your bio content is appropriate and respectful</li>
                     </ul>
 
-                    <p>If you believe this action was taken in error, please <a href="https://argorobots.com/contact-us/index.php">contact our support team</a> with your account details.</p>
+                    <p>If you believe this action was taken in error, please <a href="https://argorobots.com/contact-us/">contact our support team</a> with your account details.</p>
 
                     <p>Please review our <a href="https://argorobots.com/community/guidelines.php">community guidelines</a> to ensure future compliance.</p>
 

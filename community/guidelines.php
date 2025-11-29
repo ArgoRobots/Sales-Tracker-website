@@ -31,7 +31,7 @@
             <p>Help us keep the community friendly, professional, and productive.</p>
 
             <div class="back-button-container">
-                <a href="index.php" class="btn back-button">← Back to Community</a>
+                <a href="./" class="btn back-button">← Back to Community</a>
             </div>
         </div>
 
@@ -141,7 +141,7 @@
         </div>
 
         <div class="back-button-container">
-            <a href="index.php" class="btn back-button">← Back to Community</a>
+            <a href="./" class="btn back-button">← Back to Community</a>
         </div>
     </div>
 

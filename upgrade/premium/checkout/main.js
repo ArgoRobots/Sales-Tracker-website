@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
                   if (data.success) {
                     // Redirect to thank you page with license key and other details
                     window.location.href =
-                      "../thank-you/index.php?order_id=" +
+                      "../thank-you/?order_id=" +
                       encodeURIComponent(data.order_id || "") +
                       "&transaction_id=" +
                       encodeURIComponent(data.transaction_id || "") +
@@ -374,7 +374,7 @@ document.addEventListener("DOMContentLoaded", function () {
             method: "stripe",
           });
 
-          window.location.href = `../thank-you/index.php?${params.toString()}`;
+          window.location.href = `../thank-you/?${params.toString()}`;
         } catch (error) {
           console.error("Stripe payment error:", error);
 
@@ -572,7 +572,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
               if (data.success) {
                 // Redirect to thank you page
-                window.location.href = `../thank-you/index.php?order_id=${encodeURIComponent(
+                window.location.href = `../thank-you/?order_id=${encodeURIComponent(
                   data.order_id || ""
                 )}&transaction_id=${encodeURIComponent(
                   data.transaction_id || ""

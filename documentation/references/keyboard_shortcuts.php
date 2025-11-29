@@ -32,7 +32,7 @@ require_once '../../community/formatting/formatting_functions.php';
     </header>
 
     <div class="reference-container">
-        <a href="../index.php#keyboard-shortcuts" class="link-no-underline back-link">← Back to Documentation</a>
+        <a href="../#keyboard-shortcuts" class="link-no-underline back-link">← Back to Documentation</a>
 
         <div class="reference-header">
             <h1>Report Generator Keyboard Shortcuts</h1>

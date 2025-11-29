@@ -537,7 +537,7 @@ if ($is_own_profile) {
                 <h2>The user "<?php echo htmlspecialchars($requested_username); ?>" could not be found</h2>
                 <p>The username you are looking for does not exist or may have been removed.</p>
                 <div class="not-found-actions">
-                    <a href="../index.php" class="btn btn-blue">Return to Community</a>
+                    <a href="../" class="btn btn-blue">Return to Community</a>
                 </div>
             </div>
         </div>

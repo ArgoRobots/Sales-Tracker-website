@@ -170,7 +170,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
     <div class="community-container">
         <div class="page-header">
             <div class="header-left">
-                <a href="index.php" class="btn back-button">
+                <a href="./" class="btn back-button">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                         <path stroke-width="2" d="M19 12H5M12 19l-7-7 7-7" />
                     </svg>

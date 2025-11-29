@@ -296,7 +296,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
 
                         <div class="form-actions">
-                            <a href="index.php" class="btn btn-black">Cancel</a>
+                            <a href="./" class="btn btn-black">Cancel</a>
                             <button type="submit" class="btn btn-blue">Create Post</button>
                         </div>
                     </form>

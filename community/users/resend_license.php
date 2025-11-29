@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['resend_license']) && 
     if ($email_sent) {
         $license_success = 'Your license key has been sent to your email address.';
     } else {
-        $license_error = 'Failed to send email. Please try again later or <a href="../../contact/index.php">contact support</a>.';
+        $license_error = 'Failed to send email. Please try again later or <a href="../../contact-us/">contact support</a>.';
     }
 }
 

@@ -33,7 +33,7 @@ require_once '../../community/formatting/formatting_functions.php';
     </header>
 
     <div class="reference-container">
-        <a href="../index.php#spreadsheets" class="link-no-underline back-link">← Back to Documentation</a>
+        <a href="../#spreadsheets" class="link-no-underline back-link">← Back to Documentation</a>
 
         <div class="reference-header">
             <h1>Accepted Country Names</h1>
@@ -1823,8 +1823,8 @@ require_once '../../community/formatting/formatting_functions.php';
         <div class="pattern-note">
             <strong>Note:</strong> Country names are case-insensitive, so "United States", "united states", and "UNITED
             STATES" are all accepted. If a country variant is not listed above, you can request it to be added by
-            <a class="link" href="../community/index.php">posting a feature request</a> or by <a class="link"
-                href="../contact-us/index.php">contacting support</a>.
+            <a class="link" href="../../community/">posting a feature request</a> or by <a class="link"
+                href="../../contact-us/">contacting support</a>.
         </div>
     </div>
 

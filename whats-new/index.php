@@ -80,7 +80,7 @@
                     </svg>
                     Download Latest
                 </a>
-                <a href="../older-versions/index.php" class="btn btn-secondary">
+                <a href="../older-versions/" class="btn btn-secondary">
                     Older Versions
                 </a>
             </div>
@@ -174,7 +174,7 @@
                                     making imports more flexible and reliable even if your spreadsheet columns are
                                     rearranged. It also no longer requires certain columns. We updated the documentation to
                                     include a list of required columns
-                                    <a class="link-no-underline" href="../documentation/index.php#spreadsheet-import">here</a>.
+                                    <a class="link-no-underline" href="../documentation/#spreadsheet-import">here</a>.
                                 </p>
                             </div>
                         </div>
@@ -624,7 +624,7 @@
                     <div class="documentation-link">
                         <p>
                             <strong>For more information about the updated spreadsheet import/export process,
-                                <a class="link-no-underline" href="../documentation/index.php#spreadsheet-import">visit our
+                                <a class="link-no-underline" href="../documentation/#spreadsheet-import">visit our
                                     documentation</a></strong>
                         </p>
                     </div>

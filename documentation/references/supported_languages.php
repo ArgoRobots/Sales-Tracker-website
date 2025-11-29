@@ -28,7 +28,7 @@
     </header>
 
     <div class="reference-container">
-        <a href="../index.php#supported-languages" class="link-no-underline back-link">← Back to Documentation</a>
+        <a href="../#supported-languages" class="link-no-underline back-link">← Back to Documentation</a>
 
         <div class="reference-header">
             <h1>Supported Languages</h1>

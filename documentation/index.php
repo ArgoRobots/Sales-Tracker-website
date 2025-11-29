@@ -182,7 +182,7 @@ $systemRequirements = getSystemRequirements();
 
                 <div class="contact-box">
                     <p><strong>Need Help?</strong> If you have questions or need assistance, please <a
-                            href="../contact-us/index.php" class="link">contact us</a>. Our support team is here to help
+                            href="../contact-us/" class="link">contact us</a>. Our support team is here to help
                         you succeed with Argo Books.</p>
                 </div>
             </section>
@@ -258,8 +258,8 @@ $systemRequirements = getSystemRequirements();
                     <p>Argo Books offers two versions to match your business needs. Start with our free version,
                         perfect for small businesses just getting started with inventory tracking. As your business
                         grows, seamlessly upgrade to our paid version for unlimited products and advanced features.</p>
-                    <p>Not sure which version is right for you? <a href="../index.php" class="link">Try our free
-                            version first</a> – you can always <a href="../upgrade/index.php" class="link">upgrade
+                    <p>Not sure which version is right for you? <a href="../" class="link">Try our free
+                            version first</a> – you can always <a href="../upgrade/" class="link">upgrade
                             later</a> when you need more features.</p>
                 </div>
 
@@ -395,7 +395,7 @@ $systemRequirements = getSystemRequirements();
 
                 <div class="warning-box">
                     <strong>Important:</strong> Free version users are limited to 10 products. Upgrade to the paid
-                    version <a class="link" href="../upgrade/index.php">here</a> for unlimited products.
+                    version <a class="link" href="../upgrade/">here</a> for unlimited products.
                 </div>
             </section>
 
@@ -716,7 +716,7 @@ $systemRequirements = getSystemRequirements();
 
                 <div class="warning-box">
                     <strong>Internet Connection Required:</strong> AI search requires an internet connection and is only
-                    available in the paid version. <a class="link" href="../upgrade/index.php">Upgrade here</a> to
+                    available in the paid version. <a class="link" href="../upgrade/">Upgrade here</a> to
                     access this feature.
                 </div>
             </section>

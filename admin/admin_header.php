@@ -39,7 +39,7 @@ $base_path = $in_subdir ? '../' : '';
             <div class="header-container">
                 <!-- Left: Home button and Logo -->
                 <div class="header-left">
-                    <a href="<?php echo $base_path; ?>../index.php" class="btn-small btn-home" title="Go to Main Site">
+                    <a href="<?php echo $base_path; ?>../" class="btn-small btn-home" title="Go to Main Site">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
                         </svg>
@@ -93,7 +93,7 @@ $base_path = $in_subdir ? '../' : '';
             <div id="menu" class="hamburger-nav-menu">
                 <ul>
                     <li>
-                        <a href="<?php echo $base_path; ?>../index.php" class="home-link">
+                        <a href="<?php echo $base_path; ?>../" class="home-link">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
                             </svg>
