@@ -10,7 +10,8 @@
 
     function initCursorOrbs() {
         // Find all sections that should have cursor orbs
-        const sections = document.querySelectorAll('.hero, .cta-section, .contact-section, .footer');
+        // Include various hero variants used across different pages
+        const sections = document.querySelectorAll('.hero, .community-hero, .upgrade-hero, .contact-hero, .cta-section, .contact-section, .footer');
 
         sections.forEach(section => {
             // Check if section already has a cursor orb
@@ -51,7 +52,8 @@
             }
 
             function onMouseMove(e) {
-                const rect = section.getBoundingClientRect();
+                // Calculate position relative to the container where orb is placed
+                const rect = container.getBoundingClientRect();
                 mouseX = e.clientX - rect.left - (ORB_SIZE / 2);
                 mouseY = e.clientY - rect.top - (ORB_SIZE / 2);
             }

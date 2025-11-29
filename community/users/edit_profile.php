@@ -511,6 +511,7 @@ function handle_password_change()
     <script src="delete-account.js" defer></script>
     <script src="../../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../../resources/scripts/main.js"></script>
+    <script src="../../resources/scripts/cursor-orb.js" defer></script>
     <script src="../../resources/notifications/notifications.js" defer></script>
 
     <link rel="stylesheet" href="edit-profile.css">

@@ -14,6 +14,7 @@ require_once 'formatting_functions.php';
 
     <script src="../../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../../resources/scripts/main.js"></script>
+    <script src="../../resources/scripts/cursor-orb.js" defer></script>
 
     <link rel="stylesheet" href="allowed-domains.css">
     <link rel="stylesheet" href="../../resources/styles/help.css">
