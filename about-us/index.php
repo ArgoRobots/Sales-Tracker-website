@@ -42,6 +42,7 @@
 
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../resources/scripts/main.js"></script>
+    <script src="../resources/scripts/cursor-orb.js" defer></script>
 
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">
@@ -275,25 +276,28 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
-    <section class="contact-section">
-        <div class="container">
-            <div class="contact-card animate-on-scroll">
-                <h2>Let's Build Together</h2>
-                <p>Have questions or suggestions? We'd love to hear from you and make Argo Books even better.</p>
-                <a href="/contact-us/" class="btn btn-primary">
-                    <span>Contact Us</span>
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                </a>
+    <!-- Contact + Footer Wrapper -->
+    <div class="dark-section-wrapper">
+        <!-- Contact Section -->
+        <section class="contact-section">
+            <div class="container">
+                <div class="contact-card animate-on-scroll">
+                    <h2>Let's Build Together</h2>
+                    <p>Have questions or suggestions? We'd love to hear from you and make Argo Books even better.</p>
+                    <a href="/contact-us/" class="btn btn-primary">
+                        <span>Contact Us</span>
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <footer class="footer">
-        <div id="includeFooter"></div>
-    </footer>
+        <footer class="footer">
+            <div id="includeFooter"></div>
+        </footer>
+    </div>
 
     <script>
         // Scroll animations

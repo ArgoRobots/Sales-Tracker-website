@@ -151,6 +151,7 @@ $older_versions = getOlderVersions();
 
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../resources/scripts/main.js"></script>
+    <script src="../resources/scripts/cursor-orb.js" defer></script>
 
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="../resources/styles/custom-colors.css">

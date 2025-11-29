@@ -116,6 +116,7 @@ if (isset($_GET['created']) && $_GET['created'] == '1') {
     <script src="view-post.js"></script>
     <script src="../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../resources/scripts/main.js"></script>
+    <script src="../resources/scripts/cursor-orb.js" defer></script>
     <script src="../resources/notifications/notifications.js" defer></script>
     <script src="../resources/scripts/utc-to-local.js" defer></script>
     <script src="formatting/text-formatting.js" defer></script>
