@@ -168,7 +168,11 @@ $older_versions = getOlderVersions();
     </header>
 
     <section class="hero">
-        <div class="description-container">
+        <div class="hero-bg">
+            <div class="hero-orb hero-orb-1"></div>
+            <div class="hero-orb hero-orb-2"></div>
+        </div>
+        <div class="hero-content">
             <h1>Older Versions</h1>
             <p>Download previous releases of Argo Books</p>
         </div>

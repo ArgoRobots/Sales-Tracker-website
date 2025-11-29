@@ -159,7 +159,9 @@ $latestVersion = getLatestVersion();
                         </svg>
                         Download for Windows
                     </a>
-                    <span class="platform-badge available">Available Now</span>
+                    <?php if ($latestVersion): ?>
+                        <span class="platform-badge available">v<?php echo htmlspecialchars($latestVersion['version']); ?></span>
+                    <?php endif; ?>
                 </div>
             </div>
 
