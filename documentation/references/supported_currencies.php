@@ -71,7 +71,7 @@
     </header>
 
     <div class="reference-container">
-        <a href="../index.php#supported-currencies" class="link-no-underline back-link">← Back to Documentation</a>
+        <a href="../#supported-currencies" class="link-no-underline back-link">← Back to Documentation</a>
 
         <div class="reference-header">
             <h1>Supported Currencies</h1>

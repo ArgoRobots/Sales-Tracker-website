@@ -50,8 +50,8 @@
         </div>
 
         <div class="action-buttons">
-          <a href="../../index.php" class="btn primary-btn">Return to Home</a>
-          <a href="../index.php" class="btn secondary-btn">Back to Contact</a>
+          <a href="/" class="btn primary-btn">Return to Home</a>
+          <a href="../" class="btn secondary-btn">Back to Contact</a>
         </div>
       </div>
     </div>
