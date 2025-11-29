@@ -6,6 +6,15 @@
   overflow: hidden;
 }
 
+/* When footer is inside dark-section-wrapper, allow orbs to extend upward */
+.dark-section-wrapper .footer {
+  overflow: visible;
+}
+
+.dark-section-wrapper .footer .footer-bg {
+  overflow: visible;
+}
+
 .footer .footer-bg {
   position: absolute;
   top: 0;
