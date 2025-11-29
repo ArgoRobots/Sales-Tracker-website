@@ -117,6 +117,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
             <div class="hero-gradient-orb hero-orb-1"></div>
             <div class="hero-gradient-orb hero-orb-2"></div>
             <div class="hero-gradient-orb hero-orb-3"></div>
+            <div class="hero-gradient-orb hero-orb-cursor" id="cursorOrb"></div>
         </div>
         <div class="container">
             <div class="hero-content">
@@ -1527,6 +1528,38 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
         document.querySelectorAll('.animate-on-scroll').forEach(el => {
             observer.observe(el);
         });
+
+        // Cursor-following orb
+        const cursorOrb = document.getElementById('cursorOrb');
+        const hero = document.querySelector('.hero');
+
+        if (cursorOrb && hero) {
+            let mouseX = 0, mouseY = 0;
+            let orbX = 0, orbY = 0;
+            const speed = 0.08;
+
+            hero.addEventListener('mouseenter', () => {
+                cursorOrb.classList.add('active');
+            });
+
+            hero.addEventListener('mouseleave', () => {
+                cursorOrb.classList.remove('active');
+            });
+
+            hero.addEventListener('mousemove', (e) => {
+                const rect = hero.getBoundingClientRect();
+                mouseX = e.clientX - rect.left - 200;
+                mouseY = e.clientY - rect.top - 200;
+            });
+
+            function animateOrb() {
+                orbX += (mouseX - orbX) * speed;
+                orbY += (mouseY - orbY) * speed;
+                cursorOrb.style.transform = `translate(${orbX}px, ${orbY}px)`;
+                requestAnimationFrame(animateOrb);
+            }
+            animateOrb();
+        }
 
         // Feature tabs
         const tabBtns = document.querySelectorAll('.tab-btn');

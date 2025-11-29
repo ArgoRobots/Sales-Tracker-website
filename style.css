@@ -380,6 +380,22 @@ a {
     }
 }
 
+.hero-orb-cursor {
+    width: 400px;
+    height: 400px;
+    background: linear-gradient(135deg, #a78bfa, #f472b6);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease, transform 0.15s ease-out;
+    animation: none;
+    mix-blend-mode: screen;
+    will-change: transform;
+}
+
+.hero-orb-cursor.active {
+    opacity: 0.6;
+}
+
 .hero .container {
     position: relative;
     display: grid;
