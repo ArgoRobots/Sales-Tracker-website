@@ -62,7 +62,11 @@ if ($existing_subscription && in_array($existing_subscription['status'], ['activ
         <div id="includeHeader"></div>
     </header>
 
-    <section class="ai-hero">
+    <section class="hero ai-hero">
+        <div class="hero-bg">
+            <div class="hero-gradient-orb hero-orb-1"></div>
+            <div class="hero-gradient-orb hero-orb-2"></div>
+        </div>
         <div class="container">
             <div class="ai-badge-large">AI-Powered Features</div>
             <h1>Unlock AI for Your Business</h1>
