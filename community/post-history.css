@@ -102,11 +102,6 @@ header .header-inner .menu-container .menu .community:after {
   font-style: italic;
 }
 
-.metadata-changed {
-  background-color: var(--yellow-100);
-  border-color: var(--yellow-200);
-}
-
 .version-divider {
   height: 2px;
   background: linear-gradient(

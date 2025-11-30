@@ -2,10 +2,6 @@
   color: var(--primary-blue);
 }
 
-.link:hover {
-  text-decoration: none;
-}
-
 .link-no-underline {
   color: var(--primary-blue);
   text-decoration: none;
