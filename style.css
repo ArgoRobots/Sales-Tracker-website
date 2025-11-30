@@ -714,9 +714,13 @@ a {
 }
 
 .tab-btn.active .tab-icon,
-.tab-btn.active .tab-title,
+.tab-btn.active .tab-title {
+    color: white;
+}
+
 .tab-btn.active .tab-subtitle {
     color: white;
+    opacity: 0.8;
 }
 
 .tab-icon {
@@ -753,10 +757,6 @@ a {
     font-size: 0.85rem;
     color: #64748b;
     transition: color 0.3s ease;
-}
-
-.tab-btn.active .tab-subtitle {
-    opacity: 0.8;
 }
 
 /* Tab Content */
@@ -977,8 +977,7 @@ a {
     transition: all 0.3s ease;
 }
 
-.ai-badge .badge-text-scanning,
-.ai-badge .badge-text-complete {
+.ai-badge .badge-text-scanning {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -2172,8 +2171,6 @@ a {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 .guarantee-banner {

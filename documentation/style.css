@@ -288,14 +288,11 @@ body {
   background: var(--white);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s;
+  border: 2px solid var(--gray-500);
 }
 
 .version-card:hover {
   transform: translateY(-4px);
-}
-
-.version-card {
-  border: 2px solid var(--gray-500);
 }
 
 .card-header {
