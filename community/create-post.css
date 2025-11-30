@@ -16,12 +16,7 @@ header .header-inner .menu-container .menu .community:after {
 
 .community-hero .hero-bg {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow: hidden;
-  pointer-events: none;
+  inset: 0;
 }
 
 .community-hero .hero-gradient-orb {

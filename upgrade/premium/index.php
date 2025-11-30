@@ -65,7 +65,11 @@ if (isset($_SESSION['user_id'])) {
         <div id="includeHeader"></div>
     </header>
 
-    <section class="premium-hero">
+    <section class="hero premium-hero">
+        <div class="hero-bg">
+            <div class="hero-gradient-orb hero-orb-1"></div>
+            <div class="hero-gradient-orb hero-orb-2"></div>
+        </div>
         <div class="container">
             <h1>Get Premium</h1>
             <p class="hero-subtitle">Lifetime access to all premium features</p>

@@ -1,9 +1,14 @@
 /* Hero Section */
 .ai-hero {
-    background: linear-gradient(135deg, var(--purple-600) 0%, var(--purple-500) 50%, var(--purple-400) 100%);
-    color: var(--white);
-    padding: 100px 0 80px;
-    text-align: center;
+    background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
+}
+
+.ai-hero .hero-orb-1 {
+    background: linear-gradient(135deg, var(--purple-400), var(--pink-500));
+}
+
+.ai-hero .hero-orb-2 {
+    background: linear-gradient(135deg, var(--purple-700), var(--purple-500));
 }
 
 .ai-badge-large {
@@ -31,10 +36,6 @@
 }
 
 @media (max-width: 768px) {
-    .ai-hero {
-        padding: 80px 0 60px;
-    }
-
     .ai-hero h1 {
         font-size: 32px;
     }
