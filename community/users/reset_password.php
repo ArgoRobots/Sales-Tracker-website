@@ -70,6 +70,7 @@ $stmt->close();
     <link rel="stylesheet" href="auth.css">
     <link rel="stylesheet" href="../../resources/styles/button.css">
     <link rel="stylesheet" href="../../resources/styles/custom-colors.css">
+    <link rel="stylesheet" href="../../resources/styles/link.css">
     <link rel="stylesheet" href="../../resources/header/style.css">
     <link rel="stylesheet" href="../../resources/header/dark.css">
     <link rel="stylesheet" href="../../resources/footer/style.css">
@@ -121,7 +122,7 @@ $stmt->close();
                     Invalid or expired password reset link. Please request a new one.
                 </div>
                 <div class="auth-links">
-                    <p><a href="forgot_password.php" class="btn btn-blue">Request New Link</a></p>
+                    <p><a href="forgot_password.php" class="btn btn-blue link-no-underline">Request New Link</a></p>
                 </div>
             <?php endif; ?>
         </div>

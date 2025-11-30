@@ -107,6 +107,10 @@ header .header-inner .menu-container .menu .whats-new:after {
   box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
 }
 
+.hero .btn-secondary:hover {
+  transform: translateY(-2px);
+}
+
 .hero .btn-secondary {
   padding: 14px 28px;
   background: var(--hero-badge-bg);

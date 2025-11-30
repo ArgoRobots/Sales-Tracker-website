@@ -142,6 +142,7 @@ if ($success) {
     <link rel="stylesheet" href="auth.css">
     <link rel="stylesheet" href="../../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../../resources/styles/button.css">
+    <link rel="stylesheet" href="../../resources/styles/link.css">
     <link rel="stylesheet" href="../../resources/header/style.css">
     <link rel="stylesheet" href="../../resources/footer/style.css">
 
@@ -225,7 +226,7 @@ if ($success) {
 
                 <div class="auth-links">
                     <p>Didn't receive the code? <a href="resend_verification_code.php">Resend code</a></p>
-                    <p>Back to <a href="login.php">Login</a></p>
+                    <p>Back to <a href="login.php" class="link-no-underline">Login</a></p>
                 </div>
             </form>
         </div>

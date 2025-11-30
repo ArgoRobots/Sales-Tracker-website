@@ -147,24 +147,9 @@
   text-align: center;
 }
 
-/* Update auth-links styling for multiple buttons */
 .auth-links {
   text-align: center;
   margin-top: 20px;
-}
-
-.auth-links a {
-  color: var(--primary-blue);
-  text-decoration: none;
-}
-
-.auth-links a:hover {
-  text-decoration: underline;
-}
-
-.auth-links .btn {
-  margin: 5px;
-  display: inline-block;
 }
 
 /* Hide browser default password reveal button */

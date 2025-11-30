@@ -102,6 +102,7 @@ header .header-inner .menu-container .menu .community:after {
 
 .community-hero .guidelines-btn:hover {
   background: var(--hero-badge-border);
+  transform: translateY(-2px);
 }
 
 /* ========================================

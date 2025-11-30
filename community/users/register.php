@@ -99,6 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../../resources/styles/checkbox.css">
     <link rel="stylesheet" href="../../resources/styles/button.css">
+    <link rel="stylesheet" href="../../resources/styles/link.css">
     <link rel="stylesheet" href="../../resources/header/style.css">
     <link rel="stylesheet" href="../../resources/footer/style.css">
     <link rel="stylesheet" href="../../resources/header/dark.css">
@@ -175,7 +176,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div class="checkbox">
                     <input type="checkbox" id="terms" name="terms" <?php echo isset($_POST['terms']) ? 'checked' : ''; ?> required>
-                    <label for="terms">I agree to the <a href="../../legal/terms.php" target="_blank">terms and conditions</a></label>
+                    <label for="terms">I agree to the <a href="../../legal/terms.php" target="_blank" class="link-no-underline">terms and conditions</a></label>
                 </div>
 
                 <div class="form-actions">
@@ -183,7 +184,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="auth-links">
-                    <p>Already have an account? <a href="login.php">Log in</a></p>
+                    <p>Already have an account? <a href="login.php" class="link-no-underline">Log in</a></p>
                 </div>
             </form>
         </div>

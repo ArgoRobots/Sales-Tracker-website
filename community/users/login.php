@@ -108,6 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../../resources/styles/custom-colors.css">
     <link rel="stylesheet" href="../../resources/styles/checkbox.css">
     <link rel="stylesheet" href="../../resources/styles/button.css">
+    <link rel="stylesheet" href="../../resources/styles/link.css">
     <link rel="stylesheet" href="../../resources/header/style.css">
     <link rel="stylesheet" href="../../resources/footer/style.css">
     <link rel="stylesheet" href="../../resources/header/dark.css">
@@ -162,8 +163,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <div class="auth-links">
-                    <a href="forgot_password.php">Forgot password?</a>
-                    <p>Don't have an account? <a href="register.php">Register</a></p>
+                    <a href="forgot_password.php" class="link-no-underline">Forgot password?</a>
+                    <p>Don't have an account? <a href="register.php" class="link-no-underline">Register</a></p>
                 </div>
             </form>
         </div>
