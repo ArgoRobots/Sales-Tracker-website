@@ -30,10 +30,6 @@
   margin-bottom: 30px;
 }
 
-.formatting-section.full-padding {
-  padding: 30px;
-}
-
 .formatting-section h3 {
   color: var(--blueText);
   font-size: 20px;

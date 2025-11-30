@@ -504,7 +504,6 @@ if ($is_own_profile) {
 
     <script src="../../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../../resources/scripts/main.js"></script>
-    <script src="../../resources/scripts/cursor-orb.js" defer></script>
     <script src="../../resources/scripts/utc-to-local.js" defer></script>
     <script src="../../resources/notifications/notifications.js" defer></script>
 

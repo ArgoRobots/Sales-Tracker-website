@@ -121,7 +121,6 @@ $end_date = date('F j, Y', strtotime($ai_subscription['end_date']));
 
     <script src="../../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../../resources/scripts/main.js"></script>
-    <script src="../../resources/scripts/cursor-orb.js" defer></script>
 
     <link rel="stylesheet" href="ai-subscription.css">
     <link rel="stylesheet" href="subscription-confirm.css">

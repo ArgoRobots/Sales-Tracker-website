@@ -31,7 +31,6 @@ $combinedExample = "- **Bold list item**\n- _Italic list item_\n- List item with
 
     <script src="../../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../../resources/scripts/main.js"></script>
-    <script src="../../resources/scripts/cursor-orb.js" defer></script>
     <script src="text-formatting.js" defer></script>
 
     <link rel="stylesheet" href="formatted-text.css">
