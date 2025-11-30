@@ -1,7 +1,7 @@
 /* Premium Page Styles */
 
 .premium-hero {
-    background: linear-gradient(135deg, var(--blue-900) 0%, var(--primary-blue) 100%);
+  background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
 }
 
 .premium-hero .hero-orb-1 {

@@ -1,6 +1,6 @@
 /* Hero Section */
 .ai-hero {
-    background: linear-gradient(135deg, var(--purple-600) 0%, var(--purple-500) 50%, var(--purple-400) 100%);
+    background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
 }
 
 .ai-hero .hero-orb-1 {

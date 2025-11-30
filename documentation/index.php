@@ -505,7 +505,7 @@ $systemRequirements = getSystemRequirements();
                 </div>
 
                 <h3>Currency Support</h3>
-                <p>The import system supports <a class="link" data-scroll-to="supported-currencies">28 different
+                <p>The import system supports <a class="link" href="references/supported_currencies.php">28 different
                         currencies</a>. The system will attempt to automatically detect the currency from your
                     spreadsheet data, but you can also manually select the source currency during import.</p>
 
