@@ -42,7 +42,6 @@ body.menu-open::after {
 header {
   height: 50px;
   position: absolute;
-  background: var(--white);
   width: 100%;
   transition: all 0.3s ease-in-out;
   background: transparent;
@@ -97,9 +96,7 @@ header.sticky .header-inner .menu-container ul li a:after {
 header .menu-icon {
   cursor: pointer;
   padding: 25px 18px;
-  position: relative;
   -webkit-user-select: none;
-  -moz-user-select: none;
   user-select: none;
   left: 10px;
   position: absolute;

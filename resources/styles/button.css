@@ -123,9 +123,8 @@
 
 .btn-gray {
   background-color: var(--gray-bg-light);
-  border: 1px solid var(--gray-input-border);
   color: var(--gray-700);
-  border: var(--gray-text) 1px solid !important;
+  border: 1px solid var(--gray-text);
 }
 
 .btn-gray:hover {
