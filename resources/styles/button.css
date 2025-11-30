@@ -76,7 +76,7 @@
 }
 
 .btn-outline-purple {
-    background: var(--purple);
+    background: var(--white);
     color: var(--purple-600);
     border: 2px solid var(--purple-600);
 }
