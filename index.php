@@ -327,6 +327,18 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                             <span class="tab-subtitle">Get paid faster</span>
                         </div>
                     </button>
+                    <button class="tab-btn" data-tab="expenses">
+                        <div class="tab-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="1" x2="12" y2="23"/>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                            </svg>
+                        </div>
+                        <div class="tab-text">
+                            <span class="tab-title">Expense Tracking</span>
+                            <span class="tab-subtitle">Track every dollar</span>
+                        </div>
+                    </button>
                 </div>
 
                 <div class="features-tabs-content">
@@ -857,6 +869,78 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                                             </div>
                                             <span class="success-text">Payment Received</span>
                                             <span class="success-amount">$1,234.00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Expense Tracking -->
+                    <div class="tab-content" id="tab-expenses">
+                        <div class="tab-content-inner">
+                            <div class="tab-content-text">
+                                <h3>Track expenses and revenue with ease</h3>
+                                <p>Our intuitive interface makes recording expenses and revenue simple. Smart input validation prevents errors before they happen, so your books are always accurate.</p>
+                                <ul class="feature-list">
+                                    <li>
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="20,6 9,17 4,12"/>
+                                        </svg>
+                                        <span>Easy-to-use guided forms</span>
+                                    </li>
+                                    <li>
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="20,6 9,17 4,12"/>
+                                        </svg>
+                                        <span>Smart validation prevents mistakes</span>
+                                    </li>
+                                    <li>
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="20,6 9,17 4,12"/>
+                                        </svg>
+                                        <span>Categorize and organize transactions</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="tab-content-visual">
+                                <div class="feature-visual-card">
+                                    <div class="visual-mockup expenses-mockup">
+                                        <div class="expense-form-preview">
+                                            <div class="expense-form-header">
+                                                <span class="form-title">New Transaction</span>
+                                            </div>
+                                            <div class="expense-form-fields">
+                                                <div class="form-field">
+                                                    <span class="field-label">Type</span>
+                                                    <div class="field-toggle">
+                                                        <span class="toggle-option">Expense</span>
+                                                        <span class="toggle-option active">Revenue</span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-field">
+                                                    <span class="field-label">Amount</span>
+                                                    <span class="field-value">$850.00</span>
+                                                </div>
+                                                <div class="form-field">
+                                                    <span class="field-label">Category</span>
+                                                    <span class="field-value">Sales</span>
+                                                </div>
+                                            </div>
+                                            <div class="expense-form-validation">
+                                                <div class="validation-check">
+                                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                        <polyline points="20,6 9,17 4,12"/>
+                                                    </svg>
+                                                    <span>Valid amount</span>
+                                                </div>
+                                                <div class="validation-check">
+                                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                        <polyline points="20,6 9,17 4,12"/>
+                                                    </svg>
+                                                    <span>Category selected</span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
