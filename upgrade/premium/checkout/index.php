@@ -56,7 +56,6 @@
     <script src="main.js"></script>
     <script src="../../../resources/scripts/jquery-3.6.0.js"></script>
     <script src="../../../resources/scripts/main.js"></script>
-    <script src="../../../resources/scripts/cursor-orb.js" defer></script>
     <script src="../../../resources/scripts/ScrollToCenter.js"></script>
     <!-- All payment SDKs (PayPal, Stripe, and Square) are loaded conditionally in main.js to ensure better performance -->
 

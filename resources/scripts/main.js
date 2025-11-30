@@ -82,4 +82,10 @@ $(document).ready(function () {
   $("#includeFooter").load(BASE_PATH + "resources/footer/index.html", function () {
     fixLinks("#includeFooter");
   });
+
+  // Load cursor orb script
+  var cursorOrbScript = document.createElement('script');
+  cursorOrbScript.src = BASE_PATH + "resources/scripts/cursor-orb.js";
+  cursorOrbScript.defer = true;
+  document.head.appendChild(cursorOrbScript);
 });
