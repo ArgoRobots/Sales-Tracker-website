@@ -94,18 +94,12 @@ header .header-inner .menu-container .menu .whats-new:after {
 }
 
 .hero .btn-primary {
-  display: inline-flex;
-  align-items: center;
   gap: 8px;
   padding: 14px 28px;
   background: linear-gradient(135deg, var(--primary-blue), var(--blueHover));
   color: var(--white);
-  font-size: 1rem;
-  font-weight: 600;
-  border: none;
   border-radius: 12px;
-  text-decoration: none;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 220px;
 }
 
 .hero .btn-primary:hover {
@@ -114,18 +108,12 @@ header .header-inner .menu-container .menu .whats-new:after {
 }
 
 .hero .btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
   padding: 14px 28px;
   background: var(--hero-badge-bg);
   color: var(--white);
-  font-size: 1rem;
-  font-weight: 600;
   border: 1px solid var(--hero-badge-border);
   border-radius: 12px;
-  text-decoration: none;
-  transition: all 0.2s ease;
+  width: 220px;
 }
 
 .hero .btn-secondary:hover {
@@ -262,7 +250,7 @@ header .header-inner .menu-container .menu .whats-new:after {
 }
 
 .feature-content h3 {
-  margin: 0 0 8px 0;
+  margin-bottom: 5px;
   color: var(--gray-900);
   font-size: 1.05rem;
   font-weight: 600;

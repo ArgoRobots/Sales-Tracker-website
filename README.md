@@ -60,13 +60,13 @@ You can view the live website here: https://argorobots.com/
 
 ### Step 3: Set Up the Project
 
-1. Place the project files directly in XAMPP's `htdocs` directory: `C:\xampp\htdocs\sales-tracker-website`
-   - The folder name will become part of your URL (e.g., folder `sales-tracker-website` → URL `localhost/sales-tracker-website`)
+1. Place the project files directly in XAMPP's `htdocs` directory: `C:\xampp\htdocs\argo-books-website`
+   - The folder name will become part of your URL (e.g., folder `argo-books-website` → URL `localhost/argo-books-website`)
    - Avoid spaces in the folder name
 2. Open Command Prompt and navigate to that directory:
 
 ```bash
-cd C:\xampp\htdocs\sales-tracker-website
+cd C:\xampp\htdocs\argo-books-website
 ```
 
 3. Run the following command to install PHP dependencies:
@@ -97,7 +97,7 @@ You need to create a MySQL database and import the schema.
    - Click on the **"sales_tracker"** database name in the left sidebar (it should now appear in the list)
    - Click on the **"Import"** tab at the top
    - Click **"Choose File"** button
-   - Navigate to your sales-tracker-website folder and select: `mysql_schema.sql`
+   - Navigate to your argo-books-website folder and select: `mysql_schema.sql`
    - Scroll down and click **"Import"** button at the bottom
    - You should see a success message and 7 tables created
 
@@ -113,7 +113,7 @@ When running the Argo Books website locally on XAMPP, PHP's `mail()` function wo
 ## Running Locally
 
 1. Open XAMPP Control Panel and start Apache and MySQL
-2. Navigate to `http://localhost/sales-tracker-website` in your browser (adjust the folder name if different)
+2. Navigate to `http://localhost/argo-books-website` in your browser (adjust the folder name if different)
 3. The website should now be running locally
 
 ## Publishing a new version of Argo Books

@@ -5,13 +5,43 @@
 (function() {
     'use strict';
 
+    const style = document.createElement('style');
+    style.textContent = `
+        .cursor-orb {
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, #a78bfa, #f472b6);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+            animation: none !important;
+            mix-blend-mode: screen;
+            will-change: transform;
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 50%;
+            filter: blur(80px);
+        }
+        .cursor-orb.active {
+            opacity: 0.6;
+        }
+        @media (max-width: 400px) {
+            .cursor-orb {
+                width: 250px;
+                height: 250px;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+
     const ORB_SIZE = 400;
     const EASING_SPEED = 0.08;
 
     function initCursorOrbs() {
         // Find all sections that should have cursor orbs
         // Include various hero variants used across different pages
-        const sections = document.querySelectorAll('.hero, .community-hero, .upgrade-hero, .contact-hero, .cta-section, .contact-section, .footer');
+        const sections = document.querySelectorAll('.hero, .community-hero, .contact-hero, .cta-section, .contact-section, .footer');
 
         sections.forEach(section => {
             // Check if section already has a cursor orb

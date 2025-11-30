@@ -15,7 +15,7 @@ function getBasePath() {
   var isRootPath = sitePaths.some(function(p) { return path.startsWith(p); }) || path === '/' || path === '/index.php';
 
   if (!isRootPath && match) {
-    return match[1]; // Return the subfolder path (e.g., '/Sales-Tracker-website/')
+    return match[1]; // Return the subfolder path (e.g., '/Argo-Books-website/')
   }
 
   return '/'; // Production or root-level local setup

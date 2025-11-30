@@ -345,7 +345,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                     <div class="tab-content active" id="tab-ai-receipts">
                         <div class="tab-content-inner">
                             <div class="tab-content-text">
-                                <h3>Scan receipts with AI precision</h3>
+                                <h3>Scan receipts with AI</h3>
                                 <p>Take a photo of any receipt with your phone or upload from your computer. Our AI automatically extracts vendor, date, amount, and line items with 99% accuracy.</p>
                                 <ul class="feature-list">
                                     <li>
@@ -402,7 +402,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                                                     </div>
                                                     <div class="receipt-total">
                                                         <span>Total</span>
-                                                        <span class="total-amount">$127.43</span>
+                                                        <span>$127.43</span>
                                                     </div>
                                                 </div>
                                                 <div class="ai-badge" id="aiBadge">
@@ -1303,7 +1303,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                             <span class="period">CAD/month</span>
                         </div>
                         <p class="pricing-alt">or $50 CAD/year (save $10)</p>
-                        <p class="pricing-description">Unlock AI-powered intelligence</p>
+                        <p class="pricing-description">Unlock AI-powered features</p>
                     </div>
                     <ul class="pricing-features">
                            <li>
