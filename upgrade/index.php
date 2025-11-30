@@ -50,7 +50,7 @@
         <div id="includeHeader"></div>
     </header>
 
-    <section class="upgrade-hero">
+    <section class="hero">
         <div class="hero-bg">
             <div class="hero-gradient-orb hero-orb-1"></div>
             <div class="hero-gradient-orb hero-orb-2"></div>
@@ -124,17 +124,21 @@
                         <p class="price-note">or $50 CAD/year (save $10)</p>
 
                         <ul class="card-features">
+                              <li>
+                                <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"></path></svg>
+                                <span><strong>Everything in Premium</strong></span>
+                            </li>
                             <li>
                                 <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"></path></svg>
                                 <span><strong>AI receipt scanning</strong></span>
                             </li>
                             <li>
                                 <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"></path></svg>
-                                <span>Predictive sales analysis</span>
+                                <span><strong>Predictive sales analysis</strong></span>
                             </li>
                             <li>
                                 <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"></path></svg>
-                                <span>AI business insights</span>
+                                <span><strong>AI business insights</strong></span>
                             </li>
                             <li>
                                 <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"></path></svg>

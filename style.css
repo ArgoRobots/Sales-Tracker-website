@@ -1,8 +1,4 @@
 /* Base Reset & Typography */
-html {
-    scroll-behavior: smooth;
-}
-
 body {
     margin: 0;
     padding: 0;
@@ -371,28 +367,6 @@ a {
     }
 }
 
-/* Generic cursor orb for all dark sections */
-.cursor-orb {
-    width: 400px;
-    height: 400px;
-    background: linear-gradient(135deg, #a78bfa, #f472b6);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.5s ease;
-    animation: none !important;
-    mix-blend-mode: screen;
-    will-change: transform;
-    position: absolute;
-    top: 0;
-    left: 0;
-    border-radius: 50%;
-    filter: blur(80px);
-}
-
-.cursor-orb.active {
-    opacity: 0.6;
-}
-
 .hero .container {
     position: relative;
     display: grid;
@@ -647,7 +621,6 @@ a {
 
 .section-title {
     font-size: 2.75rem;
-    color: #0f172a;
     margin-bottom: 16px;
     letter-spacing: -0.02em;
 }
@@ -693,7 +666,7 @@ a {
     display: flex;
     align-items: center;
     gap: 16px;
-    padding: 12px 20px;
+    padding: 10px;
     background: white;
     border: 1px solid #e2e8f0;
     border-radius: 12px;
@@ -783,7 +756,6 @@ a {
 
 .tab-content-text h3 {
     font-size: 1.75rem;
-    color: #0f172a;
     margin-bottom: 16px;
 }
 
@@ -956,11 +928,6 @@ a {
     font-weight: 600;
 }
 
-.total-amount {
-    color: #10b981;
-    font-size: 1.25rem;
-}
-
 .ai-badge {
     position: absolute;
     bottom: 20px;
@@ -1014,7 +981,6 @@ a {
 .chart-title {
     font-size: 1.1rem;
     font-weight: 600;
-    color: #0f172a;
 }
 
 .chart-period {
@@ -1119,7 +1085,6 @@ a {
 .insight-item .insight-text strong {
     display: block;
     font-size: 0.95rem;
-    color: #0f172a;
     margin-bottom: 2px;
 }
 
@@ -1167,7 +1132,6 @@ a {
 .inventory-item .item-name {
     display: block;
     font-weight: 600;
-    color: #0f172a;
     margin-bottom: 2px;
 }
 
@@ -1228,7 +1192,6 @@ a {
 
 .cal-month {
     font-weight: 600;
-    color: #0f172a;
 }
 
 .cal-nav {
@@ -1348,7 +1311,6 @@ a {
 .customer-name {
     display: block;
     font-weight: 600;
-    color: #0f172a;
 }
 
 .customer-email {
@@ -1368,7 +1330,6 @@ a {
 .customer-stats .stat-val {
     display: block;
     font-weight: 700;
-    color: #0f172a;
 }
 
 .customer-stats .stat-lbl {
@@ -1398,7 +1359,6 @@ a {
 .invoice-logo {
     font-size: 1.5rem;
     font-weight: 800;
-    color: #0f172a;
     letter-spacing: -0.02em;
 }
 
@@ -1422,7 +1382,6 @@ a {
 
 .meta-value {
     font-weight: 600;
-    color: #0f172a;
 }
 
 .invoice-total {
@@ -1439,9 +1398,8 @@ a {
 }
 
 .total-value {
-    font-size: 1.75rem;
+    font-size: 1.1rem;
     font-weight: 700;
-    color: #0f172a;
 }
 
 .invoice-status {
@@ -1669,7 +1627,6 @@ a {
 
 .step-card h3 {
     font-size: 1.25rem;
-    color: #0f172a;
     margin-bottom: 8px;
 }
 
@@ -1783,7 +1740,6 @@ a {
 .mobile-screen-title {
     font-size: 14px;
     font-weight: 600;
-    color: #0f172a;
 }
 
 .mobile-screen-stats {
@@ -1810,7 +1766,6 @@ a {
 .mobile-stat-card .stat-value {
     font-size: 18px;
     font-weight: 700;
-    color: #0f172a;
 }
 
 .mobile-stat-card .stat-value.positive {
@@ -1828,7 +1783,6 @@ a {
 .mobile-chart-title {
     font-size: 12px;
     font-weight: 600;
-    color: #0f172a;
     margin-bottom: 12px;
 }
 
@@ -1885,7 +1839,6 @@ a {
 
 .mobile-feature-text h4 {
     font-size: 1.1rem;
-    color: #0f172a;
     margin-bottom: 4px;
 }
 
@@ -1905,7 +1858,6 @@ a {
     display: flex;
     align-items: center;
     gap: 10px;
-    background: #0f172a;
     color: white;
     padding: 12px 20px;
     border-radius: 12px;
@@ -1999,7 +1951,6 @@ a {
 
 .security-detail h4 {
     font-size: 1.1rem;
-    color: #0f172a;
     margin-bottom: 4px;
 }
 
@@ -2119,7 +2070,6 @@ a {
 .pricing-amount .amount {
     font-size: 4rem;
     font-weight: 800;
-    color: #0f172a;
     line-height: 1;
 }
 
@@ -2209,7 +2159,6 @@ a {
 
 .guarantee-text h4 {
     font-size: 1.1rem;
-    color: #0f172a;
     margin-bottom: 4px;
 }
 
@@ -2235,7 +2184,6 @@ a {
 
 .contact-header h2 {
     font-size: 2.5rem;
-    color: #0f172a;
     margin-bottom: 12px;
     letter-spacing: -0.02em;
 }
@@ -2312,7 +2260,6 @@ a {
 
 .contact-card h3 {
     font-size: 1.25rem;
-    color: #0f172a;
     margin-bottom: 8px;
 }
 
@@ -2633,10 +2580,6 @@ a {
 
     .features-tabs-nav {
         gap: 8px;
-    }
-
-    .tab-btn {
-        padding: 12px 16px;
     }
 
     .tab-text {

@@ -17,7 +17,7 @@ body {
 /* ========================================
    Upgrade Hero Section
    ======================================== */
-.upgrade-hero {
+.hero {
   position: relative;
   background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
   color: var(--white);
@@ -26,7 +26,7 @@ body {
   overflow: hidden;
 }
 
-.upgrade-hero .hero-bg {
+.hero .hero-bg {
   position: absolute;
   top: 0;
   left: 0;
@@ -36,14 +36,14 @@ body {
   pointer-events: none;
 }
 
-.upgrade-hero .hero-gradient-orb {
+.hero .hero-gradient-orb {
   position: absolute;
   border-radius: 50%;
   filter: blur(80px);
   opacity: 0.5;
 }
 
-.upgrade-hero .hero-orb-1 {
+.hero .hero-orb-1 {
   width: 400px;
   height: 400px;
   background: linear-gradient(135deg, var(--primary-blue), var(--cyan-500));
@@ -51,7 +51,7 @@ body {
   left: -100px;
 }
 
-.upgrade-hero .hero-orb-2 {
+.hero .hero-orb-2 {
   width: 350px;
   height: 350px;
   background: linear-gradient(135deg, var(--purple-500), var(--pink-500));
@@ -59,12 +59,12 @@ body {
   right: -80px;
 }
 
-.upgrade-hero .container {
+.hero .container {
   position: relative;
   z-index: 2;
 }
 
-.upgrade-hero .hero-badge {
+.hero .hero-badge {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -76,11 +76,11 @@ body {
   margin-bottom: 24px;
 }
 
-.upgrade-hero .hero-badge svg {
+.hero .hero-badge svg {
   color: var(--amber-400);
 }
 
-.upgrade-hero h1 {
+.hero h1 {
   font-size: 3rem;
   font-weight: 700;
   margin-bottom: 16px;
@@ -93,11 +93,11 @@ body {
 }
 
 @media (max-width: 768px) {
-  .upgrade-hero {
+  .hero {
     padding: 120px 0 60px;
   }
 
-  .upgrade-hero h1 {
+  .hero h1 {
     font-size: 2.25rem;
   }
 
