@@ -2049,6 +2049,12 @@ a {
     border: 1px solid #e2e8f0;
     position: relative;
     transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.pricing-card .pricing-features {
+    flex: 1;
 }
 
 .pricing-card:hover {
@@ -2171,6 +2177,7 @@ a {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 0 auto;
 }
 
 .guarantee-banner {

@@ -1242,6 +1242,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                         </li>
                     </ul>
                     <a href="downloads" class="btn btn-secondary btn-block">Get Started Free</a>
+                    <p class="pricing-note">Free forever</p>
                 </div>
 
                 <!-- Premium Plan -->
@@ -1261,13 +1262,13 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <polyline points="20,6 9,17 4,12"/>
                             </svg>
-                            <span><strong>Unlimited products</strong></span>
+                            <span><strong>Everything in Free</strong></span>
                         </li>
                         <li>
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <polyline points="20,6 9,17 4,12"/>
                             </svg>
-                            <span>Everything in Free</span>
+                            <span><strong>Unlimited products</strong></span>
                         </li>
                         <li>
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1285,7 +1286,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <polyline points="20,6 9,17 4,12"/>
                             </svg>
-                            <span><strong>Lifetime updates</strong></span>
+                            <span>Lifetime updates</span>
                         </li>
                     </ul>
                     <a href="upgrade/" class="btn btn-primary btn-block">Upgrade Now</a>
@@ -1305,6 +1306,12 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
                         <p class="pricing-description">Unlock AI-powered intelligence</p>
                     </div>
                     <ul class="pricing-features">
+                           <li>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20,6 9,17 4,12"/>
+                            </svg>
+                            <span><strong>Everything in Premium</strong></span>
+                        </li>
                         <li>
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <polyline points="20,6 9,17 4,12"/>
