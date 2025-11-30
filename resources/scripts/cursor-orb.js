@@ -49,7 +49,7 @@
 
             // Create the orb element
             const orb = document.createElement('div');
-            orb.className = 'hero-gradient-orb cursor-orb';
+            orb.className = 'cursor-orb';
 
             // Find the background container or create positioning context
             let container = section.querySelector('.hero-bg, .footer-bg');
